@@ -1,15 +1,21 @@
 {
   "canisters": {
-    "verifier_backend": {
-      "candid": "src/verifier_backend/verifier_backend.did",
-      "package": "verifier_backend",
-      "type": "rust"
-    }
-  },
-  "defaults": {
-    "build": {
-      "args": "",
-      "packtool": ""
+    "ic_af": {
+      "metadata": [
+        {
+          "name": "candid:service"
+        }
+      ],
+      "candid": "ic_af.did",
+      "package": "ic_af",
+      "declarations": {
+        "node_compatibility": true
+      },
+      "type": "custom",
+      "wasm": "target/wasm32-wasi/release/ic_af-ic.wasm",
+      "build": [
+        "bash -c ./scripts/build.sh"
+      ]
     }
   },
   "output_env_file": ".env",

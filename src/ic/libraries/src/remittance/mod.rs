@@ -1,4 +1,3 @@
-pub mod config;
 pub mod random;
 pub mod types;
 pub mod utils;
@@ -6,14 +5,11 @@ pub mod state;
 
 use crate::{
     crypto::{
-        self,
-        ethereum::{recover_address_from_eth_signature, sign_message},
-        vec_u8_to_string,
+        self, config::{self, Config}, ethereum::{recover_address_from_eth_signature, sign_message}, vec_u8_to_string
     },
     owner,
 };
 use candid::Principal;
-use config::Config;
 use ic_cdk::caller;
 use types::Subscriber;
 use state::*;
