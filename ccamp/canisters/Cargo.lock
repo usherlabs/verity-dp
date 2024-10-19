@@ -499,6 +499,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "clmul"
+version = "0.1.0"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=b8ae7ac#b8ae7acd4e0f306f0c23a9108dd5b802419e48fd"
+dependencies = [
+ "bytemuck",
+ "cfg-if",
+ "cpufeatures",
+]
+
+[[package]]
 name = "codespan-reporting"
 version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1840,7 +1850,24 @@ source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b#9f
 dependencies = [
  "bincode",
  "itybity",
- "mpz-circuits-macros",
+ "mpz-circuits-macros 0.1.0 (git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b)",
+ "once_cell",
+ "rand 0.8.5",
+ "regex",
+ "serde",
+ "serde_arrays",
+ "sha2 0.10.8",
+ "thiserror",
+]
+
+[[package]]
+name = "mpz-circuits"
+version = "0.1.0"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=b8ae7ac#b8ae7acd4e0f306f0c23a9108dd5b802419e48fd"
+dependencies = [
+ "bincode",
+ "itybity",
+ "mpz-circuits-macros 0.1.0 (git+https://github.com/privacy-scaling-explorations/mpz?rev=b8ae7ac)",
  "once_cell",
  "rand 0.8.5",
  "regex",
@@ -1861,6 +1888,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "mpz-circuits-macros"
+version = "0.1.0"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=b8ae7ac#b8ae7acd4e0f306f0c23a9108dd5b802419e48fd"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+]
+
+[[package]]
 name = "mpz-core"
 version = "0.1.0"
 source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b#9f7403be410839767701b1a6817274715d90ae55"
@@ -1871,7 +1908,31 @@ dependencies = [
  "bytemuck",
  "cfg-if",
  "cipher",
- "clmul",
+ "clmul 0.1.0 (git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b)",
+ "generic-array 0.14.7",
+ "itybity",
+ "once_cell",
+ "opaque-debug 0.3.1",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "rand_core 0.6.4",
+ "rayon",
+ "serde",
+ "thiserror",
+]
+
+[[package]]
+name = "mpz-core"
+version = "0.1.0"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=b8ae7ac#b8ae7acd4e0f306f0c23a9108dd5b802419e48fd"
+dependencies = [
+ "aes",
+ "bcs",
+ "blake3",
+ "bytemuck",
+ "cfg-if",
+ "cipher",
+ "clmul 0.1.0 (git+https://github.com/privacy-scaling-explorations/mpz?rev=b8ae7ac)",
  "generic-array 0.14.7",
  "itybity",
  "once_cell",
@@ -1894,9 +1955,31 @@ dependencies = [
  "cipher",
  "derive_builder",
  "itybity",
- "mpz-circuits",
- "mpz-core",
+ "mpz-circuits 0.1.0 (git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b)",
+ "mpz-core 0.1.0 (git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b)",
  "once_cell",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "rand_core 0.6.4",
+ "serde",
+ "serde_arrays",
+ "thiserror",
+]
+
+[[package]]
+name = "mpz-garble-core"
+version = "0.1.0"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=b8ae7ac#b8ae7acd4e0f306f0c23a9108dd5b802419e48fd"
+dependencies = [
+ "aes",
+ "blake3",
+ "cipher",
+ "derive_builder",
+ "itybity",
+ "mpz-circuits 0.1.0 (git+https://github.com/privacy-scaling-explorations/mpz?rev=b8ae7ac)",
+ "mpz-core 0.1.0 (git+https://github.com/privacy-scaling-explorations/mpz?rev=b8ae7ac)",
+ "once_cell",
+ "opaque-debug 0.3.1",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rand_core 0.6.4",
@@ -2941,15 +3024,15 @@ dependencies = [
 
 [[package]]
 name = "tlsn-core"
-version = "0.1.0-alpha.5"
-source = "git+https://github.com/tlsnotary/tlsn?rev=v0.1.0-alpha.5#68b9474015b817255c226fec38e80addd16191d1"
+version = "0.1.0-alpha.6"
+source = "git+https://github.com/tlsnotary/tlsn?rev=v0.1.0-alpha.6#3554db83e17b2e5fc98293b397a2907b7f023496"
 dependencies = [
  "bimap",
  "bytes",
  "getrandom 0.2.15",
- "mpz-circuits",
- "mpz-core",
- "mpz-garble-core",
+ "mpz-circuits 0.1.0 (git+https://github.com/privacy-scaling-explorations/mpz?rev=b8ae7ac)",
+ "mpz-core 0.1.0 (git+https://github.com/privacy-scaling-explorations/mpz?rev=b8ae7ac)",
+ "mpz-garble-core 0.1.0 (git+https://github.com/privacy-scaling-explorations/mpz?rev=b8ae7ac)",
  "opaque-debug 0.3.1",
  "p256",
  "ring",
@@ -2957,7 +3040,7 @@ dependencies = [
  "serde",
  "thiserror",
  "tlsn-tls-core",
- "tlsn-utils",
+ "tlsn-utils 0.1.0 (git+https://github.com/tlsnotary/tlsn-utils?rev=45370cc)",
  "web-time",
  "webpki-roots",
 ]
@@ -2970,9 +3053,9 @@ dependencies = [
  "bincode",
  "bytes",
  "hex",
- "mpz-circuits",
- "mpz-core",
- "mpz-garble-core",
+ "mpz-circuits 0.1.0 (git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b)",
+ "mpz-core 0.1.0 (git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b)",
+ "mpz-garble-core 0.1.0 (git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b)",
  "opaque-debug 0.3.1",
  "p256",
  "rs_merkle",
@@ -2980,13 +3063,13 @@ dependencies = [
  "serde",
  "serde_json",
  "thiserror",
- "tlsn-utils",
+ "tlsn-utils 0.1.0 (git+https://github.com/tlsnotary/tlsn-utils?rev=51f313d)",
 ]
 
 [[package]]
 name = "tlsn-tls-core"
-version = "0.1.0-alpha.5"
-source = "git+https://github.com/tlsnotary/tlsn?rev=v0.1.0-alpha.5#68b9474015b817255c226fec38e80addd16191d1"
+version = "0.1.0-alpha.6"
+source = "git+https://github.com/tlsnotary/tlsn?rev=v0.1.0-alpha.6#3554db83e17b2e5fc98293b397a2907b7f023496"
 dependencies = [
  "futures",
  "hmac",
@@ -3000,6 +3083,14 @@ dependencies = [
  "tracing",
  "web-time",
  "webpki",
+]
+
+[[package]]
+name = "tlsn-utils"
+version = "0.1.0"
+source = "git+https://github.com/tlsnotary/tlsn-utils?rev=45370cc#45370ccc6112328615721daad4f4084ff080f157"
+dependencies = [
+ "serde",
 ]
 
 [[package]]

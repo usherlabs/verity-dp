@@ -2,6 +2,7 @@ pub mod ecdsa;
 pub mod ethereum;
 pub mod redstone;
 pub mod streamr;
+pub mod config;
 
 pub fn string_to_vec_u8(str: &str) -> Vec<u8> {
     let starts_from: usize;

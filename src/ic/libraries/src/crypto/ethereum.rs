@@ -1,14 +1,11 @@
-use crate::{
-    crypto::{
-        ecdsa::{self, derive_pk},
-        ethereum,
-    },
-    remittance::config::Config,
+use crate::crypto::{
+    ecdsa::{self, derive_pk},
+    ethereum,
 };
 use candid::Principal;
 use easy_hasher::easy_hasher;
 
-use super::{remove_leading, string_to_vec_u8, vec_u8_to_string};
+use super::{config::Config, remove_leading, string_to_vec_u8, vec_u8_to_string};
 
 /// Preprocess and hash an ethereum message
 pub fn hash_eth_message<T: AsRef<[u8]>>(message: T) -> Vec<u8> {
@@ -159,7 +156,6 @@ pub async fn sign_message(
     })
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -170,8 +166,8 @@ mod tests {
         let metamask_signature = "0xc49581525ffdb136f2cbf6c2c113bce4b80c5147ac72038aef2ef5393dc3c3a8077f253152d6821396db30f8e4230cf931a0820d90fec40634af3a913e6aff5c1b".to_string();
         let expected_address = "0x5c8e3a7c16fa5cdde9f74751d6b2395176f05c55";
 
-
-        let recovered_address = recover_address_from_eth_signature(metamask_signature, message).unwrap();
+        let recovered_address =
+            recover_address_from_eth_signature(metamask_signature, message).unwrap();
         assert_eq!(recovered_address, expected_address);
     }
 }

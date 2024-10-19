@@ -4,10 +4,10 @@ use candid::Principal;
 use ic_cdk::storage;
 use ic_cdk_macros::*;
 use verity_dp_ic::{
-    crypto::ecdsa::PublicKeyReply,
+    crypto::{config::Environment, ecdsa::PublicKeyReply},
     owner,
     remittance::{
-        self, config::Environment, random, types::{Account, DataModel, RemittanceReciept, RemittanceReply}, utils::{self, only_whitelisted_dc_canister}
+        self, random, types::{Account, DataModel, RemittanceReciept, RemittanceReply}, utils::{self, only_whitelisted_dc_canister}
     },
 };
 

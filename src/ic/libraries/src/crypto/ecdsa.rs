@@ -3,7 +3,8 @@
 use candid::{CandidType, Principal};
 use serde::{Deserialize, Serialize};
 
-use crate::remittance::config::Config;
+use super::config::Config;
+
 
 #[derive(CandidType, Serialize, Debug)]
 pub struct PublicKeyReply {
