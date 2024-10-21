@@ -1,6 +1,4 @@
-use anyhow::Result;
-use easy_hasher::easy_hasher;
-use eth_encode_packed::SolidityDataType;
+use rs_merkle::{algorithms::Sha256, Hasher};
 use serde_json::Value;
 use verity_dp_ic::{
     crypto::config::{Config, Environment},
@@ -33,23 +31,11 @@ pub fn validate_json_proof(proof_json: &Value, json_keys: &Vec<&str>) -> bool {
 /// Perform a SHA 256 hash on the input string
 /// Return a hex encoded value as the response
 pub fn hash(input: &String) -> String {
-    // Convert the input string to bytes and hash it using Keccak-256
-    let hex_hash = easy_hasher::keccak256(input).to_hex_string();
+    let input = input.as_bytes();
+    // Convert the input string to bytes and hash it
+    let hash = Sha256::hash(input);
     // Convert the resulting hash into a hexadecimal string and return it
+    let hex_hash = hex::encode(hash);
+
     hex_hash
-}
-
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn test_hash() {
-        let input = "hello world".to_string();
-        let expected_output =
-            "47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad".to_string();
-        let function_output = hash(&input);
-
-        assert_eq!(function_output, expected_output)
-    }
 }

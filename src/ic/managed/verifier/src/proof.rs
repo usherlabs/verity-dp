@@ -4,9 +4,10 @@ use serde_json::Value;
 use verity_dp_ic::{crypto::ethereum::sign_message, remittance::state::CONFIG};
 use verity_verifier::{verify_proof, verify_session};
 
-use crate::{merkle::MerkleTree, utils::{hash, validate_json_proof}};
-
-
+use crate::{
+    merkle::generate_merkle_tree,
+    utils::{hash, validate_json_proof},
+};
 
 #[derive(CandidType, Deserialize, Debug, Clone)]
 pub struct VerificationResponse {
@@ -74,7 +75,7 @@ impl ProofResponse {
     /// Generate a hash containing the
     pub fn get_content(&self) -> String {
         match self {
-            // the result of a verified session proof is a hash so no need to 
+            // the result of a verified session proof is a hash so no need to
             ProofResponse::SessionProof(content) => content.clone(),
             // verify the full proof and return the request/response pair
             ProofResponse::FullProof(content) => content.clone(),
@@ -82,14 +83,11 @@ impl ProofResponse {
     }
 }
 
-
-
 pub async fn verify_proof_requests(
     proof_requests: Vec<String>,
     notary_pub_key: String,
 ) -> Result<VerificationResponse, String> {
-    // // ) -> Result<VerificationResponse, String> {
-    // // by default icp escapes special characters, so we need to unescape them
+    // by default icp escapes special characters, so we need to unescape them
     let notary_pub_key = notary_pub_key.replace("\\n", "\n");
 
     let proof_requests: Vec<ProofRequest> = proof_requests
@@ -107,11 +105,13 @@ pub async fn verify_proof_requests(
         })
         .collect();
 
-    let merkle_tree: MerkleTree = proof_responses.clone().into();
-    let merkle_root = &merkle_tree.root;
+    // generate a merkle tree based on  the content of the proof responses as leaves
+    let merkle_tree = generate_merkle_tree(&proof_responses);
+    let merkle_root = merkle_tree.root().expect("NOT ENOUGH LEAVES");
+    let merkle_root = hex::encode(merkle_root);
 
-    // // perform an ecdsa signature over this merkle root and return it
-    // // generate a signature for these parameters
+    // perform an ecdsa signature over this merkle root and return it
+    // generate a signature for these parameters
     let config_store = CONFIG.with(|store| store.borrow().clone());
     let signature_reply = sign_message(&merkle_root.clone().into_bytes(), &config_store).await?;
     let signature = signature_reply.signature_hex;

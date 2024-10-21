@@ -1146,6 +1146,7 @@ dependencies = [
  "ic-wasi-polyfill",
  "libsecp256k1",
  "p256",
+ "rs_merkle",
  "serde",
  "serde_derive",
  "serde_json",

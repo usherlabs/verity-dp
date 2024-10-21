@@ -31,3 +31,4 @@ libsecp256k1 = { version = "0.7.1", default-features = false, features = ["lazy-
 ic-wasi-polyfill = { git = "https://github.com/wasm-forge/ic-wasi-polyfill", rev = "2476429bb1604d3ad5a28d458b8faa61bcbe4ada"}
 eth-encode-packed = "0.1.0"
 anyhow = "1.0.90"
+rs_merkle = "1.4.2"

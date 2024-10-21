@@ -7,11 +7,11 @@ type MerkleTree = record {
 	nodes : vec text;
     num_leaves: nat64;
     root: text;
-}
+};
 
 type VerificationResponse = record {
 	results : vec ProofResponse;
-	root : MerkleTree;
+	root : text;
 	signature : text;
 };
 

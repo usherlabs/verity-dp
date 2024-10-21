@@ -1,11 +1,11 @@
 use candid::Principal;
-use ic_cdk::{api::call::RejectionCode, caller};
+use ic_cdk::{api::call::RejectionCode, caller, storage};
 use ic_cdk_macros::*;
 use proof::{verify_proof_requests, VerificationResponse};
 use utils::init_canister;
 use verity_dp_ic::{
     crypto::{
-        config::Environment,
+        config::{Config, Environment},
         ecdsa::{self, ECDSAPublicKeyReply, PublicKeyReply},
         ethereum,
     },
@@ -32,7 +32,6 @@ async fn verify_proof_async(
     notary_pub_key: String,
 ) -> Result<(), RejectionCode> {
     let verification_response = verify_proof_requests(proof_requests, notary_pub_key).await;
-
 
     let calling_canister = caller();
     let canister_response: Result<(), RejectionCode> = ic_cdk::notify(
@@ -79,3 +78,20 @@ async fn public_key() -> PublicKeyReply {
         etherum_pk: address,
     }
 }
+
+
+// --------------------------- upgrade hooks ------------------------- //
+#[pre_upgrade]
+fn pre_upgrade() {
+    let cloned_config = CONFIG.with(|rc| rc.borrow().clone());
+    storage::stable_save((cloned_config,)).unwrap()
+}
+
+#[post_upgrade]
+async fn post_upgrade() {
+    let (old_config,): (Config,) = storage::stable_restore().unwrap();
+
+    let env_opt = Some(old_config.env);
+    init_canister(env_opt);
+}
+// --------------------------- upgrade hooks ------------------------- //
