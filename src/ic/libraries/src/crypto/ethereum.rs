@@ -120,7 +120,7 @@ pub fn get_address_from_public_key(public_key: Vec<u8>) -> Result<String, String
 
     let keccak256 = easy_hasher::raw_keccak256(pub_key[1..].to_vec());
     let keccak256_hex = keccak256.to_hex_string();
-    let address: String = "0x".to_owned() + &keccak256_hex[24..];
+    let address: String = "".to_owned() + &keccak256_hex[24..];
 
     Ok(address)
 }
