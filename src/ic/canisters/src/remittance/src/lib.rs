@@ -4,10 +4,15 @@ use candid::Principal;
 use ic_cdk::storage;
 use ic_cdk_macros::*;
 use verity_dp_ic::{
-    crypto::{config::{Config, Environment}, ecdsa::PublicKeyReply},
-    owner,
+    crypto::{
+        config::{Config, Environment},
+        ecdsa::PublicKeyReply,
+    },
+    owner, random,
     remittance::{
-        self, random, types::{Account, DataModel, RemittanceReciept, RemittanceReply}, utils::only_whitelisted_dc_canister
+        self,
+        types::{Account, DataModel, RemittanceReciept, RemittanceReply},
+        utils::only_whitelisted_dc_canister,
     },
 };
 
@@ -110,15 +115,21 @@ async fn public_key() -> Result<PublicKeyReply, String> {
 #[pre_upgrade]
 fn pre_upgrade() {
     // clone all important variables
-    let cloned_available_balance_store = remittance::state::REMITTANCE.with(|store| store.borrow().clone());
-    let cloned_witheld_balance_store = remittance::state::WITHHELD_REMITTANCE.with(|store| store.borrow().clone());
-    let cloned_witheld_amounts = remittance::state::WITHHELD_AMOUNTS.with(|store| store.borrow().clone());
-    let cloned_is_pdc_canister = remittance::state::IS_PDC_CANISTER.with(|store| store.borrow().clone());
+    let cloned_available_balance_store =
+        remittance::state::REMITTANCE.with(|store| store.borrow().clone());
+    let cloned_witheld_balance_store =
+        remittance::state::WITHHELD_REMITTANCE.with(|store| store.borrow().clone());
+    let cloned_witheld_amounts =
+        remittance::state::WITHHELD_AMOUNTS.with(|store| store.borrow().clone());
+    let cloned_is_pdc_canister =
+        remittance::state::IS_PDC_CANISTER.with(|store| store.borrow().clone());
     let dc_canisters = remittance::state::DC_CANISTERS.with(|store| store.borrow().clone());
-    let remittance_reciepts_store = remittance::state::REMITTANCE_RECIEPTS.with(|store| store.borrow().clone());
+    let remittance_reciepts_store =
+        remittance::state::REMITTANCE_RECIEPTS.with(|store| store.borrow().clone());
     let config_store = remittance::state::CONFIG.with(|store| store.borrow().clone());
-    let canister_balance_store = remittance::state::CANISTER_BALANCE.with(|store| store.borrow().clone());
-    
+    let canister_balance_store =
+        remittance::state::CANISTER_BALANCE.with(|store| store.borrow().clone());
+
     // save cloned memory
     storage::stable_save((
         cloned_available_balance_store,
@@ -128,7 +139,7 @@ fn pre_upgrade() {
         dc_canisters,
         remittance_reciepts_store,
         config_store,
-        canister_balance_store
+        canister_balance_store,
     ))
     .unwrap()
 }
@@ -147,7 +158,7 @@ async fn post_upgrade() {
         cloned_dc_canisters,
         cloned_remittance_reciepts,
         cloned_config,
-        cloned_canister_balance
+        cloned_canister_balance,
     ): (
         remittance::types::AvailableBalanceStore,
         remittance::types::WithheldBalanceStore,
@@ -156,12 +167,13 @@ async fn post_upgrade() {
         Vec<Principal>,
         remittance::types::RemittanceRecieptsStore,
         Config,
-        remittance::types::CanisterBalanceStore
+        remittance::types::CanisterBalanceStore,
     ) = storage::stable_restore().unwrap();
 
     //  restore by reassigning to vairiables
     remittance::state::REMITTANCE.with(|r| *r.borrow_mut() = cloned_available_balance_store);
-    remittance::state::WITHHELD_REMITTANCE.with(|wr| *wr.borrow_mut() = cloned_witheld_balance_store);
+    remittance::state::WITHHELD_REMITTANCE
+        .with(|wr| *wr.borrow_mut() = cloned_witheld_balance_store);
     remittance::state::WITHHELD_AMOUNTS.with(|wa| *wa.borrow_mut() = cloned_witheld_amounts_store);
     remittance::state::IS_PDC_CANISTER.with(|ipc| *ipc.borrow_mut() = cloned_is_pdc_canister);
     remittance::state::DC_CANISTERS.with(|dc| *dc.borrow_mut() = cloned_dc_canisters);

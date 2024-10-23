@@ -1,5 +1,4 @@
 pub mod external_router;
-pub mod random;
 pub mod state;
 pub mod types;
 pub mod utils;
@@ -11,7 +10,7 @@ use crate::{
         ethereum::{recover_address_from_eth_signature, sign_message},
         vec_u8_to_string,
     },
-    owner,
+    owner, random,
 };
 use candid::Principal;
 use ic_cdk::caller;
