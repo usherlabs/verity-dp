@@ -4,10 +4,10 @@ use candid::Principal;
 use ic_cdk::storage;
 use ic_cdk_macros::*;
 use verity_dp_ic::{
-    crypto::{config::Environment, ecdsa::PublicKeyReply},
+    crypto::{config::{Config, Environment}, ecdsa::PublicKeyReply},
     owner,
     remittance::{
-        self, random, types::{Account, DataModel, RemittanceReciept, RemittanceReply}, utils::{self, only_whitelisted_dc_canister}
+        self, random, types::{Account, DataModel, RemittanceReciept, RemittanceReply}, utils::only_whitelisted_dc_canister
     },
 };
 
@@ -44,7 +44,7 @@ fn update_remittance(
     new_remittances: Vec<DataModel>,
     dc_canister: Principal,
 ) -> Result<(), String> {
-    utils::only_whitelisted_dc_canister();
+    only_whitelisted_dc_canister();
     verity_dp_ic::remittance::update_remittance(new_remittances, dc_canister)
 }
 
@@ -155,7 +155,7 @@ async fn post_upgrade() {
         HashMap<Principal, bool>,
         Vec<Principal>,
         remittance::types::RemittanceRecieptsStore,
-        remittance::config::Config,
+        Config,
         remittance::types::CanisterBalanceStore
     ) = storage::stable_restore().unwrap();
 

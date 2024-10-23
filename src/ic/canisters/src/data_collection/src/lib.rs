@@ -1,7 +1,7 @@
 use candid::Principal;
 use ic_cdk::storage;
 use ic_cdk_macros::*;
-use verity_dp_ic::{ indexer, owner, remittance};
+use verity_dp_ic::{ owner, remittance::{self, external_router}};
 
 // @dev testing command
 #[query]
@@ -22,13 +22,13 @@ fn owner() -> String {
 #[update]
 pub async fn set_remittance_canister(remittance_principal: Principal) {
     owner::only_owner();
-    indexer::set_remittance_canister(remittance_principal);
+    external_router::set_remittance_canister(remittance_principal);
 }
 
 #[query]
 pub fn get_remittance_canister() -> remittance::types::RemittanceSubscriber {
     // confirm at least one remittance canister is subscribed to this pdc
-    indexer::get_remittance_canister()
+    external_router::get_remittance_canister()
 }
 
 // this function is going to be called by the remittance canister
@@ -37,12 +37,12 @@ pub fn get_remittance_canister() -> remittance::types::RemittanceSubscriber {
 fn subscribe() {
     // verify if this remittance canister has been whitelisted
     // set the subscribed value to true if its the same, otherwise panic
-    indexer::subscribe();
+    external_router::subscribe();
 }
 
 #[query]
 fn is_subscribed(canister_principal: Principal) -> bool {
-    indexer::is_subscribed(canister_principal)
+    external_router::is_subscribed(canister_principal)
 }
 
 // we would use this method to publish data to the subscriber
@@ -52,7 +52,7 @@ fn is_subscribed(canister_principal: Principal) -> bool {
 async fn manual_publish(json_data: String) -> Result<(), String> {
     // create a dummy remittance object we can publish until we implement data collection
     // which would then generate the data instead of hardcoding it
-    let response = indexer::publish_dc_json_to_remittance(json_data).await;
+    let response = external_router::publish_dc_json_to_remittance(json_data).await;
 
     response
 }
@@ -60,7 +60,7 @@ async fn manual_publish(json_data: String) -> Result<(), String> {
 // --------------------------- upgrade hooks ------------------------- //
 #[pre_upgrade]
 fn pre_upgrade() {
-    let cloned_store = indexer::REMITTANCE_CANISTER.with(|rc| rc.borrow().clone());
+    let cloned_store = external_router::REMITTANCE_CANISTER.with(|rc| rc.borrow().clone());
     storage::stable_save((cloned_store,)).unwrap()
 }
 #[post_upgrade]
@@ -68,6 +68,6 @@ async fn post_upgrade() {
     init().await;
 
     let (old_store,): (Option<remittance::types::RemittanceSubscriber>,) = storage::stable_restore().unwrap();
-    indexer::REMITTANCE_CANISTER.with(|store| *store.borrow_mut() = old_store);
+    external_router::REMITTANCE_CANISTER.with(|store| *store.borrow_mut() = old_store);
 }
 // --------------------------- upgrade hooks ------------------------- //
