@@ -3,3 +3,4 @@ pub mod remittance;
 pub mod owner;
 pub mod whitelist;
 pub mod random;
+pub mod verify;
