@@ -18,7 +18,7 @@ pub fn verify_proofs(
     let verification_response: Result<(), RejectionCode> = ic_cdk::notify(
         verifier_principal,
         verification_method_name,
-        (&proofs, notary_public_key),
+        (proofs, notary_public_key),
     );
 
     verification_response
