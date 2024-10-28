@@ -106,19 +106,16 @@ impl RequestBuilder {
     ///
     /// ```no_run
     /// # use anyhow::Error;
-    /// #
+    /// # use verity_client::client::{VerityClient, VerityClientConfig};
     /// # async fn run() -> Result<(), Error> {
-    /// let mut rng = rand::thread_rng();
-    /// let signing_key = SigningKey::random(&mut rng);
     ///
+    /// 
     /// let config = VerityClientConfig {
     ///     prover_url: String::from("http://127.0.0.1:8080"),
     ///     prover_zmq: String::from("tcp://127.0.0.1:8080"),
-    ///     analysis_url: String::from("http://127.0.0.1:8000"),
-    ///     signing_key,
     /// };
     ///
-    /// let response = verity_client::VerityCLient::from(reqwest::Client::new())
+    /// let response = VerityClient::new(config)
     ///     .get("https://hyper.rs")
     ///     .send()
     ///     .await?;
