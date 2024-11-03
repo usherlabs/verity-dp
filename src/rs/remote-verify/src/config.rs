@@ -18,7 +18,7 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new(rpc_url: String, keyfile_path: String, canister_principal: String) -> Self {
+    pub fn new(rpc_url: String, keyfile_path: String, verifier_canister_principal: String) -> Self {
         let is_mainnet = matches!(
             &rpc_url[..],
             DEFAULT_IC_GATEWAY_MAINNET | DEFAULT_IC_GATEWAY_MAINNET_TRAILING_SLASH
@@ -27,7 +27,7 @@ impl Config {
         Self {
             url: rpc_url,
             keyfile_path,
-            canister_principal: Principal::from_text(canister_principal).unwrap(),
+            canister_principal: Principal::from_text(verifier_canister_principal).unwrap(),
             is_dev: !is_mainnet,
         }
     }
