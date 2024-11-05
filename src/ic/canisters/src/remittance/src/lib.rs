@@ -2,7 +2,6 @@ use std::collections::HashMap;
 
 use candid::Principal;
 use ic_cdk::storage;
-use ic_cdk_macros::*;
 use verity_dp_ic::{
     crypto::{
         config::{Config, Environment},
@@ -16,35 +15,35 @@ use verity_dp_ic::{
     },
 };
 
-#[init]
+#[ic_cdk::init]
 fn init(env_opt: Option<Environment>) {
     verity_dp_ic::remittance::init(env_opt)
 }
 
-#[query]
+#[ic_cdk::query]
 fn name() -> String {
     verity_dp_ic::remittance::name()
 }
 
-#[query]
+#[ic_cdk::query]
 fn owner() -> String {
     verity_dp_ic::remittance::owner()
 }
 
-#[update]
+#[ic_cdk::update]
 async fn subscribe_to_dc(canister_id: Principal) {
     owner::only_owner();
     verity_dp_ic::remittance::subscribe_to_dc(canister_id).await
 }
 
-#[update]
+#[ic_cdk::update]
 async fn subscribe_to_pdc(pdc_canister_id: Principal) {
     owner::only_owner();
     verity_dp_ic::remittance::subscribe_to_pdc(pdc_canister_id).await
 }
 
 // TODO: Investigate if we need to add this to the candid file for this canister
-#[update]
+#[ic_cdk::update]
 fn update_remittance(
     new_remittances: Vec<DataModel>,
     dc_canister: Principal,
@@ -53,7 +52,7 @@ fn update_remittance(
     verity_dp_ic::remittance::update_remittance(new_remittances, dc_canister)
 }
 
-#[update]
+#[ic_cdk::update]
 async fn remit(
     token: String,
     chain: String,
@@ -67,7 +66,7 @@ async fn remit(
         .map_err(|e| e.to_string())
 }
 
-#[query]
+#[ic_cdk::query]
 fn get_available_balance(
     token: String,
     chain: String,
@@ -78,7 +77,7 @@ fn get_available_balance(
         .map_err(|e| e.to_string())
 }
 
-#[query]
+#[ic_cdk::query]
 fn get_canister_balance(
     token: String,
     chain: String,
@@ -88,7 +87,7 @@ fn get_canister_balance(
         .map_err(|e| e.to_string())
 }
 
-#[query]
+#[ic_cdk::query]
 fn get_withheld_balance(
     token: String,
     chain: String,
@@ -99,12 +98,12 @@ fn get_withheld_balance(
         .map_err(|e| e.to_string())
 }
 
-#[query]
+#[ic_cdk::query]
 fn get_reciept(dc_canister: Principal, nonce: u64) -> Result<RemittanceReciept, String> {
     verity_dp_ic::remittance::get_reciept(dc_canister, nonce).map_err(|e| e.to_string())
 }
 
-#[update]
+#[ic_cdk::update]
 async fn public_key() -> Result<PublicKeyReply, String> {
     verity_dp_ic::remittance::public_key()
         .await
@@ -112,7 +111,7 @@ async fn public_key() -> Result<PublicKeyReply, String> {
 }
 
 // --------------------------- upgrade hooks ------------------------- //
-#[pre_upgrade]
+#[ic_cdk::pre_upgrade]
 fn pre_upgrade() {
     // clone all important variables
     let cloned_available_balance_store =
@@ -144,7 +143,7 @@ fn pre_upgrade() {
     .unwrap()
 }
 
-#[post_upgrade]
+#[ic_cdk::post_upgrade]
 async fn post_upgrade() {
     owner::init_owner();
     random::init_ic_rand();

@@ -1,6 +1,6 @@
 use candid::Principal;
 use ic_cdk::{caller, storage};
-use ic_cdk_macros::{init, post_upgrade, pre_upgrade, query, update};
+use ic_cdk::{init, post_upgrade, pre_upgrade, query, update};
 use std::{cell::RefCell, collections::HashMap};
 use verity_dp_ic::{
     crypto::config::{Config, Environment},
@@ -83,16 +83,6 @@ async fn manual_publish(json_data: String) {
     let _ = external_router::publish_pdc_json_to_remittance(json_data).await;
 }
 
-#[update]
-async fn process_event(json_data: String) {
-    let caller_principal_id = caller();
-    let whitelisted = WHITELISTED_PUBLISHERS.with(|rc| rc.borrow().clone());
-
-    if !whitelisted.contains_key(&caller_principal_id) {
-        panic!("PRINCPAL NOT WHITELISTED")
-    }
-    let _ = external_router::validate_and_remit_contract_event(json_data).await;
-}
 
 #[query]
 fn is_subscribed(canister_principal: Principal) -> bool {

@@ -1,6 +1,5 @@
 use candid::Principal;
 use ic_cdk::{api::call::RejectionCode, caller, storage};
-use ic_cdk_macros::*;
 use proof::{verify_proof_requests, VerificationResponse};
 use utils::init_canister;
 use verity_dp_ic::{
@@ -16,17 +15,17 @@ pub mod merkle;
 pub mod proof;
 pub mod utils;
 
-#[init]
+#[ic_cdk::init]
 fn init(env_opt: Option<Environment>) {
     init_canister(env_opt);
 }
 
-#[query]
+#[ic_cdk::query]
 fn greet(name: String) -> String {
     format!("Hello, {}!", name)
 }
 
-#[update]
+#[ic_cdk::update]
 async fn verify_proof_async(
     proof_requests: Vec<String>,
     notary_pub_key: String,
@@ -43,7 +42,7 @@ async fn verify_proof_async(
     canister_response
 }
 
-#[update]
+#[ic_cdk::update]
 async fn verify_proof_direct(
     proof_requests: Vec<String>,
     notary_pub_key: String,
@@ -51,7 +50,7 @@ async fn verify_proof_direct(
     verify_proof_requests(proof_requests, notary_pub_key).await
 }
 
-#[update]
+#[ic_cdk::update]
 async fn public_key() -> PublicKeyReply {
     let config = crate::CONFIG.with(|c| c.borrow().clone());
 
@@ -81,13 +80,13 @@ async fn public_key() -> PublicKeyReply {
 
 
 // --------------------------- upgrade hooks ------------------------- //
-#[pre_upgrade]
+#[ic_cdk::pre_upgrade]
 fn pre_upgrade() {
     let cloned_config = CONFIG.with(|rc| rc.borrow().clone());
     storage::stable_save((cloned_config,)).unwrap()
 }
 
-#[post_upgrade]
+#[ic_cdk::post_upgrade]
 async fn post_upgrade() {
     let (old_config,): (Config,) = storage::stable_restore().unwrap();
 
