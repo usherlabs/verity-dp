@@ -1,0 +1,11 @@
+[package]
+name = "local-verify"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+hex = "0.4.3"
+rs_merkle = "1.4.2"
+libsecp256k1 = { version = "0.7.1", default-features = false, features = ["lazy-static-context"] }
+easy-hasher = "2.2.1"
+anyhow = "1.0.90"

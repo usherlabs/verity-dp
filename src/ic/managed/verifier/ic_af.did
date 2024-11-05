@@ -1,0 +1,27 @@
+type ProofResponse = variant {
+	SessionProof : text;
+	FullProof : text;
+};
+
+type MerkleTree = record {
+	nodes : vec text;
+    num_leaves: nat64;
+    root: text;
+};
+
+type VerificationResponse = record {
+	results : vec ProofResponse;
+	root : text;
+	signature : text;
+};
+
+type VerificationResult = variant {
+	Ok : VerificationResponse;
+	Err : text;
+};
+
+service : {
+	"greet" : (text) -> (text) query;
+	"verify_proof_direct" : (proof_requests : vec text, notary_pub_key : text) -> (VerificationResult);
+	"public_key" : () -> (record { sec1_pk : text; etherum_pk : text });
+};

@@ -1,0 +1,4 @@
+[submodule "verity"]
+	path = verity
+	url = git@github.com:usherlabs/verity.git
+	branch = feature/create-session-verifier

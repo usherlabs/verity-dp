@@ -1,7 +1,8 @@
 use candid::Principal;
 use std::{cell::RefCell, collections::HashMap};
 
-use super::{config, types};
+use super::types;
+use crate::crypto::config::Config;
 
 thread_local! {
     pub static REMITTANCE: RefCell<types::AvailableBalanceStore> = RefCell::default();
@@ -11,5 +12,5 @@ thread_local! {
     pub static DC_CANISTERS: RefCell<Vec<Principal>> = RefCell::default();
     pub static REMITTANCE_RECIEPTS: RefCell<types::RemittanceRecieptsStore> = RefCell::default();
     pub static CANISTER_BALANCE: RefCell<types::CanisterBalanceStore> = RefCell::default();
-    pub static CONFIG: RefCell<config::Config> = RefCell::default();
+    pub static CONFIG: RefCell<Config> = RefCell::default();
 }

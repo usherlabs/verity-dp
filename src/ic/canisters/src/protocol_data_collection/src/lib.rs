@@ -3,18 +3,16 @@ use ic_cdk::{caller, storage};
 use ic_cdk_macros::{init, post_upgrade, pre_upgrade, query, update};
 use std::{cell::RefCell, collections::HashMap};
 use verity_dp_ic::{
-    indexer::{
-        self, permissions, publish_pdc_json_to_remittance, validate_and_remit_contract_event,
-    },
+    crypto::config::{Config, Environment},
     owner,
     remittance::{
-        config::{self, Environment},
+        external_router::{self, permissions},
         types::{self, RemittanceSubscriber},
     },
 };
 
 thread_local! {
-    static CONFIG: RefCell<config::Config> = RefCell::default();
+    static CONFIG: RefCell<Config> = RefCell::default();
     static WHITELISTED_PUBLISHERS: RefCell<HashMap<Principal, bool>> = RefCell::default();
 }
 
@@ -27,7 +25,7 @@ async fn init(env_opt: Option<Environment>) {
     if let Some(env) = env_opt {
         CONFIG.with(|s| {
             let mut state = s.borrow_mut();
-            *state = config::Config::from(env);
+            *state = Config::from(env);
         })
     }
 }
@@ -48,13 +46,13 @@ fn owner() -> String {
 #[update]
 pub async fn set_remittance_canister(remittance_principal: Principal) {
     owner::only_owner();
-    indexer::set_remittance_canister(remittance_principal);
+    external_router::set_remittance_canister(remittance_principal);
 }
 
 /// get remittance canister
 #[query]
 pub fn get_remittance_canister() -> RemittanceSubscriber {
-    indexer::get_remittance_canister()
+    external_router::get_remittance_canister()
 }
 
 /// whitelist publisher
@@ -75,14 +73,14 @@ pub fn remove_publisher(principal: Principal) {
 /// so it can recieve "publish" events from this canister
 #[update]
 fn subscribe() {
-    indexer::subscribe()
+    external_router::subscribe()
 }
 
 #[update]
 async fn manual_publish(json_data: String) {
     owner::only_owner();
 
-    let _ = publish_pdc_json_to_remittance(json_data).await;
+    let _ = external_router::publish_pdc_json_to_remittance(json_data).await;
 }
 
 #[update]
@@ -93,7 +91,7 @@ async fn process_event(json_data: String) {
     if !whitelisted.contains_key(&caller_principal_id) {
         panic!("PRINCPAL NOT WHITELISTED")
     }
-    let _ = validate_and_remit_contract_event(json_data).await;
+    let _ = external_router::validate_and_remit_contract_event(json_data).await;
 }
 
 #[query]
@@ -112,7 +110,7 @@ fn get_caller() -> Principal {
 // --------------------------- upgrade hooks ------------------------- //
 #[pre_upgrade]
 fn pre_upgrade() {
-    let cloned_store = indexer::REMITTANCE_CANISTER.with(|rc| rc.borrow().clone());
+    let cloned_store = external_router::REMITTANCE_CANISTER.with(|rc| rc.borrow().clone());
     let config_store = CONFIG.with(|store| store.borrow().clone());
     let whitelisted_store = WHITELISTED_PUBLISHERS.with(|store| store.borrow().clone());
 
@@ -122,11 +120,11 @@ fn pre_upgrade() {
 async fn post_upgrade() {
     let (old_store, cloned_config, whitelisted_store): (
         Option<types::RemittanceSubscriber>,
-        config::Config,
+        Config,
         HashMap<Principal, bool>,
     ) = storage::stable_restore().unwrap();
 
-    indexer::REMITTANCE_CANISTER.with(|store| *store.borrow_mut() = old_store);
+    external_router::REMITTANCE_CANISTER.with(|store| *store.borrow_mut() = old_store);
     CONFIG.with(|c| *c.borrow_mut() = cloned_config);
     WHITELISTED_PUBLISHERS.with(|c| *c.borrow_mut() = whitelisted_store);
 

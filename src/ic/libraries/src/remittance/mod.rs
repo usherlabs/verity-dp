@@ -1,27 +1,26 @@
-pub mod config;
-pub mod random;
+pub mod external_router;
+pub mod state;
 pub mod types;
 pub mod utils;
-pub mod state;
 
 use crate::{
     crypto::{
         self,
+        config::{Config, Environment},
         ethereum::{recover_address_from_eth_signature, sign_message},
         vec_u8_to_string,
     },
-    owner,
+    owner, random,
 };
 use candid::Principal;
-use config::Config;
 use ic_cdk::caller;
-use types::Subscriber;
 use state::*;
+use types::Subscriber;
 
 const REMITTANCE_EVENT: &str = "REMITTANCE";
 
 /// Helper function to initialize the state of the remittance canister
-pub fn init(env_opt: Option<config::Environment>) {
+pub fn init(env_opt: Option<Environment>) {
     owner::init_owner();
     random::init_ic_rand();
 
@@ -67,7 +66,7 @@ pub async fn subscribe_to_pdc(pdc_canister_id: Principal) {
     });
 }
 
-/// validate and update user balance and canister balance 
+/// validate and update user balance and canister balance
 pub fn update_remittance(
     new_remittances: Vec<types::DataModel>,
     dc_canister: Principal,
