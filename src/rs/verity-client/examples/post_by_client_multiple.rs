@@ -1,24 +1,15 @@
-use k256::SecretKey;
-use rand::rngs::OsRng;
-use verity_client::client::{AnalysisConfig, VerityClient, VerityClientConfig};
+use verity_client::client::{VerityClient, VerityClientConfig};
 
 #[tokio::main()]
 async fn main() -> Result<(), reqwest::Error> {
     println!("Proving a POST request using VerityClient...");
 
-    let secret_key = SecretKey::random(&mut OsRng);
-
     let config = VerityClientConfig {
         prover_url: String::from("http://127.0.0.1:8080"),
         prover_zmq: String::from("tcp://127.0.0.1:5556"),
-        analysis: Some(AnalysisConfig {
-            analysis_url: String::from("http://127.0.0.1:4000"),
-            secret_key,
-        }),
     };
 
-    let mut verity_client = VerityClient::new(config);
-    verity_client.auth().await;
+    let verity_client = VerityClient::new(config);
 
     let response = verity_client
         .post(String::from("https://jsonplaceholder.typicode.com/posts"))

@@ -1,40 +1,23 @@
 use std::{future::IntoFuture, str::FromStr};
 
-use base64::prelude::*;
-use base64::Engine;
-use http::StatusCode;
 use http::{HeaderValue, Method};
-use k256::ecdsa::SigningKey;
-use k256::ecdsa::{signature::Signer, Signature};
-use k256::SecretKey;
-use reqwest::{multipart::Part, IntoUrl, Response, Url};
-use serde::{Deserialize, Serialize};
+use reqwest::{IntoUrl, Response, Url};
 use tokio::task::JoinHandle;
 use uuid::Uuid;
 
-use crate::auth::is_jwttoken_expired;
 use crate::request::RequestBuilder;
 use crate::Error;
-
-#[derive(Clone)]
-pub struct AnalysisConfig {
-    pub analysis_url: String,
-    pub secret_key: SecretKey,
-}
 
 #[derive(Clone)]
 pub struct VerityClientConfig {
     pub prover_url: String,
     pub prover_zmq: String,
-    pub analysis: Option<AnalysisConfig>,
 }
 
 #[derive(Clone)]
 pub struct VerityClient {
     pub(crate) inner: reqwest::Client,
     pub(crate) config: VerityClientConfig,
-    pub(crate) session_id: Option<Uuid>,
-    pub(crate) token: Option<String>,
 }
 
 pub struct VerityResponse {
@@ -48,109 +31,7 @@ impl VerityClient {
         return Self {
             inner: reqwest::Client::new(),
             config,
-            session_id: None,
-            token: None,
         };
-    }
-
-    pub async fn auth(&mut self) {
-        let analysis = self
-            .config
-            .analysis
-            .as_ref()
-            .expect("analysis config is required");
-
-        let (session_id, challenge) = self.get_challenge().await;
-
-        let signing_key: SigningKey = analysis.secret_key.clone().into();
-        let signature: Signature = signing_key.sign(challenge.as_ref());
-        let signature = BASE64_STANDARD.encode(signature.to_der().to_bytes());
-
-        let token = self.post_challenge(session_id, signature).await;
-        self.session_id = Some(session_id);
-        self.token = Some(token);
-    }
-
-    async fn get_challenge(&self) -> (Uuid, Vec<u8>) {
-        #[derive(Debug, Serialize)]
-        struct Request {
-            public_key_pem: String,
-        }
-
-        #[derive(Debug, Deserialize)]
-        struct Response {
-            session_id: Uuid,
-            challenge: String,
-        }
-
-        let analysis = self
-            .config
-            .analysis
-            .as_ref()
-            .expect("analysis config is required");
-        let url = format!("{}/auth", analysis.analysis_url);
-
-        let client = reqwest::Client::new();
-
-        let public_key = analysis.secret_key.public_key();
-
-        let request = Request {
-            public_key_pem: public_key.to_string(),
-        };
-
-        let response = client
-            .get(url)
-            .json(&request)
-            .send()
-            .await
-            .unwrap()
-            .json::<Response>()
-            .await
-            .unwrap();
-
-        (
-            response.session_id,
-            BASE64_STANDARD.decode(response.challenge.clone()).unwrap(),
-        )
-    }
-
-    async fn post_challenge(&self, session_id: Uuid, signature: String) -> String {
-        #[derive(Debug, Serialize)]
-        struct Request {
-            session_id: Uuid,
-            signature: String,
-        }
-
-        #[derive(Debug, Deserialize)]
-        struct Response {
-            token: String,
-        }
-
-        let analysis = self
-            .config
-            .analysis
-            .as_ref()
-            .expect("analysis config is required");
-        let url = format!("{}/auth", analysis.analysis_url);
-
-        let client = reqwest::Client::new();
-
-        let request = Request {
-            session_id,
-            signature,
-        };
-
-        let response = client
-            .post(url)
-            .json(&request)
-            .send()
-            .await
-            .unwrap()
-            .json::<Response>()
-            .await
-            .unwrap();
-
-        response.token
     }
 
     /// Convenience method to make a `GET` request to a URL.
@@ -212,12 +93,6 @@ impl VerityClient {
         let proxy_url = &String::from(req.url().as_str());
         let headers = req.headers_mut();
 
-        if self.config.analysis.is_some() {
-            if self.token.is_none() || is_jwttoken_expired(self.token.clone().unwrap()) {
-                self.auth().await;
-            }
-        }
-
         let request_id = Uuid::new_v4();
         headers.append(
             "T-REQUEST-ID",
@@ -244,12 +119,6 @@ impl VerityClient {
         };
 
         let (notary_pub_key, proof) = proof;
-
-        if self.config.analysis.is_some() {
-            if let Err(e) = self.send_proof_to_analysis(&notary_pub_key, &proof).await {
-                return Err(Error::Verity(e.into()));
-            }
-        }
 
         Ok(VerityResponse {
             subject,
@@ -278,47 +147,5 @@ impl VerityClient {
             (parts[1].to_string(), parts[2].to_string())
         })
         .into_future()
-    }
-
-    async fn send_proof_to_analysis(
-        &self,
-        notary_pub_key: &str,
-        proof: &str,
-    ) -> Result<Response, reqwest::Error> {
-        let analysis_config = self
-            .config
-            .analysis
-            .as_ref()
-            .expect("analysis configuration not set")
-            .clone();
-
-        let url = format!("{}/verify", analysis_config.analysis_url);
-
-        let client = reqwest::Client::new();
-
-        let form = reqwest::multipart::Form::new()
-            .part(
-                "session_id",
-                Part::text(self.session_id.unwrap().to_string()),
-            )
-            .part("proof", Part::bytes(proof.as_bytes().to_vec()))
-            .part(
-                "notary_pub_key",
-                Part::bytes(notary_pub_key.as_bytes().to_vec()),
-            );
-
-        let resp = client
-            .post(url)
-            .bearer_auth(self.token.as_ref().unwrap())
-            .multipart(form)
-            .send()
-            .await;
-
-        let response = resp.unwrap();
-        if response.status().is_server_error() {
-            println!("{:?}", response);
-        }
-
-        Ok(response)
     }
 }
