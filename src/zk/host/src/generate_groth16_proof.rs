@@ -2,7 +2,21 @@ use alloy_sol_types::SolValue;
 use anyhow::Context;
 use risc0_ethereum_contracts::groth16;
 use risc0_zkvm::{default_prover, ExecutorEnv, ProverOpts, VerifierContext};
-use tlsn_substrings_verifier::ZkInputParam;
+use serde::{Deserialize, Serialize};
+use tlsn_core_no_session::{proof::SubstringsProof, SessionHeader};
+
+
+
+/// The input parameters for the zk_circuit
+///
+/// Containing the details needed for verification of a proof
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ZkInputParam {
+    /// session header.
+    pub header: SessionHeader,
+    /// substrings proof.
+    pub substrings: SubstringsProof,
+}
 
 /// Given an input representing the input data to the zk circuit.
 /// genenrates an output ( seal, journal_output )
