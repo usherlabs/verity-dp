@@ -19,6 +19,5 @@ service : {
 	"add_publisher" : (publisher_principal : principal) -> ();
 	"remove_publisher" : (publisher_principal : principal) -> ();
 	"manual_publish" : (array_of_json_events : text) -> ();
-	"process_event" : (array_of_json_events : text) -> ();
 	"set_remittance_canister" : (canister_principal : principal) -> ();
 };

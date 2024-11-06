@@ -1,0 +1,12 @@
+[package]
+name = "host"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chrono = { workspace = true }
+methods = { path = "../methods" }
+risc0-zkvm = { workspace = true }
+serde = { workspace = true }
+tracing-subscriber = { workspace = true, features = ["env-filter"] }
+verity-verifier = { workspace = true }

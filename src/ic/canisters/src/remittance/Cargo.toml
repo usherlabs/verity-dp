@@ -9,8 +9,7 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-candid = "0.7.4"
-ic-cdk = "0.5.1"
-ic-cdk-macros = "0.5.1"
-ic-cdk-timers = "0.1.1"
+candid = { workspace = true }
+ic-cdk = { workspace = true }
+ic-cdk-timers = { workspace = true }
 verity_dp_ic = { workspace = true }
