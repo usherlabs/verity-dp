@@ -1,11 +1,13 @@
+use crate::state::CONFIG;
 use rs_merkle::{algorithms::Sha256, Hasher};
 use serde_json::Value;
 use verity_dp_ic::{
     crypto::config::{Config, Environment},
     owner,
-    remittance::state::CONFIG,
 };
 
+
+/// Initialise the canister's environment
 pub fn init_canister(env_opt: Option<Environment>) {
     owner::init_owner();
     ic_wasi_polyfill::init(&[0u8; 32], &[]);
