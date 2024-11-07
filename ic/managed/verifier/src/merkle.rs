@@ -1,6 +1,8 @@
 use crate::proof::ProofResponse;
 use rs_merkle::{algorithms::Sha256, Hasher, MerkleTree};
 
+/// Provided a vector of responses gotten from the verification process
+/// Geenrate a merkle tree
 pub fn generate_merkle_tree(leaves: &Vec<ProofResponse>) -> MerkleTree<Sha256> {
     // gather the leaves from the content of the verified proof
     // which is either the req/res pair or the has of the session proof

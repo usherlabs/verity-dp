@@ -1,30 +1,34 @@
+use crate::state::CONFIG;
 use candid::Principal;
 use ic_cdk::{api::call::RejectionCode, caller, storage};
 use proof::{verify_proof_requests, VerificationResponse};
 use utils::init_canister;
-use verity_dp_ic::{
-    crypto::{
-        config::{Config, Environment},
-        ecdsa::{self, ECDSAPublicKeyReply, PublicKeyReply},
-        ethereum,
-    },
-    remittance::state::CONFIG,
+use verity_dp_ic::crypto::{
+    config::{Config, Environment},
+    ecdsa::{self, ECDSAPublicKeyReply, PublicKeyReply},
+    ethereum,
 };
 
 pub mod merkle;
 pub mod proof;
+pub mod state;
 pub mod utils;
 
+/// Initialize the canister
 #[ic_cdk::init]
 fn init(env_opt: Option<Environment>) {
     init_canister(env_opt);
 }
 
+/// Test function
 #[ic_cdk::query]
-fn greet(name: String) -> String {
-    format!("Hello, {}!", name)
+fn ping() -> String {
+    format!("Ping")
 }
 
+/// Verifies the proof; To be called by a canister
+/// Sends the response to the caller's canisters method
+/// the method on the calling canister must be named `recieve_proof_verification_response`
 #[ic_cdk::update]
 async fn verify_proof_async(
     proof_requests: Vec<String>,
@@ -42,6 +46,8 @@ async fn verify_proof_async(
     canister_response
 }
 
+/// Verifies a proof; To be called by a user directly
+/// returns a response back containing details of the verification
 #[ic_cdk::update]
 async fn verify_proof_direct(
     proof_requests: Vec<String>,
@@ -50,6 +56,7 @@ async fn verify_proof_direct(
     verify_proof_requests(proof_requests, notary_pub_key).await
 }
 
+/// Get the public key of this canister
 #[ic_cdk::update]
 async fn public_key() -> PublicKeyReply {
     let config = crate::CONFIG.with(|c| c.borrow().clone());
@@ -78,14 +85,17 @@ async fn public_key() -> PublicKeyReply {
     }
 }
 
-
 // --------------------------- upgrade hooks ------------------------- //
+/// This function(hook) would be called before a contract is deleted or updated
+/// Back up the state variables
 #[ic_cdk::pre_upgrade]
 fn pre_upgrade() {
     let cloned_config = CONFIG.with(|rc| rc.borrow().clone());
     storage::stable_save((cloned_config,)).unwrap()
 }
 
+/// This function(hook) would be called when a contract is restored/upgraded
+/// Back up the state variables
 #[ic_cdk::post_upgrade]
 async fn post_upgrade() {
     let (old_config,): (Config,) = storage::stable_restore().unwrap();
