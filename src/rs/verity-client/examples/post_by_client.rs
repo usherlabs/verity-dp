@@ -9,7 +9,7 @@ async fn main() -> Result<(), reqwest::Error> {
         prover_zmq: String::from("tcp://127.0.0.1:5556"),
     };
 
-    let response = VerityClient::new(config)
+    let result = VerityClient::new(config)
         .post(String::from("https://jsonplaceholder.typicode.com/posts"))
         .json(&serde_json::json!({
             "userId": 1000,
@@ -20,11 +20,19 @@ async fn main() -> Result<(), reqwest::Error> {
         }))
         .redact(String::from("req:body:firstName, res:body:firstName"))
         .send()
-        .await
-        .unwrap();
+        .await;
+
+    let response = match result {
+        Ok(response) => response,
+        Err(e) => {
+            println!("Error: {}", e);
+            return Ok(());
+        }
+    };
 
     let json: serde_json::Value = response.subject.json().await.unwrap();
-    println!("{:#?}", json);
+    println!("json: {:#?}", json);
+    println!("response.proof.len(): {:#?}", response.proof.len());
 
     Ok(())
 }
