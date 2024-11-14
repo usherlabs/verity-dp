@@ -1,8 +1,7 @@
-use k256::ecdsa::SigningKey;
 use verity_client::client::{VerityClient, VerityClientConfig};
 
 #[tokio::main()]
-async fn main(){
+async fn main() {
     let mut count = 0;
     while count < 20 {
         let _ = f(&count).await;
@@ -19,7 +18,6 @@ async fn f(count: &i32) -> Result<(), reqwest::Error> {
     let config = VerityClientConfig {
         prover_url: String::from("http://127.0.0.1:8080"),
         prover_zmq: String::from("tcp://127.0.0.1:8000"),
-        analysis: None,
     };
 
     let client = VerityClient::new(config);
@@ -30,6 +28,7 @@ async fn f(count: &i32) -> Result<(), reqwest::Error> {
         .send()
         .await
         .unwrap()
+        .subject
         .json()
         .await
         .unwrap();
