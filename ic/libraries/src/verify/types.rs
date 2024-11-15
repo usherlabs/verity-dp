@@ -13,6 +13,15 @@ pub enum ProofTypes {
     Redstone(String),
 }
 
+impl ProofTypes {
+    pub fn to_string(&self) -> String {
+        match self {
+            ProofTypes::Pyth(value) => format!("{}", value),
+            ProofTypes::Redstone(value) => format!("{}", value),
+        }
+    }
+}
+
 /// a struct which would be used to
 /// communicate data requested by the ADC
 #[derive(Deserialize, Serialize, Clone, Debug)]
