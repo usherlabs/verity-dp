@@ -63,7 +63,7 @@ impl ProofRequest {
             }
             // verify the full proof and return the request/response pair
             ProofRequest::FullProof(proof_string) => {
-                let (req, res) = verify_proof(&proof_string, &notary_pub_key)?;
+                let (res, req) = verify_proof(&proof_string, &notary_pub_key)?;
                 let response = format!("{}\n\n{}", req, res);
                 Ok(ProofResponse::FullProof(response))
             }
@@ -90,15 +90,17 @@ pub async fn verify_proof_requests(
     // by default icp escapes special characters, so we need to unescape them
     let notary_pub_key = notary_pub_key.replace("\\n", "\n");
 
+    // convert the string proofs to the actual type casted version of the proof
     let proof_requests: Vec<ProofRequest> = proof_requests
         .iter()
         .map(|proof_request| proof_request.clone().try_into().unwrap())
         .collect();
 
+    // iterate through the proofs and try verifying them
     let proof_responses: Vec<ProofResponse> = proof_requests
         .iter()
-        .map(|proof_response| {
-            proof_response
+        .map(|proof_request| {
+            proof_request
                 .clone()
                 .verify_request(&notary_pub_key)
                 .unwrap()
