@@ -66,23 +66,6 @@ pub struct CurrencyPair {
     pub repr: String,
 }
 
-impl CurrencyPair {
-    pub async fn get_price(&self, notary_pubkey: &String) -> anyhow::Result<f64> {
-        // get base price
-        let base_token = &self.base;
-        let mut token_price = get_token_price(base_token, notary_pubkey).await?;
-
-        // get quote price and potentially divide the base price by it
-        if let Some(quote_token) = &self.quote {
-            let quote_token_price = get_token_price(quote_token, notary_pubkey).await?;
-
-            token_price /= quote_token_price;
-        }
-
-        Ok(token_price)
-    }
-}
-
 #[derive(Deserialize, Serialize, Clone, Debug, CandidType, PartialEq)]
 pub struct Token {
     pub ticker: String,
