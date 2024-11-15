@@ -1,6 +1,6 @@
 use candid::Principal;
 use ic_cdk::api::call::RejectionCode;
-use types::CanisterVerificationResponse;
+use types::VerificationCanisterResponse;
 
 pub mod types;
 
@@ -30,7 +30,7 @@ pub fn verify_proofs(
 /// to a method `recieve_proof_verification_response` with a parameter
 /// so this method needs to be present and available on the receiving canister for the verifying canister to respond to
 pub async fn recieve_proof_verification_response(
-    verification_result: CanisterVerificationResponse,
+    verification_result: VerificationCanisterResponse,
 ) {
     let verification_response = verification_result.unwrap();
     // perform some operations here
