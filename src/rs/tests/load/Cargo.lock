@@ -1328,6 +1328,7 @@ dependencies = [
  "serde",
  "thiserror",
  "tokio",
+ "tokio-util",
  "uuid",
  "zmq",
 ]
