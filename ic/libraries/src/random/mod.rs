@@ -1,3 +1,7 @@
+//!
+//! The 'random' submodule contains logic for initialising and fetching random numbers for use on the ic
+//! 
+
 use rand::Rng;
 use std::{cell::RefCell, time::Duration};
 
