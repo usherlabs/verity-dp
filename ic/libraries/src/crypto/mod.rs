@@ -1,7 +1,12 @@
+//!
+//! This submodule contains cryptographic related operations 
+//! 
+
 pub mod config;
 pub mod ecdsa;
 pub mod ethereum;
 
+/// convert a string potentially prefixed with '0x' to bytes
 pub fn string_to_vec_u8(str: &str) -> Vec<u8> {
     let starts_from: usize;
     if str.starts_with("0x") {
@@ -16,6 +21,7 @@ pub fn string_to_vec_u8(str: &str) -> Vec<u8> {
         .collect::<Vec<u8>>()
 }
 
+/// Converts bytes to hex string
 pub fn vec_u8_to_string(vec: &Vec<u8>) -> String {
     vec.iter()
         .map(|r| format!("{:02x}", r))
@@ -24,6 +30,7 @@ pub fn vec_u8_to_string(vec: &Vec<u8>) -> String {
         .to_string()
 }
 
+/// Remove first n(element) items from an array
 pub fn remove_leading(vec: &Vec<u8>, element: u8) -> Vec<u8> {
     let start = vec.iter().position(|&x| x != element).unwrap();
     let result = &vec[start..];

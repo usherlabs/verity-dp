@@ -1,3 +1,7 @@
+//!
+//! The 'remittance' submodule contains logic to be called by the remittance canister
+//! 
+
 pub mod external_router;
 pub mod state;
 pub mod types;

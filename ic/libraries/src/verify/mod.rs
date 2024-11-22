@@ -1,3 +1,8 @@
+//!
+//! The 'verify' submodule contains logic relevant to the ic verification of tlsn proofs
+//! as well as relevant types involved in using the orchestrator to request data from the ic-adc
+//!
+
 use candid::Principal;
 use ic_cdk::api::call::RejectionCode;
 use types::VerificationCanisterResponse;

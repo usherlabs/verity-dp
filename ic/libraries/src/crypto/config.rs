@@ -2,6 +2,7 @@ use crate::crypto::ecdsa;
 use candid::CandidType;
 use serde_derive::Deserialize;
 
+/// Indicate which environment the canister is operating in
 #[derive(CandidType, Deserialize, Debug, Clone, PartialEq, Default)]
 pub enum Environment {
     #[default]

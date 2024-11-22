@@ -4,9 +4,12 @@ use anyhow::Result;
 use candid::{CandidType, Principal};
 use serde::{Deserialize, Serialize};
 
+/// The response from the managed verifier canister
 pub type VerificationCanisterResponse = Result<VerificationResponse, String>;
+/// The response from the IC-ADC canister to the requesting canister
 pub type ADCResponse = Result<Response, ErrorResponse>;
 
+/// A representation of all the different price sources of the proofs
 #[derive(Debug, Clone, CandidType, Deserialize, Serialize, PartialEq, PartialOrd)]
 pub enum ProofTypes {
     Pyth(String),
@@ -14,6 +17,7 @@ pub enum ProofTypes {
 }
 
 impl ProofTypes {
+    /// converts a `ProofType` to a string
     pub fn to_string(&self) -> String {
         match self {
             ProofTypes::Pyth(value) => format!("{}", value),
@@ -36,6 +40,8 @@ pub struct Request {
     pub opts: RequestOpts,
 }
 
+/// This is the response which will be sent out by the orchestrator
+/// it will be received by both the ic-adc and the requesting canister
 #[derive(Deserialize, Serialize, Clone, Debug, CandidType)]
 pub struct Response {
     /// the id of this request
@@ -50,6 +56,8 @@ pub struct Response {
     pub processed: bool,
 }
 
+/// A detailed error response to the id-adc and the requesting canister
+/// in the event of an error
 #[derive(Deserialize, Serialize, Clone, Debug, CandidType)]
 pub struct ErrorResponse {
     /// the id of this request
@@ -75,34 +83,46 @@ pub struct CurrencyPair {
     pub repr: String,
 }
 
+/// A representation of a token a price request is being made for
 #[derive(Deserialize, Serialize, Clone, Debug, CandidType, PartialEq)]
 pub struct Token {
+    /// The ticker of the token e.g USDT, ETH, SOL
     pub ticker: String,
+    /// The array proofs for this ticker from various sources or `ProofTypes`
     pub proofs: Option<Vec<ProofTypes>>,
 }
 
+/// A data structure used to represent the items being requested from the orchestrator
+/// for now it is limited to only the 'price'
 #[derive(Deserialize, Serialize, Clone, Debug, CandidType)]
 pub struct RequestOpts {
+    /// Boolean flag to indicate if to fetch price data for the associated/requested currency
     pub price: bool,
 }
 
+/// The response from the managed verifier canister
+/// containing the proofs and a merkle root built from the proofs
+/// and the canister's ECDSA signature of the merkle root
 #[derive(CandidType, Deserialize, Debug, Clone)]
 pub struct VerificationResponse {
+    /// A vector of string proofs wrapped in a `ProofResponse` to know the source of the proof
     pub results: Vec<ProofResponse>,
+    /// The hex encoded merkle root
     pub root: String,
+    /// The ECDSA signature of the merkle root
     pub signature: String,
 }
 
+/// A Proof verified on the managed verifier could either be a SessionProof and FullProof
 #[derive(CandidType, Deserialize, Debug, Clone)]
 pub enum ProofResponse {
     SessionProof(String),
     FullProof(String),
 }
 
-
 // implementations for structs above
-// ------ implementations for structs
 impl ProofResponse {
+    /// Parse the HTTP response and extract the JSON response body
     pub fn get_http_response_body(&self) -> String {
         match self {
             ProofResponse::FullProof(text) => {
@@ -216,9 +236,9 @@ impl Display for CurrencyPair {
     }
 }
 
-
 mod tests {
-    use super::*;
+    use super::CurrencyPair;
+
     #[test]
     fn test_currency_pair_with_base() {
         let pair_string = "BTC/ETH";
