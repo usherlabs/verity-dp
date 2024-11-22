@@ -1,0 +1,31 @@
+name: Publish Rust Library to crates.io
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Install Rust toolchain
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable  # Use the stable Rust version
+          override: true
+
+    #   # Step 3: Set up crates.io credentials
+    #   - name: Setup crates.io Credentials
+    #     run: echo "${{ secrets.CARGO_REGISTRY_TOKEN }}" > $HOME/.cargo/credentials
+
+      # Step 4: Publish the library
+      - name: Publish Library to crates.io
+        run: |
+          cd ic/libraries
+          cargo publish --allow-dirty --dry-run
