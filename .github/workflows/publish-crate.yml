@@ -23,7 +23,7 @@ jobs:
       - name: Setup crates.io Credentials
         run: |
           echo "[registries]" > $HOME/.cargo/credentials
-          # echo "token = \"${{ secrets.TOKEN }}\"" >> $HOME/.cargo/credentials
+          # echo "token = \"${{ secrets.CARGO_TOKEN }}\"" >> $HOME/.cargo/credentials
 
       # Step 4: Publish the library
       - name: Publish Library to crates.io
