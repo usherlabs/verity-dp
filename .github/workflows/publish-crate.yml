@@ -20,6 +20,10 @@ jobs:
           toolchain: stable  # Use the stable Rust version
           override: true
 
+      
+      - name: cargo login
+        run: cargo login ${{ secrets.CARGO_TOKEN }}
+
       # - name: Setup crates.io Credentials
       #   run: |
       #     echo "[registries]" > $HOME/.cargo/credentials.toml
