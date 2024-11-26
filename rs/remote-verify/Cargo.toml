@@ -4,7 +4,7 @@ version = "0.1.6"
 license = "MIT/Apache-2.0"
 description = "A Library containing utilities for the fetching and verification of merkle tree response obtained from the managed verifier canister as a response to a proof request"
 documentation = "https://www.usher.so/"
-keywords = ["verity", "IC", "canister", "merkle proof", "ecdsa", "merkle"]
+keywords = ["verity", "IC", "canister", "merkleproof", "ecdsa", "merkle"]
 edition = "2021"
 
 [dependencies]
