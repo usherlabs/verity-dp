@@ -1,6 +1,10 @@
 [package]
-name = "local-verify"
-version = "0.1.0"
+name = "local_verify"
+version = "0.2.0"
+license = "MIT/Apache-2.0"
+description = "A Library containing utilities for the local verification of merkle tree response obtained from the managed verifier canister"
+documentation = "https://www.usher.so/"
+keywords = ["verity", "IC", "canister", "merkleproof"]
 edition = "2021"
 
 [dependencies]
