@@ -1,5 +1,5 @@
-use crate::proof::ProofResponse;
 use rs_merkle::{algorithms::Sha256, Hasher, MerkleTree};
+use verity_dp_ic::verify::types::ProofResponse;
 
 /// Provided a vector of responses gotten from the verification process
 /// Geenrate a merkle tree

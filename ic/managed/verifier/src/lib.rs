@@ -1,12 +1,15 @@
 use crate::state::CONFIG;
 use candid::Principal;
-use ic_cdk::{api::call::RejectionCode, caller, storage};
-use proof::{verify_proof_requests, VerificationResponse};
+use ic_cdk::storage;
+use proof::{verify_and_sign_proof_requests, verify_proof_requests, DirectVerificationResponse};
 use utils::init_canister;
-use verity_dp_ic::crypto::{
-    config::{Config, Environment},
-    ecdsa::{self, ECDSAPublicKeyReply, PublicKeyReply},
-    ethereum,
+use verity_dp_ic::{
+    crypto::{
+        config::{Config, Environment},
+        ecdsa::{self, ECDSAPublicKeyReply, PublicKeyReply},
+        ethereum,
+    },
+    verify::types::ProofResponse,
 };
 
 pub mod merkle;
@@ -27,23 +30,14 @@ fn ping() -> String {
 }
 
 /// Verifies the proof; To be called by a canister
-/// Sends the response to the caller's canisters method
-/// the method on the calling canister must be named `recieve_proof_verification_response`
 #[ic_cdk::update]
 async fn verify_proof_async(
     proof_requests: Vec<String>,
     notary_pub_key: String,
-) -> Result<(), RejectionCode> {
-    let verification_response = verify_proof_requests(proof_requests, notary_pub_key).await;
+) -> Vec<ProofResponse> {
+    let verification_response = verify_proof_requests(proof_requests, notary_pub_key);
 
-    let calling_canister = caller();
-    let canister_response: Result<(), RejectionCode> = ic_cdk::notify(
-        calling_canister,
-        "recieve_proof_verification_response",
-        (&verification_response,),
-    );
-
-    canister_response
+    verification_response
 }
 
 /// Verifies a proof; To be called by a user directly
@@ -52,8 +46,8 @@ async fn verify_proof_async(
 async fn verify_proof_direct(
     proof_requests: Vec<String>,
     notary_pub_key: String,
-) -> Result<VerificationResponse, String> {
-    verify_proof_requests(proof_requests, notary_pub_key).await
+) -> Result<DirectVerificationResponse, String> {
+    verify_and_sign_proof_requests(proof_requests, notary_pub_key).await
 }
 
 /// Get the public key of this canister
