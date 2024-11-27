@@ -21,6 +21,7 @@ CCAMP's flexibility, modularity, and data-driven approach make it an ideal choic
 - [View Architecture](https://github.com/usherlabs/ccamp/tree/main/assets/CCAMP-Architecture-Simple.jpeg)
 - [Read the Announcement](https://forum.dfinity.org/t/introducing-ccamp-unlocking-cross-chain-defi-aggregation-on-the-internet-computer/24643)
 - [View the Integration Guide](https://github.com/usherlabs/ccamp-integration-guide)
+- [Asset Manager overview](./ic/canisters/asset_manager/README.md)
 
 #### Codebase
 
@@ -71,7 +72,7 @@ The CCAMP roadmap is a testament to our dedication to advancing the capabilities
 
 ## 🚀 Get Started
 
-CCAMP empowers developers to create and register [Data Collection (DC) Canisters](https://github.com/usherlabs/ccamp/tree/main/packages/canisters/src/data_collection), fostering modularity in the system. These DC Canisters play a crucial role by accepting bespoke data from sources like Log Store or user inputs, and subsequently reallocating assets based on this input data. Upon deployment, each Data Collection Canister is assigned a unique identifier.
+CCAMP empowers developers to create and register [Data Collection (DC) Canisters](https://github.com/usherlabs/ccamp/tree/main/ic/canisters/asset_manager/data_collection), fostering modularity in the system. These DC Canisters play a crucial role by accepting bespoke data from sources like Log Store or user inputs, and subsequently reallocating assets based on this input data. Upon deployment, each Data Collection Canister is assigned a unique identifier.
 
 **Managing Liquidity**: To ensure the orderly flow of assets within the protocol, deposits and withdrawals with Locker contracts must reference this unique identifier, ensuring that liquidity is accurately assigned to the relevant DC Canister. This practice safeguards against DC Canisters inadvertently affecting liquidity across the entire protocol.
 
@@ -99,11 +100,11 @@ Alternatively you can run the following command at the root of the repo `npm run
 
 ## 📕 Core components
 
-### [Canisters](https://github.com/usherlabs/ccamp/tree/main/packages/canisters)
+### [Canisters](https://github.com/usherlabs/ccamp/tree/main/ic/canisters)
 
 For an in-depth exploration of Rust canisters, refer to the documentation available [here](https://internetcomputer.org/docs/current/developer-docs/backend/rust/). The canisters play a pivotal role as the primary interface for protocol users, with three core canisters forming the backbone of CCAMP. These are the Remittance Canister, the Protocol Data Collection Canister (PDC), and the Data Collection Canister.
 
-### [Smart Contracts](https://github.com/usherlabs/ccamp/tree/main/packages/contracts)
+### [Smart Contracts](https://github.com/usherlabs/ccamp/tree/main/evm)
 
 The smart contract component features the `Locker` contract. Its primary purpose is to facilitate fund deposits into the protocol, fund withdrawals, and the cancellation of pending withdrawal requests initiated from the canister.
 
