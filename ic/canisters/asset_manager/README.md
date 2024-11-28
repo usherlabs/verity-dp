@@ -1,365 +1,127 @@
-## ICP canisters
+# Cross-chain Asset Management Protocol - CCAMP
 
-Welcome to your new canisters project and to the internet computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
+## 📘 Overview
 
-To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
+CCAMP is an asset management protocol that leverages data-driven strategies to effectively manage and reallocate assets among various parties. This protocol encompasses a well-coordinated ecosystem, including smart contracts residing on EVM blockchains (and eventually non-EVM blockchains), a trio of interconnected canisters for state maintenance, and a crucial data relayer acting as an intermediary between the smart contracts and canisters.
 
-To learn more before you start working with canisters, see the following documentation available online:
+At its core, CCAMP is a versatile, modular, and custom data-driven Cross-chain Asset Management Protocol, harnessing the following technologies and components:
 
-- [Quick Start](https://internetcomputer.org/docs/quickstart/quickstart-intro)
-- [SDK Developer Tools](https://internetcomputer.org/docs/developers-guide/sdk-guide)
-- [Rust Canister Devlopment Guide](https://internetcomputer.org/docs/rust-guide/rust-intro)
-- [ic-cdk](https://docs.rs/ic-cdk)
-- [ic-cdk-macros](https://docs.rs/ic-cdk-macros)
-- [Candid Introduction](https://internetcomputer.org/docs/candid-guide/candid-intro)
-- [JavaScript API Reference](https://erxue-5aaaa-aaaab-qaagq-cai.raw.icp0.io)
+- The Internet Computer: Providing the backbone for on-chain computation, ensuring the protocol's robust execution.
+- The Log Store Network: Ensuring the availability of highly reliable and cryptographically pure event data, a critical element for informed asset management.
+- Attestation Oracle (aka., Indexer Relayer): Facilitating streamlined and verifiable data relay from foreign blockchains; connecting the protocol with external data sources.
+- Locker Contracts: These contracts, available in Solidity for EVM and other compatible languages like Rust, play an essential role in asset management and protection across various blockchains.
 
-If you want to start working on your project right away, you might want to try the following commands:
+CCAMP's flexibility, modularity, and data-driven approach make it an ideal choice for those seeking efficient and secure asset management solutions across multiple blockchain networks. It seamlessly combines the power of the Internet Computer, Log Store Network, and Locker Contracts to create a cutting-edge protocol for cross-chain liquidity aggregation management.
 
-```bash
-cd  canisters/
-dfx  help
-dfx  canister  --help
-```
+### 👉 Learn more
 
-## Running the project locally
+#### Overview
 
-If you want to test your project locally, you can use the following commands:
+- [View the Introduction](https://youtu.be/R-mPl4T_ch8)
+- [View Architecture](https://github.com/usherlabs/ccamp/tree/main/assets/CCAMP-Architecture-Simple.jpeg)
+- [Read the Announcement](https://forum.dfinity.org/t/introducing-ccamp-unlocking-cross-chain-defi-aggregation-on-the-internet-computer/24643)
+- [View the Integration Guide](https://github.com/usherlabs/ccamp-integration-guide)
+- [Canisters Overview](./CANISTERS.md)
 
-```bash
-# Starts the replica, running in the background
-dfx  start  --background
+#### Codebase
 
-# Deploys your canisters to the replica and generates your candid interface
-dfx  deploy
-```
+- [Step 1: Deposit](https://www.loom.com/share/18d55367509c4823bf4784ce09ed92d7?sid=423b85b8-f2b0-4500-964c-3fb247ec6491)
+- [Step 2: Withdrawal](https://www.loom.com/share/90386c85e08e4128ab21ea84a76f9935?sid=86cd63f5-5bd5-4fe2-a938-cded7747c4cf)
+- [Step 3: Re-allocate](https://www.loom.com/share/fdc5081b9e4a49e9afae4aaa7825b927?sid=9ea5c31d-7b43-490f-8c03-7585efbc4f79)
+- [A walkthrough of the Canister Code](https://www.loom.com/share/89935ad79a9f4c079bfffd10861afb23?sid=9459291c-71d4-437b-9fc5-e5b7137265f5)
 
-Once the job completes, your application will be available at `http://localhost:4943?canisterId={asset_canister_id}`.
-If you have made changes to your backend canister, you can generate a new candid interface with
+### 🎯 Asset Bridge Scenario
 
-```bash
-npm  run  generate
+Here's a high-level walkthrough of the CCAMP used as a decentralised bridge:
 
-```
+Let's assume we're bridging NUSD from ICP to Avalanche.
 
-at any time. This is recommended before starting the frontend development server, and will be run automatically any time you run `dfx deploy`.
-If you are making frontend changes, you can start a development server with
+1. NUSD is deposited into a Vault Smart Contract on the ICP.
+2. The depositor indicates to the Asset Manager Protocol (AMP) that they'd like to re-allocate their deposit to their wallet on the Avalanche Network.
+3. The depositor then requests an authentication key (ECDSA Signature generated by the Protocol) which is forwarded to the NUSD Smart Contract on Avalanche.
+4. The Avalanche Smart Contract verifies and nullifies the signature, and uses the associated parameters to mint NUSD to the destination wallet.
+5. The depositor can now withdraw their NUSD on Avalanche.
 
-```bash
-npm  start
-```
+In this paradigm, the vaulted assets on the ICP effectively back (1:1) the asset minted on the foreign blockchain.
 
-Which will start a server at `http://localhost:8080`, proxying API requests to the replica at port 4943.
+Now, let's assume we're bridging NUSD back from Avalanche to the ICP.
 
-## [Canisters](https://github.com/usherlabs/ccamp/tree/main/packages/canisters)
+1. NUSD is deposited into the NUSD Smart Contract to burn it, and emit a Deposit Event.
+2. This event is indexed by our "Indexer Relayer Node(s)" (IDN)
+3. The event is then streamed to the Log Store Network, a network of nodes that re-validates the event after a particular set of blockchain confirmations, and streams it's proofs back to the IDN.
+4. The IDN then receives signed attestations about the validity of this Deposit event.
+5. The IDN submits this event, and validity proofs to the AMP
+6. The AMP verifies the proofs and uses the event parameters to adjust the unified balance map indicating that a wallet owns X NUSD on Avalanche.
+7. The depositor indicates to the Asset Manager Protocol (AMP) that they'd like to re-allocate their deposit to their wallet on the ICP.
+8. The depositor can now withdraw their NUSD on the ICP.
 
-A detailed overview of rust canisters can be found [here](https://internetcomputer.org/docs/current/developer-docs/backend/rust/).
-The canisters serve as the main point of interaction for users of the protocol. There are three canisters which serve as the backbone of the protocol and they are the remittance canister, the protocol data collection canister (PDC) and the data collection canister.
+### 🚙 Roadmap
 
-#### Canisters Overview
+The development of CCAMP is a journey marked by continuous enhancement and innovation. Here's a glimpse into our future plans and how we intend to evolve the protocol:
 
-**- Protocol Data Collection Canister**: This can be described as the "admin canister", it aggregates data about deposits, withdrawals and withdrawal cancelations from the smart contract's events and passes it onto the remittance canister.
-**- Remittance canister**: This canister can be described as the "brain", it is the canister which stores the state of the protocol, which includes the balances of users across several tokens and chains. It is responsible for generating parameters which can be used to facilitate a withdrawal of allocated tokens from the smart contracts.
-**- Data Collection Canister**: This canister serves as a "reallocator", it reallocates balances between users, it is the canister which is responsible for the reallocation/redistribution of assets across several users.
-Note: The data collection canister can only reallocate balances which have already been created by the **PDC canister**
+- [ ] **Near Real-Time Data Ingestion**  
+       We are committed to enabling near real-time DeFi capabilities within CCAMP. To achieve this, we plan to replace on-chain HTTP outcalls with a dedicated node optimised for high-frequency verifiable data ingestion. This transformation empowers CCAMP to operate as swiftly as incoming data, ushering in a new era of near real-time DeFi.
 
-### Canisters Setup
+- [ ] **Account Reconciliation**  
+       As we seek to enhance the speed and efficiency of CCAMP, we recognise the limitations posed by block confirmation wait periods for every Locker Contract interaction. Our ongoing research and development efforts focus on account reconciliation and the introduction of a mechanism to flush Canister historic state transitions to the Log Store. This innovative approach will allow all incoming deposits to immediately influence the protocol's aggregated liquidity, while withdrawals will still await the block confirmation period.
 
-`These commands should be run at the root of the canister folder.`
+- [ ] **Diverse Blockchain Compatibility**  
+       At Usher Labs, we believe in inclusivity. Our future roadmap includes expanding the reach of Locker Contracts to support a diverse array of blockchains. While Locker Contracts currently cater to Solidity/EVM blockchains, we are eager to embrace improvsed diversity in cross-blockchain compatibility. If you have the expertise to contribute Locker Contracts designed for various blockchains, your efforts will be highly valued, and your contributions will be recognised within this repository and the wider Usher Labs Community.
 
-- [ ] `dfx start --clean` : This starts a local version of the internet computer's blockchain to which canisters can be deployed to.
-- [ ] `dfx deploy` : This deploys an instance of all three canisters to the local instance of the blockchain that was started in the previous step. This step would output three different canister addresses/principals which we will use as placeholders for the rest of this documentation.
+The CCAMP roadmap is a testament to our dedication to advancing the capabilities of this innovative protocol. [Join us on this journey](https://go.usher.so/discord), and together, we can shape the future of decentralised asset management and data-driven asset reallocation.
 
-```
-# sample canister deployment output
-dc canister: bw4dl-smaaa-aaaaa-qaacq-cai
-r canister: by6od-j4aaa-aaaaa-qaadq-cai
-pdc canister: b77ix-eeaaa-aaaaa-qaada-cai
-```
+## 🚀 Get Started
 
-- [ ] Register the remittance canister principal to the PDC and DC canisters
+CCAMP empowers developers to create and register [Data Collection (DC) Canisters](https://github.com/usherlabs/ccamp/tree/main/ic/canisters/asset_manager/src/data_collection), fostering modularity in the system. These DC Canisters play a crucial role by accepting bespoke data from sources like Log Store or user inputs, and subsequently reallocating assets based on this input data. Upon deployment, each Data Collection Canister is assigned a unique identifier.
 
-```
-dfx canister call --network ic protocol_data_collection set_remittance_canister '(principal "by6od-j4aaa-aaaaa-qaadq-cai")'
-dfx canister call --network ic data_collection set_remittance_canister '(principal "by6od-j4aaa-aaaaa-qaadq-cai")'
-```
+**Managing Liquidity**: To ensure the orderly flow of assets within the protocol, deposits and withdrawals with Locker contracts must reference this unique identifier, ensuring that liquidity is accurately assigned to the relevant DC Canister. This practice safeguards against DC Canisters inadvertently affecting liquidity across the entire protocol.
 
-- [ ] Register the PDC and DC canisters to remittance canister
+**Investor Liquidity Management**: Each DC Canister is responsible for managing the liquidity allocated to it by investors, providing an organised approach to asset reallocation.
 
-```
-dfx canister call remittance subscribe_to_dc '(principal "bw4dl-smaaa-aaaaa-qaacq-cai")'
-dfx canister call remittance subscribe_to_pdc '(principal "b77ix-eeaaa-aaaaa-qaada-cai")'
-```
+Ready to create your own DC Canister and contribute to the CCAMP ecosystem? Here's how to get started:
 
-- [ ] Register the principal of the publisher, the publisher is a relayer-indexer which can be identified by a public key, using this public key, we can generate an ICP principal which can then be whitelisted to publish data to the PDC canister regarding events that were emitted from the Locker contract
+1. **Create Your DC Canister:** Develop and deploy your Data Collection Canister, aligning it with your specific data needs.
+2. **Register Your Canister:** Once your DC Canister is up and running, contact the Usher Labs team for the registration process. This step integrates your canister into the core CCAMP ecosystem, allowing it to function seamlessly alongside other protocol components.
 
-```
-dfx canister call protocol_data_collection add_publisher '(principal "gasu6-ozgge-or2hl-j4goo-jvqtl-3dg25-ja4my-gvxzc-xqkv7-iojrw-qqe")'
-```
+Embark on your CCAMP journey, foster data-driven asset reallocation, and engage with the Usher Labs team for support and integration. Together, we can advance the capabilities of this innovative protocol.
 
-- [ ] Validate that the PDC and DC canisters are successfully registered with the remittance canister.
+Ready to explore the potential of CCAMP? [Join us on Discord](https://go.usher.so/discord).
 
-```
-dfx canister call --network ic protocol_data_collection is_subscribed '(principal "by6od-j4aaa-aaaaa-qaadq-cai")' dfx canister call --network ic data_collection is_subscribed '(principal "by6od-j4aaa-aaaaa-qaadq-cai")'
-```
+### ⚠️ Pre-requisites
 
-If all previous steps have been completed then the canisters have been successfully setup and are ready for use.
+- [ ] Download and [install the IC SDK](https://internetcomputer.org/docs/current/developer-docs/setup/index.md) if you do not already have it.
 
-### Canisters Commands
+Alternatively you can run the following command at the root of the repo `npm run setup` which would install the dfx cli tool if you are on Mac/Linux.
 
-Note: The cli calls have the parameter `--network ic` to indicate they are for the main net, to run the commands against the local instance of the blockchain, the parameter and its value can be safely taken out.
+### ⚙️ Setting up
 
-#### Data Collection Canister
+- [ ] Clone the repo.
+- [ ] install the dependencies by running `yarn install`
 
-- Register a remittance canister to the DC canister
+## 📕 Core components
 
-```
-dfx canister call data_collection set_remittance_canister '(principal "by6od-j4aaa-aaaaa-qaadq-cai")' --network ic
+### [Canisters](https://github.com/usherlabs/ccamp/tree/main/ic/canisters/asset_manager)
 
+For an in-depth exploration of Rust canisters, refer to the documentation available [here](https://internetcomputer.org/docs/current/developer-docs/backend/rust/). The Canisters play a pivotal role as the primary interface for protocol users, with three core canisters forming the backbone of CCAMP. These are the Remittance Canister, the Protocol Data Collection Canister (PDC), and the Data Collection Canister.
 
-**parameters**
+### [Smart Contracts](https://github.com/usherlabs/ccamp/tree/main/evm)
 
-"by6od-j4aaa-aaaaa-qaadq-cai": The address of the remittance canister.
+The smart contract component features the `Locker` contract. Its primary purpose is to facilitate fund deposits into the protocol, fund withdrawals, and the cancellation of pending withdrawal requests initiated from the canister.
 
-```
+### [Indexer Relayer](https://github.com/usherlabs/indexer-relayer)
 
-- Manually publish event data to the registered remittance canister
+The Indexer Relayer acts as the vital intermediary that links Locker Smart Contracts on Foreign Blockchains to the PDC canister. It's function is to Index data across various blockchains, gather attestations from the Log Store Network about the validity of these events, and then submit these events and their associated validity proofs to the PDC. In the case of EVM Blockchains, the [Graph Node](https://github.com/usherlabs/ccamp/tree/main/packages/graph) is currently used as a battletested and reliable indexing mechanism.
 
-```
+The original `relay` is now deprecated, and the source code for [indexing data using Gelato Web3 Functions](https://github.com/usherlabs/gelato-logstore) is now generally available as a standalone package.
 
-dfx canister call data_collection manual_publish '[{"event_name":"BalanceAdjusted","canister_id":"bw4dl-smaaa-aaaaa-qaacq-cai","account":"0x9C81E8F60a9B8743678F1b6Ae893Cc72c6Bc6840","amount":-100000,"chain":"ethereum:5","token":"0xB24a30A3971e4d9bf771BDc81435c25EA69A445c"},{"event_name":"BalanceAdjusted","canister_id":"bw4dl-smaaa-aaaaa-qaacq-cai","account":"0x9C81E8F60a9B8743678F1b6Ae893Cc72c6Bc6840","amount":100000,"chain":"ethereum:5","token":"0xB24a30A3971e4d9bf771BDc81435c25EA69A445c"}]' --network ic
+## Licensing
 
+The primary license for the CCAMP is the Business Source License 1.1 (BUSL-1.1), see LICENSE. However, some files are dual licensed under GPL-2.0-or-later:
 
+## Contributors
 
-**Parameters**
+- [Usher Labs](https://usher.so)
 
-A stringified json object following the above format, which represents an event that occured in the smart contract.
+## Publications
 
-```
-
-- Get the registered data collection canister.
-
-```
-
-dfx canister call data_collection get_remittance_canister --network ic
-
-```
-
-- Get if the remittance canister is successfully subscribed to the DC canister
-
-```
-
-dfx canister call data_collection is_subscribed '(principal "by6od-j4aaa-aaaaa-qaadq-cai")' --network ic
-
-
-
-**parameters*
-
-"by6od-j4aaa-aaaaa-qaadq-cai": The address of the remittance canister.
-
-```
-
-#### Protocol Data Collection Canister
-
-- Register a remittance canister to the PDC.
-
-```
-
-dfx canister call protocol_data_collection set_remittance_canister '(principal "by6od-j4aaa-aaaaa-qaadq-cai")' --network ic
-
-
-
-**parameters**
-
-"by6od-j4aaa-aaaaa-qaadq-cai": The address of the remittance canister.
-
-```
-
-- whitelist a publisher to be able to push the PDC.
-
-```
-
-dfx canister call protocol_data_collection add_publisher '(principal "by6od-j4aaa-aaaaa-qaadq-cai")' --network ic
-
-
-
-**parameters**
-
-"by6od-j4aaa-aaaaa-qaadq-cai": The principal we want to whitelist to push events
-
-```
-
-- publish ethereum events and logstore validations
-
-```
-
-dfx canister call protocol_data_collection process_event '("{"source":{}, "validations":[]}")' --network ic
-
-
-
-**parameters**
-
-"by6od-j4aaa-aaaaa-qaadq-cai": The principal we want to whitelist to push events
-
-```
-
-- Manually publish event data to the registered remittance canister.
-
-```
-
-dfx canister call protocol_data_collection manual_publish '[{"event_name":"FundsDeposited","canister_id":"bw4dl-smaaa-aaaaa-qaacq-cai","account":"0x9C81E8F60a9B8743678F1b6Ae893Cc72c6Bc6840","amount":100000,"chain":"ethereum:5","token":"0xB24a30A3971e4d9bf771BDc81435c25EA69A445c"}]' --network ic
-
-
-
-**Parameters**
-
-A stringified json object following the above format, which represents an event that occured in the smart contract.
-
-```
-
-- Get the registered data collection canister.
-
-```
-
-dfx canister call protocol_data_collection get_remittance_canister --network ic
-
-```
-
-- Manually trigger the process to fetch the latest data from logstore and push to the remittance canister
-
-```
-
-dfx canister call protocol_data_collection update_data --network ic
-
-```
-
-- Get if the remittance canister is successfully subscribed to the PDC canister.
-
-```
-
-dfx canister call protocol_data_collection is_subscribed '(principal "by6od-j4aaa-aaaaa-qaadq-cai")' --network ic
-
-
-
-**parameters*
-
-"by6od-j4aaa-aaaaa-qaadq-cai": The address of the remittance canister.
-
-```
-
-#### Remittance Canister
-
-- Get public key of remittance canister.
-
-```
-
-dfx canister call remittance public_key --network ic
-
-```
-
-- Subscribe to a data collection canister.
-
-```
-
-dfx canister call remittance subscribe_to_dc '(principal "bw4dl-smaaa-aaaaa-qaacq-cai")' --network ic
-
-
-
-**parameters**
-
-bw4dl-smaaa-aaaaa-qaacq-cai: Principal of the remittance canister
-
-```
-
-- Subscribe to a Protocol data collection canister.
-
-```
-
-dfx canister call remittance subscribe_to_pdc '(principal "b77ix-eeaaa-aaaaa-qaada-cai")' --network ic
-
-
-
-**parameters**
-
-b77ix-eeaaa-aaaaa-qaada-cai: Principal of the remittance canister
-
-```
-
-- Get the balance of an address.
-
-```
-
-dfx canister call remittance get_available_balance '("0xB24a30A3971e4d9bf771BDc81435c25EA69A445c","ethereum:5","0x1AE26a1F23E2C70729510cdfeC205507675208F2", principal "bw4dl-smaaa-aaaaa-qaacq-cai")' --network ic
-
-
-
-**parameters**
-
-"0xB24a30A3971e4d9bf771BDc81435c25EA69A445c": Address of the token which the user wants to check their balance of.
-
-"0x1AE26a1F23E2C70729510cdfeC205507675208F2": Address of the user.
-
-"ethereum:5": The Chain which the funds allocated to this user exists on.
-
-"bw4dl-smaaa-aaaaa-qaacq-cai": The principal of the data collection canister responsible for managing funds of the user
-
-```
-
-- Get the balance of a data collection canister.
-
-```
-
-dfx canister call remittance get_canister_balance '("0xB24a30A3971e4d9bf771BDc81435c25EA69A445c","ethereum:5", principal "bw4dl-smaaa-aaaaa-qaacq-cai")' --network ic
-
-
-
-**parameters**
-
-"0xB24a30A3971e4d9bf771BDc81435c25EA69A445c": Address of the token.
-
-"ethereum:5": The Chain which the funds allocated to this user exists on.
-
-"bw4dl-smaaa-aaaaa-qaacq-cai": The principal of the data collection canister responsible for managing funds of the user
-
-```
-
-- Request a signature for withdrawal.
-
-```
-
-dfx canister call remittance remit '("0xB24a30A3971e4d9bf771BDc81435c25EA69A445c","ethereum:5","0x9C81E8F60a9B8743678F1b6Ae893Cc72c6Bc6840",principal "bw4dl-smaaa-aaaaa-qaacq-cai",100000,"0xc1f88bc447b9ab9783f25fb5e88c5eefec0b563e4a60316e007834b506490ed25b21d1d6827a5c965738aba8869d7ab08b6e7b9f4a6bce6cf0f3f577037d9fdb1c")' --network ic
-
-
-
-**parameters**
-
-"0xB24a30A3971e4d9bf771BDc81435c25EA69A445c": The address of the token.
-
-"ethereum:5": The Chain which the funds allocated to this user exists on.
-
-"0x9C81E8F60a9B8743678F1b6Ae893Cc72c6Bc6840": The address of the user.
-
-"bw4dl-smaaa-aaaaa-qaacq-cai": The principal of the data collection canister responsible for managing funds of the user.
-
-"100000": The amount to withdraw.
-
-"0xc1f88bc447...": A signature of the amount to withdraw.
-
-```
-
-- Get a receipt for a valid withdrawal.
-
-```
-
-dfx canister call remittance get_reciept '(principal "bw4dl-smaaa-aaaaa-qaacq-cai", 12095196426242356980)' --network ic
-
-
-
-**parameters**
-
-"bw4dl-smaaa-aaaaa-qaacq-cai": The principal of the data collection canister responsible for managing funds of the user.
-
-"12095196426242356980": The nonce provided when a withdrawal was requested.
-
-```
-
+- [NBTC (ckBTC): Non-Custodial Decentralised BTC Derivative](https://docsend.com/view/a94np5agcj4cwby2) - Jan 30 2024
