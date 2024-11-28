@@ -4,40 +4,27 @@
 //!
 
 use candid::Principal;
-use ic_cdk::api::call::RejectionCode;
-use types::VerificationCanisterResponse;
+use types::ProofResponse;
 
 pub mod types;
 
-/// This method the first of a two way process of configuring you canister for verifying proofs
-/// it is to be called by a canister
+/// This 'verify_proofs' method is to be called by a canister
 /// it would use this method to publish data to be verified to the verifying canister
 /// so when we have some new data, we would publish it to the remittance model
-pub fn verify_proofs(
+pub async fn verify_proofs_onchain(
     proofs: Vec<String>,
     notary_public_key: String,
     verifier_principal: Principal,
-) -> Result<(), RejectionCode> {
+) -> Vec<ProofResponse> {
     let verification_method_name = "verify_proof_async";
 
-    let verification_response: Result<(), RejectionCode> = ic_cdk::notify(
+    let (verification_response,): (Vec<ProofResponse>,) = ic_cdk::call(
         verifier_principal,
         verification_method_name,
         (proofs, notary_public_key),
-    );
+    )
+    .await
+    .unwrap();
 
     verification_response
-}
-
-/// This method is the second and last of the process of configuring you canister for verifying proofs
-/// when the proofs sent above have been succesfully verified or an error occured
-/// the response is sent back to the canister who made the first call
-/// to a method `recieve_proof_verification_response` with a parameter
-/// so this method needs to be present and available on the receiving canister for the verifying canister to respond to
-pub async fn recieve_proof_verification_response(
-    verification_result: VerificationCanisterResponse,
-) {
-    let verification_response = verification_result.unwrap();
-    // perform some operations here
-    println!("{:?}", verification_response);
 }

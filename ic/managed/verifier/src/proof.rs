@@ -1,7 +1,7 @@
 use candid::CandidType;
 use serde::Deserialize;
 use serde_json::Value;
-use verity_dp_ic::{crypto::ethereum::sign_message, remittance::state::CONFIG};
+use verity_dp_ic::{crypto::ethereum::sign_message, remittance::state::CONFIG, verify::types::ProofResponse};
 use verity_verifier::{verify_proof, verify_session};
 
 use crate::{
@@ -10,7 +10,7 @@ use crate::{
 };
 
 #[derive(CandidType, Deserialize, Debug, Clone)]
-pub struct VerificationResponse {
+pub struct DirectVerificationResponse {
     pub results: Vec<ProofResponse>,
     pub root: String,
     pub signature: String,
@@ -20,12 +20,6 @@ pub struct VerificationResponse {
 pub enum ProofRequest {
     SessionProof(String),
     FullProof(String),
-}
-
-#[derive(CandidType, Deserialize, Debug, Clone)]
-pub enum ProofResponse {
-    SessionProof(String), //takes in reques response
-    FullProof(String),    //takes in
 }
 
 impl TryFrom<String> for ProofRequest {
@@ -71,22 +65,10 @@ impl ProofRequest {
     }
 }
 
-impl ProofResponse {
-    /// Generate a hash containing the
-    pub fn get_content(&self) -> String {
-        match self {
-            // the result of a verified session proof is a hash so no need to
-            ProofResponse::SessionProof(content) => content.clone(),
-            // verify the full proof and return the request/response pair
-            ProofResponse::FullProof(content) => content.clone(),
-        }
-    }
-}
-
-pub async fn verify_proof_requests(
+pub fn verify_proof_requests(
     proof_requests: Vec<String>,
     notary_pub_key: String,
-) -> Result<VerificationResponse, String> {
+) -> Vec<ProofResponse> {
     // by default icp escapes special characters, so we need to unescape them
     let notary_pub_key = notary_pub_key.replace("\\n", "\n");
 
@@ -107,6 +89,16 @@ pub async fn verify_proof_requests(
         })
         .collect();
 
+    proof_responses
+}
+
+pub async fn verify_and_sign_proof_requests(
+    proof_requests: Vec<String>,
+    notary_pub_key: String,
+) -> Result<DirectVerificationResponse, String> {
+    // iterate through the proofs and try verifying them
+    let proof_responses: Vec<ProofResponse> = verify_proof_requests(proof_requests, notary_pub_key);
+
     // generate a merkle tree based on  the content of the proof responses as leaves
     let merkle_tree = generate_merkle_tree(&proof_responses);
     let merkle_root = merkle_tree.root().expect("NOT ENOUGH LEAVES");
@@ -118,7 +110,7 @@ pub async fn verify_proof_requests(
     let signature_reply = sign_message(&merkle_root.clone().into_bytes(), &config_store).await?;
     let signature = signature_reply.signature_hex;
 
-    Ok(VerificationResponse {
+    Ok(DirectVerificationResponse {
         results: proof_responses,
         root: merkle_root.clone(),
         signature,
