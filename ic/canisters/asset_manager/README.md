@@ -108,11 +108,13 @@ For an in-depth exploration of Rust canisters, refer to the documentation availa
 
 The smart contract component features the `Locker` contract. Its primary purpose is to facilitate fund deposits into the protocol, fund withdrawals, and the cancellation of pending withdrawal requests initiated from the canister.
 
-### [Indexer Relayer](https://github.com/usherlabs/indexer-relayer)
+### (Deprecated) [Indexer Relayer](https://github.com/usherlabs/indexer-relayer)
 
 The Indexer Relayer acts as the vital intermediary that links Locker Smart Contracts on Foreign Blockchains to the PDC canister. It's function is to Index data across various blockchains, gather attestations from the Log Store Network about the validity of these events, and then submit these events and their associated validity proofs to the PDC. In the case of EVM Blockchains, the [Graph Node](https://github.com/usherlabs/ccamp/tree/main/packages/graph) is currently used as a battletested and reliable indexing mechanism.
 
-The original `relay` is now deprecated, and the source code for [indexing data using Gelato Web3 Functions](https://github.com/usherlabs/gelato-logstore) is now generally available as a standalone package.
+The original `relay` and the `indexer-relayer` is deprecated.  
+**The intent is to replace this relayer with the Verity zkTLS protocol for cross-chain data relay from foreign blockchains to the ICP.**
+The original source code for [indexing data using Gelato Web3 Functions](https://github.com/usherlabs/gelato-logstore) is now generally available as a standalone package.
 
 ## Licensing
 
