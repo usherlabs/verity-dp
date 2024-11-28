@@ -11,8 +11,4 @@ pub enum Error {
     /// Error from the underlying Reqwest client
     #[error("Reqwest error: {0}")]
     Reqwest(#[from] reqwest::Error),
-
-    /// Error from the underlying ZMQ client
-    #[error("ZMQ error: {0}")]
-    Zmq(#[from] zmq::Error),
 }

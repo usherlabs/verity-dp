@@ -2,8 +2,10 @@ use std::str::FromStr;
 use std::time::Duration;
 
 use anyhow::anyhow;
+use futures::stream::StreamExt;
 use http::{HeaderValue, Method};
 use reqwest::{IntoUrl, Response, Url};
+use reqwest_eventsource::{Event, EventSource};
 use tokio::select;
 use tokio::task::JoinHandle;
 use tokio_util::sync::CancellationToken;
@@ -144,16 +146,18 @@ impl VerityClient {
         timeout_cancellation_token: CancellationToken,
     ) -> JoinHandle<Result<reqwest::Response, reqwest::Error>> {
         tokio::spawn(async move {
-            let result = request.send().await;
+            let result = request.send().await?;
 
-            if result.is_err() {
+            if !result.status().is_success() {
                 request_cancellation_token.cancel();
             } else {
-                tokio::time::sleep(PROOF_TIMEOUT).await;
-                timeout_cancellation_token.cancel();
+                tokio::spawn(async move {
+                    tokio::time::sleep(PROOF_TIMEOUT).await;
+                    timeout_cancellation_token.cancel();
+                });
             }
 
-            result
+            Ok(result)
         })
     }
 
@@ -163,37 +167,40 @@ impl VerityClient {
         request_cancellation_token: CancellationToken,
         timeout_cancellation_token: CancellationToken,
     ) -> Result<JoinHandle<Result<(String, String), Error>>, Error> {
-        let mut context = zmq::Context::new();
-        let socket = context.clone().socket(zmq::SUB)?;
-        socket.set_subscribe(request_id.as_bytes())?;
-        socket.connect(&self.config.prover_zmq)?;
+        let url =
+            Url::from_str(&format!("{}/proof/{}", self.config.prover_url, request_id)).unwrap();
+        let mut event_source = EventSource::get(url);
 
-        let awaiter = tokio::task::spawn_blocking(move || {
-            let proof = socket.recv_string(0)?;
-            let proof =
-                proof.map_err(|e| anyhow!("The received message is not valid UTF-8: {:?}", e))?;
+        let awaiter = tokio::task::spawn(async move {
+            while let Some(event) = event_source.next().await {
+                println!("waiting for event...");
+                match event {
+                    Ok(Event::Open) => {}
+                    Ok(Event::Message(message)) => {
+                        let parts: Vec<&str> = message.data.splitn(3, "|").collect();
 
-            // TODO: Gracefully shutdown the ZMQ subscriber with the context
-            socket.set_unsubscribe(b"")?;
+                        return Ok((parts[0].to_string(), parts[1].to_string()));
+                    }
+                    Err(err) => {
+                        println!("Error: {}", err);
+                    }
+                }
+            }
 
-            // TODO: Better split session_id and the proof. See multipart ZMQ messaging.
-            let parts: Vec<&str> = proof.splitn(4, "|").collect();
-
-            Ok((parts[1].to_string(), parts[2].to_string()))
+            Ok((String::from(""), String::from("")))
         });
 
         let join_handle = tokio::spawn(async move {
             // Wait for either ZMQ message, timeout or cancellation
             select! {
                 proof = awaiter => {
+                    println!("proof: {:?}", proof);
                     proof.unwrap()
                 }
                 () = timeout_cancellation_token.cancelled() => {
-                    context.destroy()?;
                     Err(anyhow!("Timeout reached while waiting for a proof"))?
                 }
                 () = request_cancellation_token.cancelled() => {
-                    context.destroy()?;
                     Ok((String::from(""), String::from("")))
                 }
             }
