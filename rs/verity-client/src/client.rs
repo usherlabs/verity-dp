@@ -172,7 +172,6 @@ impl VerityClient {
 
         let awaiter = tokio::task::spawn(async move {
             while let Some(event) = event_source.next().await {
-                println!("waiting for event...");
                 match event {
                     Ok(Event::Open) => {}
                     Ok(Event::Message(message)) => {
@@ -193,7 +192,6 @@ impl VerityClient {
             // Wait for either ZMQ message, timeout or cancellation
             select! {
                 proof = awaiter => {
-                    println!("proof: {:?}", proof);
                     proof.unwrap()
                 }
                 () = timeout_cancellation_token.cancelled() => {
