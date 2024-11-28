@@ -38,3 +38,9 @@ yarn-error.log*
 # graph
 data
 dist
+
+# misc
+packages/host-node/fixtures/*.data.json
+
+# rust build
+target

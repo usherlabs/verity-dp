@@ -1,0 +1,20 @@
+[package]
+name = "remote_verify"
+version = "0.1.6"
+license = "MIT/Apache-2.0"
+description = "A Library containing utilities for the fetching and verification of merkle tree response obtained from the managed verifier canister as a response to a proof request"
+documentation = "https://www.usher.so/"
+keywords = ["verity", "IC", "canister", "merkleproof", "ecdsa", "merkle"]
+edition = "2021"
+
+[dependencies]
+serde = "1.0"
+serde_json = "1.0"
+ic-cdk = "0.13.1"
+anyhow = "1.0.90"
+candid = "0.10.4"
+ic-agent = { git = "https://github.com/dfinity/agent-rs.git", rev = "60a64dd2d5368180f03a75df80f475d6e2caf21a" }
+ic-identity-hsm = { git = "https://github.com/dfinity/agent-rs.git", rev = "60a64dd2d5368180f03a75df80f475d6e2caf21a" }
+ic-utils = { git = "https://github.com/dfinity/agent-rs.git", rev = "60a64dd2d5368180f03a75df80f475d6e2caf21a" }
+tokio = { version = "1.40.0", features = ["full"] }
+local_verify = { path = "../local-verify" }
