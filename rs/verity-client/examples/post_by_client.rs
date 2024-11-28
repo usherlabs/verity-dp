@@ -6,7 +6,6 @@ async fn main() -> Result<(), reqwest::Error> {
 
     let config = VerityClientConfig {
         prover_url: String::from("http://127.0.0.1:8080"),
-        prover_zmq: String::from("tcp://127.0.0.1:5556"),
     };
 
     let result = VerityClient::new(config)

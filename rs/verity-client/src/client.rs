@@ -20,7 +20,6 @@ const PROOF_TIMEOUT: Duration = Duration::from_millis(5000);
 #[derive(Clone)]
 pub struct VerityClientConfig {
     pub prover_url: String,
-    pub prover_zmq: String,
 }
 
 #[derive(Clone)]
