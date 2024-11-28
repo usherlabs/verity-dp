@@ -1,0 +1,43 @@
+name: Publish Rust Library to crates.io
+
+on:
+  push:
+    tags:
+      - 'v*.*.*' # Match semantic version tags v1.0.7
+
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Install Rust toolchain
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable  # Use the stable Rust version
+          override: true
+
+      # Step 3: Login into cargo rs
+      - name: cargo login
+        run: cargo login ${{ secrets.CARGO_TOKEN }}
+
+      # Step 4: Publish the library
+      - name: Publish `ic/libraries::verity_dp_ic` to crates.io
+        continue-on-error: true
+        run: |
+          cd ic/libraries
+          cargo publish --allow-dirty
+            
+      # Step 4: Publish the rs libraries
+      - name: Publish `rs/remote-verify::local_verify` to crates.io
+        continue-on-error: true
+        run: |
+          cd rs/local-verify
+          cargo publish --allow-dirty
+
