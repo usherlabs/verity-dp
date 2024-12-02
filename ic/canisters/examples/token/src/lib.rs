@@ -3,7 +3,6 @@ use ic_cdk::api::time;
 use ic_cdk::{caller, storage};
 
 use config::{DECIMALS, FEE, INITIAL_SUPPLY, TOKEN_NAME, TOKEN_SYMBOL};
-use ic_cdk_macros::{init, post_upgrade, pre_upgrade, query, update};
 use std::{cell::RefCell, collections::HashMap};
 use types::{
     Account, Allowance, AllowanceArgs, ApprovalType, ApproveArgs, ApproveError, TransferArgs,
@@ -26,9 +25,9 @@ thread_local! {
 }
 
 // ----------------------------------- init hooks
-#[init]
+#[ic_cdk::init]
 fn init() {
-    lib::owner::init_owner();
+    verity_dp_ic::owner::init_owner();
     let account_principal = ic_cdk::caller();
 
     // mint a certan value to the deployer account and admin canister
@@ -37,70 +36,70 @@ fn init() {
 // ----------------------------------- init hooks
 
 // get deployer of contract
-#[query]
+#[ic_cdk::query]
 fn owner() -> String {
-    lib::owner::get_owner()
+    verity_dp_ic::owner::get_owner()
 }
 
-#[query]
+#[ic_cdk::query]
 fn icrc1_metadata() -> MetaDataType {
     generate_metadata()
 }
 
-#[query]
+#[ic_cdk::query]
 fn icrc1_name() -> String {
     String::from(TOKEN_NAME)
 }
 
-#[query]
+#[ic_cdk::query]
 fn icrc1_symbol() -> String {
     String::from(TOKEN_SYMBOL)
 }
 
-#[query]
+#[ic_cdk::query]
 fn icrc1_decimals() -> u128 {
     DECIMALS
 }
 
-#[query]
+#[ic_cdk::query]
 fn icrc1_fee() -> u128 {
     FEE
 }
 
-#[query]
+#[ic_cdk::query]
 fn icrc1_total_supply() -> u128 {
     TOTAL_SUPPLY.with(|ts| ts.borrow().clone())
 }
 
-#[query]
+#[ic_cdk::query]
 fn icrc1_minting_account() -> Account {
-    let deployer = Principal::from_text(lib::owner::get_owner()).unwrap();
+    let deployer = Principal::from_text(verity_dp_ic::owner::get_owner()).unwrap();
     Account::from(deployer)
 }
 
-#[query]
+#[ic_cdk::query]
 fn get_dc_canister() -> Principal {
     ADMIN_PRINCIPAL.with(|ap| ap.borrow().clone().expect("DC_CANISTER_NOT_SET"))
 }
 
-#[query]
+#[ic_cdk::query]
 fn balance() -> u128 {
     let account_principal = ic_cdk::caller();
 
     icrc1_balance_of(Account::from(account_principal))
 }
 
-#[query]
+#[ic_cdk::query]
 fn icrc1_supported_standards() -> Vec<SupportedStandards> {
     generate_supported_standards()
 }
 
-#[query]
+#[ic_cdk::query]
 fn total_supply() -> u128 {
     TOTAL_SUPPLY.with(|ts| ts.borrow().clone())
 }
 
-#[query]
+#[ic_cdk::query]
 fn icrc1_balance_of(account: Account) -> u128 {
     let balance = BALANCES.with(|balance| {
         let balance_map = balance.borrow().clone();
@@ -111,7 +110,7 @@ fn icrc1_balance_of(account: Account) -> u128 {
     balance
 }
 
-#[update]
+#[ic_cdk::update]
 fn icrc1_transfer(args: TransferArgs) -> Result<u128, TransferError> {
     // get the caller
     let caller = ic_cdk::caller();
@@ -137,7 +136,7 @@ fn icrc1_transfer(args: TransferArgs) -> Result<u128, TransferError> {
     Ok(args.amount)
 }
 
-#[update]
+#[ic_cdk::update]
 fn icrc2_transfer_from(transfer_from_args: TransferFromArgs) -> Result<u128, TransferFromError> {
     let spender = ic_cdk::caller();
     let owner = transfer_from_args.from.owner;
@@ -175,7 +174,7 @@ fn icrc2_transfer_from(transfer_from_args: TransferFromArgs) -> Result<u128, Tra
     Ok(amount)
 }
 
-#[update]
+#[ic_cdk::update]
 fn icrc2_approve(approve_args: ApproveArgs) -> Result<u128, ApproveError> {
     let owner = caller();
     let spender = (&approve_args.spender).clone().owner;
@@ -216,7 +215,7 @@ fn icrc2_approve(approve_args: ApproveArgs) -> Result<u128, ApproveError> {
     Ok(approve_args.amount.into())
 }
 
-#[update]
+#[ic_cdk::update]
 fn icrc2_allowance(allowance_args: AllowanceArgs) -> Allowance {
     let owner = (&allowance_args.account.owner).clone();
     let spender = (&allowance_args.account.owner).clone();
@@ -224,7 +223,7 @@ fn icrc2_allowance(allowance_args: AllowanceArgs) -> Allowance {
     get_allowance(owner, spender)
 }
 
-#[update]
+#[ic_cdk::update]
 fn mint(account_principal: Principal, amount: u128) -> u128 {
     only_admin_canister();
 
@@ -233,19 +232,19 @@ fn mint(account_principal: Principal, amount: u128) -> u128 {
     amount
 }
 
-#[update]
+#[ic_cdk::update]
 fn burn(account_principal: Principal, amount: u128) -> Result<u128, String> {
     only_admin_canister();
     internal_burn(Account::from(account_principal), amount)
 }
 
-#[update]
+#[ic_cdk::update]
 fn set_dc_canister(dc_principal: Principal) {
     ADMIN_PRINCIPAL.with(|ap| *ap.borrow_mut() = Some(dc_principal))
 }
 
 // --------------------------- upgrade hooks ------------------------- //
-#[pre_upgrade]
+#[ic_cdk::pre_upgrade]
 fn pre_upgrade() {
     let cloned_balances = BALANCES.with(|rc| rc.borrow().clone());
     let cloned_supply = TOTAL_SUPPLY.with(|rc| rc.borrow().clone());
@@ -261,9 +260,9 @@ fn pre_upgrade() {
     .unwrap()
 }
 
-#[post_upgrade]
+#[ic_cdk::post_upgrade]
 async fn post_upgrade() {
-    lib::owner::init_owner();
+    verity_dp_ic::owner::init_owner();
 
     let (cloned_balances, cloned_supply, cloned_admin, cloned_approvals): (
         HashMap<Principal, u128>,

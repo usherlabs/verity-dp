@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use remote_verify::{config::Config, ic::Verifier};
+use verity_dp_rs_remote_verify::{config::Config, ic::Verifier};
 
 /// This function uses the IC to verify a proof
 /// provided the proofs, the public key of the notary
@@ -9,7 +9,7 @@ pub async fn verify_proof(
     json_string_proofs: Vec<String>,
     notary_pub_key: String,
     config: Config,
-) -> Result<remote_verify::ic::VerificationResponse, Box<dyn Error>> {
+) -> Result<verity_dp_rs_remote_verify::ic::VerificationResponse, Box<dyn Error>> {
     // Create verifier from a config file
     let verifier = Verifier::from_config(&config).await.unwrap();
 

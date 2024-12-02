@@ -1,0 +1,36 @@
+name: Build and Deploy Rust App
+
+on:
+  push:
+    branches:
+      - feature/test-gh-pages  # Trigger on pushes to the 'main' branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Rust
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable  # Use the stable Rust toolchain
+          override: true
+
+      # Step 3: Run the build script
+      - name: Run build script
+        run: |
+          cd docs
+          chmod +x generatedocs.sh  # Make the script executable, if it isn't already
+          bash generatedocs.sh          # Execute the script
+
+      # Step 4: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs  # Specify the output directory created by your script

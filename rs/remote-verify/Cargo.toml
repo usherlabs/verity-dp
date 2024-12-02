@@ -1,16 +1,15 @@
 [package]
-name = "remote-verify"
+name = "verity-dp-rs-remote-verify"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-serde = "1.0"
-serde_json = "1.0"
-ic-cdk = "0.13.1"
-anyhow = "1.0.90"
-candid = "0.10.4"
-ic-agent = { git = "https://github.com/dfinity/agent-rs.git", rev = "60a64dd2d5368180f03a75df80f475d6e2caf21a" }
-ic-identity-hsm = { git = "https://github.com/dfinity/agent-rs.git", rev = "60a64dd2d5368180f03a75df80f475d6e2caf21a" }
-ic-utils = { git = "https://github.com/dfinity/agent-rs.git", rev = "60a64dd2d5368180f03a75df80f475d6e2caf21a" }
-tokio = { version = "1.40.0", features = ["full"] }
-local-verify = { path = "../local-verify" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+ic-cdk = { workspace = true }
+anyhow = { workspace = true }
+candid = { workspace = true }
+ic-agent = { workspace = true }
+ic-identity-hsm = { workspace = true }
+ic-utils = { workspace = true }
+verity-dp-rs-local-verify = { path = "../local-verify" }

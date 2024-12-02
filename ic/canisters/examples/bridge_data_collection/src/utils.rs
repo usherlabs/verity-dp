@@ -1,17 +1,13 @@
 use candid::Principal;
 use ic_cdk::{api, id};
-use lib::{
-    constants::ZERO_ADDRESS,
-    dc::{get_remittance_canister, Account},
-    DataModel,
-};
+use verity_dp_ic::remittance::{external_router, types::{Account, Action, DataModel}};
 
-use crate::constants::CHAIN_IDENTIFIER;
+use crate::{constants::CHAIN_IDENTIFIER, ZERO_ADDRESS};
 
 // get the user balance for this canister which handles the matic chain
 // for the matic native token
 pub async fn get_user_canister_balance(account: String) -> u128 {
-    let rc = get_remittance_canister();
+    let rc = external_router::get_remittance_canister();
     let (balance,): (Account,) = api::call::call(
         rc.canister_principal,
         "get_available_balance",
@@ -36,14 +32,14 @@ pub async fn generate_mint_payload(account: String, amount: u128) -> Vec<DataMod
             chain: String::from(CHAIN_IDENTIFIER).try_into().unwrap(),
             amount: -(amount as i64),
             account: account.try_into().unwrap(),
-            action: lib::Action::Adjust,
+            action: Action::Adjust,
         },
         DataModel {
             token: String::from(ZERO_ADDRESS).try_into().unwrap(),
             chain: String::from(CHAIN_IDENTIFIER).try_into().unwrap(),
             amount: amount as i64,
             account: String::from(ZERO_ADDRESS).try_into().unwrap(),
-            action: lib::Action::Adjust,
+            action: Action::Adjust,
         },
     ];
 
@@ -58,14 +54,14 @@ pub async fn generate_burn_payload(account: String, amount: u128) -> Vec<DataMod
             chain: String::from(CHAIN_IDENTIFIER).try_into().unwrap(),
             amount: -(amount as i64),
             account: String::from(ZERO_ADDRESS).try_into().unwrap(),
-            action: lib::Action::Adjust,
+            action: Action::Adjust,
         },
         DataModel {
             token: String::from(ZERO_ADDRESS).try_into().unwrap(),
             chain: String::from(CHAIN_IDENTIFIER).try_into().unwrap(),
             amount: amount as i64,
             account: account.try_into().unwrap(),
-            action: lib::Action::Adjust,
+            action: Action::Adjust,
         },
     ];
 

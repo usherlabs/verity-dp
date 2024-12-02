@@ -1,7 +1,6 @@
 use crate::remittance::types::{DataModel, Event, RemittanceSubscriber, Subscriber};
-use candid::{CandidType, Principal};
+use candid::Principal;
 use ic_cdk::{api::call::RejectionCode, id};
-use serde_derive::Deserialize;
 use serde_json::Value;
 use std::{cell::RefCell, collections::BTreeMap};
 
@@ -11,10 +10,6 @@ thread_local! {
 
 pub mod permissions;
 pub type SubscriberStore = BTreeMap<Principal, Subscriber>;
-#[derive(Clone, Debug, CandidType, Deserialize)]
-pub struct Account {
-    pub balance: u64,
-}
 
 /// Set a value for the remittance canister registered
 pub fn set_remittance_canister(remittance_principal: Principal) {

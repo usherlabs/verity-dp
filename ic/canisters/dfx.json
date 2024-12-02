@@ -10,7 +10,7 @@
     },
     "data_collection": {
       "candid": "asset_manager/data_collection/data_collection.did",
-      "package": "data_collection",
+      "package": "data-collection",
       "type": "rust",
       "declarations": {
 				"node_compatibility": true
@@ -18,7 +18,7 @@
     },
     "protocol_data_collection": {
       "candid": "asset_manager/protocol_data_collection/protocol_data_collection.did",
-      "package": "protocol_data_collection",
+      "package": "protocol-data-collection",
       "type": "rust",
       "declarations": {
 				"node_compatibility": true

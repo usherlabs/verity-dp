@@ -56,7 +56,7 @@ pub fn generate_supported_standards() -> Vec<SupportedStandards> {
 pub fn only_admin_canister() {
     let admin_principal = crate::ADMIN_PRINCIPAL.with(|f| f.borrow().clone().unwrap());
     let caller = ic_cdk::caller();
-    let owner = Principal::from_text(lib::owner::get_owner()).unwrap();
+    let owner = Principal::from_text(verity_dp_ic::owner::get_owner()).unwrap();
 
     if caller != admin_principal && caller != owner {
         panic!("NOT_AUTHORIZED")

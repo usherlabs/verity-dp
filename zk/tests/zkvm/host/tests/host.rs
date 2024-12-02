@@ -35,8 +35,8 @@ fn host_works() {
     // creates an ExecutorEnvBuilder. When you're done adding input, call
     // ExecutorEnvBuilder::build().
 
-    let proof = read_to_string("../fixture/proof.json").unwrap();
-    let notary_pub_key = read_to_string("../fixture/notary/notary.pub").unwrap();
+    let proof = read_to_string("./fixture/proof.json").unwrap();
+    let notary_pub_key = read_to_string("./fixture/notary/notary.pub").unwrap();
 
     let verified_by_host = verify_proof(&proof, &notary_pub_key).unwrap();
 

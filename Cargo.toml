@@ -1,0 +1,68 @@
+[workspace]
+members = [
+    # canisters
+    "ic/canisters/asset_manager/remittance",
+    "ic/canisters/asset_manager/data_collection",
+    "ic/canisters/asset_manager/protocol_data_collection",
+
+    # canisters ## examples
+    "ic/canisters/examples/bridge_data_collection",
+    "ic/canisters/examples/token",
+
+    ## library
+    "./ic/libraries",
+
+    ## managed verifier
+    "./ic/managed/verifier",
+
+    # rs libs
+    "./rs/local-verify",
+    "./rs/remote-verify",
+    "./rs/verity-client",
+    "./rs/tests/load",
+
+    # zk libs
+    "./zk/guest",
+    "./zk/host",
+    "./zk/tests/zkvm/host",
+    "./zk/tests/zkvm/methods",
+
+]
+resolver = "2"
+
+[workspace.dependencies]
+candid = "0.10"
+ic-cdk = "0.16"
+ic-cdk-timers = "0.10"
+
+serde = "1.0.126"
+serde_derive = "1.0.126"
+serde_json = "1.0"
+
+solabi = "0.2.0"
+chrono = "0.4"
+tracing-subscriber = "0.3"
+
+risc0-build = "1.0"
+risc0-zkvm = "1.0"
+
+sha3 = "0.10.8"
+rs_merkle = "1.4.2"
+hex = "0.4.3"
+rand = "0.8.5"
+tokio = "1.39"
+getrandom = "0.2"
+anyhow = "1.0.93"
+libsecp256k1 = { version = "0.7.1", default-features = false, features = [
+    "lazy-static-context",
+] }
+easy-hasher = "2.2.1"
+eth-encode-packed = "0.1.0"
+
+tlsn-core = { git = "https://github.com/tlsnotary/tlsn", rev = "v0.1.0-alpha.6" }
+ic-wasi-polyfill = { git = "https://github.com/wasm-forge/ic-wasi-polyfill", rev = "2476429bb1604d3ad5a28d458b8faa61bcbe4ada" }
+ic-agent = { git = "https://github.com/dfinity/agent-rs.git", rev = "60a64dd2d5368180f03a75df80f475d6e2caf21a" }
+ic-identity-hsm = { git = "https://github.com/dfinity/agent-rs.git", rev = "60a64dd2d5368180f03a75df80f475d6e2caf21a" }
+ic-utils = { git = "https://github.com/dfinity/agent-rs.git", rev = "60a64dd2d5368180f03a75df80f475d6e2caf21a" }
+
+verity-verifier = { path = "../verity/verifier" }

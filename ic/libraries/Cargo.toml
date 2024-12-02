@@ -1,21 +1,24 @@
 [package]
-name = "verity_dp_ic"
+name = "verity-dp-ic"
+description = "A library for IC"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-candid = "0.10"
-ic-cdk = "0.16"
-ic-cdk-timers = "0.10"
-serde = "1.0.126"
-serde_derive = "1.0.126"
-serde_json = "1.0"
-solabi = "0.2.0"
-easy-hasher = "2.2.1"
-hex = "0.4.3"
-libsecp256k1 = { version = "0.7.1", default-features = false, features = ["lazy-static-context"] }
-getrandom = { version = "0.2", features = ["custom"] }
-sha3 = "0.10.8"
-rand = { version = "0.8.5", features = ["getrandom"]}
-eth-encode-packed = "0.1.0"
-anyhow = "1.0.93"
+candid = { workspace = true }
+ic-cdk = { workspace = true }
+ic-cdk-timers = { workspace = true }
+serde = { workspace = true }
+serde_derive = { workspace = true }
+serde_json = { workspace = true }
+hex = { workspace = true }
+rand = { workspace = true, features = ["getrandom"] }
+anyhow = { workspace = true }
+libsecp256k1 = { workspace = true, default-features = false, features = [
+    "lazy-static-context",
+] }
+solabi = { workspace = true }
+easy-hasher = { workspace = true }
+getrandom = { workspace = true, features = ["custom"] }
+sha3 = { workspace = true }
+eth-encode-packed = { workspace = true }
