@@ -65,4 +65,4 @@ ic-agent = { git = "https://github.com/dfinity/agent-rs.git", rev = "60a64dd2d53
 ic-identity-hsm = { git = "https://github.com/dfinity/agent-rs.git", rev = "60a64dd2d5368180f03a75df80f475d6e2caf21a" }
 ic-utils = { git = "https://github.com/dfinity/agent-rs.git", rev = "60a64dd2d5368180f03a75df80f475d6e2caf21a" }
 
-verity-verifier = { path = "../verity/verifier" }
+verity-verifier = { path = "./verity/verifier" }
