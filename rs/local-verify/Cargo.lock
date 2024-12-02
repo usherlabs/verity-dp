@@ -285,8 +285,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "local-verify"
-version = "0.1.0"
+name = "local_verify"
+version = "0.2.0"
 dependencies = [
  "anyhow",
  "easy-hasher",

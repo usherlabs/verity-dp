@@ -2779,8 +2779,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "78b3ae25bc7c8c38cec158d1f2757ee79e9b3740fbc7ccf0e59e4b08d793fa89"
 
 [[package]]
-name = "local-verify"
-version = "0.1.0"
+name = "local_verify"
+version = "0.2.0"
 dependencies = [
  "anyhow",
  "easy-hasher",
@@ -3688,8 +3688,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2b15c43186be67a4fd63bee50d0303afffcef381492ebe2c5d87f324e1b8815c"
 
 [[package]]
-name = "remote-verify"
-version = "0.1.0"
+name = "remote_verify"
+version = "0.1.6"
 dependencies = [
  "anyhow",
  "candid",
@@ -3697,7 +3697,7 @@ dependencies = [
  "ic-cdk",
  "ic-identity-hsm",
  "ic-utils",
- "local-verify",
+ "local_verify",
  "serde",
  "serde_json",
  "tokio",
@@ -5011,7 +5011,7 @@ dependencies = [
  "anyhow",
  "bonsai-sdk 0.8.0",
  "dotenv",
- "remote-verify",
+ "remote_verify",
  "risc0-build",
  "risc0-build-ethereum",
  "risc0-ethereum-contracts",
