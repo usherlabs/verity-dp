@@ -128,7 +128,7 @@ impl VerityClient {
             timeout_cancellation_token.clone(),
         )?;
 
-        let (response, proof_msg) = tokio::try_join(
+        let (response, proof_msg) = tokio::try_join!(
             self.send_request(req, request_cancellation_token, timeout_cancellation_token),
             proof_awaiter,
         )
