@@ -1,9 +1,9 @@
 {
-	"name": "@ccamp/canisters",
+	"name": "@verity-dp/asset-manager",
 	"version": "1.0.0",
-	"description": "The repo for the canisters required to facilitate the protocol",
-	"author": "xand6r <shuaibualexander@gmail.com>",
-	"license": "ISC",
+	"description": "The repo for the CCAMP canisters",
+	"author": "Usher LAbs <labs@usher.so>",
+	"license": "LGPL-2.0",
 	"keywords": [
 		"blockchain",
 		"ethers",
