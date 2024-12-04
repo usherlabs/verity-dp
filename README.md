@@ -78,3 +78,20 @@ Generally applications should opt to use the zkVM for data processing, as it mai
 In essence, Verity acts as an Oracle for the zkVM.
 
 [RiscZero](https://www.risczero.com/) is the most production-grade zkVM, designed for CPUs with smaller workloads. It is the zkVM of choice for Verity, ensuring stateless Rust development to a limit, providing data processing capabilities, and a portable succinct proof format for verification across various environments, whether on- or off-chain.
+
+## Contributing
+
+If you're interested in contributing, please follow the guidelines outlined in our [CONTRIBUTORS.md](./CONTRIBUTORS.md) file. Your contributions are greatly appreciated and help improve the project for everyone.
+
+## License
+
+This repository is licensed under the terms specified in the LICENSE file located in the base directory.
+
+If a subdirectory contains its own LICENSE file, the license specified in that subdirectory's LICENSE file will override the base directory license for the contents of that subdirectory.
+This hierarchical licensing ensures that specific components or modules within the repository can have different licensing terms as needed.
+
+For any questions regarding the licensing terms, please refer to the respective LICENSE files or contact Usher Labs directly.
+
+## Contact
+
+If you have any questions or need further assistance, feel free to reach out via [Discord](https://go.usher.so/discord).
