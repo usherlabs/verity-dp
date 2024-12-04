@@ -3,7 +3,7 @@
 		"src/rs/tests/load/Cargo.toml",
 		"src/rs/verity-client/Cargo.toml",
 		"src/rs/verify/Cargo.toml",
-		"src/ic/canisters/Cargo.toml",
+		"src/ic/canisters/asset_manager/Cargo.toml",
 		"src/ic/libraries/Cargo.toml",
 		"src/ic/managed/verifier/Cargo.toml"
 	]
