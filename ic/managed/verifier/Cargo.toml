@@ -1,5 +1,5 @@
 [package]
-name = "ic-af"
+name = "verity-ic-verifier"
 version = "0.1.0"
 edition = "2021"
 
@@ -18,7 +18,7 @@ serde_json = "1.0"
 elliptic-curve = { version = "0.13.5", features = ["pkcs8"] }
 tlsn-core = { git = "https://github.com/tlsnotary/tlsn", rev = "v0.1.0-alpha.6" }
 p256 = { version = "0.13", features = ["pem", "ecdsa"] }
-verity_dp_ic = {path = "../../libraries" }
+verity-dp-ic = {path = "../../libraries" }
 verity-verifier = {path = "../../../../verity/verifier"}
 sha2 = "0.10.8"
 hex = "0.4.3"

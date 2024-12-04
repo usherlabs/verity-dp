@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use remote_verify::{ config::Config, ic::Verifier };
+use verity_remote_verify::{ config::Config, ic::Verifier };
 
 /// Asynchronously verifies a proof using the Internet Computer (IC).
 ///

@@ -1,6 +1,6 @@
 [package]
 name = "verity-client"
-description = "Verity Client"
+description = "Verity Rust Client"
 version = "0.0.1-alpha.1"
 authors = ["Usher Labs <labs@usher.so>"]
 repository = "https://github.com/usherlabs/ccamp/"

@@ -3,7 +3,7 @@ use std::error::Error;
 use crate::config::Config;
 use candid::{ CandidType, Decode };
 use ic_agent::{ export::Principal, Agent };
-use local_verify::{ self, ecdsa::validate_ecdsa_signature, merkle::validate_merkle_tree };
+use verity_local_verify::{ self, ecdsa::validate_ecdsa_signature, merkle::validate_merkle_tree };
 use serde::Deserialize;
 pub const DEFAULT_IC_GATEWAY_LOCAL: &str = "http://127.0.0.1:4943";
 pub const DEFAULT_IC_GATEWAY_MAINNET: &str = "https://icp0.io";

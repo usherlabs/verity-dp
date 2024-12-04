@@ -1,5 +1,5 @@
 [package]
-name = "verity_dp_zk_host"
+name = "verity-dp-zk-host"
 version = "0.1.0"
 edition = "2021"
 
@@ -19,5 +19,5 @@ anyhow = { version = "1.0.75" }
 bonsai-sdk = { version = "0.8.0-rc.3" }
 serde = "1"
 serde_json = "1.0.107"
-remote_verify = { path = "../../rs/remote-verify/" }
+verity-remote-verify = { path = "../../rs/remote-verify/" }
 tlsn-core-no-session = { path = "../../../verity/tlsn-core-no-session" }

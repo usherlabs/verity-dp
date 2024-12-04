@@ -1,0 +1,11 @@
+[workspace]
+members = [
+    "ic/libraries",
+    "ic/managed/verifier",
+    "rs/local-verify",
+    "rs/remote-verify",
+    "rs/verity-client",
+    "zk/host",
+    "zk/guest",
+]
+resolver = "1"

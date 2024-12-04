@@ -1,5 +1,5 @@
 [package]
-name = "protocol_data_collection"
+name = "ccamp-protocol-data-collection"
 version = "0.1.0"
 edition = "2021"
 

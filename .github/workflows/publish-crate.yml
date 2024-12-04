@@ -20,7 +20,7 @@ jobs:
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable  # Use the stable Rust version
+          toolchain: stable # Use the stable Rust version
           override: true
 
       # Step 3: Login into cargo rs
@@ -33,11 +33,10 @@ jobs:
         run: |
           cd ic/libraries
           cargo publish --allow-dirty
-            
+
       # Step 4: Publish the rs libraries
       - name: Publish `rs/remote-verify::local_verify` to crates.io
         continue-on-error: true
         run: |
           cd rs/local-verify
           cargo publish --allow-dirty
-

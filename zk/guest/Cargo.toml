@@ -1,5 +1,5 @@
 [package]
-name = "verity_dp_zk_guest"
+name = "verity-dp-zk-guest"
 version = "0.1.0"
 edition = "2021"
 

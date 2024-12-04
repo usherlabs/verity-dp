@@ -1,8 +1,8 @@
 [package]
-name = "verity_dp_ic"
+name = "verity-dp-ic"
 version = "0.2.0"
 license = "MIT/Apache-2.0"
-description = "A Library containing utilities for the verity IC components"
+description = "A library containing utilities for the Verity IC components"
 documentation = "https://www.usher.so/"
 readme = "./README.md"
 keywords = ["verity", "IC", "canister"]
