@@ -1,10 +1,13 @@
 {
 	"rust-analyzer.linkedProjects": [
-		"src/rs/tests/load/Cargo.toml",
-		"src/rs/verity-client/Cargo.toml",
-		"src/rs/verify/Cargo.toml",
-		"src/ic/canisters/asset_manager/Cargo.toml",
-		"src/ic/libraries/Cargo.toml",
-		"src/ic/managed/verifier/Cargo.toml"
+		"rs/tests/load/Cargo.toml",
+		"rs/verity-client/Cargo.toml",
+		"rs/local-verify/Cargo.toml",
+		"rs/remote-verify/Cargo.toml",
+		"ic/canisters/asset_manager/Cargo.toml",
+		"ic/libraries/Cargo.toml",
+		"ic/managed/verifier/Cargo.toml",
+		"zk/host/Cargo.toml",
+		"zk/guest/Cargo.toml"
 	]
 }

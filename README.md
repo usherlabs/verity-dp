@@ -48,6 +48,8 @@ You can find the Verity Client integrated into our early zkTLS programs. A notab
 
 Additionally, you can review our [X (Twitter) NFTs](https://github.com/usherlabs/x-twitter-nfts) prediction market mini-game to learn how Verity can guarantee the accuracy of data from the X API for use in on-chain dynamics.
 
+Finally, you can review direct examples of the Verity Client in the [Verity Client Examples](./rs/verity-client/examples).
+
 Currently, the Verity Client language support is as follows:
 
 - [x] Rust
