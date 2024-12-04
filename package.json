@@ -1,12 +1,12 @@
 {
-	"name": "ccamp",
+	"name": "verity-dp",
 	"version": "0.0.1",
-	"description": "Cross-chain Asset Management Protocol",
-	"repository": "git@github.com:usherlabs/ccamp.git",
+	"description": "Verity Data Processor",
+	"repository": "git@github.com:usherlabs/verity-dp.git",
 	"homepage": "https://usher.so",
-	"author": "Ryan Soury <ryan@usher.so>, Shuaibu Alexander <shuaibualexander@gmail.com>",
+	"author": "Ryan Soury <ryan@usher.so>, Shuaibu Alexander <alex@usher.so>",
 	"license": "GPL-3.0",
-	"private": true,
+	"private": false,
 	"scripts": {
 		"clean": "del packages/*/node_modules packages/*/dist node_modules",
 		"build": "npx turbo run build --force",
@@ -37,6 +37,6 @@
 		"prettier-plugin-solidity": "^1.1.3"
 	},
 	"workspaces": [
-		"packages/*"
+		"ts/*"
 	]
 }

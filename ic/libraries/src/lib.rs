@@ -1,8 +1,6 @@
-//! 
-//! The library module contains the verity_dp_ic library
-//! and contains code relvant to verity and the internet computer
-//! 
-//! 
+//! This module serves as the main entry point for the verity_dp_ic library.
+//! It includes various submodules that provide functionality related to
+//! the Verity project and the Internet Computer ecosystem.
 
 pub mod crypto;
 pub mod remittance;
