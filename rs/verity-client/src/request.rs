@@ -115,7 +115,6 @@ impl RequestBuilder {
 	///
 	/// let config = VerityClientConfig {
 	///     prover_url: String::from("http://127.0.0.1:8080"),
-	///     prover_zmq: String::from("tcp://127.0.0.1:8080"),
 	/// };
 	///
 	/// let response = VerityClient::new(config)

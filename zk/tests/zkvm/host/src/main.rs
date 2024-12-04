@@ -1,9 +1,9 @@
 use verity_client::client::{ VerityClient, VerityClientConfig };
 
-// pub const DEFAULT_PROVER_URL: &str = "http://127.0.0.1:8080";
-pub const DEFAULT_PROVER_URL: &str = "https://prover.verity.usher.so";
+pub const DEFAULT_PROVER_URL: &str = "http://127.0.0.1:8080";
 
-fn main() {
+#[tokio::main()]
+async fn main() -> Result<(), reqwest::Error> {
 	// Entry point of the program
 	println!("Hello Verity zkTLS Demo!");
 

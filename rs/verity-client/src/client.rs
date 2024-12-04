@@ -15,7 +15,7 @@ use serde::{ Serialize, Deserialize };
 use crate::request::RequestBuilder;
 use crate::Error;
 
-/// Time to wait for a proof received over ZMQ socket since receiving HTTP response
+/// Time to wait for a proof received over SSE since receiving HTTP response
 const PROOF_TIMEOUT: Duration = Duration::from_millis(5000);
 
 #[derive(Clone)]
@@ -203,7 +203,7 @@ impl VerityClient {
 						return Ok((parts[0].to_string(), parts[1].to_string()));
 					}
 					Err(err) => {
-						println!("Error: {}", err);
+						println!("Error on proof event source: {}", err);
 					}
 				}
 			}
@@ -212,7 +212,7 @@ impl VerityClient {
 		});
 
 		let join_handle = tokio::spawn(async move {
-			// Wait for either ZMQ message, timeout or cancellation
+			// Wait for either SSE message, timeout or cancellation
 			select! {
                 proof = awaiter => {
                     proof.unwrap()
