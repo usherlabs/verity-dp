@@ -1,6 +1,7 @@
 use verity_client::client::{ VerityClient, VerityClientConfig };
 
-pub const DEFAULT_PROVER_URL: &str = "http://127.0.0.1:8080";
+// pub const DEFAULT_PROVER_URL: &str = "http://127.0.0.1:8080";
+pub const DEFAULT_PROVER_URL: &str = "https://prover.verity.usher.so";
 
 fn main() {
 	// Entry point of the program
@@ -14,7 +15,7 @@ fn main() {
 	println!("Proving a GET request using VerityClient...");
 
 	let config = VerityClientConfig {
-		prover_url: DEFAULT_PROVER_URL,
+		prover_url: String::from(DEFAULT_PROVER_URL),
 	};
 
 	let client = VerityClient::new(config);

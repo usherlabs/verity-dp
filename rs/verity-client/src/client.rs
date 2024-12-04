@@ -10,6 +10,7 @@ use tokio::select;
 use tokio::task::JoinHandle;
 use tokio_util::sync::CancellationToken;
 use uuid::Uuid;
+use serde::{ Serialize, Deserialize };
 
 use crate::request::RequestBuilder;
 use crate::Error;
@@ -134,8 +135,8 @@ impl VerityClient {
 			timeout_cancellation_token.clone()
 		)?;
 
-		let (response, proof_msg) = tokio
-			::try_join(
+		// prettier-ignore
+		let (response, proof_msg) = tokio::try_join!(
 				self.send_request(req, request_cancellation_token, timeout_cancellation_token),
 				proof_awaiter
 			)
@@ -229,7 +230,7 @@ impl VerityClient {
 	}
 
 	/// Get the information of the connected notary
-	pub async fn get_notary_info(&self) -> Result<NotaryInformation> {
+	pub async fn get_notary_info(&self) -> anyhow::Result<NotaryInformation> {
 		let notary_info_url = format!("{}/notaryinfo", self.config.prover_url);
 		let notary_information = reqwest
 			::get(notary_info_url).await?

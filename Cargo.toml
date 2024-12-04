@@ -10,3 +10,11 @@ members = [
     "zk/guest",
 ]
 resolver = "2"
+
+[workspace.package]
+version = "0.0.1"
+authors = ["Usher Labs <labs@usher.so>"]
+repository = "https://github.com/usherlabs/verity-dp"
+homepage = "https://www.usher.so/"
+edition = "2021"
+license = "MIT/Apache-2.0"

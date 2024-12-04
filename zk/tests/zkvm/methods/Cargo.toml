@@ -1,10 +1,10 @@
 [package]
-name = "verity-dp-zk-tests-zkvm-methods"
+name = "methods"
 version = "0.1.0"
 edition = "2021"
 
 [build-dependencies]
-risc0-build = { workspace = true }
+risc0-build = { version = "1.1.2" }
 verity-dp-zk-host = { workspace = true }
 
 [package.metadata.risc0]

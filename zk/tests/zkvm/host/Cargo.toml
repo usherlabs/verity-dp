@@ -1,5 +1,5 @@
 [package]
-name = "verity-dp-zk-tests-zkvm-host"
+name = "host"
 version = "0.1.0"
 edition = "2021"
 
@@ -9,5 +9,5 @@ methods = { path = "../methods" }
 risc0-zkvm = { workspace = true }
 serde = { workspace = true }
 tracing-subscriber = { workspace = true, features = ["env-filter"] }
-verity-verifier = { path = "../../../../verity/verifier" }
 verity-client = { workspace = true }
+verity-verifier = { workspace = true }
