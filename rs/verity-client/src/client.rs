@@ -1,7 +1,6 @@
 use std::str::FromStr;
 use std::time::Duration;
 
-use anyhow::anyhow;
 use futures::stream::StreamExt;
 use http::{HeaderValue, Method};
 use reqwest::{IntoUrl, Response, Url};
@@ -9,13 +8,13 @@ use reqwest_eventsource::{Event, EventSource};
 use tokio::select;
 use tokio::task::JoinHandle;
 use tokio_util::sync::CancellationToken;
+use tracing::error;
 use uuid::Uuid;
 
 use crate::request::RequestBuilder;
-use crate::Error;
 
-/// Time to wait for a proof received over ZMQ socket since receiving HTTP response
-const PROOF_TIMEOUT: Duration = Duration::from_millis(5000);
+/// Time to wait for a proof received over SSE connection since receiving HTTP response
+const PROOF_TIMEOUT: Duration = Duration::from_millis(1000);
 
 #[derive(Clone)]
 pub struct VerityClientConfig {
@@ -88,10 +87,7 @@ impl VerityClient {
     ///
     /// This method fails if there was an error while sending the request,
     /// a redirect loop was detected, or the redirect limit was exhausted.
-    pub async fn execute(
-        &mut self,
-        request: reqwest::Request,
-    ) -> Result<VerityResponse, crate::Error> {
+    pub async fn execute(&mut self, request: reqwest::Request) -> anyhow::Result<VerityResponse> {
         self.execute_request(request).await
     }
 
@@ -103,19 +99,19 @@ impl VerityClient {
     pub async fn execute_request(
         &mut self,
         mut req: reqwest::Request,
-    ) -> Result<VerityResponse, crate::Error> {
+    ) -> anyhow::Result<VerityResponse> {
         let proxy_url = &String::from(req.url().as_str());
         let headers = req.headers_mut();
 
         let request_id = Uuid::new_v4();
         headers.append(
             "T-REQUEST-ID",
-            HeaderValue::from_str(&format!("{}", request_id)).unwrap(),
+            HeaderValue::from_str(&format!("{}", request_id))?,
         );
 
-        headers.append("T-PROXY-URL", HeaderValue::from_str(proxy_url).unwrap());
+        headers.append("T-PROXY-URL", HeaderValue::from_str(proxy_url)?);
 
-        *req.url_mut() = Url::from_str(&format!("{}/proxy", self.config.prover_url)).unwrap();
+        *req.url_mut() = Url::from_str(&format!("{}/proxy", self.config.prover_url))?;
 
         let req = reqwest::RequestBuilder::from_parts(self.inner.clone(), req);
 
@@ -132,7 +128,7 @@ impl VerityClient {
             self.send_request(req, request_cancellation_token, timeout_cancellation_token),
             proof_awaiter,
         )
-        .map_err(|e| anyhow!("Failed to prove the request: {}", e))?;
+        .map_err(|e| anyhow::anyhow!("Failed to prove the request: {}", e))?;
 
         let subject = response?;
         let (notary_pub_key, proof) = proof_msg?;
@@ -152,20 +148,30 @@ impl VerityClient {
         request: reqwest::RequestBuilder,
         request_cancellation_token: CancellationToken,
         timeout_cancellation_token: CancellationToken,
-    ) -> JoinHandle<Result<reqwest::Response, reqwest::Error>> {
+    ) -> JoinHandle<anyhow::Result<reqwest::Response>> {
         tokio::spawn(async move {
-            let result = request.send().await?;
+            let result = request.send().await;
+            let response = result.map_err(|e| {
+                error!("{}", e);
+                e
+            })?;
 
-            if !result.status().is_success() {
-                request_cancellation_token.cancel();
-            } else {
+            if response.status().is_success() {
                 tokio::spawn(async move {
                     tokio::time::sleep(PROOF_TIMEOUT).await;
                     timeout_cancellation_token.cancel();
                 });
+            } else {
+                request_cancellation_token.cancel();
+                error!(
+                    "Request is not success: {} {}",
+                    response.status().as_str(),
+                    response.status().canonical_reason().unwrap_or_default()
+                );
+                return Ok(response);
             }
 
-            Ok(result)
+            Ok(response)
         })
     }
 
@@ -181,9 +187,8 @@ impl VerityClient {
         request_id: String,
         request_cancellation_token: CancellationToken,
         timeout_cancellation_token: CancellationToken,
-    ) -> Result<JoinHandle<Result<(String, String), Error>>, Error> {
-        let url =
-            Url::from_str(&format!("{}/proof/{}", self.config.prover_url, request_id)).unwrap();
+    ) -> anyhow::Result<JoinHandle<anyhow::Result<(String, String)>>> {
+        let url = Url::from_str(&format!("{}/proof/{}", self.config.prover_url, request_id))?;
         let mut event_source = EventSource::get(url);
 
         let awaiter = tokio::task::spawn(async move {
@@ -191,12 +196,16 @@ impl VerityClient {
                 match event {
                     Ok(Event::Open) => {}
                     Ok(Event::Message(message)) => {
-                        let parts: Vec<&str> = message.data.splitn(3, "|").collect();
+                        let parts: Vec<&str> = message.data.splitn(2, "|").collect();
+                        if parts.len() != 2 {
+                            anyhow::bail!("Invalid proof response");
+                        }
 
                         return Ok((parts[0].to_string(), parts[1].to_string()));
                     }
                     Err(err) => {
-                        println!("Error: {}", err);
+                        error!("{}", err);
+                        Err(err)?
                     }
                 }
             }
@@ -205,16 +214,16 @@ impl VerityClient {
         });
 
         let join_handle = tokio::spawn(async move {
-            // Wait for either ZMQ message, timeout or cancellation
+            // Wait for either SSE message, timeout or cancellation
             select! {
                 proof = awaiter => {
                     proof.unwrap()
                 }
                 () = timeout_cancellation_token.cancelled() => {
-                    Err(anyhow!("Timeout reached while waiting for a proof"))?
+                    anyhow::bail!("Timeout reached while waiting for a proof")
                 }
                 () = request_cancellation_token.cancelled() => {
-                    Ok((String::from(""), String::from("")))
+                    Ok((String::new(), String::new()))
                 }
             }
         });

@@ -1,14 +1,16 @@
 use verity_client::client::{VerityClient, VerityClientConfig};
 
 #[tokio::main()]
-async fn main() -> Result<(), reqwest::Error> {
+async fn main() -> anyhow::Result<()> {
+    tracing_subscriber::fmt::init();
+
     println!("Proving a POST request using VerityClient...");
 
     let config = VerityClientConfig {
         prover_url: String::from("http://127.0.0.1:8080"),
     };
 
-    let result = VerityClient::new(config)
+    let response = VerityClient::new(config)
         .post(String::from("https://jsonplaceholder.typicode.com/posts"))
         .json(&serde_json::json!({
             "userId": 1000,
@@ -19,19 +21,15 @@ async fn main() -> Result<(), reqwest::Error> {
         }))
         .redact(String::from("req:body:firstName, res:body:firstName"))
         .send()
-        .await;
+        .await?;
 
-    let response = match result {
-        Ok(response) => response,
-        Err(e) => {
-            println!("Error: {}", e);
-            return Ok(());
-        }
-    };
-
-    let json: serde_json::Value = response.subject.json().await.unwrap();
-    println!("json: {:#?}", json);
-    println!("response.proof.len(): {:#?}", response.proof.len());
+    if response.subject.status().is_success() {
+        let json: serde_json::Value = response.subject.json().await.unwrap();
+        println!("json: {:#?}", json);
+        println!("response.proof.len(): {:#?}", response.proof.len());
+    } else {
+        anyhow::bail!(response.subject.status());
+    }
 
     Ok(())
 }

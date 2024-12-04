@@ -4,10 +4,7 @@ use http::{HeaderName, HeaderValue};
 use reqwest::{header::HeaderMap, Body, Request};
 use serde::Serialize;
 
-use crate::{
-    client::{VerityClient, VerityResponse},
-    error::Result,
-};
+use crate::client::{VerityClient, VerityResponse};
 
 /// A builder to construct the properties of a `Request`.
 ///
@@ -120,7 +117,6 @@ impl RequestBuilder {
     ///
     /// let config = VerityClientConfig {
     ///     prover_url: String::from("http://127.0.0.1:8080"),
-    ///     prover_zmq: String::from("tcp://127.0.0.1:8080"),
     /// };
     ///
     /// let response = VerityClient::new(config)
@@ -130,7 +126,7 @@ impl RequestBuilder {
     /// # Ok(())
     /// # }
     /// ```
-    pub async fn send(self) -> Result<VerityResponse> {
+    pub async fn send(self) -> anyhow::Result<VerityResponse> {
         let (mut client, req) = self.build_split();
         client.execute_request(req?).await
     }
