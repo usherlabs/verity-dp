@@ -34,6 +34,15 @@ pub struct VerityResponse {
 	pub notary_pub_key: String,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct NotaryInformation {
+	pub version: String,
+	pub public_key: String,
+	pub git_commit_hash: String,
+	pub git_commit_timestamp: String,
+}
+
 impl VerityClient {
 	/// Creates a new `VerityClient` with the given configuration.
 	pub fn new(config: VerityClientConfig) -> Self {
@@ -217,5 +226,15 @@ impl VerityClient {
 		});
 
 		Ok(join_handle)
+	}
+
+	/// Get the information of the connected notary
+	pub async fn get_notary_info(&self) -> Result<NotaryInformation> {
+		let notary_info_url = format!("{}/notaryinfo", self.config.prover_url);
+		let notary_information = reqwest
+			::get(notary_info_url).await?
+			.json::<NotaryInformation>().await?;
+
+		Ok(notary_information)
 	}
 }

@@ -9,4 +9,4 @@ members = [
     "zk/host",
     "zk/guest",
 ]
-resolver = "1"
+resolver = "2"

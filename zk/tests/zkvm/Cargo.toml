@@ -11,7 +11,7 @@ authors = ["Usher Labs <labs@usher.so>"]
 repository = "https://github.com/usherlabs/verity"
 homepage = "https://www.usher.so/"
 edition = "2021"
-license = "Apache-2.0"
+license = "LGPL-3.0"
 
 [workspace.dependencies]
 chrono = { version = "0.4" }
@@ -19,4 +19,5 @@ serde = "1.0"
 tracing-subscriber = "0.3"
 risc0-build = { version = "1.0" }
 risc0-zkvm = { version = "1.0" }
-verity-verifier = { path = "../../../../verity/verifier" }
+verity-dp-zk-host = { path = "../../host" }
+verity-client = { path = "../../../rs/verity-client" }

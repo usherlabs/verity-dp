@@ -1,5 +1,5 @@
 [package]
-name = "zkvm_guest"
+name = "verity-dp-zk-tests-zkvm-guest"
 version = "0.1.0"
 edition = "2021"
 
