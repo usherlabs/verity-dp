@@ -5,6 +5,7 @@ members = [
     "rs/local-verify",
     "rs/remote-verify",
     "rs/verity-client",
+    "rs/tests/load",
     "zk/host",
     "zk/guest",
 ]
