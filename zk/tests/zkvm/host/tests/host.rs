@@ -12,8 +12,9 @@ use verity_verifier::verify_proof;
 fn host_works() {
 	env::set_var("RISC0_DEV_MODE", "1");
 
-	let profile_file = format!("../profile/{}.pb", Local::now().format("%Y-%m-%d_%H-%M-%S"));
-	env::set_var("RISC0_PPROF_OUT", profile_file);
+	// TODO: This profiling mechanism causes the proof generation to fail.
+	// let profile_file = format!("../profile/{}.pb", Local::now().format("%Y-%m-%d_%H-%M-%S"));
+	// env::set_var("RISC0_PPROF_OUT", profile_file);
 
 	// Initialize tracing. In order to view logs, run `RUST_LOG=info cargo run`
 	tracing_subscriber
@@ -45,7 +46,11 @@ fn host_works() {
 
 	// Proof information by proving the specified ELF binary.
 	// This struct contains the receipt along with statistics about execution of the guest
-	println!("Proving... ELF size: {:?}", ZKVM_GUEST_ELF.len());
+	println!("Proving...");
+	println!("Proof size: {:?}", proof.len());
+	println!("Notary Pub Key size: {:?}", notary_pub_key.len());
+	println!("ELF size: {:?}", ZKVM_GUEST_ELF.len());
+	println!("--------------------------------");
 	let prove_info = prover.prove(env, ZKVM_GUEST_ELF).unwrap();
 
 	// extract the receipt.
