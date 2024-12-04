@@ -17,6 +17,8 @@ pub struct RequestBuilder {
 
 impl RequestBuilder {
 	/// Add a `Header` to this Request.
+	///
+	/// This method allows you to add a single header to the request.
 	pub fn header<K, V>(self, key: K, value: V) -> Self
 		where
 			HeaderName: TryFrom<K>,
@@ -32,7 +34,7 @@ impl RequestBuilder {
 
 	/// Add a set of Headers to the existing ones on this Request.
 	///
-	/// The headers will be merged in to any already set.
+	/// This method merges the provided headers with any already set on the request.
 	pub fn headers(self, headers: HeaderMap) -> Self {
 		RequestBuilder {
 			inner: self.inner.headers(headers),
@@ -41,6 +43,8 @@ impl RequestBuilder {
 	}
 
 	/// Set the request body.
+	///
+	/// This method sets the body of the request to the provided value.
 	pub fn body<T: Into<Body>>(self, body: T) -> Self {
 		RequestBuilder {
 			inner: self.inner.body(body),
@@ -49,6 +53,8 @@ impl RequestBuilder {
 	}
 
 	/// Send a JSON body.
+	///
+	/// This method serializes the provided data structure as JSON and sets it as the request body.
 	///
 	/// # Errors
 	///
@@ -63,7 +69,7 @@ impl RequestBuilder {
 
 	/// Add a Redact instruction.
 	///
-	/// Redact instructs Verity Prover on how to hide a sensitive data.
+	/// This method adds a header to instruct Verity Prover on how to hide sensitive data.
 	pub fn redact(self, redact: String) -> Self {
 		RequestBuilder {
 			inner: self.inner.header("T-REDACTED", HeaderValue::from_str(&redact).unwrap()),
@@ -71,8 +77,10 @@ impl RequestBuilder {
 		}
 	}
 
-	/// Build a `Request`, which can be inspected, modified and executed with
-	/// `VerityClient::execute()`.
+	/// Build a `Request`.
+	///
+	/// This method constructs the request, which can then be
+	/// inspected, modified and executed with `VerityClient::execute()`.
 	pub fn build(self) -> reqwest::Result<Request> {
 		self.inner.build()
 	}

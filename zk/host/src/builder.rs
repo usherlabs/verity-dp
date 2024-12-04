@@ -12,55 +12,63 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use std::{collections::HashMap, env};
+use std::{ collections::HashMap, env };
 
-use risc0_build::{embed_methods_with_options, DockerOptions, GuestOptions};
+use risc0_build::{ embed_methods_with_options, DockerOptions, GuestOptions };
 use risc0_build_ethereum::generate_solidity_files;
 
 use dotenv;
 
-/// Paramters concerning the solidity code to be generated 
+/// Parameters for generating Solidity code.
 pub struct SolidityBuildParams {
-    /// Path of where to save the generated imageID.sol file after running the build function
-    pub solidity_image_id_path: String,
-    /// Path of where to save the ELF.sol file after running the build
-    pub solidity_elf_path: String,
+	/// Path to save the generated ImageID.sol file after building.
+	pub solidity_image_id_path: String,
+	/// Path to save the ELF.sol file after building.
+	pub solidity_elf_path: String,
 }
 
 impl Default for SolidityBuildParams {
-     fn default() -> Self {
-        Self {
-            solidity_image_id_path: String::from("../contracts/ImageID.sol"),
-            solidity_elf_path: String::from("../tests/Elf.sol"),
-        }
-    }
+	fn default() -> Self {
+		Self {
+			solidity_image_id_path: String::from("../contracts/ImageID.sol"),
+			solidity_elf_path: String::from("../tests/Elf.sol"),
+		}
+	}
 }
 
-/// Run this method as a build hook in the guest repo
-/// It is used to build the necessary solidity files to identify the circuit.
-/// Make sure to add as a build dependency
+/// Executes as a build hook in the guest repository.
+/// This function builds the necessary Solidity files to identify the circuit.
+/// Ensure it is added as a build dependency.
 pub fn build(build_params: SolidityBuildParams) {
-    dotenv::dotenv().ok();
+	dotenv::dotenv().ok();
 
-    // Builds can be made deterministic, and thereby reproducible, by using Docker to build the
-    // guest. Check the RISC0_USE_DOCKER variable and use Docker to build the guest if set.
-    let use_docker = env::var("RISC0_USE_DOCKER").ok().map(|_| DockerOptions {
-        root_dir: Some("../".into()),
-    });
+	// Builds can be made deterministic and reproducible by using Docker to build the
+	// guest. Check the RISC0_USE_DOCKER variable and use Docker to build the guest if set.
+	let use_docker = env
+		::var("RISC0_USE_DOCKER")
+		.ok()
+		.map(|_| DockerOptions {
+			root_dir: Some("../".into()),
+		});
 
-    // Generate Rust source files for the methods crate.
-    let guests = embed_methods_with_options(HashMap::from([(
-        "guests",
-        GuestOptions {
-            features: Vec::new(),
-            use_docker,
-        },
-    )]));
+	// Generate Rust source files for the methods crate.
+	let guests = embed_methods_with_options(
+		HashMap::from([
+			(
+				"guests",
+				GuestOptions {
+					features: Vec::new(),
+					use_docker,
+				},
+			),
+		])
+	);
 
-    // Generate Solidity source files for use with Forge.
-    let solidity_opts = risc0_build_ethereum::Options::default()
-        .with_image_id_sol_path(build_params.solidity_image_id_path)
-        .with_elf_sol_path(build_params.solidity_elf_path);
+	// Generate Solidity source files for use with Forge.
+	let solidity_opts = risc0_build_ethereum::Options
+		::default()
+		.with_image_id_sol_path(build_params.solidity_image_id_path)
+		.with_elf_sol_path(build_params.solidity_elf_path);
 
-    generate_solidity_files(guests.as_slice(), &solidity_opts).unwrap();
+	generate_solidity_files(guests.as_slice(), &solidity_opts).unwrap();
 }

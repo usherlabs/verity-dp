@@ -35,6 +35,7 @@ pub struct VerityResponse {
 }
 
 impl VerityClient {
+	/// Creates a new `VerityClient` with the given configuration.
 	pub fn new(config: VerityClientConfig) -> Self {
 		return Self {
 			inner: reqwest::Client::new(),
@@ -60,9 +61,9 @@ impl VerityClient {
 		self.request(Method::POST, url)
 	}
 
-	/// Start building a `Request` with the `Method` and `Url`.
+	/// Starts building a `Request` with the specified `Method` and `Url`.
 	///
-	/// Returns a `RequestBuilder`, which will allow setting headers and
+	/// Returns a `RequestBuilder`, which allows setting headers and
 	/// the request body before sending.
 	///
 	/// # Errors
@@ -75,7 +76,7 @@ impl VerityClient {
 		}
 	}
 
-	/// Executes a `Request`.
+	/// Executes a `Request` and returns a `VerityResponse`.
 	///
 	/// A `Request` can be built manually with `Request::new()` or obtained
 	/// from a RequestBuilder with `RequestBuilder::build()`.
@@ -85,8 +86,8 @@ impl VerityClient {
 	///
 	/// # Errors
 	///
-	/// This method fails if there was an error while sending request,
-	/// redirect loop was detected or redirect limit was exhausted.
+	/// This method fails if there was an error while sending the request,
+	/// a redirect loop was detected, or the redirect limit was exhausted.
 	pub async fn execute(
 		&mut self,
 		request: reqwest::Request
@@ -94,6 +95,11 @@ impl VerityClient {
 		self.execute_request(request).await
 	}
 
+	/// Executes the given request and awaits proof of execution.
+	///
+	/// # Errors
+	///
+	/// This method fails if the request cannot be sent or if proof cannot be obtained.
 	pub async fn execute_request(
 		&mut self,
 		mut req: reqwest::Request
@@ -136,6 +142,9 @@ impl VerityClient {
 		})
 	}
 
+	/// Sends the request and handles cancellation tokens.
+	///
+	/// Returns a `JoinHandle` that resolves to the response or an error.
 	fn send_request(
 		&self,
 		request: reqwest::RequestBuilder,
@@ -158,6 +167,13 @@ impl VerityClient {
 		})
 	}
 
+	/// Awaits proof of request execution.
+	///
+	/// Returns a `JoinHandle` that resolves to the proof or an error.
+	///
+	/// # Errors
+	///
+	/// This method fails if the proof cannot be obtained.
 	fn await_proof(
 		&self,
 		request_id: String,
