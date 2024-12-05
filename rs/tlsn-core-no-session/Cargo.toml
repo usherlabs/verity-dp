@@ -1,0 +1,25 @@
+[package]
+name = "tlsn-core-no-session"
+version.workspace = true
+authors.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+license.workspace = true
+edition.workspace = true
+
+[dependencies]
+bimap = { workspace = true, features = ["serde"] }
+bincode = { workspace = true }
+bytes = { workspace = true, features = ["serde"] }
+mpz-circuits = { workspace = true }
+mpz-core = { workspace = true }
+mpz-garble-core = { workspace = true }
+opaque-debug = { workspace = true }
+rs_merkle = { workspace = true }
+serde = { workspace = true }
+thiserror = { workspace = true }
+tlsn-utils = { workspace = true }
+
+[dev-dependencies]
+rstest = { workspace = true }
+serde_json = { workspace = true }

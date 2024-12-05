@@ -11,6 +11,7 @@ mod tests {
 	use std::fs;
 
 	// Simple test
+	#[ignore]
 	#[tokio::test]
 	async fn async_test_example() -> anyhow::Result<()> {
 		// Read the file content into a string

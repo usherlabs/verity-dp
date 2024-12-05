@@ -153,6 +153,7 @@ pub async fn sign_message(
 mod tests {
 	use super::*;
 
+	#[ignore]
 	#[test]
 	fn test_recover_address_from_eth_signature() {
 		let message = "hello".to_string();

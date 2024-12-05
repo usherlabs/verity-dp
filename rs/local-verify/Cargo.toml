@@ -1,15 +1,19 @@
 [package]
 name = "verity-local-verify"
-version = "0.2.0"
-license = "MIT/Apache-2.0"
 description = "A library providing utilities for locally verifying Merkle tree responses obtained from the managed Verity Verifier"
-documentation = "https://www.usher.so/"
 keywords = ["verity", "IC", "canister", "merkleproof"]
-edition = "2021"
+version.workspace = true
+authors.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+license.workspace = true
+edition.workspace = true
 
 [dependencies]
-hex = "0.4.3"
-rs_merkle = "1.4.2"
-libsecp256k1 = { version = "0.7.1", default-features = false, features = ["lazy-static-context"] }
-easy-hasher = "2.2.1"
-anyhow = "1.0.90"
+anyhow = { workspace = true }
+easy-hasher = { workspace = true }
+hex = { workspace = true }
+libsecp256k1 = { workspace = true, default-features = false, features = [
+  "lazy-static-context",
+] }
+rs_merkle = { workspace = true }

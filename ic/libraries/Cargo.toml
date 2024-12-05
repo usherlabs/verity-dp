@@ -1,26 +1,27 @@
 [package]
 name = "verity-dp-ic"
-version = "0.2.0"
-license = "MIT/Apache-2.0"
 description = "A library containing utilities for the Verity IC components"
-documentation = "https://www.usher.so/"
-readme = "./README.md"
 keywords = ["verity", "IC", "canister"]
-edition = "2021"
+readme = "./README.md"
+version.workspace = true
+authors.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+license.workspace = true
+edition.workspace = true
 
 [dependencies]
-candid = "0.10"
-ic-cdk = "0.16"
-ic-cdk-timers = "0.10"
-serde = "1.0.126"
-serde_derive = "1.0.126"
-serde_json = "1.0"
-solabi = "0.2.0"
-easy-hasher = "2.2.1"
-hex = "0.4.3"
-libsecp256k1 = { version = "0.7.1", default-features = false, features = ["lazy-static-context"] }
-getrandom = { version = "0.2", features = ["custom"] }
-sha3 = "0.10.8"
-rand = { version = "0.8.5", features = ["getrandom"]}
-eth-encode-packed = "0.1.0"
-anyhow = "1.0.93"
+anyhow = { workspace = true }
+candid = { workspace = true }
+easy-hasher = { workspace = true }
+eth-encode-packed = { workspace = true }
+getrandom = { workspace = true, features = ["custom"] }
+hex = { workspace = true }
+ic-cdk = { workspace = true }
+ic-cdk-timers = { workspace = true }
+libsecp256k1 = { workspace = true, default-features = false, features = [
+  "lazy-static-context",
+] }
+rand = { workspace = true, features = ["getrandom"] }
+serde = { workspace = true }
+serde_json = { workspace = true }

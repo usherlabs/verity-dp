@@ -1,0 +1,22 @@
+[package]
+name = "verity-verifier"
+description = "Verity Verifier"
+version.workspace = true
+authors.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+license.workspace = true
+edition.workspace = true
+
+[dependencies]
+cfg-if = { workspace = true }
+elliptic-curve = { workspace = true, optional = true }
+p256 = { workspace = true, optional = true }
+serde_json = { workspace = true }
+tlsn-core = { workspace = true, optional = true }
+tlsn-core-no-session = { workspace = true, optional = true }
+
+[features]
+default = ["session"]
+no-session = ["dep:tlsn-core-no-session"]
+session = ["dep:tlsn-core", "dep:p256", "dep:elliptic-curve"]
