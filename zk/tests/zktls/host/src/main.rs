@@ -11,6 +11,7 @@ use std::env;
 // use verity_dp_zk_host::generate_groth16_proof;
 
 pub const DEFAULT_PROVER_URL: &str = "http://127.0.0.1:8080";
+pub const DEFAULT_VERITY_VERIFIER_ID: &str = "bkyz2-fmaaa-aaaaa-qaaaq-cai";
 
 /// The input parameters for the zk_circuit
 ///
@@ -115,7 +116,7 @@ async fn main() -> anyhow::Result<()> {
 
     // TODO: This should eventually be abstracted away from the user...
     let rv_identity_path = "fixtures/identity.pem";
-    let rv_id = "bkyz2-fmaaa-aaaaa-qaaaq-cai".to_string();
+    let rv_id = DEFAULT_VERITY_VERIFIER_ID.to_string();
     let rv_config = Config::new(
         DEFAULT_IC_GATEWAY_LOCAL.to_string(),
         rv_identity_path.to_string(),
