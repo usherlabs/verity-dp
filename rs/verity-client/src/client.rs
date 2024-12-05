@@ -129,7 +129,7 @@ impl VerityClient {
 				self.send_request(req, request_cancellation_token, timeout_cancellation_token),
 				proof_awaiter
 			)
-			.map_err(|e| anyhow!("Failed to prove the request: {}", e))?;
+			.map_err(|e| anyhow::anyhow!("Failed to prove the request: {}", e))?;
 
         let subject = response?;
         let (notary_pub_key, proof) = proof_msg?;
