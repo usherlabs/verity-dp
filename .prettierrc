@@ -21,6 +21,13 @@
 			}
 		},
 		{
+			"files": "*.rs",
+			"options": {
+				"tabWidth": 4,
+				"useTabs": false
+			}
+		},
+		{
 			"files": ["*.ts"],
 			"options": {
 				"plugins": ["@trivago/prettier-plugin-sort-imports"],

@@ -64,10 +64,8 @@ pub fn is_subscribed(canister_principal: Principal) -> bool {
 		"REMITTANCE_CANISTER_NOT_INITIALIZED"
 	);
 
-	return (
-		whitelisted_remittance_canister.canister_principal == canister_principal &&
+	whitelisted_remittance_canister.canister_principal == canister_principal &&
 		whitelisted_remittance_canister.subscribed
-	);
 }
 
 /// Publish an array of DC state changes to the remittance canister

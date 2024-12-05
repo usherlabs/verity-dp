@@ -1,0 +1,18 @@
+[package]
+name = "host"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+methods = { path = "../methods" }
+risc0-zkvm = { workspace = true }
+tracing-subscriber = { workspace = true, features = ["env-filter"] }
+serde = { workspace = true }
+serde_json = { workspace = true }
+reqwest = { workspace = true }
+verity-client = { workspace = true }
+tokio = { workspace = true }
+verity-verifier = { workspace = true }
+verity-remote-verify = { workspace = true }
+verity-dp-zk-host = { workspace = true }
+anyhow = {workspace = true}

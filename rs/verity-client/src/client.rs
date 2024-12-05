@@ -5,6 +5,7 @@ use futures::stream::StreamExt;
 use http::{HeaderValue, Method};
 use reqwest::{IntoUrl, Response, Url};
 use reqwest_eventsource::{Event, EventSource};
+use serde::{Deserialize, Serialize};
 use tokio::select;
 use tokio::task::JoinHandle;
 use tokio_util::sync::CancellationToken;
@@ -31,6 +32,15 @@ pub struct VerityResponse {
     pub subject: Response,
     pub proof: String,
     pub notary_pub_key: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct NotaryInformation {
+    pub version: String,
+    pub public_key: String,
+    pub git_commit_hash: String,
+    pub git_commit_timestamp: String,
 }
 
 impl VerityClient {
@@ -124,12 +134,12 @@ impl VerityClient {
             timeout_cancellation_token.clone(),
         )?;
 
-		// prettier-ignore
-		let (response, proof_msg) = tokio::try_join!(
-				self.send_request(req, request_cancellation_token, timeout_cancellation_token),
-				proof_awaiter
-			)
-			.map_err(|e| anyhow!("Failed to prove the request: {}", e))?;
+        // prettier-ignore
+        let (response, proof_msg) = tokio::try_join!(
+            self.send_request(req, request_cancellation_token, timeout_cancellation_token),
+            proof_awaiter
+        )
+        .map_err(|e| anyhow::anyhow!("Failed to prove the request: {}", e))?;
 
         let subject = response?;
         let (notary_pub_key, proof) = proof_msg?;
@@ -206,7 +216,7 @@ impl VerityClient {
                     }
                     Err(err) => {
                         error!("{}", err);
-                        Err(err)?
+                        Err(err)?;
                     }
                 }
             }
@@ -230,5 +240,16 @@ impl VerityClient {
         });
 
         Ok(join_handle)
+    }
+
+    /// Get the information of the connected notary
+    pub async fn get_notary_info(&self) -> anyhow::Result<NotaryInformation> {
+        let notary_info_url = format!("{}/notaryinfo", self.config.prover_url);
+        let notary_information = reqwest::get(notary_info_url)
+            .await?
+            .json::<NotaryInformation>()
+            .await?;
+
+        Ok(notary_information)
     }
 }

@@ -1,7 +1,6 @@
 [submodule "verity"]
 	path = verity
 	url = git@github.com:usherlabs/verity.git
-	branch = feature/create-session-verifier
 [submodule "src/evm/lib/forge-std"]
 	path = src/evm/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std

@@ -1,5 +1,5 @@
 [package]
-name = "zkvm_guest"
+name = "verity_zk_tests_zktls_guest"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,6 +7,9 @@ edition = "2021"
 
 [dependencies]
 risc0-zkvm = { version = "1.1.2", default-features = false, features = ['std'] }
+verity-local-verify = { path = "../../../../../rs/local-verify" }
 verity-verifier = { path = "../../../../../../verity/verifier", default-features = false, features = [
   "no-session",
 ] }
+serde = "1.0"
+serde_json = "1.0"

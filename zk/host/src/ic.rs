@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use verity_remote_verify::{ config::Config, ic::Verifier };
+use verity_remote_verify::{ config::Config, ic::Verifier, ic::VerificationResponse };
 
 /// Asynchronously verifies a proof using the Internet Computer (IC).
 ///
@@ -18,7 +18,7 @@ pub async fn verify_proof(
 	json_string_proofs: Vec<String>,
 	notary_pub_key: String,
 	config: Config
-) -> Result<remote_verify::ic::VerificationResponse, Box<dyn Error>> {
+) -> Result<VerificationResponse, Box<dyn Error>> {
 	// Initialize the verifier using the provided configuration
 	let verifier = Verifier::from_config(&config).await.unwrap();
 
