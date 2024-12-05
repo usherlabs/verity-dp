@@ -20,6 +20,7 @@ serde_json = "1.0"
 tracing-subscriber = "0.3"
 tokio = { version = "1.39", features = ["macros", "rt-multi-thread"] }
 reqwest = { version = "0.12", features = ["json"] }
+anyhow = "1.0.94"
 risc0-zkvm = { version = "1.1.2" }
 verity-dp-zk-host = { path = "../../host" }
 verity-client = { path = "../../../rs/verity-client" }

@@ -15,3 +15,4 @@ tokio = { workspace = true }
 verity-verifier = { workspace = true }
 verity-remote-verify = { workspace = true }
 verity-dp-zk-host = { workspace = true }
+anyhow = {workspace = true}

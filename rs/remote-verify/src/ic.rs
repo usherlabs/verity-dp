@@ -4,7 +4,7 @@ use crate::config::Config;
 use candid::{ CandidType, Decode };
 use ic_agent::{ export::Principal, Agent };
 use verity_local_verify::{ self, ecdsa::validate_ecdsa_signature, merkle::validate_merkle_tree };
-use serde::{ Serialize, Deserialize };
+use serde::Deserialize;
 pub const DEFAULT_IC_GATEWAY_LOCAL: &str = "http://127.0.0.1:4943";
 pub const DEFAULT_IC_GATEWAY_MAINNET: &str = "https://icp0.io";
 pub const DEFAULT_IC_GATEWAY_MAINNET_TRAILING_SLASH: &str = "https://icp0.io/";
@@ -20,14 +20,14 @@ pub struct PublicKeyReply {
     pub etherum_pk: String,
 }
 
-#[derive(CandidType, Serialize, Deserialize, Debug, Clone)]
+#[derive(CandidType, Deserialize, Debug, Clone)]
 pub struct VerificationResponse {
     pub results: Vec<ProofResponse>,
     pub root: String,
     pub signature: String,
 }
 
-#[derive(CandidType, Serialize, Deserialize, Debug, Clone)]
+#[derive(CandidType, Deserialize, Debug, Clone)]
 pub enum ProofResponse {
     SessionProof(String), //takes in reques response
     FullProof(String), //takes in
@@ -51,7 +51,7 @@ type CanisterResponseType = Result<VerificationResponse, String>;
 impl Verifier {
     /// Creates a new verifier from a config struct
     pub async fn from_config(config: &Config) -> anyhow::Result<Self> {
-        let agent = config.create_agent().await.unwrap();
+        let agent = config.create_agent().await?;
         Ok(Self {
             agent,
             canister: config.canister_principal,

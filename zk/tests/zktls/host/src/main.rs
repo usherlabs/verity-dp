@@ -7,19 +7,11 @@ use verity_remote_verify::{ ic::{ Verifier, DEFAULT_IC_GATEWAY_LOCAL }, config::
 use serde::{ Serialize, Deserialize };
 use serde_json;
 use verity_verifier::verify_proof;
-use std::fs::read_to_string;
+use std::env;
 // use verity_dp_zk_host::generate_groth16_proof;
 
 pub const DEFAULT_PROVER_URL: &str = "http://127.0.0.1:8080";
 
-/// Proof that a transcript of communications took place between a Prover and Server.
-#[derive(Debug, Serialize, Deserialize)]
-pub struct TlsProof {
-    /// Proof of the TLS handshake, server identity, and commitments to the transcript.
-    pub session: String,
-    // /// Proof regarding the contents of the transcript.
-    // pub substrings: String,
-}
 /// The input parameters for the zk_circuit
 ///
 /// Contains the details needed for proof verification
@@ -33,8 +25,17 @@ pub struct ZkInputParam {
     pub remote_verifier_public_key: String,
 }
 
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct RemoteVerificationProof {
+    pub results: Vec<String>,
+    pub root: String,
+    pub signature: String,
+}
+
 #[tokio::main()]
-async fn main() -> Result<(), reqwest::Error> {
+async fn main() -> anyhow::Result<()> {
+    env::set_var("RISC0_DEV_MODE", "1"); // Included to ensure the zkVM prover is fast for demo purposes.
+
     // Initialize tracing. In order to view logs, run `RUST_LOG=info cargo run`
     tracing_subscriber
         ::fmt()
@@ -102,25 +103,31 @@ async fn main() -> Result<(), reqwest::Error> {
 
     // Totally optional to verify proof on host too.
     // For the sake of this demo, we'll verify the proof on the host to ensure both the zkVM and host agree to the verification.
-    let verified_by_host = verify_proof(&response.proof, &notary_pub_key).unwrap();
-
+    let verified_by_host: (String, String) = verify_proof(
+        &response.proof,
+        &notary_pub_key
+    ).unwrap();
+    println!("verified_by_host: {:#?}", verified_by_host);
     // Perform the partial remote verification against decentralised compute
 
     // 1. Create a config file by specifying the params
     // ? To optain this identity.pem, use `dfx identity export` - https://internetcomputer.org/docs/current/developer-docs/developer-tools/cli-tools/cli-reference/dfx-parent
 
     // TODO: This should eventually be abstracted away from the user...
-    let rv_identity_path = read_to_string("../fixtures/identity.pem").unwrap();
+    let rv_identity_path = "fixtures/identity.pem";
     let rv_id = "bkyz2-fmaaa-aaaaa-qaaaq-cai".to_string();
-    let rv_config = Config::new(DEFAULT_IC_GATEWAY_LOCAL.to_string(), rv_identity_path, rv_id);
+    let rv_config = Config::new(
+        DEFAULT_IC_GATEWAY_LOCAL.to_string(),
+        rv_identity_path.to_string(),
+        rv_id
+    );
 
     // 2. Create verifier from a config file
     let remote_verifier = Verifier::from_config(&rv_config).await.unwrap();
 
     // 3. Extract our the public/private sub-proofs
-    let TlsProof {
-        session, // Public session and handshake data from TLS proof
-    } = serde_json::from_str(&response.proof).unwrap();
+    let proof_value: serde_json::Value = serde_json::from_str(&response.proof).unwrap();
+    let session = proof_value["session"].to_string();
 
     // 4. Verify a proof and get the response
     let verified_by_remote = remote_verifier
@@ -130,6 +137,22 @@ async fn main() -> Result<(), reqwest::Error> {
             notary_pub_key
         ).await
         .unwrap();
+
+    // Assuming `verified_by_remote` is of type `VerifierResponse` and has a field `results`
+    // which is a vector of some type that has a method `get_content()`.
+    let leaves: Vec<String> = verified_by_remote.results
+        .iter()
+        .map(|proof_response| proof_response.get_content())
+        .collect();
+
+    // Create a `RemoteVerificationProof` instance
+    let remote_verifier_proof = RemoteVerificationProof {
+        results: leaves,
+        root: verified_by_remote.root.clone(),
+        signature: verified_by_remote.signature.clone(),
+    };
+
+    println!("\nverified_by_remote: {:#?}", remote_verifier_proof);
 
     // Now we have a proof of remote verification... We can use this to verify the private transcript data within the zkVM
     // ? The reason to split the proofs is becuase the crypto primitives used for session verification are not compatible zkVM and/or dramatically increase ZK proving times.
@@ -142,7 +165,7 @@ async fn main() -> Result<(), reqwest::Error> {
         ::to_string(
             &(ZkInputParam {
                 tls_proof: response.proof.clone(),
-                remote_verifier_proof: serde_json::to_string(&verified_by_remote).unwrap(),
+                remote_verifier_proof: serde_json::to_string(&remote_verifier_proof).unwrap(),
                 remote_verifier_public_key,
             })
         )
@@ -156,8 +179,12 @@ async fn main() -> Result<(), reqwest::Error> {
 
     // Proof information by proving the specified ELF binary.
     // This struct contains the receipt along with statistics about execution of the guest
-    println!("Proving...");
+    println!("Proving via zkVM...");
 
+    // TODO: This zkVM prover will still take an absurd amount of time on a local machine...
+    // This is becasue the crypto primitives involve randomness that causes zkVM to take a long time.
+    // This is still a WIP and Usher Labs aims to solve this.
+    // For the purpose of this demo, we will ensure RSIC0_DEV_MODE=1 is active.
     let prove_info = prover.prove(env, VERITY_ZK_TESTS_ZKTLS_GUEST_ELF).unwrap();
 
     // extract the receipt.
@@ -173,6 +200,8 @@ async fn main() -> Result<(), reqwest::Error> {
     receipt.verify(VERITY_ZK_TESTS_ZKTLS_GUEST_ID).unwrap();
 
     println!("STARK proof generated and verified!");
+
+    println!("Host and guest both agree to the correctness of the TLS data.");
 
     Ok(())
 }
