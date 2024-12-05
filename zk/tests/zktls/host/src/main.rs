@@ -44,10 +44,12 @@ async fn main() -> Result<(), reqwest::Error> {
     // Entry point of the program
     println!("Hello Verity zkTLS Demo!");
 
+    // -------------------- // THE PLAN // ------------------------
     // Generate a TLS attestation using Verity Client
     // Pepare the TLS proof for the guest
     // Call the zkVM guest for zkSNARK
     // Verify the SNARK
+    // -------------------- // THE PLAN // ------------------------
 
     println!("Proving a GET request using VerityClient...");
 
@@ -99,14 +101,17 @@ async fn main() -> Result<(), reqwest::Error> {
     // ExecutorEnvBuilder::build().
 
     // Totally optional to verify proof on host too.
+    // For the sake of this demo, we'll verify the proof on the host to ensure both the zkVM and host agree to the verification.
     let verified_by_host = verify_proof(&response.proof, &notary_pub_key).unwrap();
 
-    // Perform the partial remote verification against dcentralised compute
+    // Perform the partial remote verification against decentralised compute
 
     // 1. Create a config file by specifying the params
-    let rv_identity_path = read_to_string("../fixtures/identity.pem").unwrap(); // ? To optain this identity.pem, use `dfx identity export`
-    let rv_id = "bkyz2-fmaaa-aaaaa-qaaaq-cai".to_string();
+    // ? To optain this identity.pem, use `dfx identity export` - https://internetcomputer.org/docs/current/developer-docs/developer-tools/cli-tools/cli-reference/dfx-parent
+
     // TODO: This should eventually be abstracted away from the user...
+    let rv_identity_path = read_to_string("../fixtures/identity.pem").unwrap();
+    let rv_id = "bkyz2-fmaaa-aaaaa-qaaaq-cai".to_string();
     let rv_config = Config::new(DEFAULT_IC_GATEWAY_LOCAL.to_string(), rv_identity_path, rv_id);
 
     // 2. Create verifier from a config file
