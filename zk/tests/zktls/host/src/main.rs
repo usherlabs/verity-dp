@@ -16,23 +16,15 @@ pub struct TlsProof {
     /// Proof regarding the contents of the transcript.
     pub substrings: String,
 }
-
-/// Session information from TLS proof session sub-proof
-#[derive(Debug, Serialize, Deserialize)]
-pub struct TlsSessionProof {
-    /// Session header information from TLS proof session sub-proof
-    pub header: String,
-}
-
 /// The input parameters for the zk_circuit
 ///
 /// Contains the details needed for proof verification
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ZkInputParam {
     /// Session header information
-    pub session_header: String,
+    pub tls_proof: String,
     /// Proof of substrings
-    pub substrings: String,
+    pub remote_verifier_proof: String,
     /// Remote verifier's ECDSA public key
     pub remote_verifier_public_key: String,
     /// Notary Public Key
@@ -121,7 +113,6 @@ async fn main() -> Result<(), reqwest::Error> {
     // 3. Extract our the public/private sub-proofs
     let TlsProof {
         session, // Public session and handshake data from TLS proof
-        substrings, // Private transcript request/response data from TLS proof
     } = serde_json::from_str(&response.proof).unwrap();
 
     // 4. Verify a proof and get the response
@@ -129,7 +120,7 @@ async fn main() -> Result<(), reqwest::Error> {
         // You can verify multiple proofs at once
         vec![session],
         notary_pub_key
-    ).await;
+    ).await?;
 
     // Now we have a proof of remote verification... We can use this to verify the private transcript data within the zkVM
     // ? The reason to split the proofs is becuase the crypto primitives used for session verification are not compatible zkVM and/or dramatically increase ZK proving times.
@@ -138,12 +129,11 @@ async fn main() -> Result<(), reqwest::Error> {
     let remote_verifier_public_key = remote_verifier.get_public_key().await.unwrap();
 
     // To do this, we need to seralize the data we pass to the zkVM
-    let TlsSession { session_header } = serde_json::from_str(&session).unwrap();
     let input = serde_json
         ::to_string(
             &(ZkInputParam {
-                session_header,
-                substrings,
+                tls_proof: response.proof.clone(),
+                remote_verifier_proof: verified_by_remote,
                 remote_verifier_public_key,
                 notary_public_key,
             })
