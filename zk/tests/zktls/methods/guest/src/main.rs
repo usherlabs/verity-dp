@@ -1,8 +1,8 @@
 use risc0_zkvm::guest::env;
-use serde::{ Deserialize, Serialize };
+use serde::{Deserialize, Serialize};
 use serde_json;
+use verity_local_verify::{self, ecdsa::validate_ecdsa_signature, merkle::validate_merkle_tree};
 use verity_verifier::verify_proof;
-use verity_local_verify::{ self, ecdsa::validate_ecdsa_signature, merkle::validate_merkle_tree };
 
 /// The input parameters for the zk_circuit
 ///
@@ -35,17 +35,17 @@ fn main() {
     let (recv, sent) = verify_proof(&params.tls_proof).unwrap();
 
     // Verify the remote verifier's verification of the other part.
-    let remote_verification_proof: RemoteVerificationProof = serde_json
-        ::from_str(params.remote_verifier_proof.as_str())
-        .unwrap();
+    let remote_verification_proof: RemoteVerificationProof =
+        serde_json::from_str(params.remote_verifier_proof.as_str()).unwrap();
 
     // Verify the signature and the Merkle tree root
     let root_hash = &remote_verification_proof.root;
     let is_signature_valid = validate_ecdsa_signature(
         &remote_verification_proof.signature,
         root_hash,
-        &params.remote_verifier_public_key
-    ).unwrap();
+        &params.remote_verifier_public_key,
+    )
+    .unwrap();
     let is_merkle_valid = validate_merkle_tree(&remote_verification_proof.results, root_hash);
 
     // Return the verification result

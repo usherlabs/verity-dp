@@ -1,10 +1,10 @@
 use std::convert::TryFrom;
 
-use http::{ HeaderName, HeaderValue };
-use reqwest::{ header::HeaderMap, Body, Request };
+use http::{HeaderName, HeaderValue};
+use reqwest::{header::HeaderMap, Body, Request};
 use serde::Serialize;
 
-use crate::client::{ VerityClient, VerityResponse };
+use crate::client::{VerityClient, VerityResponse};
 
 /// A builder to construct the properties of a `Request`.
 ///
@@ -20,11 +20,11 @@ impl RequestBuilder {
     ///
     /// This method allows you to add a single header to the request.
     pub fn header<K, V>(self, key: K, value: V) -> Self
-        where
-            HeaderName: TryFrom<K>,
-            <HeaderName as TryFrom<K>>::Error: Into<http::Error>,
-            HeaderValue: TryFrom<V>,
-            <HeaderValue as TryFrom<V>>::Error: Into<http::Error>
+    where
+        HeaderName: TryFrom<K>,
+        <HeaderName as TryFrom<K>>::Error: Into<http::Error>,
+        HeaderValue: TryFrom<V>,
+        <HeaderValue as TryFrom<V>>::Error: Into<http::Error>,
     {
         RequestBuilder {
             inner: self.inner.header(key, value),
@@ -72,7 +72,9 @@ impl RequestBuilder {
     /// This method adds a header to instruct Verity Prover on how to hide sensitive data.
     pub fn redact(self, redact: String) -> Self {
         RequestBuilder {
-            inner: self.inner.header("T-REDACTED", HeaderValue::from_str(&redact).unwrap()),
+            inner: self
+                .inner
+                .header("T-REDACTED", HeaderValue::from_str(&redact).unwrap()),
             ..self
         }
     }
