@@ -15,4 +15,17 @@ To do this, we run:
 1. Run `dfx start --clean`
 2. Run `dfx deploy`
 
-## Step 2: Run the host
+## Step 2: Start Verity
+
+This involves operating a local Notary, and Prover.
+
+1. Run `verity notary start --config ./config/notary.yaml`
+2. Run `verity prover start`
+
+## Step 3: Run the ZK host
+
+From within the `zk/tests/zktls` directory, run:
+
+```shell
+  cargo run
+```
