@@ -124,11 +124,12 @@ impl VerityClient {
             timeout_cancellation_token.clone(),
         )?;
 
-        let (response, proof_msg) = tokio::try_join!(
-            self.send_request(req, request_cancellation_token, timeout_cancellation_token),
-            proof_awaiter,
-        )
-        .map_err(|e| anyhow::anyhow!("Failed to prove the request: {}", e))?;
+		// prettier-ignore
+		let (response, proof_msg) = tokio::try_join!(
+				self.send_request(req, request_cancellation_token, timeout_cancellation_token),
+				proof_awaiter
+			)
+			.map_err(|e| anyhow!("Failed to prove the request: {}", e))?;
 
         let subject = response?;
         let (notary_pub_key, proof) = proof_msg?;
