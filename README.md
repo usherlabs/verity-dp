@@ -35,7 +35,7 @@ The framework is divided into the following modules:
      - Full verification is only necessary when the data processed is public, which is rare as the zkVM is designed to maintain data privacy and roll up various TLS attestations into a single succinct proof.
    - `local-verify`: Completes the partial verification performed by the IC within the zkVM guest environment.
 3. `evm`: Smart Contracts templates for integrating various chains in an app-specific multi-chain protocol powered by the IC and Verity.
-4. `zk`: Utilities supporting zkVM usage.
+4. `zk`: Utilities and tests supporting zkVM usage.
 
 ### Verity Client
 
@@ -56,6 +56,14 @@ Currently, the Verity Client language support is as follows:
 - [ ] Typescript (Coming Soon...)
 
 > **Note:** We are actively working on expanding language support. Stay tuned for updates via [X (Twitter)](https://x.com/usher_web3) or [Discord](https://go.usher.so/discord).
+
+### zkTLS Demo
+
+zkTLS acts as a cryptographic primitive that transforms a comprehensive data pipeline into a succinct proof. The Verity DP framework empowers you to develop your own verifiable data pipelines, allowing data to be sourced from any location, processed, and utilised on a blockchain in a trust-minimised manner. This significantly enhances the integrity of data-driven on-chain financial markets and liquidity management.
+
+These verifiable data pipelines result in zkTLS proofs (using either SNARK or STARK) that can be verified across major blockchains.
+
+For a full implementation of zkTLS, please visit the [zkTLS demo directory](./zk/tests/zktls).
 
 ## Framework SDK Reference
 
