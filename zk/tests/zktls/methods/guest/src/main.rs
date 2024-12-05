@@ -1,6 +1,6 @@
 use risc0_zkvm::guest::env;
 use serde::{ Deserialize, Serialize };
-use serde_json::json;
+use serde_json;
 use verity_verifier::verify_proof;
 use verity_local_verify::{ self, ecdsa::validate_ecdsa_signature, merkle::validate_merkle_tree };
 
@@ -15,11 +15,9 @@ pub struct ZkInputParam {
     pub remote_verifier_proof: String,
     /// Remote verifier's ECDSA public key
     pub remote_verifier_public_key: String,
-    /// Notary Public Key
-    pub notary_public_key: String,
 }
 
-#[derive(CandidType, Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct RemoteVerificationProof {
     pub results: Vec<String>,
     pub root: String,
@@ -28,14 +26,13 @@ pub struct RemoteVerificationProof {
 
 fn main() {
     // Read the input data for this application.
-    let mut input_bytes = Vec::<u8>::new();
-    env::stdin().read_to_end(&mut input_bytes).unwrap();
+    let input_bytes: Vec<u8> = env::read();
 
     let params: String = String::from_utf8(input_bytes).unwrap();
     let params: ZkInputParam = serde_json::from_str(params.as_str()).unwrap();
 
     // Verify the Tls proof -- partially.
-    let (recv, sent) = verify_proof(&params.tls_proof);
+    let (recv, sent) = verify_proof(&params.tls_proof).unwrap();
 
     // Verify the remote verifier's verification of the other part.
     let remote_verification_proof: RemoteVerificationProof = serde_json
@@ -48,11 +45,11 @@ fn main() {
         &remote_verification_proof.signature,
         root_hash,
         &params.remote_verifier_public_key
-    )?;
+    ).unwrap();
     let is_merkle_valid = validate_merkle_tree(&remote_verification_proof.results, root_hash);
 
     // Return the verification result
-    let is_response_valid = is_signature_valid && is_merkle_valid;
+    assert!(is_signature_valid && is_merkle_valid);
 
     // write public output to the journal
     env::commit(&recv);

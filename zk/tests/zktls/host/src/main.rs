@@ -4,6 +4,10 @@ use methods::{ VERITY_ZK_TESTS_ZKTLS_GUEST_ELF, VERITY_ZK_TESTS_ZKTLS_GUEST_ID }
 use risc0_zkvm::{ default_prover, ExecutorEnv };
 use verity_client::client::{ VerityClient, VerityClientConfig };
 use verity_remote_verify::{ ic::{ Verifier, DEFAULT_IC_GATEWAY_LOCAL }, config::Config };
+use serde::{ Serialize, Deserialize };
+use serde_json;
+use verity_verifier::verify_proof;
+use std::fs::read_to_string;
 // use verity_dp_zk_host::generate_groth16_proof;
 
 pub const DEFAULT_PROVER_URL: &str = "http://127.0.0.1:8080";
@@ -13,8 +17,8 @@ pub const DEFAULT_PROVER_URL: &str = "http://127.0.0.1:8080";
 pub struct TlsProof {
     /// Proof of the TLS handshake, server identity, and commitments to the transcript.
     pub session: String,
-    /// Proof regarding the contents of the transcript.
-    pub substrings: String,
+    // /// Proof regarding the contents of the transcript.
+    // pub substrings: String,
 }
 /// The input parameters for the zk_circuit
 ///
@@ -27,8 +31,6 @@ pub struct ZkInputParam {
     pub remote_verifier_proof: String,
     /// Remote verifier's ECDSA public key
     pub remote_verifier_public_key: String,
-    /// Notary Public Key
-    pub notary_public_key: String,
 }
 
 #[tokio::main()]
@@ -116,11 +118,13 @@ async fn main() -> Result<(), reqwest::Error> {
     } = serde_json::from_str(&response.proof).unwrap();
 
     // 4. Verify a proof and get the response
-    let verified_by_remote = remote_verifier.verify_proof(
-        // You can verify multiple proofs at once
-        vec![session],
-        notary_pub_key
-    ).await?;
+    let verified_by_remote = remote_verifier
+        .verify_proof(
+            // You can verify multiple proofs at once
+            vec![session],
+            notary_pub_key
+        ).await
+        .unwrap();
 
     // Now we have a proof of remote verification... We can use this to verify the private transcript data within the zkVM
     // ? The reason to split the proofs is becuase the crypto primitives used for session verification are not compatible zkVM and/or dramatically increase ZK proving times.
@@ -133,9 +137,8 @@ async fn main() -> Result<(), reqwest::Error> {
         ::to_string(
             &(ZkInputParam {
                 tls_proof: response.proof.clone(),
-                remote_verifier_proof: verified_by_remote,
+                remote_verifier_proof: serde_json::to_string(&verified_by_remote).unwrap(),
                 remote_verifier_public_key,
-                notary_public_key,
             })
         )
         .unwrap();
@@ -158,7 +161,7 @@ async fn main() -> Result<(), reqwest::Error> {
     let verified_by_guest: (String, String) = receipt.journal.decode().unwrap();
 
     // Assert that the proof verification within the zkVM matches the proof verification by the host
-    // assert_eq!(verified_by_guest, verified_by_host);
+    assert_eq!(verified_by_guest, verified_by_host);
 
     // The receipt was verified at the end of proving, but the below code is an
     // example of how someone else could verify this receipt.
