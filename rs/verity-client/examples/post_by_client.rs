@@ -1,4 +1,4 @@
-use verity_client::client::{ VerityClient, VerityClientConfig };
+use verity_client::client::{VerityClient, VerityClientConfig};
 
 #[tokio::main()]
 async fn main() -> anyhow::Result<()> {
@@ -12,17 +12,16 @@ async fn main() -> anyhow::Result<()> {
 
     let response = VerityClient::new(config)
         .post(String::from("https://jsonplaceholder.typicode.com/posts"))
-        .json(
-            &serde_json::json!({
+        .json(&serde_json::json!({
             "userId": 1000,
             "firstName": "John",
             "lastName": "Smith",
             "fullName": "John Smith",
             "favoriteActor": "Johnny Depp"
-        })
-        )
+        }))
         .redact(String::from("req:body:firstName, res:body:firstName"))
-        .send().await?;
+        .send()
+        .await?;
 
     if response.subject.status().is_success() {
         let json: serde_json::Value = response.subject.json().await.unwrap();
