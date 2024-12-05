@@ -3,7 +3,7 @@
 
 use std::{ env, fs::read_to_string };
 
-use chrono::Local;
+// use chrono::Local;
 use methods::{ ZKVM_GUEST_ELF, ZKVM_GUEST_ID };
 use risc0_zkvm::{ default_prover, ExecutorEnv };
 use verity_verifier::verify_proof;

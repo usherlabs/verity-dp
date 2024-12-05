@@ -20,4 +20,3 @@ bonsai-sdk = { version = "0.8.0-rc.3" }
 serde = "1"
 serde_json = "1.0.107"
 verity-remote-verify = { path = "../../rs/remote-verify/" }
-tlsn-core-no-session = { path = "../../../verity/tlsn-core-no-session" }

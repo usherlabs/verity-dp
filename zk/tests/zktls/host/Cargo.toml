@@ -5,6 +5,13 @@ edition = "2021"
 
 [dependencies]
 methods = { path = "../methods" }
-risc0-zkvm = { version = "1.1.2" }
-tracing-subscriber = { version = "0.3", features = ["env-filter"] }
-serde = "1.0"
+risc0-zkvm = { workspace = true }
+tracing-subscriber = { workspace = true, features = ["env-filter"] }
+serde = { workspace = true }
+serde_json = { workspace = true }
+reqwest = { workspace = true }
+verity-client = { workspace = true }
+tokio = { workspace = true }
+verity-verifier = { workspace = true }
+verity-remote-verify = { workspace = true }
+verity-dp-zk-host = { workspace = true }
