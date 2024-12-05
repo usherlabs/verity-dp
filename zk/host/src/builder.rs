@@ -39,7 +39,7 @@ impl Default for SolidityBuildParams {
 /// Executes as a build hook in the guest repository.
 /// This function builds the necessary Solidity files to identify the circuit.
 /// Ensure it is added as a build dependency.
-pub fn build(build_params: SolidityBuildParams) {
+pub fn build_for_evm(build_params: SolidityBuildParams) {
 	dotenv::dotenv().ok();
 
 	// Builds can be made deterministic and reproducible by using Docker to build the

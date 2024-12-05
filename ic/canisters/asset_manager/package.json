@@ -2,8 +2,8 @@
 	"name": "@verity-dp/asset-manager",
 	"version": "1.0.0",
 	"description": "The repo for the CCAMP canisters",
-	"author": "Usher LAbs <labs@usher.so>",
-	"license": "LGPL-2.0",
+	"author": "Usher Labs <labs@usher.so>",
+	"license": "LGPL-3.0",
 	"keywords": [
 		"blockchain",
 		"ethers",
