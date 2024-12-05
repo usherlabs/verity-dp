@@ -1,5 +1,5 @@
 #[tokio::main()]
-async fn main() -> Result<(), reqwest::Error> {
+async fn main() -> anyhow::Result<()> {
     let json: serde_json::Value = reqwest::Client::new()
         .post("https://jsonplaceholder.typicode.com/posts")
         .json(&serde_json::json!({

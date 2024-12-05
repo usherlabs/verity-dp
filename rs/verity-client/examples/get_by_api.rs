@@ -1,5 +1,5 @@
 #[tokio::main()]
-async fn main() -> Result<(), reqwest::Error> {
+async fn main() -> anyhow::Result<()> {
     println!("Proving a GET request by calling prover's API endpoint...");
 
     let json: serde_json::Value = reqwest::Client::new()
