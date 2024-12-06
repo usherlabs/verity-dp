@@ -14,7 +14,6 @@ members = [
 resolver = "2"
 
 [workspace.package]
-name="Verity Data Processor"
 version = "0.2.0"
 authors = ["Usher Labs <labs@usher.so>"]
 repository = "https://github.com/usherlabs/verity-dp"
