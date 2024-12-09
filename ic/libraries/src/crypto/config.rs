@@ -1,6 +1,6 @@
 use crate::crypto::ecdsa;
 use candid::CandidType;
-use serde_derive::Deserialize;
+use serde::Deserialize;
 
 /// Represents the environment in which the canister operates.
 #[derive(CandidType, Deserialize, Debug, Clone, PartialEq, Default)]

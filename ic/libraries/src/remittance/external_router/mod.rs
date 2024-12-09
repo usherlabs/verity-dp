@@ -1,7 +1,7 @@
 use crate::remittance::types::{ DataModel, Event, RemittanceSubscriber, Subscriber };
 use candid::{ CandidType, Principal };
 use ic_cdk::{ api::call::RejectionCode, id };
-use serde_derive::Deserialize;
+use serde::Deserialize;
 use serde_json::Value;
 use std::{ cell::RefCell, collections::BTreeMap };
 

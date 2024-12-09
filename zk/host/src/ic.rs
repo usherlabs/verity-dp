@@ -12,7 +12,7 @@ use verity_remote_verify::{ config::Config, ic::Verifier, ic::VerificationRespon
 ///
 /// # Returns
 ///
-/// * `Result<remote_verify::ic::VerificationResponse, Box<dyn Error>>` -
+/// * `Result<verity_remote_verify::ic::VerificationResponse, Box<dyn Error>>` -
 ///   A result containing the verification response or an error.
 pub async fn verify_proof(
 	json_string_proofs: Vec<String>,

@@ -15,9 +15,9 @@ async fn f(count: &i32) -> Result<(), reqwest::Error> {
 	// let mut rng = rand::thread_rng();
 	// let _signing_key = SigningKey::random(&mut rng);
 
-	let config = VerityClientConfig {
-		prover_url: String::from("http://127.0.0.1:8080"),
-	};
+    let config = VerityClientConfig {
+        prover_url: String::from("http://127.0.0.1:8080"),
+    };
 
 	let client = VerityClient::new(config);
 

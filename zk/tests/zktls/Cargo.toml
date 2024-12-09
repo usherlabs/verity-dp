@@ -1,8 +1,5 @@
 [workspace]
-members = [
-  "host",
-  "methods",
-]
+members = ["host", "methods"]
 resolver = "2"
 
 [workspace.package]
@@ -25,7 +22,7 @@ risc0-zkvm = { version = "1.1.2" }
 verity-dp-zk-host = { path = "../../host" }
 verity-client = { path = "../../../rs/verity-client" }
 verity-remote-verify = { path = "../../../rs/remote-verify" }
-verity-verifier = { path = "../../../../verity/verifier" }
+verity-verifier = { path = "../../../rs/verifier" }
 
 # Always optimize; building and running the guest takes much longer without optimization.
 [profile.dev]
