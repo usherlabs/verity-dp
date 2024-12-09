@@ -16,6 +16,11 @@ https://book.getfoundry.sh/
 
 ## Usage
 
+Update the submodules first 
+```shell
+git submodule update --init --recursive
+```
+
 ### Build
 
 ```shell
