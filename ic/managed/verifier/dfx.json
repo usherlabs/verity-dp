@@ -12,7 +12,7 @@
 				"node_compatibility": true
 			},
 			"type": "custom",
-			"wasm": "target/wasm32-wasi/release/verity_ic_verifier_ic.wasm",
+			"wasm": "../../../target/wasm32-wasi/release/verity_ic_verifier_ic.wasm",
 			"build": ["bash -c ./scripts/build.sh"]
 		}
 	},
