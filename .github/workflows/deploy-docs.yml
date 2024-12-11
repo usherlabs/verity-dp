@@ -1,7 +1,11 @@
-name: Deploy to GitHub Pages
+name: Deploy Documentation to GitHub Pages
 
 on:
   push:
+    tags:
+      - 'v*.*.*' # Match semantic version tags v1.0.7
+
+  workflow_dispatch:
 
 jobs:
   deploy:
