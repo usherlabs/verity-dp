@@ -8,7 +8,7 @@ main() {
         "../rs/verity-client"
         "../rs/local-verify"
         "../rs/remote-verify"
-        "../rs/verity-client"
+        "../rs/verifier"
         "../zk/guest"
         "../zk/host"
     )
