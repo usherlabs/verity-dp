@@ -43,7 +43,7 @@ for current_dir in ${projects_dirs[@]}; do
     # Run the command to generate the docs
     cargo doc --manifest-path "$manifest_path" --target-dir "$target_dir"
 
-    path_to_docs=("./packages/$package_name/doc/$underscore_package_name/index.html")
+    path_to_docs=("packages/$package_name/doc/$underscore_package_name/index.html")
 
     # Replace name and description placeholders in the template
     processed_html=$(echo "$item_html_template" | sed -e "s|name_placeholder|$package_name_and_version|g" -e "s|description_placeholder|$package_description|g" -e "s|package_path_placeholder|$path_to_docs|g")
