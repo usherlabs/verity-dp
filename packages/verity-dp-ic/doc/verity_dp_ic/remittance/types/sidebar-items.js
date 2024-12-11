@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Action","Chain"],"struct":["Account","DataModel","Event","RemittanceReciept","RemittanceReply","RemittanceSubscriber","Subscriber","Wallet","WithheldAccount"],"type":["AvailableBalanceStore","CanisterBalanceStore","RemittanceRecieptsStore","SubscriberStore","WithheldAmountsStore","WithheldBalanceStore"]};

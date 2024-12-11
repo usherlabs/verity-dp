@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="A Prover can execute a given ELF binary and produce a Receipt that can be used to verify correct computation."><title>Prover in risc0_zkvm - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="risc0_zkvm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../risc0_zkvm/index.html">risc0_<wbr>zkvm</a><span class="version">1.2.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Prover</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#usage" title="Usage">Usage</a></li></ul><h3><a href="#required-methods">Required Methods</a></h3><ul class="block"><li><a href="#tymethod.compress" title="compress">compress</a></li><li><a href="#tymethod.get_name" title="get_name">get_name</a></li><li><a href="#tymethod.prove_with_ctx" title="prove_with_ctx">prove_with_ctx</a></li></ul><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.prove" title="prove">prove</a></li><li><a href="#method.prove_with_opts" title="prove_with_opts">prove_with_opts</a></li></ul><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="index.html">In crate risc0_<wbr>zkvm</a></h2></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><span class="rustdoc-breadcrumbs"><a href="index.html">risc0_zkvm</a></span><h1>Trait <span class="trait">Prover</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/risc0_zkvm/host/client/prove/mod.rs.html#70-146">source</a> </span></div><pre class="rust item-decl"><code>pub trait Prover {
+    // Required methods
+    fn <a href="#tymethod.get_name" class="fn">get_name</a>(&amp;self) -&gt; <a class="struct" href="https://doc.rust-lang.org/1.83.0/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.prove_with_ctx" class="fn">prove_with_ctx</a>(
+        &amp;self,
+        env: <a class="struct" href="struct.ExecutorEnv.html" title="struct risc0_zkvm::ExecutorEnv">ExecutorEnv</a>&lt;'_&gt;,
+        ctx: &amp;<a class="struct" href="struct.VerifierContext.html" title="struct risc0_zkvm::VerifierContext">VerifierContext</a>,
+        elf: &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.83.0/std/primitive.u8.html">u8</a>],
+        opts: &amp;<a class="struct" href="struct.ProverOpts.html" title="struct risc0_zkvm::ProverOpts">ProverOpts</a>,
+    ) -&gt; <a class="type" href="type.Result.html" title="type risc0_zkvm::Result">Result</a>&lt;<a class="struct" href="struct.ProveInfo.html" title="struct risc0_zkvm::ProveInfo">ProveInfo</a>&gt;;
+<span class="item-spacer"></span>    fn <a href="#tymethod.compress" class="fn">compress</a>(&amp;self, opts: &amp;<a class="struct" href="struct.ProverOpts.html" title="struct risc0_zkvm::ProverOpts">ProverOpts</a>, receipt: &amp;<a class="struct" href="struct.Receipt.html" title="struct risc0_zkvm::Receipt">Receipt</a>) -&gt; <a class="type" href="type.Result.html" title="type risc0_zkvm::Result">Result</a>&lt;<a class="struct" href="struct.Receipt.html" title="struct risc0_zkvm::Receipt">Receipt</a>&gt;;
+
+    // Provided methods
+    fn <a href="#method.prove" class="fn">prove</a>(&amp;self, env: <a class="struct" href="struct.ExecutorEnv.html" title="struct risc0_zkvm::ExecutorEnv">ExecutorEnv</a>&lt;'_&gt;, elf: &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.83.0/std/primitive.u8.html">u8</a>]) -&gt; <a class="type" href="type.Result.html" title="type risc0_zkvm::Result">Result</a>&lt;<a class="struct" href="struct.ProveInfo.html" title="struct risc0_zkvm::ProveInfo">ProveInfo</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.prove_with_opts" class="fn">prove_with_opts</a>(
+        &amp;self,
+        env: <a class="struct" href="struct.ExecutorEnv.html" title="struct risc0_zkvm::ExecutorEnv">ExecutorEnv</a>&lt;'_&gt;,
+        elf: &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.83.0/std/primitive.u8.html">u8</a>],
+        opts: &amp;<a class="struct" href="struct.ProverOpts.html" title="struct risc0_zkvm::ProverOpts">ProverOpts</a>,
+    ) -&gt; <a class="type" href="type.Result.html" title="type risc0_zkvm::Result">Result</a>&lt;<a class="struct" href="struct.ProveInfo.html" title="struct risc0_zkvm::ProveInfo">ProveInfo</a>&gt; { ... }
+}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>A Prover can execute a given ELF binary and produce a
+<a href="struct.Receipt.html" title="struct risc0_zkvm::Receipt">Receipt</a> that can be used to verify correct computation.</p>
+<h2 id="usage"><a class="doc-anchor" href="#usage">§</a>Usage</h2>
+<p>To produce a proof, you must minimally provide an <a href="struct.ExecutorEnv.html" title="struct risc0_zkvm::ExecutorEnv">ExecutorEnv</a> and an ELF
+binary. See the <a href="https://docs.rs/risc0-build/*/risc0_build">risc0_build</a>
+crate for more information on producing ELF binaries from Rust source code.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>risc0_zkvm::{
+    default_prover,
+    ExecutorEnv,
+    ProverOpts,
+    VerifierContext,
+};
+<span class="kw">use </span>risc0_zkvm_methods::FIB_ELF;
+
+<span class="comment">// A straightforward case with an ELF binary
+</span><span class="kw">let </span>env = ExecutorEnv::builder().write(<span class="kw-2">&amp;</span><span class="number">20u32</span>).unwrap().build().unwrap();
+<span class="kw">let </span>receipt = default_prover().prove(env, FIB_ELF).unwrap();
+
+<span class="comment">// Or you can specify a context and options
+// Here we are using ProverOpts::succinct() to get a constant size proof through recursion.
+</span><span class="kw">let </span>env = ExecutorEnv::builder().write(<span class="kw-2">&amp;</span><span class="number">20u32</span>).unwrap().build().unwrap();
+<span class="kw">let </span>opts = ProverOpts::succinct();
+<span class="kw">let </span>receipt = default_prover().prove_with_opts(env, FIB_ELF, <span class="kw-2">&amp;</span>opts).unwrap();</code></pre></div>
+</div></details><h2 id="required-methods" class="section-header">Required Methods<a href="#required-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="tymethod.get_name" class="method"><a class="src rightside" href="../src/risc0_zkvm/host/client/prove/mod.rs.html#72">source</a><h4 class="code-header">fn <a href="#tymethod.get_name" class="fn">get_name</a>(&amp;self) -&gt; <a class="struct" href="https://doc.rust-lang.org/1.83.0/alloc/string/struct.String.html" title="struct alloc::string::String">String</a></h4></section></summary><div class="docblock"><p>Return a name for this <a href="trait.Prover.html" title="trait risc0_zkvm::Prover">Prover</a>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.prove_with_ctx" class="method"><a class="src rightside" href="../src/risc0_zkvm/host/client/prove/mod.rs.html#113-119">source</a><h4 class="code-header">fn <a href="#tymethod.prove_with_ctx" class="fn">prove_with_ctx</a>(
+    &amp;self,
+    env: <a class="struct" href="struct.ExecutorEnv.html" title="struct risc0_zkvm::ExecutorEnv">ExecutorEnv</a>&lt;'_&gt;,
+    ctx: &amp;<a class="struct" href="struct.VerifierContext.html" title="struct risc0_zkvm::VerifierContext">VerifierContext</a>,
+    elf: &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.83.0/std/primitive.u8.html">u8</a>],
+    opts: &amp;<a class="struct" href="struct.ProverOpts.html" title="struct risc0_zkvm::ProverOpts">ProverOpts</a>,
+) -&gt; <a class="type" href="type.Result.html" title="type risc0_zkvm::Result">Result</a>&lt;<a class="struct" href="struct.ProveInfo.html" title="struct risc0_zkvm::ProveInfo">ProveInfo</a>&gt;</h4></section></summary><div class="docblock"><p>Prove zkVM execution of the specified ELF binary and using the specified <a href="struct.VerifierContext.html" title="struct risc0_zkvm::VerifierContext">VerifierContext</a>
+and <a href="struct.ProverOpts.html" title="struct risc0_zkvm::ProverOpts">ProverOpts</a>.</p>
+<p>Use this method if you are using non-standard verification parameters. The
+<a href="struct.VerifierContext.html" title="struct risc0_zkvm::VerifierContext">VerifierContext</a> specified here should match what you expect the verifier to use in your
+application.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.compress" class="method"><a class="src rightside" href="../src/risc0_zkvm/host/client/prove/mod.rs.html#145">source</a><h4 class="code-header">fn <a href="#tymethod.compress" class="fn">compress</a>(&amp;self, opts: &amp;<a class="struct" href="struct.ProverOpts.html" title="struct risc0_zkvm::ProverOpts">ProverOpts</a>, receipt: &amp;<a class="struct" href="struct.Receipt.html" title="struct risc0_zkvm::Receipt">Receipt</a>) -&gt; <a class="type" href="type.Result.html" title="type risc0_zkvm::Result">Result</a>&lt;<a class="struct" href="struct.Receipt.html" title="struct risc0_zkvm::Receipt">Receipt</a>&gt;</h4></section></summary><div class="docblock"><p>Compress a <a href="struct.Receipt.html" title="struct risc0_zkvm::Receipt">Receipt</a>, proving the same computation using a smaller representation.</p>
+<p>Proving will, by default, produce a <a href="struct.CompositeReceipt.html" title="struct risc0_zkvm::CompositeReceipt">CompositeReceipt</a>, which
+may contain an arbitrary number of receipts assembled into segments and assumptions.
+Together, these receipts collectively prove a top-level
+<a href="struct.ReceiptClaim.html" title="struct risc0_zkvm::ReceiptClaim">ReceiptClaim</a>. This function can be used to compress all of the constituent
+receipts of a <a href="struct.CompositeReceipt.html" title="struct risc0_zkvm::CompositeReceipt">CompositeReceipt</a> into a single
+<a href="struct.SuccinctReceipt.html" title="struct risc0_zkvm::SuccinctReceipt">SuccinctReceipt</a> or <a href="struct.Groth16Receipt.html" title="struct risc0_zkvm::Groth16Receipt">Groth16Receipt</a> that proves the same top-level claim.</p>
+<p>Compression from <a href="struct.CompositeReceipt.html" title="struct risc0_zkvm::CompositeReceipt">Groth16Receipt</a> to
+<a href="struct.SuccinctReceipt.html" title="struct risc0_zkvm::SuccinctReceipt">SuccinctReceipt</a> is accomplished by iterative application of the
+recursion programs including lift, join, and resolve.</p>
+<p>Compression from <a href="struct.SuccinctReceipt.html" title="struct risc0_zkvm::SuccinctReceipt">SuccinctReceipt</a> to
+<a href="struct.Groth16Receipt.html" title="struct risc0_zkvm::Groth16Receipt">Groth16Receipt</a> is accomplished by running a Groth16 recursive
+verifier, referred to as the “STARK-to-SNARK” operation.</p>
+<p>NOTE: Compression to <a href="struct.Groth16Receipt.html" title="struct risc0_zkvm::Groth16Receipt">Groth16Receipt</a> is currently only supported on
+x86 hosts, and requires Docker to be installed. See issue
+<a href="https://github.com/risc0/risc0/issues/1749">#1749</a> for more information.</p>
+<p>If the receipt is already at least as compressed as the requested compression level (e.g.
+it is already succinct or Groth16 and a succinct receipt is required) this function is a
+no-op. As a result, it is idempotent.</p>
+</div></details></div><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.prove" class="method"><a class="src rightside" href="../src/risc0_zkvm/host/client/prove/mod.rs.html#78-85">source</a><h4 class="code-header">fn <a href="#method.prove" class="fn">prove</a>(&amp;self, env: <a class="struct" href="struct.ExecutorEnv.html" title="struct risc0_zkvm::ExecutorEnv">ExecutorEnv</a>&lt;'_&gt;, elf: &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.83.0/std/primitive.u8.html">u8</a>]) -&gt; <a class="type" href="type.Result.html" title="type risc0_zkvm::Result">Result</a>&lt;<a class="struct" href="struct.ProveInfo.html" title="struct risc0_zkvm::ProveInfo">ProveInfo</a>&gt;</h4></section></summary><div class="docblock"><p>Prove zkVM execution of the specified ELF binary.</p>
+<p>Use this method unless you have need to configure the prover options or verifier context.
+Default <a href="struct.VerifierContext.html" title="struct risc0_zkvm::VerifierContext">VerifierContext</a> and <a href="struct.ProverOpts.html" title="struct risc0_zkvm::ProverOpts">ProverOpts</a> will be used.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.prove_with_opts" class="method"><a class="src rightside" href="../src/risc0_zkvm/host/client/prove/mod.rs.html#93-105">source</a><h4 class="code-header">fn <a href="#method.prove_with_opts" class="fn">prove_with_opts</a>(
+    &amp;self,
+    env: <a class="struct" href="struct.ExecutorEnv.html" title="struct risc0_zkvm::ExecutorEnv">ExecutorEnv</a>&lt;'_&gt;,
+    elf: &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.83.0/std/primitive.u8.html">u8</a>],
+    opts: &amp;<a class="struct" href="struct.ProverOpts.html" title="struct risc0_zkvm::ProverOpts">ProverOpts</a>,
+) -&gt; <a class="type" href="type.Result.html" title="type risc0_zkvm::Result">Result</a>&lt;<a class="struct" href="struct.ProveInfo.html" title="struct risc0_zkvm::ProveInfo">ProveInfo</a>&gt;</h4></section></summary><div class="docblock"><p>Prove zkVM execution of the specified ELF binary and using the specified <a href="struct.ProverOpts.html" title="struct risc0_zkvm::ProverOpts">ProverOpts</a>.</p>
+<p>Use this method when you want to specify the receipt type you would like (e.g. groth16 or
+succinct), or if you need to tweak other parameter in <a href="struct.ProverOpts.html" title="struct risc0_zkvm::ProverOpts">ProverOpts</a>.</p>
+<p>Default <a href="struct.VerifierContext.html" title="struct risc0_zkvm::VerifierContext">VerifierContext</a> will be used.</p>
+</div></details></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><section id="impl-Prover-for-ExternalProver" class="impl"><a class="src rightside" href="../src/risc0_zkvm/host/client/prove/external.rs.html#42-92">source</a><a href="#impl-Prover-for-ExternalProver" class="anchor">§</a><h3 class="code-header">impl <a class="trait" href="trait.Prover.html" title="trait risc0_zkvm::Prover">Prover</a> for <a class="struct" href="struct.ExternalProver.html" title="struct risc0_zkvm::ExternalProver">ExternalProver</a></h3></section></div><script src="../trait.impl/risc0_zkvm/host/client/prove/trait.Prover.js" async></script></section></div></main></body></html>

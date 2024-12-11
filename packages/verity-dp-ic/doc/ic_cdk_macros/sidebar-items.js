@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"attr":["heartbeat","init","inspect_message","on_low_wasm_memory","post_upgrade","pre_upgrade","query","update"],"macro":["export_candid"]};

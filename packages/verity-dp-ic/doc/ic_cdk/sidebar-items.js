@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"attr":["heartbeat","init","inspect_message","on_low_wasm_memory","post_upgrade","pre_upgrade","query","update"],"fn":["block_on","call","caller","id","notify","print","setup","spawn","trap"],"macro":["eprintln","export_candid","println"],"mod":["api","storage"]};

@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Deserialize an instance of type T from a TokenStream with data inside, along with a `DelimSpan` for the surrounding braces."><title>from_tokenstream_spanned in serde_tokenstream - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="serde_tokenstream" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc fn"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../serde_tokenstream/index.html">serde_<wbr>tokenstream</a><span class="version">0.2.2</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">from_<wbr>tokenstream_<wbr>spanned</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#example" title="Example">Example</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="index.html">In crate serde_<wbr>tokenstream</a></h2></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><span class="rustdoc-breadcrumbs"><a href="index.html">serde_tokenstream</a></span><h1>Function <span class="fn">from_tokenstream_spanned</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/serde_tokenstream/serde_tokenstream.rs.html#119-128">source</a> </span></div><pre class="rust item-decl"><code>pub fn from_tokenstream_spanned&lt;'a, T&gt;(
+    span: &amp;<a class="struct" href="../proc_macro2/extra/struct.DelimSpan.html" title="struct proc_macro2::extra::DelimSpan">DelimSpan</a>,
+    tokens: &amp;'a <a class="struct" href="../proc_macro2/struct.TokenStream.html" title="struct proc_macro2::TokenStream">TokenStream</a>,
+) -&gt; <a class="type" href="type.Result.html" title="type serde_tokenstream::Result">Result</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="../serde/de/trait.Deserialize.html" title="trait serde::de::Deserialize">Deserialize</a>&lt;'a&gt;,</div></code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Deserialize an instance of type T from a TokenStream with data inside,
+along with a <a href="../proc_macro2/extra/struct.DelimSpan.html" title="struct proc_macro2::extra::DelimSpan"><code>DelimSpan</code></a> for the surrounding braces.</p>
+<p>This is useful when parsing an attribute nested inside an outer macro. In
+that case, better span information (not just <code>Span::call_site</code>) can be
+produced.</p>
+<h2 id="example"><a class="doc-anchor" href="#example">§</a>Example</h2>
+<p>The most common use is with <a href="https://docs.rs/syn/2.0.90/syn/attr/struct.MetaList.html" title="struct syn::attr::MetaList"><code>syn::MetaList</code></a> instances. For example, if
+your macro is <code>#[derive(Record)]</code> and you’re invoked like this:</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Record)]
+#[record { worker = <span class="string">"Homer J. Simpson"</span>, floor = <span class="number">7</span>, region = <span class="string">"G" </span>}]
+</span><span class="kw">fn </span>test() {}</code></pre></div>
+<p>Then, the <code>record</code> attribute inside can be interpreted as a
+<code>syn::MetaList</code>. With it in hand:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>syn::parse_quote;
+<span class="kw">use </span>serde::Deserialize;
+<span class="kw">use </span>serde_tokenstream::from_tokenstream_spanned;
+<span class="kw">use </span>serde_tokenstream::Result;
+
+<span class="kw">fn </span>main() -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+    <span class="attr">#[derive(Deserialize)]
+    </span><span class="kw">struct </span>Record {
+        worker: String,
+        floor: u32,
+        region: String,
+    }
+
+    <span class="comment">// This is the `syn::MetaList` instance above.
+    </span><span class="kw">let </span>list: syn::MetaList = <span class="macro">parse_quote!</span> {
+        record {
+            worker = <span class="string">"Homer J. Simpson"</span>,
+            floor = <span class="number">7</span>,
+            region = <span class="string">"G"</span>,
+        }
+    };
+
+    <span class="kw">let </span>rec = from_tokenstream_spanned::&lt;Record&gt;(list.delimiter.span(), <span class="kw-2">&amp;</span>list.tokens)<span class="question-mark">?</span>;
+    <span class="macro">println!</span>(<span class="string">"{} {}{}"</span>, rec.worker, rec.floor, rec.region);
+    <span class="prelude-val">Ok</span>(())
+}</code></pre></div>
+<p>If there’s an error like a missing field, it will now be reported with the
+span of the braces inside the <code>record</code> attribute (whereas
+<a href="fn.from_tokenstream.html" title="fn serde_tokenstream::from_tokenstream"><code>from_tokenstream</code></a> lacks the necessary <a href="../proc_macro2/struct.Span.html" title="struct proc_macro2::Span"><code>Span</code></a> information).</p>
+</div></details></section></div></main></body></html>

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Error","Event","ReadyState"],"mod":["retry"],"struct":["CannotCloneRequestError","EventSource"],"trait":["RequestBuilderExt"]};

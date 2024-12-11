@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Error"],"fn":["from_slice","to_vec","to_vec_with_capacity"],"struct":["Deserializer","Serializer"],"trait":["WordRead","WordWrite"],"type":["Result"]};

@@ -1,0 +1,1 @@
+searchState.loadedDescShard("ic_cdk_macros", 0, "Documentation Crates.io License Downloads CI")

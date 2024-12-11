@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["PAGE_SIZE","WORD_SIZE"],"fn":["align_up"],"macro":["declare_syscall"],"mod":["fileno","memory","syscall"]};

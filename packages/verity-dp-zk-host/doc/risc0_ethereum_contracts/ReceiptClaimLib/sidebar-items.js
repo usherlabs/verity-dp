@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["ReceiptClaimLibCalls"],"fn":["new"],"struct":["ReceiptClaimLibInstance","digestCall","digestReturn","okCall","okReturn"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["poly_divide","poly_eval","poly_interpolate"]};

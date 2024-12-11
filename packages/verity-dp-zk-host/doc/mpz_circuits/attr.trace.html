@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="An attribute macro that can be applied to a function to automatically convert it into a circuit."><title>trace in mpz_circuits - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="mpz_circuits" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc attr"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../mpz_circuits/index.html">mpz_<wbr>circuits</a><span class="version">0.1.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">trace</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#example" title="Example">Example</a></li><li><a href="#dependencies" title="Dependencies">Dependencies</a><ul><li><a href="#path-override" title="Path override">Path override</a></li><li><a href="#example-1" title="Example">Example</a></li></ul></li><li><a href="#cache" title="Cache">Cache</a></li><li><a href="#suffix" title="Suffix">Suffix</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="index.html">In crate mpz_<wbr>circuits</a></h2></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><span class="rustdoc-breadcrumbs"><a href="index.html">mpz_circuits</a></span><h1>Attribute Macro <span class="attr">trace</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/mpz_circuits_macros/lib.rs.html#13">source</a> </span></div><pre class="rust item-decl"><code>#[trace]</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>An attribute macro that can be applied to a function to automatically convert
+it into a circuit.</p>
+<h2 id="example"><a class="doc-anchor" href="#example">§</a>Example</h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>mpz_circuits::{trace, evaluate, CircuitBuilder};
+
+<span class="attr">#[trace]
+</span><span class="kw">fn </span>bitxor(a: [u8; <span class="number">16</span>], b: [u8; <span class="number">16</span>]) -&gt; [u8; <span class="number">16</span>] {
+    std::array::from_fn(|i| a[i] ^ b[i])
+}
+
+<span class="kw">fn </span>main() {
+    <span class="kw">let </span>builder = CircuitBuilder::new();
+    <span class="kw">let </span>a = builder.add_array_input::&lt;u8, <span class="number">16</span>&gt;();
+    <span class="kw">let </span>b = builder.add_array_input::&lt;u8, <span class="number">16</span>&gt;();
+
+    <span class="kw">let </span>c = bitxor_trace(<span class="kw-2">&amp;mut </span>builder.state(), a, b);
+
+    builder.add_output(c);
+
+    <span class="kw">let </span>circ = builder.build().unwrap();
+
+    <span class="kw">let </span>a = [<span class="number">42u8</span>; <span class="number">16</span>];
+    <span class="kw">let </span>b = [<span class="number">69u8</span>; <span class="number">16</span>];
+
+    <span class="kw">let </span>output = <span class="macro">evaluate!</span>(circ, <span class="kw">fn</span>(a, b) -&gt; [u8; <span class="number">16</span>]).unwrap();
+
+    <span class="macro">assert_eq!</span>(output, bitxor(a, b));
+}</code></pre></div>
+<h2 id="dependencies"><a class="doc-anchor" href="#dependencies">§</a>Dependencies</h2>
+<p>Dependencies can be specified using the <code>#[dep]</code> attribute. This will replace any calls
+to the specified function with the provided trace function.</p>
+<h3 id="path-override"><a class="doc-anchor" href="#path-override">§</a>Path override</h3>
+<p>The default path of the trace is the original path appended with the <code>_trace</code> suffix.</p>
+<p>This can be overridden by passing the path in as the second argument to the attribute, eg <code>#[dep(old_path, new_path)]</code>.</p>
+<h3 id="example-1"><a class="doc-anchor" href="#example-1">§</a>Example</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>mpz_circuits::{trace, evaluate, CircuitBuilder};
+
+<span class="attr">#[trace]
+</span><span class="kw">fn </span>bitxor(a: [u8; <span class="number">16</span>], b: [u8; <span class="number">16</span>]) -&gt; [u8; <span class="number">16</span>] {
+   std::array::from_fn(|i| a[i] ^ b[i])
+}
+
+<span class="attr">#[trace]
+</span><span class="kw">fn </span>bitand(a: [u8; <span class="number">16</span>], b: [u8; <span class="number">16</span>]) -&gt; [u8; <span class="number">16</span>] {
+   std::array::from_fn(|i| a[i] &amp; b[i])
+}
+
+<span class="attr">#[trace]
+#[dep(bitxor, bitxor_trace)]
+#[dep(bitand)]
+</span><span class="kw">fn </span>bitxor_and(a: [u8; <span class="number">16</span>], b: [u8; <span class="number">16</span>]) -&gt; [u8; <span class="number">16</span>] {
+   bitxor(a, bitand(a, b))
+}
+
+<span class="kw">fn </span>main() {
+  <span class="kw">let </span>builder = CircuitBuilder::new();
+  <span class="kw">let </span>a = builder.add_array_input::&lt;u8, <span class="number">16</span>&gt;();
+  <span class="kw">let </span>b = builder.add_array_input::&lt;u8, <span class="number">16</span>&gt;();
+
+  <span class="kw">let </span>c = bitxor_and_trace(<span class="kw-2">&amp;mut </span>builder.state(), a, b);
+
+  builder.add_output(c);
+
+  <span class="kw">let </span>circ = builder.build().unwrap();
+
+  <span class="kw">let </span>a = [<span class="number">42u8</span>; <span class="number">16</span>];
+  <span class="kw">let </span>b = [<span class="number">69u8</span>; <span class="number">16</span>];
+
+  <span class="kw">let </span>output = <span class="macro">evaluate!</span>(circ, <span class="kw">fn</span>(a, b) -&gt; [u8; <span class="number">16</span>]).unwrap();
+
+  <span class="macro">assert_eq!</span>(output, bitxor_and(a, b));
+}</code></pre></div>
+<h2 id="cache"><a class="doc-anchor" href="#cache">§</a>Cache</h2>
+<p>The macro can optionally be configured with the <code>cache</code> argument which will cache the circuit
+after the first invocation. This can be useful for functions that will be used multiple times.</p>
+<p>The circuit will be cached for the lifetime of the program.</p>
+<h2 id="suffix"><a class="doc-anchor" href="#suffix">§</a>Suffix</h2>
+<p>The macro copies the traced function and appends the <code>_trace</code> suffix to the end of the name.</p>
+<p>This preserves the original function, which can be used for testing.</p>
+<p>This suffix can be overridden by passing the <code>suffix = "new_suffix"</code> argument to the macro.</p>
+</div></details></section></div></main></body></html>

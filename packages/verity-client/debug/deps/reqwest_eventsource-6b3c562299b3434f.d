@@ -1,0 +1,9 @@
+/home/runner/work/verity-dp/verity-dp/docs/./packages/verity-client/debug/deps/libreqwest_eventsource-6b3c562299b3434f.rmeta: /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/reqwest-eventsource-0.6.0/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/reqwest-eventsource-0.6.0/src/error.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/reqwest-eventsource-0.6.0/src/event_source.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/reqwest-eventsource-0.6.0/src/reqwest_ext.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/reqwest-eventsource-0.6.0/src/retry.rs
+
+/home/runner/work/verity-dp/verity-dp/docs/./packages/verity-client/debug/deps/reqwest_eventsource-6b3c562299b3434f.d: /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/reqwest-eventsource-0.6.0/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/reqwest-eventsource-0.6.0/src/error.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/reqwest-eventsource-0.6.0/src/event_source.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/reqwest-eventsource-0.6.0/src/reqwest_ext.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/reqwest-eventsource-0.6.0/src/retry.rs
+
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/reqwest-eventsource-0.6.0/src/lib.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/reqwest-eventsource-0.6.0/src/error.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/reqwest-eventsource-0.6.0/src/event_source.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/reqwest-eventsource-0.6.0/src/reqwest_ext.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/reqwest-eventsource-0.6.0/src/retry.rs:

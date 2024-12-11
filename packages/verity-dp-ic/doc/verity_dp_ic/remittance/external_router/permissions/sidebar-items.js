@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["WHITELISTED_PUBLISHERS"],"fn":["add_publisher","only_whitelisted_publishers","remove_publisher"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["ProofResponse"],"struct":["VerificationResponse"],"type":["VerificationCanisterResponse"]};

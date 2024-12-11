@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["expand_rust_type","expand_type"]};

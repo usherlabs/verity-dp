@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["map_pow"],"mod":["baby_bear","goldilocks"],"trait":["Elem","ExtElem","Field","RootsOfUnity"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["build_for_evm"],"struct":["SolidityBuildParams"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"attr":["candid_method"],"derive":["CandidType"],"macro":["export_service"]};

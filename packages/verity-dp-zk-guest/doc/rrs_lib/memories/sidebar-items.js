@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["MemorySpaceError"],"fn":["read_to_memory"],"struct":["MemorySpace","VecMemory"]};

@@ -1,0 +1,9 @@
+(function() {
+    var implementors = Object.fromEntries([["bcs",[["impl <a class=\"trait\" href=\"serde/de/trait.Error.html\" title=\"trait serde::de::Error\">Error</a> for <a class=\"enum\" href=\"bcs/enum.Error.html\" title=\"enum bcs::Error\">Error</a>"]]],["bincode",[["impl <a class=\"trait\" href=\"serde/de/trait.Error.html\" title=\"trait serde::de::Error\">Error</a> for <a class=\"type\" href=\"bincode/type.Error.html\" title=\"type bincode::Error\">Error</a>"]]],["candid",[["impl <a class=\"trait\" href=\"serde/de/trait.Error.html\" title=\"trait serde::de::Error\">Error</a> for <a class=\"enum\" href=\"candid/error/enum.Error.html\" title=\"enum candid::error::Error\">Error</a>"]]],["risc0_zkvm",[["impl <a class=\"trait\" href=\"serde/de/trait.Error.html\" title=\"trait serde::de::Error\">Error</a> for <a class=\"enum\" href=\"risc0_zkvm/serde/enum.Error.html\" title=\"enum risc0_zkvm::serde::Error\">Error</a>"]]],["serde",[]],["serde_cbor",[["impl <a class=\"trait\" href=\"serde/de/trait.Error.html\" title=\"trait serde::de::Error\">Error</a> for <a class=\"struct\" href=\"serde_cbor/struct.Error.html\" title=\"struct serde_cbor::Error\">Error</a>"]]],["serde_json",[["impl <a class=\"trait\" href=\"serde/de/trait.Error.html\" title=\"trait serde::de::Error\">Error</a> for <a class=\"struct\" href=\"serde_json/struct.Error.html\" title=\"struct serde_json::Error\">Error</a>"]]]]);
+    if (window.register_implementors) {
+        window.register_implementors(implementors);
+    } else {
+        window.pending_implementors = implementors;
+    }
+})()
+//{"start":57,"fragment_lengths":[202,215,225,237,13,230,230]}

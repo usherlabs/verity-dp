@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["SolidityDataType"],"mod":["abi"],"struct":["TakeLastXBytes"]};

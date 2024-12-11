@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["PemError"],"struct":["AnonymousIdentity","BasicIdentity","DelegatedIdentity","Delegation","Prime256v1Identity","Secp256k1Identity","Signature","SignedDelegation"],"trait":["Identity"]};

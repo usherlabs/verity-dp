@@ -1,0 +1,1 @@
+searchState.loadedDescShard("eth_encode_packed", 0, "Represents a data type in solidity\nReturns the argument unchanged.\nReturns the argument unchanged.\nCalls <code>U::from(self)</code>.\nCalls <code>U::from(self)</code>.")

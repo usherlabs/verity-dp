@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="crc"><title>crc - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="crc" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../crc/index.html">crc</a><span class="version">1.8.1</span></h2></div><div class="sidebar-elems"><ul class="block"><li><a id="all-types" href="all.html">All Items</a></li></ul><section id="rustdoc-toc"><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#crc" title="crc">crc</a><ul><li><a href="#usage" title="Usage">Usage</a></li></ul></li></ul><h3><a href="#reexports">Crate Items</a></h3><ul class="block"><li><a href="#reexports" title="Re-exports">Re-exports</a></li><li><a href="#modules" title="Modules">Modules</a></li></ul></section><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Crate <span>crc</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/crc/lib.rs.html#1-70">source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="crc"><a class="doc-anchor" href="#crc">§</a>crc</h2>
+<p>Rust implementation of CRC(16, 32, 64)</p>
+<h3 id="usage"><a class="doc-anchor" href="#usage">§</a>Usage</h3><h4 id="compute-crc16"><a class="doc-anchor" href="#compute-crc16">§</a>Compute CRC16</h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>crc::{crc16, Hasher16};
+
+<span class="macro">assert_eq!</span>(crc16::checksum_x25(<span class="string">b"123456789"</span>), <span class="number">0x906e</span>);
+<span class="macro">assert_eq!</span>(crc16::checksum_usb(<span class="string">b"123456789"</span>), <span class="number">0xb4c8</span>);
+
+<span class="comment">// use provided or custom polynomial
+</span><span class="kw">let </span><span class="kw-2">mut </span>digest = crc16::Digest::new(crc16::X25);
+digest.write(<span class="string">b"123456789"</span>);
+<span class="macro">assert_eq!</span>(digest.sum16(), <span class="number">0x906e</span>);
+
+<span class="comment">// with initial
+</span><span class="kw">let </span><span class="kw-2">mut </span>digest = crc16::Digest::new_with_initial(crc16::X25, <span class="number">0u16</span>);
+digest.write(<span class="string">b"123456789"</span>);
+<span class="macro">assert_eq!</span>(digest.sum16(), <span class="number">0x906e</span>);</code></pre></div>
+<h4 id="compute-crc32"><a class="doc-anchor" href="#compute-crc32">§</a>Compute CRC32</h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>crc::{crc32, Hasher32};
+
+<span class="comment">// CRC-32-IEEE being the most commonly used one
+</span><span class="macro">assert_eq!</span>(crc32::checksum_ieee(<span class="string">b"123456789"</span>), <span class="number">0xcbf43926</span>);
+<span class="macro">assert_eq!</span>(crc32::checksum_castagnoli(<span class="string">b"123456789"</span>), <span class="number">0xe3069283</span>);
+<span class="macro">assert_eq!</span>(crc32::checksum_koopman(<span class="string">b"123456789"</span>), <span class="number">0x2d3dd0ae</span>);
+
+<span class="comment">// use provided or custom polynomial
+</span><span class="kw">let </span><span class="kw-2">mut </span>digest = crc32::Digest::new(crc32::IEEE);
+digest.write(<span class="string">b"123456789"</span>);
+<span class="macro">assert_eq!</span>(digest.sum32(), <span class="number">0xcbf43926</span>);
+
+<span class="comment">// with initial
+</span><span class="kw">let </span><span class="kw-2">mut </span>digest = crc32::Digest::new_with_initial(crc32::IEEE, <span class="number">0u32</span>);
+digest.write(<span class="string">b"123456789"</span>);
+<span class="macro">assert_eq!</span>(digest.sum32(), <span class="number">0xcbf43926</span>);</code></pre></div>
+<h4 id="compute-crc64"><a class="doc-anchor" href="#compute-crc64">§</a>Compute CRC64</h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>crc::{crc64, Hasher64};
+
+<span class="macro">assert_eq!</span>(crc64::checksum_ecma(<span class="string">b"123456789"</span>), <span class="number">0x995dc9bbdf1939fa</span>);
+<span class="macro">assert_eq!</span>(crc64::checksum_iso(<span class="string">b"123456789"</span>), <span class="number">0xb90956c775a41001</span>);
+
+<span class="comment">// use provided or custom polynomial
+</span><span class="kw">let </span><span class="kw-2">mut </span>digest = crc64::Digest::new(crc64::ECMA);
+digest.write(<span class="string">b"123456789"</span>);
+<span class="macro">assert_eq!</span>(digest.sum64(), <span class="number">0x995dc9bbdf1939fa</span>);
+
+<span class="comment">// with initial
+</span><span class="kw">let </span><span class="kw-2">mut </span>digest = crc64::Digest::new_with_initial(crc64::ECMA, <span class="number">0u64</span>);
+digest.write(<span class="string">b"123456789"</span>);
+<span class="macro">assert_eq!</span>(digest.sum64(), <span class="number">0x995dc9bbdf1939fa</span>);</code></pre></div>
+</div></details><h2 id="reexports" class="section-header">Re-exports<a href="#reexports" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name" id="reexport.Hasher16"><code>pub use self::crc16::<a class="trait" href="crc16/trait.Hasher16.html" title="trait crc::crc16::Hasher16">Hasher16</a>;</code></div></li><li><div class="item-name" id="reexport.Hasher32"><code>pub use self::crc32::<a class="trait" href="crc32/trait.Hasher32.html" title="trait crc::crc32::Hasher32">Hasher32</a>;</code></div></li><li><div class="item-name" id="reexport.Hasher64"><code>pub use self::crc64::<a class="trait" href="crc64/trait.Hasher64.html" title="trait crc::crc64::Hasher64">Hasher64</a>;</code></div></li></ul><h2 id="modules" class="section-header">Modules<a href="#modules" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="mod" href="crc16/index.html" title="mod crc::crc16">crc16</a></div></li><li><div class="item-name"><a class="mod" href="crc32/index.html" title="mod crc::crc32">crc32</a></div></li><li><div class="item-name"><a class="mod" href="crc64/index.html" title="mod crc::crc64">crc64</a></div></li></ul></section></div></main></body></html>

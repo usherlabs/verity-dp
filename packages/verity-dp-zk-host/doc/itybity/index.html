@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="An itty bitty crate providing bit iterators and bit iterator accessories."><title>itybity - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="itybity" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../itybity/index.html">itybity</a><span class="version">0.2.1</span></h2></div><div class="sidebar-elems"><ul class="block"><li><a id="all-types" href="all.html">All Items</a></li></ul><section id="rustdoc-toc"><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#summary" title="Summary">Summary</a></li><li><a href="#performance" title="Performance">Performance</a></li><li><a href="#bit-order" title="Bit Order">Bit Order</a></li><li><a href="#usage" title="Usage">Usage</a></li><li><a href="#examples" title="Examples">Examples</a></li><li><a href="#features" title="Features">Features</a></li><li><a href="#license" title="License">License</a></li><li><a href="#contribution" title="Contribution">Contribution</a></li></ul><h3><a href="#structs">Crate Items</a></h3><ul class="block"><li><a href="#structs" title="Structs">Structs</a></li><li><a href="#traits" title="Traits">Traits</a></li></ul></section><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Crate <span>itybity</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/itybity/lib.rs.html#1-564">source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>An itty bitty crate providing bit iterators and bit iterator accessories.</p>
+<p>No dependencies, no unsafe, and <code>#![no_std]</code> compatible.</p>
+<h2 id="summary"><a class="doc-anchor" href="#summary">§</a>Summary</h2>
+<p>This crate provides iterators for iterating over the bits of various types, including integers, slices, and strings.
+These iterators can be conveniently accessed via the provided extension traits, eg <a href="trait.ToBits.html" title="trait itybity::ToBits"><code>ToBits</code></a>, <a href="trait.IntoBits.html" title="trait itybity::IntoBits"><code>IntoBits</code></a>, and <a href="trait.StrToBits.html" title="trait itybity::StrToBits"><code>StrToBits</code></a>.</p>
+<p>The <a href="trait.FromBitIterator.html" title="trait itybity::FromBitIterator"><code>FromBitIterator</code></a> trait provides implementations for parsing types from bit iterators.</p>
+<h2 id="performance"><a class="doc-anchor" href="#performance">§</a>Performance</h2>
+<p>This crate was not designed with performance in mind, but rather simplicity. For a more performant and memory
+efficient alternative, see <a href="https://docs.rs/bitvec/latest/bitvec/"><code>bitvec</code></a>.</p>
+<p>That being said, the iterators in this crate are still reasonably fast and compact.</p>
+<h2 id="bit-order"><a class="doc-anchor" href="#bit-order">§</a>Bit Order</h2>
+<p>Be careful not to confuse bit order with byte order (endianness). Bit order refers to the order in which bits are positioned
+within a container. See <a href="https://en.wikipedia.org/wiki/Bit_numbering">this wiki</a> for more information.</p>
+<p>Conventionally, bits are written with the least-significant bit on the right. However, when dealing with bit vectors it is often
+more intuitive to have the least-significant bit reside at index 0, ie left-most or Lsb0 order.</p>
+<p>For example, the number 69 in binary is <code>01000101</code>, which translates to the following bit vector in Lsb0:</p>
+<p><code>[1, 0, 1, 0, 0, 0, 1, 0]</code></p>
+<p>And the following in Msb0:</p>
+<p><code>[0, 1, 0, 0, 0, 1, 0, 1]</code></p>
+<h2 id="usage"><a class="doc-anchor" href="#usage">§</a>Usage</h2>
+<p>First, add the following to your <code>Cargo.toml</code>:</p>
+<div class="example-wrap"><pre class="language-toml"><code>[dependencies]
+itybity = &quot;0.1&quot;</code></pre></div><h2 id="examples"><a class="doc-anchor" href="#examples">§</a>Examples</h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>itybity::{ToBits, IntoBits, FromBitIterator, StrToBits};
+
+<span class="kw">let </span>byte = <span class="number">0b1010_1010u8</span>;
+
+<span class="comment">// Convert to a Vec&lt;bool&gt; in Lsb0 order.
+</span><span class="kw">let </span>bits = byte.to_lsb0_vec();
+
+<span class="macro">assert_eq!</span>(bits, <span class="macro">vec!</span>[<span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>]);
+
+<span class="comment">// Writing a bit vector using bools is a pain, use a string instead!
+//
+// Notice that the string is written in Msb0 order, and we reverse it to Lsb0.
+</span><span class="kw">let </span>expected_bits = <span class="string">"10101010"</span>.iter_bits().rev().collect::&lt;Vec&lt;bool&gt;&gt;();
+
+<span class="macro">assert_eq!</span>(bits, expected_bits);
+
+<span class="comment">// Convert back to a u8.
+</span><span class="kw">let </span>new_byte = u8::from_lsb0_iter(bits);
+<span class="macro">assert_eq!</span>(byte, new_byte);
+
+<span class="comment">// We can work with slices too!
+</span><span class="kw">let </span>bytes = <span class="macro">vec!</span>[<span class="number">0u8</span>, <span class="number">1u8</span>, <span class="number">2u8</span>, <span class="number">3u8</span>];
+
+<span class="comment">// Create an iterator over the bits in Msb0 order.
+</span><span class="kw">let </span>bits = bytes.iter_msb0();
+
+<span class="macro">assert_eq!</span>(bits.len(), <span class="number">32</span>);
+
+<span class="comment">// Convert back to a different type
+</span><span class="kw">let </span>data = u32::from_msb0_iter(bits);
+
+<span class="comment">// If we have an iterator of values, we can map it to an iterator of bits.
+</span><span class="kw">let </span>iter = <span class="macro">vec!</span>[<span class="number">0u8</span>, <span class="number">1u8</span>, <span class="number">2u8</span>, <span class="number">3u8</span>].into_iter();
+
+<span class="kw">let </span>bit_iter = iter.flat_map(IntoBits::into_iter_lsb0);
+
+<span class="comment">// And we can parse it back
+</span><span class="kw">let </span>values = Vec::&lt;u8&gt;::from_lsb0_iter(bit_iter);
+
+<span class="macro">assert_eq!</span>(values, <span class="macro">vec!</span>[<span class="number">0u8</span>, <span class="number">1u8</span>, <span class="number">2u8</span>, <span class="number">3u8</span>]);
+
+<span class="comment">// We can do the same with arrays. Notice that the array is longer, so the last element
+// will be 0.
+</span><span class="kw">let </span>values = &lt;[u8; <span class="number">5</span>]&gt;::from_lsb0_iter(values.iter_lsb0());
+
+<span class="macro">assert_eq!</span>(values, [<span class="number">0u8</span>, <span class="number">1u8</span>, <span class="number">2u8</span>, <span class="number">3u8</span>, <span class="number">0u8</span>]);</code></pre></div>
+<h2 id="features"><a class="doc-anchor" href="#features">§</a>Features</h2>
+<p><code>itybity</code> supports <code>#[no_std]</code> by disabling the default features.</p>
+<ul>
+<li><code>std</code>: Enables <code>alloc</code>, for use of <code>Vec</code> and <code>String</code> types.</li>
+</ul>
+<h2 id="license"><a class="doc-anchor" href="#license">§</a>License</h2>
+<p>Licensed under either of</p>
+<ul>
+<li><a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></li>
+<li><a href="http://opensource.org/licenses/MIT">MIT license</a></li>
+</ul>
+<p>at your option.</p>
+<h2 id="contribution"><a class="doc-anchor" href="#contribution">§</a>Contribution</h2>
+<p>Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you,
+as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.</p>
+</div></details><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.BitIter.html" title="struct itybity::BitIter">BitIter</a></div><div class="desc docblock-short">Iterator over bits.</div></li><li><div class="item-name"><a class="struct" href="struct.IntoBitIter.html" title="struct itybity::IntoBitIter">Into<wbr>BitIter</a></div><div class="desc docblock-short">A wrapper that converts an iterator over values to an iterator over bits.</div></li><li><div class="item-name"><a class="struct" href="struct.Lsb0.html" title="struct itybity::Lsb0">Lsb0</a></div><div class="desc docblock-short">Lsb0 bit order.</div></li><li><div class="item-name"><a class="struct" href="struct.Msb0.html" title="struct itybity::Msb0">Msb0</a></div><div class="desc docblock-short">Msb0 bit order.</div></li><li><div class="item-name"><a class="struct" href="struct.StrBitIter.html" title="struct itybity::StrBitIter">StrBit<wbr>Iter</a></div><div class="desc docblock-short">Iterator over a bit string.</div></li></ul><h2 id="traits" class="section-header">Traits<a href="#traits" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="trait" href="trait.BitIterable.html" title="trait itybity::BitIterable">BitIterable</a></div><div class="desc docblock-short">A type whose bits can be iterated over.</div></li><li><div class="item-name"><a class="trait" href="trait.BitLength.html" title="trait itybity::BitLength">BitLength</a></div><div class="desc docblock-short">Trait for types with a const bit length.</div></li><li><div class="item-name"><a class="trait" href="trait.BitOrder.html" title="trait itybity::BitOrder">BitOrder</a></div><div class="desc docblock-short">Marker trait for bit order.</div></li><li><div class="item-name"><a class="trait" href="trait.FromBitIterator.html" title="trait itybity::FromBitIterator">From<wbr>BitIterator</a></div><div class="desc docblock-short">Trait used for parsing a value from a bit iterator.</div></li><li><div class="item-name"><a class="trait" href="trait.GetBit.html" title="trait itybity::GetBit">GetBit</a></div><div class="desc docblock-short">Trait for getting a bit at a given index.</div></li><li><div class="item-name"><a class="trait" href="trait.IntoBitIterator.html" title="trait itybity::IntoBitIterator">Into<wbr>BitIterator</a></div><div class="desc docblock-short">Trait for converting iterators over values into iterators over bits.</div></li><li><div class="item-name"><a class="trait" href="trait.IntoBits.html" title="trait itybity::IntoBits">Into<wbr>Bits</a></div><div class="desc docblock-short">Trait for converting types into a bit iterator.</div></li><li><div class="item-name"><a class="trait" href="trait.StrToBits.html" title="trait itybity::StrToBits">StrTo<wbr>Bits</a></div><div class="desc docblock-short">Trait for converting bit strings into a bit iterator.</div></li><li><div class="item-name"><a class="trait" href="trait.ToBits.html" title="trait itybity::ToBits">ToBits</a></div><div class="desc docblock-short">Trait for converting types into a borrowing bit iterator.</div></li></ul></section></div></main></body></html>

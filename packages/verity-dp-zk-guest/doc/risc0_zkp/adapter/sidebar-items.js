@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["PROOF_SYSTEM_INFO","REGISTER_GROUP_ACCUM","REGISTER_GROUP_CODE","REGISTER_GROUP_DATA"],"enum":["PolyExtStep"],"struct":["CircuitStepContext","MixState","PolyExtStepDef","ProtocolInfo"],"trait":["CircuitCoreDef","CircuitInfo","CircuitProveDef","CircuitStep","CircuitStepHandler","PolyExt","PolyFp","TapsProvider"],"type":["Arg","Var"]};

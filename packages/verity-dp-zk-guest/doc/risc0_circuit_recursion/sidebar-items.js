@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["CHECKED_COEFFS_PER_POLY","CIRCUIT","GLOBAL_MIX","GLOBAL_OUT","REGISTER_GROUP_ACCUM","REGISTER_GROUP_CODE","REGISTER_GROUP_CTRL","REGISTER_GROUP_DATA"],"mod":["control_id","layout","micro_op"],"struct":["CircuitImpl"],"trait":["Externs"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["EventStreamError"],"struct":["Event","EventStream"],"trait":["Eventsource"]};

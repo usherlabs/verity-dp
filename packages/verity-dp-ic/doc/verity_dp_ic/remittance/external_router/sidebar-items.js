@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["REMITTANCE_CANISTER"],"fn":["broadcast_to_remittance","get_remittance_canister","is_subscribed","publish_dc_json_to_remittance","publish_pdc_json_to_remittance","set_remittance_canister","subscribe"],"mod":["permissions"],"struct":["Account"],"type":["SubscriberStore"]};

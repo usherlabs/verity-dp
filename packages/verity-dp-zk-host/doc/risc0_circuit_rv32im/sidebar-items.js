@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["CIRCUIT","GLOBAL_MIX","GLOBAL_OUT","REGISTER_GROUP_ACCUM","REGISTER_GROUP_CODE","REGISTER_GROUP_CTRL","REGISTER_GROUP_DATA"],"fn":["control_id","control_ids"],"mod":["control_id","layout","poly_ext","trace"],"struct":["CircuitImpl"]};

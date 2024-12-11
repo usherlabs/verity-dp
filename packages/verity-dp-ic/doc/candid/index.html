@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Candid"><title>candid - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="candid" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../candid/index.html">candid</a><span class="version">0.10.10</span></h2></div><div class="sidebar-elems"><ul class="block"><li><a id="all-types" href="all.html">All Items</a></li></ul><section id="rustdoc-toc"><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#candid" title="Candid">Candid</a><ul><li><a href="#operating-on-native-rust-values" title="Operating on native Rust values">Operating on native Rust values</a></li><li><a href="#operating-on-user-defined-structenum" title="Operating on user defined struct/enum">Operating on user defined struct/enum</a></li><li><a href="#operating-on-big-integers" title="Operating on big integers">Operating on big integers</a></li><li><a href="#operating-on-reference-types" title="Operating on reference types">Operating on reference types</a></li><li><a href="#operating-on-untyped-candid-values" title="Operating on untyped Candid values">Operating on untyped Candid values</a></li><li><a href="#building-the-library-as-a-jswasm-package" title="Building the library as a JS/Wasm package">Building the library as a JS/Wasm package</a></li></ul></li></ul><h3><a href="#reexports">Crate Items</a></h3><ul class="block"><li><a href="#reexports" title="Re-exports">Re-exports</a></li><li><a href="#modules" title="Modules">Modules</a></li><li><a href="#macros" title="Macros">Macros</a></li><li><a href="#structs" title="Structs">Structs</a></li><li><a href="#traits" title="Traits">Traits</a></li><li><a href="#attributes" title="Attribute Macros">Attribute Macros</a></li><li><a href="#derives" title="Derive Macros">Derive Macros</a></li></ul></section><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Crate <span>candid</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/candid/lib.rs.html#1-288">source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="candid"><a class="doc-anchor" href="#candid">§</a>Candid</h2>
+<p>Candid is an interface description language (IDL) for interacting with <em>canisters</em> (also known as <em>services</em> or <em>actors</em>) running on the Internet Computer.</p>
+<p>There are three common ways that you might find yourself needing to work with Candid in Rust.</p>
+<ul>
+<li>As a typed Rust data structure. When you write canisters or frontend in Rust, you want to have a seamless way of converting data between Rust and Candid.</li>
+<li>As an untyped Candid value. When you write generic tools for the Internet Computer without knowing the type of the Candid data.</li>
+<li>As text data. When you get the data from CLI or read from a file, you can use the provided parser to send/receive messages.</li>
+</ul>
+<p>Candid provides efficient, flexible and safe ways of converting data between each of these representations.</p>
+<h3 id="operating-on-native-rust-values"><a class="doc-anchor" href="#operating-on-native-rust-values">§</a>Operating on native Rust values</h3>
+<p>We are using a builder pattern to encode/decode Candid messages, see <a href="ser/struct.IDLBuilder.html"><code>candid::ser::IDLBuilder</code></a> for serialization and <a href="de/struct.IDLDeserialize.html"><code>candid::de::IDLDeserialize</code></a> for deserialization.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Serialize 10 numbers to Candid binary format
+</span><span class="kw">let </span><span class="kw-2">mut </span>ser = candid::ser::IDLBuilder::new();
+<span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="number">10 </span>{
+  ser.arg(<span class="kw-2">&amp;</span>i)<span class="question-mark">?</span>;
+}
+<span class="kw">let </span>bytes: Vec&lt;u8&gt; = ser.serialize_to_vec()<span class="question-mark">?</span>;
+
+<span class="comment">// Deserialize Candid message and verify the values match
+</span><span class="kw">let </span><span class="kw-2">mut </span>de = candid::de::IDLDeserialize::new(<span class="kw-2">&amp;</span>bytes)<span class="question-mark">?</span>;
+<span class="kw">let </span><span class="kw-2">mut </span>i = <span class="number">0</span>;
+<span class="kw">while </span>!de.is_done() {
+  <span class="kw">let </span>x = de.get_value::&lt;i32&gt;()<span class="question-mark">?</span>;
+  <span class="macro">assert_eq!</span>(x, i);
+  i += <span class="number">1</span>;
+}
+de.done()<span class="question-mark">?</span>;</code></pre></div>
+<p>Candid provides functions for encoding/decoding a Candid message in a type-safe way.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>candid::{encode_args, decode_args};
+<span class="comment">// Serialize two values [(42, "text")] and (42u32, "text")
+</span><span class="kw">let </span>bytes: Vec&lt;u8&gt; = encode_args((<span class="kw-2">&amp;</span>[(<span class="number">42</span>, <span class="string">"text"</span>)], <span class="kw-2">&amp;</span>(<span class="number">42u32</span>, <span class="string">"text"</span>)))<span class="question-mark">?</span>;
+<span class="comment">// Deserialize the first value as type Vec&lt;(i32, &amp;str)&gt;,
+// and the second value as type (u32, String)
+</span><span class="kw">let </span>(a, b): (Vec&lt;(i32, <span class="kw-2">&amp;</span>str)&gt;, (u32, String)) = decode_args(<span class="kw-2">&amp;</span>bytes)<span class="question-mark">?</span>;
+
+<span class="macro">assert_eq!</span>(a, [(<span class="number">42</span>, <span class="string">"text"</span>)]);
+<span class="macro">assert_eq!</span>(b, (<span class="number">42u32</span>, <span class="string">"text"</span>.to_string()));</code></pre></div>
+<p>We also provide macros for encoding/decoding Candid message in a convenient way.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>candid::{Encode, Decode};
+<span class="comment">// Serialize two values [(42, "text")] and (42u32, "text")
+</span><span class="kw">let </span>bytes: Vec&lt;u8&gt; = <span class="macro">Encode!</span>(<span class="kw-2">&amp;</span>[(<span class="number">42</span>, <span class="string">"text"</span>)], <span class="kw-2">&amp;</span>(<span class="number">42u32</span>, <span class="string">"text"</span>))<span class="question-mark">?</span>;
+<span class="comment">// Deserialize the first value as type Vec&lt;(i32, &amp;str)&gt;,
+// and the second value as type (u32, String)
+</span><span class="kw">let </span>(a, b) = <span class="macro">Decode!</span>(<span class="kw-2">&amp;</span>bytes, Vec&lt;(i32, <span class="kw-2">&amp;</span>str)&gt;, (u32, String))<span class="question-mark">?</span>;
+
+<span class="macro">assert_eq!</span>(a, [(<span class="number">42</span>, <span class="string">"text"</span>)]);
+<span class="macro">assert_eq!</span>(b, (<span class="number">42u32</span>, <span class="string">"text"</span>.to_string()));</code></pre></div>
+<p>The <a href="macro.Encode.html"><code>Encode!</code></a> macro takes a sequence of Rust values, and returns a binary format <code>Vec&lt;u8&gt;</code> that can be sent over the wire.
+The <a href="macro.Decode.html"><code>Decode!</code></a> macro takes the binary message and a sequence of Rust types that you want to decode into, and returns a tuple
+of Rust values of the given types.</p>
+<p>Note that a fixed Candid message may be decoded in multiple Rust types. For example,
+we can decode a Candid <code>text</code> type into either <code>String</code> or <code>&amp;str</code> in Rust.</p>
+<h3 id="operating-on-user-defined-structenum"><a class="doc-anchor" href="#operating-on-user-defined-structenum">§</a>Operating on user defined struct/enum</h3>
+<p>We use trait <a href="types/trait.CandidType.html"><code>CandidType</code></a> for serialization. Deserialization requires both <a href="types/trait.CandidType.html"><code>CandidType</code></a> and Serde’s <a href="trait.Deserialize.html"><code>Deserialize</code></a> trait.
+Any type that implements these two traits can be used for serialization and deserialization.
+This includes built-in Rust standard library types like <code>Vec&lt;T&gt;</code> and <code>Result&lt;T, E&gt;</code>, as well as any structs
+or enums annotated with <code>#[derive(CandidType, Deserialize)]</code>.</p>
+<p>We do not use Serde’s <code>Serialize</code> trait because Candid requires serializing types along with the values.
+This is difficult to achieve in <code>Serialize</code>, especially for enum types. Besides serialization, <a href="types/trait.CandidType.html"><code>CandidType</code></a>
+trait also converts Rust type to Candid type defined as <a href="types/internal/enum.Type.html"><code>candid::types::Type</code></a>.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[cfg(feature = <span class="string">"serde_bytes"</span>)]
+</span><span class="kw">use </span>candid::{Encode, Decode, CandidType, Deserialize};
+<span class="attr">#[derive(CandidType, Deserialize)]
+</span><span class="kw">enum </span>List {
+    <span class="attr">#[serde(rename = <span class="string">"nil"</span>)]
+    </span>Nil,
+    <span class="attr">#[serde(with = <span class="string">"serde_bytes"</span>)]
+    </span>Node(Vec&lt;u8&gt;),
+    Cons(i32, Box&lt;List&gt;),
+}
+<span class="kw">let </span>list = List::Cons(<span class="number">42</span>, Box::new(List::Nil));
+
+<span class="kw">let </span>bytes = <span class="macro">Encode!</span>(<span class="kw-2">&amp;</span>list)<span class="question-mark">?</span>;
+<span class="kw">let </span>res = <span class="macro">Decode!</span>(<span class="kw-2">&amp;</span>bytes, List)<span class="question-mark">?</span>;
+<span class="macro">assert_eq!</span>(res, list);</code></pre></div>
+<p>We support serde’s rename attributes for each field, namely <code>#[serde(rename = "foo")]</code>
+and <code>#[serde(rename(serialize = "foo", deserialize = "foo"))]</code>.
+This is useful when interoperating between Rust and Motoko canisters involving variant types, because
+they use different naming conventions for field names.</p>
+<p>We support <code>#[serde(with = "serde_bytes")]</code> for efficient handling of <code>&amp;[u8]</code> and <code>Vec&lt;u8&gt;</code>. You can
+also use the wrapper type <code>serde_bytes::ByteBuf</code> and <code>serde_bytes::Bytes</code>.</p>
+<p>Note that if you are deriving <code>Deserialize</code> trait from Candid, you need to import <code>serde</code> as a dependency in
+your project, as the derived implementation will refer to the <code>serde</code> crate.</p>
+<h3 id="operating-on-big-integers"><a class="doc-anchor" href="#operating-on-big-integers">§</a>Operating on big integers</h3>
+<p>To support big integer types <a href="types/number/struct.Int.html"><code>Candid::Int</code></a> and <a href="types/number/struct.Nat.html"><code>Candid::Nat</code></a>,
+we use the <code>num_bigint</code> crate. We provide interface to convert <code>i64</code>, <code>u64</code>, <code>&amp;str</code> and <code>&amp;[u8]</code> to big integers.
+You can also use <code>i128</code> and <code>u128</code> to represent Candid <code>int</code> and <code>nat</code> types respectively (decoding will fail if
+the number is more than 128 bits).</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[cfg(feature = <span class="string">"bignum"</span>)]
+</span><span class="kw">use </span>candid::{Int, Nat, Encode, Decode};
+<span class="kw">let </span>x = <span class="string">"-10000000000000000000"</span>.parse::&lt;Int&gt;()<span class="question-mark">?</span>;
+<span class="kw">let </span>bytes = <span class="macro">Encode!</span>(<span class="kw-2">&amp;</span>Nat::from(<span class="number">1024u32</span>), <span class="kw-2">&amp;</span>x)<span class="question-mark">?</span>;
+<span class="kw">let </span>(a, b) = <span class="macro">Decode!</span>(<span class="kw-2">&amp;</span>bytes, Nat, Int)<span class="question-mark">?</span>;
+<span class="kw">let </span>(c, d) = <span class="macro">Decode!</span>(<span class="kw-2">&amp;</span>bytes, u128, i128)<span class="question-mark">?</span>;
+<span class="macro">assert_eq!</span>(a + <span class="number">1u8</span>, <span class="number">1025u32</span>);
+<span class="macro">assert_eq!</span>(b, Int::parse(<span class="string">b"-10000000000000000000"</span>)<span class="question-mark">?</span>);</code></pre></div>
+<h3 id="operating-on-reference-types"><a class="doc-anchor" href="#operating-on-reference-types">§</a>Operating on reference types</h3>
+<p>The type of function and service references cannot be derived automatically. We provide
+two macros <a href="macro.define_function.html"><code>define_function!</code></a> and <a href="macro.define_service.html"><code>define_service!</code></a> to help defining the reference types. To specify reference types in the macro, you need to use the corresponding Rust types,
+instead of the Candid types.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[cfg(feature = <span class="string">"bignum"</span>)]
+</span><span class="kw">use </span>candid::{define_function, define_service, func, Encode, Decode, Principal};
+<span class="kw">let </span>principal = Principal::from_text(<span class="string">"aaaaa-aa"</span>).unwrap();
+
+<span class="macro">define_function!</span>(<span class="kw">pub </span>CustomFunc : (u8, <span class="kw-2">&amp;</span>str) -&gt; (u128));
+<span class="kw">let </span>func = CustomFunc::new(principal, <span class="string">"method_name"</span>.to_string());
+<span class="macro">assert_eq!</span>(func, <span class="macro">Decode!</span>(<span class="kw-2">&amp;</span><span class="macro">Encode!</span>(<span class="kw-2">&amp;</span>func)<span class="question-mark">?</span>, CustomFunc)<span class="question-mark">?</span>);
+
+<span class="macro">define_service!</span>(MyService : {
+  <span class="string">"f"</span>: CustomFunc::ty();
+  <span class="string">"g"</span>: <span class="macro">func!</span>((candid::Int) -&gt; (candid::Nat, CustomFunc) query)
+});
+<span class="kw">let </span>serv = MyService::new(principal);
+<span class="macro">assert_eq!</span>(serv, <span class="macro">Decode!</span>(<span class="kw-2">&amp;</span><span class="macro">Encode!</span>(<span class="kw-2">&amp;</span>serv)<span class="question-mark">?</span>, MyService)<span class="question-mark">?</span>);</code></pre></div>
+<h3 id="operating-on-untyped-candid-values"><a class="doc-anchor" href="#operating-on-untyped-candid-values">§</a>Operating on untyped Candid values</h3>
+<p>Any valid Candid value can be manipulated in an recursive enum representation <a href="parser/value/enum.IDLValue.html"><code>candid::parser::value::IDLValue</code></a>.
+We use <code>ser.value_arg(v)</code> and <code>de.get_value::&lt;IDLValue&gt;()</code> for encoding and decoding the value.
+The use of Rust value and <code>IDLValue</code> can be intermixed.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[cfg(feature = <span class="string">"value"</span>)]
+</span><span class="kw">use </span>candid::types::value::IDLValue;
+<span class="comment">// Serialize Rust value Some(42u8) and IDLValue "hello"
+</span><span class="kw">let </span>bytes = candid::ser::IDLBuilder::new()
+    .arg(<span class="kw-2">&amp;</span><span class="prelude-val">Some</span>(<span class="number">42u8</span>))<span class="question-mark">?
+    </span>.value_arg(<span class="kw-2">&amp;</span>IDLValue::Text(<span class="string">"hello"</span>.to_string()))<span class="question-mark">?
+    </span>.serialize_to_vec()<span class="question-mark">?</span>;
+
+<span class="comment">// Deserialize the first Rust value into IDLValue,
+// and the second IDLValue into Rust value
+</span><span class="kw">let </span><span class="kw-2">mut </span>de = candid::de::IDLDeserialize::new(<span class="kw-2">&amp;</span>bytes)<span class="question-mark">?</span>;
+<span class="kw">let </span>x = de.get_value::&lt;IDLValue&gt;()<span class="question-mark">?</span>;
+<span class="kw">let </span>y = de.get_value::&lt;<span class="kw-2">&amp;</span>str&gt;()<span class="question-mark">?</span>;
+de.done()<span class="question-mark">?</span>;
+
+<span class="macro">assert_eq!</span>(x, IDLValue::Opt(Box::new(IDLValue::Nat8(<span class="number">42</span>))));
+<span class="macro">assert_eq!</span>(y, <span class="string">"hello"</span>);</code></pre></div>
+<h3 id="building-the-library-as-a-jswasm-package"><a class="doc-anchor" href="#building-the-library-as-a-jswasm-package">§</a>Building the library as a JS/Wasm package</h3>
+<p>With the help of <code>wasm-bindgen</code> and <code>wasm-pack</code>, we can build the library as a Wasm binary and run in the browser.
+This is useful for client-side UIs and parsing did files in JavaScript.</p>
+<p>Create a new project with the following <code>Cargo.toml</code>.</p>
+<div class="example-wrap"><pre class="language-toml"><code>[lib]
+crate-type = [&quot;cdylib&quot;]
+
+[dependencies]
+wasm-bindgen = &quot;0.2&quot;
+candid = &quot;0.9.0&quot;
+candid_parser = &quot;0.1.0&quot;
+
+[profile.release]
+lto = true
+opt-level = &#39;z&#39;</code></pre></div>
+<p>Expose the methods in <code>lib.rs</code></p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">use </span>candid::TypeEnv;
+<span class="kw">use </span>candid_parser::{check_prog, IDLProg};
+<span class="kw">use </span>wasm_bindgen::prelude::<span class="kw-2">*</span>;
+<span class="attr">#[wasm_bindgen]
+</span><span class="kw">pub fn </span>did_to_js(prog: String) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
+  <span class="kw">let </span>ast = prog.parse::&lt;IDLProg&gt;().ok()<span class="question-mark">?</span>;
+  <span class="kw">let </span><span class="kw-2">mut </span>env = TypeEnv::new();
+  <span class="kw">let </span>actor = check_prog(<span class="kw-2">&amp;mut </span>env, <span class="kw-2">&amp;</span>ast).ok()<span class="question-mark">?</span>;
+  <span class="prelude-val">Some</span>(candid_parser::bindings::javascript::compile(<span class="kw-2">&amp;</span>env, <span class="kw-2">&amp;</span>actor))
+}</code></pre></div>
+<h4 id="building"><a class="doc-anchor" href="#building">§</a>Building</h4><div class="example-wrap"><pre class="language-shell"><code>cargo install wasm-pack
+wasm-pack build --target bundler
+wasm-opt --strip-debug -Oz pkg/didc_bg.wasm -o pkg/didc_bg.wasm</code></pre></div><h4 id="usage"><a class="doc-anchor" href="#usage">§</a>Usage</h4><div class="example-wrap"><pre class="language-js"><code>const didc = import(&quot;pkg/didc&quot;);
+didc.then((mod) =&gt; {
+  const service = &quot;service : {}&quot;;
+  const js = mod.did_to_js(service);
+});</code></pre></div></div></details><h2 id="reexports" class="section-header">Re-exports<a href="#reexports" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name" id="reexport.Error"><code>pub use error::<a class="enum" href="error/enum.Error.html" title="enum candid::error::Error">Error</a>;</code></div></li><li><div class="item-name" id="reexport.Result"><code>pub use error::<a class="type" href="error/type.Result.html" title="type candid::error::Result">Result</a>;</code></div></li><li><div class="item-name" id="reexport.Int"><code>pub use types::number::<a class="struct" href="types/number/struct.Int.html" title="struct candid::types::number::Int">Int</a>;</code></div></li><li><div class="item-name" id="reexport.Nat"><code>pub use types::number::<a class="struct" href="types/number/struct.Nat.html" title="struct candid::types::number::Nat">Nat</a>;</code></div></li><li><div class="item-name" id="reexport.CandidType"><code>pub use types::<a class="trait" href="types/trait.CandidType.html" title="trait candid::types::CandidType">CandidType</a>;</code></div></li><li><div class="item-name" id="reexport.arc"><code>pub use types::<a class="mod" href="types/arc/index.html" title="mod candid::types::arc">arc</a>;</code></div></li><li><div class="item-name" id="reexport.rc"><code>pub use types::<a class="mod" href="types/rc/index.html" title="mod candid::types::rc">rc</a>;</code></div></li><li><div class="item-name" id="reexport.Func"><code>pub use types::reference::<a class="struct" href="types/reference/struct.Func.html" title="struct candid::types::reference::Func">Func</a>;</code></div></li><li><div class="item-name" id="reexport.Service"><code>pub use types::reference::<a class="struct" href="types/reference/struct.Service.html" title="struct candid::types::reference::Service">Service</a>;</code></div></li><li><div class="item-name" id="reexport.Empty"><code>pub use types::reserved::<a class="enum" href="types/reserved/enum.Empty.html" title="enum candid::types::reserved::Empty">Empty</a>;</code></div></li><li><div class="item-name" id="reexport.Reserved"><code>pub use types::reserved::<a class="struct" href="types/reserved/struct.Reserved.html" title="struct candid::types::reserved::Reserved">Reserved</a>;</code></div></li><li><div class="item-name" id="reexport.MotokoResult"><code>pub use types::result::<a class="enum" href="types/result/enum.MotokoResult.html" title="enum candid::types::result::MotokoResult">MotokoResult</a>;</code></div></li><li><div class="item-name" id="reexport.TypeEnv"><code>pub use types::<a class="struct" href="types/type_env/struct.TypeEnv.html" title="struct candid::types::type_env::TypeEnv">TypeEnv</a>;</code></div></li><li><div class="item-name" id="reexport.DecoderConfig"><code>pub use de::<a class="struct" href="de/struct.DecoderConfig.html" title="struct candid::de::DecoderConfig">DecoderConfig</a>;</code></div></li><li><div class="item-name" id="reexport.decode_args"><code>pub use utils::<a class="fn" href="utils/fn.decode_args.html" title="fn candid::utils::decode_args">decode_args</a>;</code></div></li><li><div class="item-name" id="reexport.decode_args_with_config"><code>pub use utils::<a class="fn" href="utils/fn.decode_args_with_config.html" title="fn candid::utils::decode_args_with_config">decode_args_with_config</a>;</code></div></li><li><div class="item-name" id="reexport.decode_one"><code>pub use utils::<a class="fn" href="utils/fn.decode_one.html" title="fn candid::utils::decode_one">decode_one</a>;</code></div></li><li><div class="item-name" id="reexport.decode_one_with_config"><code>pub use utils::<a class="fn" href="utils/fn.decode_one_with_config.html" title="fn candid::utils::decode_one_with_config">decode_one_with_config</a>;</code></div></li><li><div class="item-name" id="reexport.encode_args"><code>pub use utils::<a class="fn" href="utils/fn.encode_args.html" title="fn candid::utils::encode_args">encode_args</a>;</code></div></li><li><div class="item-name" id="reexport.encode_one"><code>pub use utils::<a class="fn" href="utils/fn.encode_one.html" title="fn candid::utils::encode_one">encode_one</a>;</code></div></li><li><div class="item-name" id="reexport.write_args"><code>pub use utils::<a class="fn" href="utils/fn.write_args.html" title="fn candid::utils::write_args">write_args</a>;</code></div></li></ul><h2 id="modules" class="section-header">Modules<a href="#modules" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="mod" href="binary_parser/index.html" title="mod candid::binary_parser">binary_<wbr>parser</a></div></li><li><div class="item-name"><a class="mod" href="de/index.html" title="mod candid::de">de</a></div><div class="desc docblock-short">Deserialize Candid binary format to Rust data structures</div></li><li><div class="item-name"><a class="mod" href="error/index.html" title="mod candid::error">error</a></div><div class="desc docblock-short"><code>candid::Result&lt;T&gt; = Result&lt;T, candid::Error&gt;&gt;</code></div></li><li><div class="item-name"><a class="mod" href="pretty/index.html" title="mod candid::pretty">pretty</a></div><div class="desc docblock-short">pretty printer for Candid type and value</div></li><li><div class="item-name"><a class="mod" href="ser/index.html" title="mod candid::ser">ser</a></div><div class="desc docblock-short">Serialize a Rust data structure to Candid binary format</div></li><li><div class="item-name"><a class="mod" href="types/index.html" title="mod candid::types">types</a></div><div class="desc docblock-short">Provides Candid type conversion and serialization.</div></li><li><div class="item-name"><a class="mod" href="utils/index.html" title="mod candid::utils">utils</a></div></li></ul><h2 id="macros" class="section-header">Macros<a href="#macros" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="macro" href="macro.Decode.html" title="macro candid::Decode">Decode</a></div><div class="desc docblock-short">Decode Candid message into a tuple of Rust values of the given types.
+Produces <code>Err</code> if the message fails to decode at any given types.
+If the message contains only one value, it returns the value directly instead of a tuple.</div></li><li><div class="item-name"><a class="macro" href="macro.Encode.html" title="macro candid::Encode">Encode</a></div><div class="desc docblock-short">Encode sequence of Rust values into Candid message of type <code>candid::Result&lt;Vec&lt;u8&gt;&gt;</code>.</div></li><li><div class="item-name"><a class="macro" href="macro.define_function.html" title="macro candid::define_function">define_<wbr>function</a></div><div class="desc docblock-short">Define a function reference type.</div></li><li><div class="item-name"><a class="macro" href="macro.define_service.html" title="macro candid::define_service">define_<wbr>service</a></div><div class="desc docblock-short">Define a service reference type.</div></li><li><div class="item-name"><a class="macro" href="macro.export_service.html" title="macro candid::export_service">export_<wbr>service</a></div></li><li><div class="item-name"><a class="macro" href="macro.field.html" title="macro candid::field">field</a></div><div class="desc docblock-short">Construct a field type, which can be used in <code>TypeInner::Record</code> and <code>TypeInner::Variant</code>.</div></li><li><div class="item-name"><a class="macro" href="macro.func.html" title="macro candid::func">func</a></div><div class="desc docblock-short">Construct a function type.</div></li><li><div class="item-name"><a class="macro" href="macro.record.html" title="macro candid::record">record</a></div><div class="desc docblock-short">Construct a record type, e.g., <code>record!{ label: Nat::ty(); 42: String::ty() }</code>.</div></li><li><div class="item-name"><a class="macro" href="macro.service.html" title="macro candid::service">service</a></div><div class="desc docblock-short">Construct a service type.</div></li><li><div class="item-name"><a class="macro" href="macro.variant.html" title="macro candid::variant">variant</a></div><div class="desc docblock-short">Construct a variant type, e.g., <code>variant!{ tag: &lt;()&gt;::ty() }</code>.</div></li></ul><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.Principal.html" title="struct candid::Principal">Principal</a></div><div class="desc docblock-short">Generic ID on Internet Computer.</div></li></ul><h2 id="traits" class="section-header">Traits<a href="#traits" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="trait" href="trait.Deserialize.html" title="trait candid::Deserialize">Deserialize</a></div><div class="desc docblock-short">A <strong>data structure</strong> that can be deserialized from any data format supported
+by Serde.</div></li></ul><h2 id="attributes" class="section-header">Attribute Macros<a href="#attributes" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="attr" href="attr.candid_method.html" title="attr candid::candid_method">candid_<wbr>method</a></div></li></ul><h2 id="derives" class="section-header">Derive Macros<a href="#derives" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="derive" href="derive.CandidType.html" title="derive candid::CandidType">Candid<wbr>Type</a></div></li><li><div class="item-name"><a class="derive" href="derive.Deserialize.html" title="derive candid::Deserialize">Deserialize</a></div></li></ul></section></div></main></body></html>

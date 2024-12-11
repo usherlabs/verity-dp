@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["provisional_create_canister_with_cycles","provisional_top_up_canister"],"struct":["ProvisionalCreateCanisterWithCyclesArgument","ProvisionalTopUpCanisterArgument"]};

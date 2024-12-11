@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["P"],"struct":["BabyBear","Elem","ExtElem"],"type":["BabyBearElem","BabyBearExtElem"]};

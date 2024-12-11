@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["ConversionError","ReceiptEnvelope"],"mod":["request"],"struct":["AccessList","AccessListItem","AccessListResult","AnyReceiptEnvelope","Authorization","BlobTransactionSidecar","Parity","Receipt","ReceiptWithBloom","Signature","Transaction","TransactionInfo","TransactionReceipt"],"type":["AnyTransactionReceipt"]};

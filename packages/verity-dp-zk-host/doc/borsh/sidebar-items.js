@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"derive":["BorshDeserialize","BorshSerialize"],"fn":["object_length","to_vec","to_writer"],"mod":["de","error","io","ser"]};

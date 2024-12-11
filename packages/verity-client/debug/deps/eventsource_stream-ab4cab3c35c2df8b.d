@@ -1,0 +1,10 @@
+/home/runner/work/verity-dp/verity-dp/docs/./packages/verity-client/debug/deps/libeventsource_stream-ab4cab3c35c2df8b.rmeta: /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/event.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/event_stream.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/parser.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/traits.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/utf8_stream.rs
+
+/home/runner/work/verity-dp/verity-dp/docs/./packages/verity-client/debug/deps/eventsource_stream-ab4cab3c35c2df8b.d: /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/event.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/event_stream.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/parser.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/traits.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/utf8_stream.rs
+
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/lib.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/event.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/event_stream.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/parser.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/traits.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/eventsource-stream-0.2.3/src/utf8_stream.rs:

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["WHITE_LIST"],"fn":["add_to_whitelist","is_whitelisted","remove_from_whitelist"]};

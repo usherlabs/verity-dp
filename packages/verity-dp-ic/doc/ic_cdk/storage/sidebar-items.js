@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["stable_restore","stable_save"]};

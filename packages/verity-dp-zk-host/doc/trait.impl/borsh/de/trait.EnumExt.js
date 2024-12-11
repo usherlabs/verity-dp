@@ -1,0 +1,9 @@
+(function() {
+    var implementors = Object.fromEntries([["risc0_binfmt",[["impl <a class=\"trait\" href=\"borsh/de/trait.EnumExt.html\" title=\"trait borsh::de::EnumExt\">EnumExt</a> for <a class=\"enum\" href=\"risc0_binfmt/enum.ExitCode.html\" title=\"enum risc0_binfmt::ExitCode\">ExitCode</a>"]]],["risc0_zkvm",[["impl <a class=\"trait\" href=\"borsh/de/trait.EnumExt.html\" title=\"trait borsh::de::EnumExt\">EnumExt</a> for <a class=\"enum\" href=\"risc0_zkvm/enum.InnerAssumptionReceipt.html\" title=\"enum risc0_zkvm::InnerAssumptionReceipt\">InnerAssumptionReceipt</a>"],["impl <a class=\"trait\" href=\"borsh/de/trait.EnumExt.html\" title=\"trait borsh::de::EnumExt\">EnumExt</a> for <a class=\"enum\" href=\"risc0_zkvm/enum.InnerReceipt.html\" title=\"enum risc0_zkvm::InnerReceipt\">InnerReceipt</a>"],["impl&lt;T&gt; <a class=\"trait\" href=\"borsh/de/trait.EnumExt.html\" title=\"trait borsh::de::EnumExt\">EnumExt</a> for <a class=\"enum\" href=\"risc0_zkvm/enum.MaybePruned.html\" title=\"enum risc0_zkvm::MaybePruned\">MaybePruned</a>&lt;T&gt;<div class=\"where\">where\n    T: <a class=\"trait\" href=\"https://doc.rust-lang.org/1.83.0/core/clone/trait.Clone.html\" title=\"trait core::clone::Clone\">Clone</a> + <a class=\"trait\" href=\"serde/ser/trait.Serialize.html\" title=\"trait serde::ser::Serialize\">Serialize</a> + <a class=\"trait\" href=\"borsh/de/trait.BorshDeserialize.html\" title=\"trait borsh::de::BorshDeserialize\">BorshDeserialize</a>,</div>"]]]]);
+    if (window.register_implementors) {
+        window.register_implementors(implementors);
+    } else {
+        window.pending_implementors = implementors;
+    }
+})()
+//{"start":57,"fragment_lengths":[244,1184]}

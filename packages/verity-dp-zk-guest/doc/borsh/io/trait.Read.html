@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="The `Read` trait allows for reading bytes from a source."><title>Read in borsh::io - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="borsh" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../borsh/index.html">borsh</a><span class="version">1.5.3</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Read</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#examples" title="Examples">Examples</a></li></ul><h3><a href="#required-methods">Required Methods</a></h3><ul class="block"><li><a href="#tymethod.read" title="read">read</a></li></ul><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.by_ref" title="by_ref">by_ref</a></li><li><a href="#method.read_exact" title="read_exact">read_exact</a></li></ul><h3><a href="#foreign-impls">Implementations on Foreign Types</a></h3><ul class="block"><li><a href="#impl-Read-for-%26%5Bu8%5D" title="&#38;[u8]">&#38;[u8]</a></li><li><a href="#impl-Read-for-%26mut+R" title="&#38;mut R">&#38;mut R</a></li></ul><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In borsh::<wbr>io</a></h2></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><span class="rustdoc-breadcrumbs"><a href="../index.html">borsh</a>::<wbr><a href="index.html">io</a></span><h1>Trait <span class="trait">Read</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/borsh/nostd_io.rs.html#766-942">source</a> </span></div><pre class="rust item-decl"><code>pub trait Read {
+    // Required method
+    fn <a href="#tymethod.read" class="fn">read</a>(&amp;mut self, buf: &amp;mut [<a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.u8.html">u8</a>]) -&gt; <a class="type" href="type.Result.html" title="type borsh::io::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.usize.html">usize</a>&gt;;
+
+    // Provided methods
+    fn <a href="#method.read_exact" class="fn">read_exact</a>(&amp;mut self, buf: &amp;mut [<a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.u8.html">u8</a>]) -&gt; <a class="type" href="type.Result.html" title="type borsh::io::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.unit.html">()</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.by_ref" class="fn">by_ref</a>(&amp;mut self) -&gt; &amp;mut Self
+       <span class="where">where Self: <a class="trait" href="https://doc.rust-lang.org/1.83.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a></span> { ... }
+}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>The <code>Read</code> trait allows for reading bytes from a source.</p>
+<p>Implementors of the <code>Read</code> trait are called ‘readers’.</p>
+<p>Readers are defined by one required method, <a href="trait.Read.html#tymethod.read" title="method borsh::io::Read::read"><code>read()</code></a>. Each call to <a href="trait.Read.html#tymethod.read" title="method borsh::io::Read::read"><code>read()</code></a>
+will attempt to pull bytes from this source into a provided buffer. A
+number of other methods are implemented in terms of <a href="trait.Read.html#tymethod.read" title="method borsh::io::Read::read"><code>read()</code></a>, giving
+implementors a number of ways to read bytes while only needing to implement
+a single method.</p>
+<p>Readers are intended to be composable with one another. Many implementors
+throughout <a href="self"><code>std::io</code></a> take and provide types which implement the <code>Read</code>
+trait.</p>
+<p>Please note that each call to <a href="trait.Read.html#tymethod.read" title="method borsh::io::Read::read"><code>read()</code></a> may involve a system call, and
+therefore, using something that implements [<code>BufRead</code>], such as
+[<code>BufReader</code>], will be more efficient.</p>
+<h2 id="examples"><a class="doc-anchor" href="#examples">§</a>Examples</h2>
+<p><a href="crate::fs::File"><code>File</code></a>s implement <code>Read</code>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::io;
+<span class="kw">use </span>std::io::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::fs::File;
+
+<span class="kw">fn </span>main() -&gt; io::Result&lt;()&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>f = File::open(<span class="string">"foo.txt"</span>)<span class="question-mark">?</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>buffer = [<span class="number">0</span>; <span class="number">10</span>];
+
+    <span class="comment">// read up to 10 bytes
+    </span>f.read(<span class="kw-2">&amp;mut </span>buffer)<span class="question-mark">?</span>;
+
+    <span class="kw">let </span><span class="kw-2">mut </span>buffer = Vec::new();
+    <span class="comment">// read the whole file
+    </span>f.read_to_end(<span class="kw-2">&amp;mut </span>buffer)<span class="question-mark">?</span>;
+
+    <span class="comment">// read into a String, so that you don't need to do the conversion.
+    </span><span class="kw">let </span><span class="kw-2">mut </span>buffer = String::new();
+    f.read_to_string(<span class="kw-2">&amp;mut </span>buffer)<span class="question-mark">?</span>;
+
+    <span class="comment">// and more! See the other methods for more details.
+    </span><span class="prelude-val">Ok</span>(())
+}</code></pre></div>
+<p>Read from <a href="https://doc.rust-lang.org/1.83.0/core/primitive.str.html" title="primitive str"><code>&amp;str</code></a> because <a href="https://doc.rust-lang.org/1.83.0/core/primitive.slice.html" title="primitive slice"><code>&amp;[u8]</code></a> implements <code>Read</code>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::io::prelude::<span class="kw-2">*</span>;
+
+<span class="kw">fn </span>main() -&gt; io::Result&lt;()&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>b = <span class="string">"This string will be read"</span>.as_bytes();
+    <span class="kw">let </span><span class="kw-2">mut </span>buffer = [<span class="number">0</span>; <span class="number">10</span>];
+
+    <span class="comment">// read up to 10 bytes
+    </span>b.read(<span class="kw-2">&amp;mut </span>buffer)<span class="question-mark">?</span>;
+
+    <span class="comment">// etc... it works exactly as a File does!
+    </span><span class="prelude-val">Ok</span>(())
+}</code></pre></div>
+</div></details><h2 id="required-methods" class="section-header">Required Methods<a href="#required-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="tymethod.read" class="method"><a class="src rightside" href="../../src/borsh/nostd_io.rs.html#846">source</a><h4 class="code-header">fn <a href="#tymethod.read" class="fn">read</a>(&amp;mut self, buf: &amp;mut [<a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.u8.html">u8</a>]) -&gt; <a class="type" href="type.Result.html" title="type borsh::io::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.usize.html">usize</a>&gt;</h4></section></summary><div class="docblock"><p>Pull some bytes from this source into the specified buffer, returning
+how many bytes were read.</p>
+<p>This function does not provide any guarantees about whether it blocks
+waiting for data, but if an object needs to block for a read and cannot,
+it will typically signal this via an <a href="https://doc.rust-lang.org/1.83.0/core/result/enum.Result.html#variant.Err" title="variant core::result::Result::Err"><code>Err</code></a> return value.</p>
+<p>If the return value of this method is <a href="https://doc.rust-lang.org/1.83.0/core/result/enum.Result.html#variant.Ok" title="variant core::result::Result::Ok"><code>Ok(n)</code></a>, then implementations must
+guarantee that <code>0 &lt;= n &lt;= buf.len()</code>. A nonzero <code>n</code> value indicates
+that the buffer <code>buf</code> has been filled in with <code>n</code> bytes of data from this
+source. If <code>n</code> is <code>0</code>, then it can indicate one of two scenarios:</p>
+<ol>
+<li>This reader has reached its “end of file” and will likely no longer
+be able to produce bytes. Note that this does not mean that the
+reader will <em>always</em> no longer be able to produce bytes. As an example,
+on Linux, this method will call the <code>recv</code> syscall for a <a href="crate::net::TcpStream"><code>TcpStream</code></a>,
+where returning zero indicates the connection was shut down correctly. While
+for <a href="crate::fs::File"><code>File</code></a>, it is possible to reach the end of file and get zero as result,
+but if more data is appended to the file, future calls to <code>read</code> will return
+more data.</li>
+<li>The buffer specified was 0 bytes in length.</li>
+</ol>
+<p>It is not an error if the returned value <code>n</code> is smaller than the buffer size,
+even when the reader is not at the end of the stream yet.
+This may happen for example because fewer bytes are actually available right now
+(e. g. being close to end-of-file) or because read() was interrupted by a signal.</p>
+<p>As this trait is safe to implement, callers cannot rely on <code>n &lt;= buf.len()</code> for safety.
+Extra care needs to be taken when <code>unsafe</code> functions are used to access the read bytes.
+Callers have to ensure that no unchecked out-of-bounds accesses are possible even if
+<code>n &gt; buf.len()</code>.</p>
+<p>No guarantees are provided about the contents of <code>buf</code> when this
+function is called, implementations cannot rely on any property of the
+contents of <code>buf</code> being true. It is recommended that <em>implementations</em>
+only write data to <code>buf</code> instead of reading its contents.</p>
+<p>Correspondingly, however, <em>callers</em> of this method must not assume any guarantees
+about how the implementation uses <code>buf</code>. The trait is safe to implement,
+so it is possible that the code that’s supposed to write to the buffer might also read
+from it. It is your responsibility to make sure that <code>buf</code> is initialized
+before calling <code>read</code>. Calling <code>read</code> with an uninitialized <code>buf</code> (of the kind one
+obtains via <a href="crate::mem::MaybeUninit"><code>MaybeUninit&lt;T&gt;</code></a>) is not safe, and can lead to undefined behavior.</p>
+<h5 id="errors"><a class="doc-anchor" href="#errors">§</a>Errors</h5>
+<p>If this function encounters any form of I/O or other error, an error
+variant will be returned. If an error is returned then it must be
+guaranteed that no bytes were read.</p>
+<p>An error of the <a href="enum.ErrorKind.html#variant.Interrupted" title="variant borsh::io::ErrorKind::Interrupted"><code>ErrorKind::Interrupted</code></a> kind is non-fatal and the read
+operation should be retried if there is nothing else to do.</p>
+<h5 id="examples-1"><a class="doc-anchor" href="#examples-1">§</a>Examples</h5>
+<p><a href="crate::fs::File"><code>File</code></a>s implement <code>Read</code>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::io;
+<span class="kw">use </span>std::io::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::fs::File;
+
+<span class="kw">fn </span>main() -&gt; io::Result&lt;()&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>f = File::open(<span class="string">"foo.txt"</span>)<span class="question-mark">?</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>buffer = [<span class="number">0</span>; <span class="number">10</span>];
+
+    <span class="comment">// read up to 10 bytes
+    </span><span class="kw">let </span>n = f.read(<span class="kw-2">&amp;mut </span>buffer[..])<span class="question-mark">?</span>;
+
+    <span class="macro">println!</span>(<span class="string">"The bytes: {:?}"</span>, <span class="kw-2">&amp;</span>buffer[..n]);
+    <span class="prelude-val">Ok</span>(())
+}</code></pre></div>
+</div></details></div><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.read_exact" class="method"><a class="src rightside" href="../../src/borsh/nostd_io.rs.html#898-900">source</a><h4 class="code-header">fn <a href="#method.read_exact" class="fn">read_exact</a>(&amp;mut self, buf: &amp;mut [<a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.u8.html">u8</a>]) -&gt; <a class="type" href="type.Result.html" title="type borsh::io::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.unit.html">()</a>&gt;</h4></section></summary><div class="docblock"><p>Read the exact number of bytes required to fill <code>buf</code>.</p>
+<p>This function reads as many bytes as necessary to completely fill the
+specified buffer <code>buf</code>.</p>
+<p>No guarantees are provided about the contents of <code>buf</code> when this
+function is called, implementations cannot rely on any property of the
+contents of <code>buf</code> being true. It is recommended that implementations
+only write data to <code>buf</code> instead of reading its contents. The
+documentation on <a href="trait.Read.html#tymethod.read" title="method borsh::io::Read::read"><code>read</code></a> has a more detailed explanation on this
+subject.</p>
+<h5 id="errors-1"><a class="doc-anchor" href="#errors-1">§</a>Errors</h5>
+<p>If this function encounters an error of the kind
+<a href="enum.ErrorKind.html#variant.Interrupted" title="variant borsh::io::ErrorKind::Interrupted"><code>ErrorKind::Interrupted</code></a> then the error is ignored and the operation
+will continue.</p>
+<p>If this function encounters an “end of file” before completely filling
+the buffer, it returns an error of the kind <a href="enum.ErrorKind.html#variant.UnexpectedEof" title="variant borsh::io::ErrorKind::UnexpectedEof"><code>ErrorKind::UnexpectedEof</code></a>.
+The contents of <code>buf</code> are unspecified in this case.</p>
+<p>If any other read error is encountered then this function immediately
+returns. The contents of <code>buf</code> are unspecified in this case.</p>
+<p>If this function returns an error, it is unspecified how many bytes it
+has read, but it will never read more than would be necessary to
+completely fill the buffer.</p>
+<h5 id="examples-2"><a class="doc-anchor" href="#examples-2">§</a>Examples</h5>
+<p><a href="crate::fs::File"><code>File</code></a>s implement <code>Read</code>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::io;
+<span class="kw">use </span>std::io::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::fs::File;
+
+<span class="kw">fn </span>main() -&gt; io::Result&lt;()&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>f = File::open(<span class="string">"foo.txt"</span>)<span class="question-mark">?</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>buffer = [<span class="number">0</span>; <span class="number">10</span>];
+
+    <span class="comment">// read exactly 10 bytes
+    </span>f.read_exact(<span class="kw-2">&amp;mut </span>buffer)<span class="question-mark">?</span>;
+    <span class="prelude-val">Ok</span>(())
+}</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.by_ref" class="method"><a class="src rightside" href="../../src/borsh/nostd_io.rs.html#936-941">source</a><h4 class="code-header">fn <a href="#method.by_ref" class="fn">by_ref</a>(&amp;mut self) -&gt; &amp;mut Self<div class="where">where
+    Self: <a class="trait" href="https://doc.rust-lang.org/1.83.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>,</div></h4></section></summary><div class="docblock"><p>Creates a “by reference” adaptor for this instance of <code>Read</code>.</p>
+<p>The returned adapter also implements <code>Read</code> and will simply borrow this
+current reader.</p>
+<h5 id="examples-3"><a class="doc-anchor" href="#examples-3">§</a>Examples</h5>
+<p><a href="crate::fs::File"><code>File</code></a>s implement <code>Read</code>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::io;
+<span class="kw">use </span>std::io::Read;
+<span class="kw">use </span>std::fs::File;
+
+<span class="kw">fn </span>main() -&gt; io::Result&lt;()&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>f = File::open(<span class="string">"foo.txt"</span>)<span class="question-mark">?</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>buffer = Vec::new();
+    <span class="kw">let </span><span class="kw-2">mut </span>other_buffer = Vec::new();
+
+    {
+        <span class="kw">let </span>reference = f.by_ref();
+
+        <span class="comment">// read at most 5 bytes
+        </span>reference.take(<span class="number">5</span>).read_to_end(<span class="kw-2">&amp;mut </span>buffer)<span class="question-mark">?</span>;
+
+    } <span class="comment">// drop our &amp;mut reference so we can use f again
+
+    // original file still usable, read the rest
+    </span>f.read_to_end(<span class="kw-2">&amp;mut </span>other_buffer)<span class="question-mark">?</span>;
+    <span class="prelude-val">Ok</span>(())
+}</code></pre></div>
+</div></details></div><h2 id="foreign-impls" class="section-header">Implementations on Foreign Types<a href="#foreign-impls" class="anchor">§</a></h2><details class="toggle implementors-toggle"><summary><section id="impl-Read-for-%26%5Bu8%5D" class="impl"><a class="src rightside" href="../../src/borsh/nostd_io.rs.html#978-1019">source</a><a href="#impl-Read-for-%26%5Bu8%5D" class="anchor">§</a><h3 class="code-header">impl <a class="trait" href="trait.Read.html" title="trait borsh::io::Read">Read</a> for &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.u8.html">u8</a>]</h3></section></summary><div class="impl-items"><section id="method.read" class="method trait-impl"><a class="src rightside" href="../../src/borsh/nostd_io.rs.html#980-995">source</a><a href="#method.read" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.read" class="fn">read</a>(&amp;mut self, buf: &amp;mut [<a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.u8.html">u8</a>]) -&gt; <a class="type" href="type.Result.html" title="type borsh::io::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.usize.html">usize</a>&gt;</h4></section><section id="method.read_exact-1" class="method trait-impl"><a class="src rightside" href="../../src/borsh/nostd_io.rs.html#998-1018">source</a><a href="#method.read_exact-1" class="anchor">§</a><h4 class="code-header">fn <a href="#method.read_exact" class="fn">read_exact</a>(&amp;mut self, buf: &amp;mut [<a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.u8.html">u8</a>]) -&gt; <a class="type" href="type.Result.html" title="type borsh::io::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.unit.html">()</a>&gt;</h4></section></div></details><details class="toggle implementors-toggle"><summary><section id="impl-Read-for-%26mut+R" class="impl"><a class="src rightside" href="../../src/borsh/nostd_io.rs.html#966-976">source</a><a href="#impl-Read-for-%26mut+R" class="anchor">§</a><h3 class="code-header">impl&lt;R: <a class="trait" href="trait.Read.html" title="trait borsh::io::Read">Read</a> + ?<a class="trait" href="https://doc.rust-lang.org/1.83.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>&gt; <a class="trait" href="trait.Read.html" title="trait borsh::io::Read">Read</a> for <a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.reference.html">&amp;mut R</a></h3></section></summary><div class="impl-items"><section id="method.read-1" class="method trait-impl"><a class="src rightside" href="../../src/borsh/nostd_io.rs.html#968-970">source</a><a href="#method.read-1" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.read" class="fn">read</a>(&amp;mut self, buf: &amp;mut [<a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.u8.html">u8</a>]) -&gt; <a class="type" href="type.Result.html" title="type borsh::io::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.usize.html">usize</a>&gt;</h4></section><section id="method.read_exact-2" class="method trait-impl"><a class="src rightside" href="../../src/borsh/nostd_io.rs.html#973-975">source</a><a href="#method.read_exact-2" class="anchor">§</a><h4 class="code-header">fn <a href="#method.read_exact" class="fn">read_exact</a>(&amp;mut self, buf: &amp;mut [<a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.u8.html">u8</a>]) -&gt; <a class="type" href="type.Result.html" title="type borsh::io::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.83.0/core/primitive.unit.html">()</a>&gt;</h4></section></div></details><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"></div><script src="../../trait.impl/borsh/nostd_io/trait.Read.js" data-ignore-extern-crates="core" async></script></section></div></main></body></html>

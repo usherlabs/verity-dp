@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["WASM_PAGE_SIZE_IN_BYTES"],"enum":["StableMemoryError"],"fn":["stable_bytes","stable_grow","stable_read","stable_size","stable_write"],"struct":["BufferedStableReader","BufferedStableWriter","CanisterStableMemory","StableIO","StableReader","StableWriter"],"trait":["StableMemory"]};

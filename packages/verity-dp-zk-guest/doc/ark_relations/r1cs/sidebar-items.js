@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["ConstraintSystemRef","OptimizationGoal","SynthesisError","SynthesisMode","Variable"],"macro":["info_span"],"struct":["ConstraintMatrices","ConstraintSystem","LcIndex","LinearCombination","Namespace"],"trait":["ConstraintSynthesizer","Field","ToConstraintField"],"type":["Matrix","Result"]};

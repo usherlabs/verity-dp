@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["call_context_instruction_counter","caller","canister_balance","canister_balance128","canister_version","cycles_burn","data_certificate","id","in_replicated_execution","instruction_counter","is_controller","performance_counter","print","set_certified_data","set_global_timer","time","trap"],"mod":["call","management_canister","stable"]};

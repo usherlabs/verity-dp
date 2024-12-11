@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["cancel_withdrawal","confirm_withdrawal","get_available_balance","get_canister_balance","get_remitted_balance","hash_remittance_parameters","only_whitelisted_dc_canister","update_balance","update_canister_balance","validate_dc_remittance_data","validate_pdc_remittance_data","validate_remittance_data"]};

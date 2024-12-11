@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["GUEST_MAX_MEM","GUEST_MIN_MEM","MEM_BITS","MEM_SIZE","PAGE_TABLE","PRE_LOAD","STACK_TOP","SYSTEM","TEXT_START"],"fn":["is_guest_memory"],"struct":["Region"]};

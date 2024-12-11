@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["SchnorrAlgorithm"],"fn":["schnorr_public_key","sign_with_schnorr"],"struct":["SchnorrKeyId","SchnorrPublicKeyArgument","SchnorrPublicKeyResponse","SignWithSchnorrArgument","SignWithSchnorrResponse"]};

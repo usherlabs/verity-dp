@@ -1,0 +1,9 @@
+(function() {
+    var type_impls = Object.fromEntries([["risc0_zkp",[["<details class=\"toggle implementors-toggle\" open><summary><section id=\"impl-Blake2bHashSuite%3CT%3E\" class=\"impl\"><a class=\"src rightside\" href=\"src/risc0_zkp/core/hash/blake2b.rs.html#82-91\">source</a><a href=\"#impl-Blake2bHashSuite%3CT%3E\" class=\"anchor\">§</a><h3 class=\"code-header\">impl&lt;T: <a class=\"trait\" href=\"risc0_zkp/core/hash/blake2b/trait.Blake2b.html\" title=\"trait risc0_zkp::core::hash::blake2b::Blake2b\">Blake2b</a> + 'static&gt; <a class=\"struct\" href=\"risc0_zkp/core/hash/blake2b/struct.Blake2bHashSuite.html\" title=\"struct risc0_zkp::core::hash::blake2b::Blake2bHashSuite\">Blake2bHashSuite</a>&lt;T&gt;</h3></section></summary><div class=\"impl-items\"><details class=\"toggle method-toggle\" open><summary><section id=\"method.new_suite\" class=\"method\"><a class=\"src rightside\" href=\"src/risc0_zkp/core/hash/blake2b.rs.html#84-90\">source</a><h4 class=\"code-header\">pub fn <a href=\"risc0_zkp/core/hash/blake2b/struct.Blake2bHashSuite.html#tymethod.new_suite\" class=\"fn\">new_suite</a>() -&gt; <a class=\"struct\" href=\"risc0_zkp/core/hash/struct.HashSuite.html\" title=\"struct risc0_zkp::core::hash::HashSuite\">HashSuite</a>&lt;<a class=\"struct\" href=\"risc0_zkp/field/baby_bear/struct.BabyBear.html\" title=\"struct risc0_zkp::field::baby_bear::BabyBear\">BabyBear</a>&gt;</h4></section></summary><div class=\"docblock\"><p>Create a new HashSuite</p>\n</div></details></div></details>",0,"risc0_zkp::core::hash::blake2b::Blake2bCpuHashSuite"]]]]);
+    if (window.register_type_impls) {
+        window.register_type_impls(type_impls);
+    } else {
+        window.pending_type_impls = type_impls;
+    }
+})()
+//{"start":55,"fragment_lengths":[1528]}

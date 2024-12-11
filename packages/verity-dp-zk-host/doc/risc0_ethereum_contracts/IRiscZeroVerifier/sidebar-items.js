@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["IRiscZeroVerifierCalls"],"fn":["new"],"struct":["IRiscZeroVerifierInstance","verifyCall","verifyIntegrityCall","verifyIntegrityReturn","verifyReturn"]};

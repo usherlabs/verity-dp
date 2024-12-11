@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["FRI_FOLD","INV_RATE","MAX_CYCLES","MAX_CYCLES_PO2","MIN_CYCLES","MIN_CYCLES_PO2","MIN_PO2","QUERIES","ZK_CYCLES"],"macro":["digest"],"mod":["adapter","core","field","hal","layout","taps","verify"]};

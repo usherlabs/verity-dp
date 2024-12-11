@@ -1,0 +1,1 @@
+searchState.loadedDescShard("borsh_derive", 0, "derive proc-macro for <code>borsh::de::BorshDeserialize</code> trait\nderive proc-macro for <code>borsh::ser::BorshSerialize</code> trait")

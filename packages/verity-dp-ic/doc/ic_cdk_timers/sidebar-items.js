@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["clear_timer","set_timer","set_timer_interval"],"struct":["TimerId"]};

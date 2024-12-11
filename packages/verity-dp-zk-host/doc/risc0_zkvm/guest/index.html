@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="The RISC Zero zkVM’s guest-side RISC-V API."><title>risc0_zkvm::guest - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="risc0_zkvm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../sidebar-items.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../risc0_zkvm/index.html">risc0_<wbr>zkvm</a><span class="version">1.2.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Module guest</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#installation" title="Installation">Installation</a></li><li><a href="#example" title="Example">Example</a></li></ul><h3><a href="#modules">Module Items</a></h3><ul class="block"><li><a href="#modules" title="Modules">Modules</a></li><li><a href="#macros" title="Macros">Macros</a></li><li><a href="#functions" title="Functions">Functions</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="../index.html">In crate risc0_<wbr>zkvm</a></h2></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><span class="rustdoc-breadcrumbs"><a href="../index.html">risc0_zkvm</a></span><h1>Module <span>guest</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/risc0_zkvm/guest/mod.rs.html#15-212">source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>The RISC Zero zkVM’s guest-side RISC-V API.</p>
+<p>Code that is validated by the <a href="../index.html" title="mod risc0_zkvm">RISC Zero zkVM</a> is run inside the guest. In almost all
+practical cases, the guest will want to read private input data from the host and write public
+data to the journal. This can be done with <a href="env/fn.read.html" title="fn risc0_zkvm::guest::env::read">env::read</a> and <a href="env/fn.commit.html" title="fn risc0_zkvm::guest::env::commit">env::commit</a>, respectively;
+additional I/O functionality is also available in <a href="env/index.html" title="mod risc0_zkvm::guest::env">env</a>.</p>
+<h3 id="installation"><a class="doc-anchor" href="#installation">§</a>Installation</h3>
+<p>To build and run RISC Zero zkVM code, you will need to install the RISC Zero
+toolchain, which can be done using the rzup utility:</p>
+<div class="example-wrap"><pre class="language-sh"><code>curl -L https://risczero.com/install | bash
+rzup install</code></pre></div><h3 id="example"><a class="doc-anchor" href="#example">§</a>Example</h3>
+<p>The following guest code<sup id="fnref1"><a href="#fn1">1</a></sup> proves a number is
+composite by multiplying two unsigned integers, and panicking if either is
+<code>1</code> or if the multiplication overflows:</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="attr">#![no_main]
+#![no_std]
+
+</span><span class="kw">use </span>risc0_zkvm::guest::env;
+
+<span class="macro">risc0_zkvm::guest::entry!</span>(main);
+
+<span class="kw">fn </span>main() {
+    <span class="comment">// Load the first number from the host
+    </span><span class="kw">let </span>a: u64 = env::read();
+    <span class="comment">// Load the second number from the host
+    </span><span class="kw">let </span>b: u64 = env::read();
+    <span class="comment">// Verify that neither of them are 1 (i.e. nontrivial factors)
+    </span><span class="kw">if </span>a == <span class="number">1 </span>|| b == <span class="number">1 </span>{
+        <span class="macro">panic!</span>(<span class="string">"Trivial factors"</span>)
+    }
+    <span class="comment">// Compute the product while being careful with integer overflow
+    </span><span class="kw">let </span>product = a.checked_mul(b).expect(<span class="string">"Integer overflow"</span>);
+    env::commit(<span class="kw-2">&amp;</span>product);
+}</code></pre></div>
+<p>Notice how <a href="env/fn.read.html" title="fn risc0_zkvm::guest::env::read">env::read</a> is used to load the two factors, and <a href="env/fn.commit.html" title="fn risc0_zkvm::guest::env::commit">env::commit</a> is used to make their
+composite product publicly available. All input an output of your guest is private except for
+what is written to the journal with <a href="env/fn.commit.html" title="fn risc0_zkvm::guest::env::commit">env::commit</a>.</p>
+<p>By default, the guest only has the Rust <code>core</code> libraries and not <code>std</code>. A partial
+implementation of the Rust standard libraries can be enabled with the <code>std</code> feature on this <a href="../index.html" title="mod risc0_zkvm">crate</a>.
+When this feature is not enabled, the lines including <code>#![no_std]</code> and <code>#![no_main]</code> are
+required, as well as the use of the <a href="macro.entry.html" title="macro risc0_zkvm::guest::entry">crate::guest::entry</a> macro. When <code>std</code> is enabled, these
+three lines can be omitted and many features of <code>std</code> can be used.</p>
+<p>If you encounter problems building zkVM guest code, you can see if we have a
+known workaround for your issue by looking in our
+<a href="https://github.com/risc0/risc0/issues?q=is%3Aissue+is%3Aopen+label%3A%22rust+guest+workarounds%22">rust guest workarounds</a>
+tag on GitHub.</p>
+<div class="footnotes"><hr><ol><li id="fn1"><p>The example is based on the <a href="https://github.com/risc0/risc0/tree/main/examples/factors">Factors example</a>.&nbsp;<a href="#fnref1">↩</a></p></li></ol></div></div></details><h2 id="modules" class="section-header">Modules<a href="#modules" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="mod" href="env/index.html" title="mod risc0_zkvm::guest::env">env</a></div><div class="desc docblock-short">Functions for interacting with the host environment.</div></li><li><div class="item-name"><a class="mod" href="sha/index.html" title="mod risc0_zkvm::guest::sha">sha</a></div><div class="desc docblock-short">Simple SHA-256 wrappers.</div></li></ul><h2 id="macros" class="section-header">Macros<a href="#macros" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="macro" href="macro.entry.html" title="macro risc0_zkvm::guest::entry">entry</a></div><div class="desc docblock-short">Used for defining the guest’s entrypoint and main function.</div></li></ul><h2 id="functions" class="section-header">Functions<a href="#functions" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="fn" href="fn.abort.html" title="fn risc0_zkvm::guest::abort">abort</a></div><div class="desc docblock-short">Aborts the guest with the given message.</div></li><li><div class="item-name"><a class="fn" href="fn.memory_barrier.html" title="fn risc0_zkvm::guest::memory_barrier">memory_<wbr>barrier</a></div><div class="desc docblock-short">Require that accesses to behind the given pointer before the memory
+barrier don’t get optimized away or reordered to after the memory
+barrier.</div></li></ul></section></div></main></body></html>

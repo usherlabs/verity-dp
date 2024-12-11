@@ -1,0 +1,9 @@
+(function() {
+    var implementors = Object.fromEntries([["tracing",[]],["tracing_core",[]],["tracing_subscriber",[["impl&lt;L, S&gt; <a class=\"trait\" href=\"tracing_core/subscriber/trait.Subscriber.html\" title=\"trait tracing_core::subscriber::Subscriber\">Subscriber</a> for <a class=\"struct\" href=\"tracing_subscriber/layer/struct.Layered.html\" title=\"struct tracing_subscriber::layer::Layered\">Layered</a>&lt;L, S&gt;<div class=\"where\">where\n    L: <a class=\"trait\" href=\"tracing_subscriber/layer/trait.Layer.html\" title=\"trait tracing_subscriber::layer::Layer\">Layer</a>&lt;S&gt;,\n    S: <a class=\"trait\" href=\"tracing_core/subscriber/trait.Subscriber.html\" title=\"trait tracing_core::subscriber::Subscriber\">Subscriber</a>,</div>"]]]]);
+    if (window.register_implementors) {
+        window.register_implementors(implementors);
+    } else {
+        window.pending_implementors = implementors;
+    }
+})()
+//{"start":57,"fragment_lengths":[14,20,672]}

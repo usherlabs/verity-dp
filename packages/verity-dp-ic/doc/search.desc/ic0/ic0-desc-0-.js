@@ -1,0 +1,1 @@
+searchState.loadedDescShard("ic0", 0, "Raw bindings to the Internet Computer system API.")
