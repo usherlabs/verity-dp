@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"constant":["INDENT_SPACE","LINE_WIDTH"],"fn":["concat","enclose","enclose_space","ident","kwd","lines","quote_ident","str","strict_concat"]};

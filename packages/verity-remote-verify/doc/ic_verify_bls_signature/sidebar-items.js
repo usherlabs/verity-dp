@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["InvalidPrivateKey","InvalidPublicKey","InvalidSignature"],"fn":["verify_bls_signature"],"struct":["PrivateKey","PublicKey","Signature"]};

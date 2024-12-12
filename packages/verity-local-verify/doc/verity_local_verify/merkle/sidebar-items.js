@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["generate_merkle_tree","validate_merkle_tree"]};

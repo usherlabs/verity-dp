@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["CallResponse","EnvelopeContent","QueryResponse","RejectCode","RequestIdError","RequestStatusResponse","TransportCallResponse"],"fn":["to_request_id"],"mod":["signed"],"struct":["Delegation","Envelope","InvalidRejectCodeError","NodeSignature","ReadStateResponse","RejectResponse","ReplyResponse","RequestId","SignedDelegation","SubnetMetrics"]};

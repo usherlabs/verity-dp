@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"macro":["cached","cached_control","cached_key","cached_key_result","cached_result"],"mod":["macros","stores"],"trait":["Cached","CloneCached","IOCached"]};

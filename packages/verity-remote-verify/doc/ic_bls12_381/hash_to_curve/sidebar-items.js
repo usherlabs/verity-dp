@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["ExpandMsgXmd","ExpandMsgXof"],"trait":["ExpandMessage","ExpandMessageState","HashToCurve","HashToField","InitExpandMessage","MapToCurve"]};

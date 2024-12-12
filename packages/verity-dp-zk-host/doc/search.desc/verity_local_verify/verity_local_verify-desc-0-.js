@@ -1,1 +1,0 @@
-searchState.loadedDescShard("verity_local_verify", 0, "Validates an ECDSA signature against a given public key\nGenerate a merkle tree by providing the leaves as hashed …\nValidate that the provided root hash is the same as the …")

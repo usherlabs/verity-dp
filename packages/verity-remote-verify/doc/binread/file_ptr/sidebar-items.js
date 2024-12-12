@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["FilePtr"],"trait":["IntoSeekFrom"],"type":["FilePtr128","FilePtr16","FilePtr32","FilePtr64","FilePtr8"]};

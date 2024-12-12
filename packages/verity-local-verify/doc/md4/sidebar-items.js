@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"externcrate":["digest"],"struct":["Md4"],"trait":["Digest"]};

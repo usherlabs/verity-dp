@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["check_unique","decode_args","decode_args_with_config","decode_args_with_config_debug","decode_one","decode_one_with_config","encode_args","encode_one","pp_num_str","write_args"],"trait":["ArgumentDecoder","ArgumentEncoder"]};

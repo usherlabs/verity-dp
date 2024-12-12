@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["arc","internal","leb128","number","principal","rc","reference","reserved","result","subtype","type_env"],"trait":["CandidType","Compound","Serializer"]};

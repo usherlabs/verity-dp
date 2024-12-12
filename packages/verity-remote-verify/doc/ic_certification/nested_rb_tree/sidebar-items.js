@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["NestedTree"],"fn":["merge_hash_trees"],"trait":["NestedTreeKeyRequirements","NestedTreeValueRequirements"]};

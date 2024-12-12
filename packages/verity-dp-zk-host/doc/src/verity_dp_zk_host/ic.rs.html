@@ -30,7 +30,7 @@
 <a href="#29" id="29">29</a>
 <a href="#30" id="30">30</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::error::Error;
 
-<span class="kw">use </span>verity_remote_verify::{ config::Config, ic::Verifier, ic::VerificationResponse };
+<span class="kw">use </span>verity_verify_remote::{config::Config, ic::VerificationResponse, ic::Verifier};
 
 <span class="doccomment">/// Asynchronously verifies a proof using the Internet Computer (IC).
 ///
@@ -42,7 +42,7 @@
 ///
 /// # Returns
 ///
-/// * `Result&lt;verity_remote_verify::ic::VerificationResponse, Box&lt;dyn Error&gt;&gt;` -
+/// * `Result&lt;verity_verify_remote::ic::VerificationResponse, Box&lt;dyn Error&gt;&gt;` -
 ///   A result containing the verification response or an error.
 </span><span class="kw">pub async fn </span>verify_proof(
 	json_string_proofs: Vec&lt;String&gt;,

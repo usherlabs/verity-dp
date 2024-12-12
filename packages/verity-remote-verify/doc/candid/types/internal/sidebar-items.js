@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["FuncMode","Label","Opcode","TypeInner"],"fn":["env_clear","find_type","get_type","is_primitive","text_size","type_of","unroll"],"struct":["Field","Function","Type","TypeContainer","TypeId"],"type":["SharedLabel"]};

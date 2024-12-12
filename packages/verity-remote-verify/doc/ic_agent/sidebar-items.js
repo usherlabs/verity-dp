@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["AgentError","RequestIdError","TransportCallResponse"],"fn":["lookup_value","to_request_id"],"mod":["agent","agent_error","export","hash_tree","identity"],"struct":["Agent","NonceFactory","RequestId","Signature"],"trait":["Identity","NonceGenerator"],"type":["Certificate"]};

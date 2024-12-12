@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"attr":["candid_method"],"derive":["CandidType","Deserialize"],"macro":["Decode","Encode","define_function","define_service","export_service","field","func","record","service","variant"],"mod":["binary_parser","de","error","pretty","ser","types","utils"],"struct":["Principal"],"trait":["Deserialize"]};

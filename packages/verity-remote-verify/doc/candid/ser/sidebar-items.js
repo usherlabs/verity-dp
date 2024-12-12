@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["Compound","IDLBuilder","TypeSerialize","ValueSerializer"]};

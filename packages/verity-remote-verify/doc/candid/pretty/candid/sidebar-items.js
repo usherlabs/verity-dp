@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["compile","is_valid_as_id","pp_args","pp_function","pp_init_args","pp_label","pp_mode","pp_modes","pp_ty","pp_ty_inner"]};

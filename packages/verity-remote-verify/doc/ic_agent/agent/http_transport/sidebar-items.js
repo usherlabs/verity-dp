@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["reqwest_transport","route_provider"],"struct":["ReqwestTransport"]};

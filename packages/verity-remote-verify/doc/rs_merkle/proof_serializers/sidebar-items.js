@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["DirectHashesOrder","ReverseHashesOrder"],"trait":["MerkleProofSerializer"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"attr":["derive_binread"],"derive":["BinRead"]};

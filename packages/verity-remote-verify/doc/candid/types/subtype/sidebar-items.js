@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["OptReport"],"fn":["equal","subtype","subtype_with_config"],"type":["Gamma"]};
