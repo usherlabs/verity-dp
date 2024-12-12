@@ -20,5 +20,5 @@ rs_merkle = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 tlsn-core = { workspace = true }
-verity-dp-ic = { workspace = true }
-verity-verify-tls = { workspace = true }
+verity-ic = { workspace = true }
+verity-verifier = { workspace = true }

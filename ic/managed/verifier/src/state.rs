@@ -1,4 +1,4 @@
-use verity_dp_ic::crypto::config::Config;
+use verity_ic::crypto::config::Config;
 use std::cell::RefCell;
 
 thread_local! {

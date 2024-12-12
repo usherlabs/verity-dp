@@ -1,7 +1,7 @@
 use crate::state::CONFIG;
 use rs_merkle::{ algorithms::Sha256, Hasher };
 use serde_json::Value;
-use verity_dp_ic::{ crypto::config::{ Config, Environment }, owner };
+use verity_ic::{ crypto::config::{ Config, Environment }, owner };
 
 /// Initialise the canister's environment
 pub fn init_canister(env_opt: Option<Environment>) {

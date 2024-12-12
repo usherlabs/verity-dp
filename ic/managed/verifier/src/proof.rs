@@ -1,7 +1,7 @@
 use candid::CandidType;
 use serde::Deserialize;
 use serde_json::Value;
-use verity_dp_ic::{
+use verity_ic::{
 	crypto::ethereum::sign_message,
 	remittance::state::CONFIG,
 	verify::types::ProofResponse,

@@ -28,7 +28,7 @@ jobs:
         run: cargo login ${{ secrets.CARGO_TOKEN }}
 
       # Step 4: Publish the library
-      - name: Publish `ic/libraries::verity_dp_ic` to crates.io
+      - name: Publish `ic/libraries::verity_ic` to crates.io
         continue-on-error: true
         run: |
           cd ic/libraries

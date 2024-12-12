@@ -1,5 +1,5 @@
 use rs_merkle::{ algorithms::Sha256, Hasher, MerkleTree };
-use verity_dp_ic::verify::types::ProofResponse;
+use verity_ic::verify::types::ProofResponse;
 
 /// Generates a Merkle tree from a vector of ProofResponse objects.
 /// Each ProofResponse is hashed to create the leaves of the tree.

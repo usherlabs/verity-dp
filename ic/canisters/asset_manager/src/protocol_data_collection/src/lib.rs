@@ -2,7 +2,7 @@ use candid::Principal;
 use ic_cdk::{caller, storage};
 use ic_cdk::{init, post_upgrade, pre_upgrade, query, update};
 use std::{cell::RefCell, collections::HashMap};
-use verity_dp_ic::{
+use verity_ic::{
     crypto::config::{Config, Environment},
     owner,
     remittance::{

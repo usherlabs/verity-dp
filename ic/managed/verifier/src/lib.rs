@@ -3,7 +3,7 @@ use candid::Principal;
 use ic_cdk::storage;
 use proof::{ verify_and_sign_proof_requests, verify_proof_requests, DirectVerificationResponse };
 use utils::init_canister;
-use verity_dp_ic::{
+use verity_ic::{
 	crypto::{
 		config::{ Config, Environment },
 		ecdsa::{ self, ECDSAPublicKeyReply, PublicKeyReply },

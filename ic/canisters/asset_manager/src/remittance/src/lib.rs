@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use candid::Principal;
 use ic_cdk::storage;
-use verity_dp_ic::{
+use verity_ic::{
     crypto::{
         config::{Config, Environment},
         ecdsa::PublicKeyReply,
@@ -17,29 +17,29 @@ use verity_dp_ic::{
 
 #[ic_cdk::init]
 fn init(env_opt: Option<Environment>) {
-    verity_dp_ic::remittance::init(env_opt)
+    verity_ic::remittance::init(env_opt)
 }
 
 #[ic_cdk::query]
 fn name() -> String {
-    verity_dp_ic::remittance::name()
+    verity_ic::remittance::name()
 }
 
 #[ic_cdk::query]
 fn owner() -> String {
-    verity_dp_ic::remittance::owner()
+    verity_ic::remittance::owner()
 }
 
 #[ic_cdk::update]
 async fn subscribe_to_dc(canister_id: Principal) {
     owner::only_owner();
-    verity_dp_ic::remittance::subscribe_to_dc(canister_id).await
+    verity_ic::remittance::subscribe_to_dc(canister_id).await
 }
 
 #[ic_cdk::update]
 async fn subscribe_to_pdc(pdc_canister_id: Principal) {
     owner::only_owner();
-    verity_dp_ic::remittance::subscribe_to_pdc(pdc_canister_id).await
+    verity_ic::remittance::subscribe_to_pdc(pdc_canister_id).await
 }
 
 // TODO: Investigate if we need to add this to the candid file for this canister
@@ -49,7 +49,7 @@ fn update_remittance(
     dc_canister: Principal,
 ) -> Result<(), String> {
     only_whitelisted_dc_canister();
-    verity_dp_ic::remittance::update_remittance(new_remittances, dc_canister)
+    verity_ic::remittance::update_remittance(new_remittances, dc_canister)
 }
 
 #[ic_cdk::update]
@@ -61,7 +61,7 @@ async fn remit(
     amount: u64,
     proof: String,
 ) -> Result<RemittanceReply, String> {
-    verity_dp_ic::remittance::remit(token, chain, account, dc_canister, amount, proof)
+    verity_ic::remittance::remit(token, chain, account, dc_canister, amount, proof)
         .await
         .map_err(|e| e.to_string())
 }
@@ -73,7 +73,7 @@ fn get_available_balance(
     account: String,
     dc_canister: Principal,
 ) -> Result<Account, String> {
-    verity_dp_ic::remittance::get_available_balance(token, chain, account, dc_canister)
+    verity_ic::remittance::get_available_balance(token, chain, account, dc_canister)
         .map_err(|e| e.to_string())
 }
 
@@ -83,7 +83,7 @@ fn get_canister_balance(
     chain: String,
     dc_canister: Principal,
 ) -> Result<Account, String> {
-    verity_dp_ic::remittance::get_canister_balance(token, chain, dc_canister)
+    verity_ic::remittance::get_canister_balance(token, chain, dc_canister)
         .map_err(|e| e.to_string())
 }
 
@@ -94,18 +94,18 @@ fn get_withheld_balance(
     account: String,
     dc_canister: Principal,
 ) -> Result<Account, String> {
-    verity_dp_ic::remittance::get_withheld_balance(token, chain, account, dc_canister)
+    verity_ic::remittance::get_withheld_balance(token, chain, account, dc_canister)
         .map_err(|e| e.to_string())
 }
 
 #[ic_cdk::query]
 fn get_reciept(dc_canister: Principal, nonce: u64) -> Result<RemittanceReciept, String> {
-    verity_dp_ic::remittance::get_reciept(dc_canister, nonce).map_err(|e| e.to_string())
+    verity_ic::remittance::get_reciept(dc_canister, nonce).map_err(|e| e.to_string())
 }
 
 #[ic_cdk::update]
 async fn public_key() -> Result<PublicKeyReply, String> {
-    verity_dp_ic::remittance::public_key()
+    verity_ic::remittance::public_key()
         .await
         .map_err(|e| e.to_string())
 }
