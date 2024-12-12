@@ -6,7 +6,7 @@ use verity_dp_ic::{
 	remittance::state::CONFIG,
 	verify::types::ProofResponse,
 };
-use verity_verifier::{ verify_proof, verify_session };
+use verity_verify_tls::{ verify_proof, verify_session };
 
 use crate::{ merkle::generate_merkle_tree, utils::{ hash, validate_json_proof } };
 

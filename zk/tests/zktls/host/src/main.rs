@@ -6,11 +6,11 @@ use serde::{Deserialize, Serialize};
 use serde_json;
 use std::env;
 use verity_client::client::{VerityClient, VerityClientConfig};
-use verity_remote_verify::{
+use verity_verify_remote::{
     config::Config,
     ic::{Verifier, DEFAULT_IC_GATEWAY_LOCAL},
 };
-use verity_verifier::verify_proof;
+use verity_verify_tls::verify_proof;
 // use verity_dp_zk_host::generate_groth16_proof;
 
 pub const DEFAULT_PROVER_URL: &str = "http://127.0.0.1:8080";

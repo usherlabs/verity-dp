@@ -1,5 +1,5 @@
 use risc0_zkvm::guest::env;
-use verity_verifier::verify_proof;
+use verity_verify_tls::verify_proof;
 
 fn main() {
     let proof: String = env::read();

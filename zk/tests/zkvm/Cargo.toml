@@ -1,8 +1,5 @@
 [workspace]
-members = [
-  "host",
-  "methods",
-]
+members = ["host", "methods"]
 resolver = "2"
 
 [workspace.package]
@@ -20,4 +17,4 @@ serde = "1.0"
 tracing-subscriber = "0.3"
 risc0-build = { version = "1.0" }
 risc0-zkvm = { version = "1.0" }
-verity-verifier = { path = "../../../../verity/verifier" }
+verity-verify-tls = { path = "../../../../verity/verify-tls" }

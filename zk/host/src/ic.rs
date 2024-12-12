@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use verity_remote_verify::{ config::Config, ic::Verifier, ic::VerificationResponse };
+use verity_verify_remote::{config::Config, ic::VerificationResponse, ic::Verifier};
 
 /// Asynchronously verifies a proof using the Internet Computer (IC).
 ///
@@ -12,7 +12,7 @@ use verity_remote_verify::{ config::Config, ic::Verifier, ic::VerificationRespon
 ///
 /// # Returns
 ///
-/// * `Result<verity_remote_verify::ic::VerificationResponse, Box<dyn Error>>` -
+/// * `Result<verity_verify_remote::ic::VerificationResponse, Box<dyn Error>>` -
 ///   A result containing the verification response or an error.
 pub async fn verify_proof(
 	json_string_proofs: Vec<String>,

@@ -1,5 +1,5 @@
 [package]
-name = "verity-verifier"
+name = "verity-verify-tls"
 description = "Verity Verifier"
 edition = "2021"
 

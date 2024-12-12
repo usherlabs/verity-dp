@@ -19,10 +19,10 @@ tokio = { version = "1.39", features = ["macros", "rt-multi-thread"] }
 reqwest = { version = "0.12", features = ["json"] }
 anyhow = "1.0.94"
 risc0-zkvm = { version = "1.1.2" }
-verity-dp-zk-host = { path = "../../host" }
 verity-client = { path = "../../../rs/verity-client" }
-verity-remote-verify = { path = "../../../rs/remote-verify" }
-verity-verifier = { path = "../../../rs/verifier" }
+verity-dp-zk-host = { path = "../../host" }
+verity-verify-remote = { path = "../../../rs/verify-remote" }
+verity-verify-tls = { path = "../../../rs/verify-tls" }
 
 # Always optimize; building and running the guest takes much longer without optimization.
 [profile.dev]

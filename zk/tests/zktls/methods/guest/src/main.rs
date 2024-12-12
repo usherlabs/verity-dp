@@ -1,8 +1,8 @@
 use risc0_zkvm::guest::env;
 use serde::{Deserialize, Serialize};
 use serde_json;
-use verity_local_verify::{self, ecdsa::validate_ecdsa_signature, merkle::validate_merkle_tree};
-use verity_verifier::verify_proof;
+use verity_verify_local::{self, ecdsa::validate_ecdsa_signature, merkle::validate_merkle_tree};
+use verity_verify_tls::verify_proof;
 
 /// The input parameters for the zk_circuit
 ///
