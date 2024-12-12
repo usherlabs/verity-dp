@@ -70,6 +70,6 @@ tracing-subscriber = "0.3.19"
 uuid = "1.11.0"
 verity-client = { path = "./rs/verity-client" }
 verity-ic = { path = "./ic/libraries" }
-verity-local-verify = { path = "./rs/local-verify" }
-verity-remote-verify = { path = "./rs/remote-verify" }
-verity-verifier = { path = "./rs/verifier" }
+verity-verify-local = { path = "./rs/verify-local" }
+verity-verify-remote = { path = "./rs/verify-remote" }
+verity-verify-tls = { path = "./rs/verify-tls" }
