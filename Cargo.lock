@@ -5594,24 +5594,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "verity-dp-ic"
-version = "0.2.0"
-dependencies = [
- "anyhow",
- "candid",
- "easy-hasher",
- "eth-encode-packed",
- "getrandom",
- "hex",
- "ic-cdk 0.17.0",
- "ic-cdk-timers",
- "libsecp256k1",
- "rand",
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "verity-dp-rs-tests-load"
 version = "0.2.0"
 dependencies = [
@@ -5650,6 +5632,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "verity-ic"
+version = "0.2.0"
+dependencies = [
+ "anyhow",
+ "candid",
+ "easy-hasher",
+ "eth-encode-packed",
+ "getrandom",
+ "hex",
+ "ic-cdk 0.17.0",
+ "ic-cdk-timers",
+ "libsecp256k1",
+ "rand",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "verity-ic-verifier"
 version = "0.2.0"
 dependencies = [
@@ -5662,8 +5662,8 @@ dependencies = [
  "serde",
  "serde_json",
  "tlsn-core",
- "verity-dp-ic",
- "verity-verify-tls",
+ "verity-ic",
+ "verity-verifier",
 ]
 
 [[package]]

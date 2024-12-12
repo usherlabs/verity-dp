@@ -200,7 +200,7 @@ dependencies = [
  "candid",
  "ic-cdk 0.16.0",
  "ic-cdk-timers 0.10.0",
- "verity-dp-ic",
+ "verity-ic",
 ]
 
 [[package]]
@@ -214,7 +214,7 @@ dependencies = [
  "serde_derive",
  "serde_json",
  "solabi",
- "verity-dp-ic",
+ "verity-ic",
 ]
 
 [[package]]
@@ -224,7 +224,7 @@ dependencies = [
  "candid",
  "ic-cdk 0.16.0",
  "ic-cdk-timers 0.10.0",
- "verity-dp-ic",
+ "verity-ic",
 ]
 
 [[package]]
@@ -1397,8 +1397,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7dd6e30e90baa6f72411720665d41d89b9a3d039dc45b8faea1ddd07f617f6af"
 
 [[package]]
-name = "verity-dp-ic"
-version = "0.2.0"
+name = "verity-ic"
+version = "0.2.1"
 dependencies = [
  "anyhow",
  "candid",

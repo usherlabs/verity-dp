@@ -1,8 +1,8 @@
 # Verity Data Processor (VDP) - Internet Computer (IC) Libraries
 
-![License](https://img.shields.io/crates/l/verity_dp_ic) [![verity_dp_ic on crates.io](https://img.shields.io/crates/v/verity_dp_ic)](https://crates.io/crates/verity_dp_ic) [![verity_dp_ic on docs.rs](https://docs.rs/verity_dp_ic/badge.svg)](https://docs.rs/verity_dp_ic)
+![License](https://img.shields.io/crates/l/verity_ic) [![verity_ic on crates.io](https://img.shields.io/crates/v/verity_ic)](https://crates.io/crates/verity_ic) [![verity_ic on docs.rs](https://docs.rs/verity_ic/badge.svg)](https://docs.rs/verity_ic)
 
-`verity_dp_ic` provides libraries for verifying and processing data from Verity within the Internet Computer.
+`verity_ic` provides libraries for verifying and processing data from Verity within the Internet Computer.
 
 For more information about the Verity Data Processor (VDP), visit the [VDP repository](https://github.com/usherlabs/verity-dp).
 

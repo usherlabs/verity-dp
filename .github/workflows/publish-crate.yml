@@ -27,8 +27,8 @@ jobs:
       - name: cargo login
         run: cargo login ${{ secrets.CARGO_TOKEN }}
 
-      # Step 4: Publish the library
-      - name: Publish `ic/libraries::verity_dp_ic` to crates.io
+      # Step 4: Publish the IC library
+      - name: Publish `ic/libraries::verity_ic` to crates.io
         continue-on-error: true
         run: |
           cd ic/libraries
@@ -39,4 +39,11 @@ jobs:
         continue-on-error: true
         run: |
           cd rs/verify-local
+          cargo publish --allow-dirty
+      
+      # Step 4: Publish the verity client
+      - name: Publish `rs/verity-client::verity-client` to crates.io
+        continue-on-error: true
+        run: |
+          cd rs/verity-client
           cargo publish --allow-dirty

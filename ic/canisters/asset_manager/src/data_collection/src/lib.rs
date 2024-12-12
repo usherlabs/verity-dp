@@ -1,6 +1,6 @@
 use candid::Principal;
 use ic_cdk::storage;
-use verity_dp_ic::{ owner, remittance::{self, external_router}};
+use verity_ic::{ owner, remittance::{self, external_router}};
 
 // @dev testing command
 #[ic_cdk::query]

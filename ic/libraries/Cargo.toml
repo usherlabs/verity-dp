@@ -1,5 +1,5 @@
 [package]
-name = "verity-dp-ic"
+name = "verity-ic"
 description = "A library containing utilities for the Verity IC components"
 keywords = ["verity", "IC", "canister"]
 readme = "./README.md"
