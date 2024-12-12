@@ -198,8 +198,8 @@ name = "ccamp-data-collection"
 version = "0.1.0"
 dependencies = [
  "candid",
- "ic-cdk",
- "ic-cdk-timers",
+ "ic-cdk 0.16.0",
+ "ic-cdk-timers 0.10.0",
  "verity-dp-ic",
 ]
 
@@ -208,8 +208,8 @@ name = "ccamp-protocol-data-collection"
 version = "0.1.0"
 dependencies = [
  "candid",
- "ic-cdk",
- "ic-cdk-timers",
+ "ic-cdk 0.16.0",
+ "ic-cdk-timers 0.10.0",
  "serde",
  "serde_derive",
  "serde_json",
@@ -222,8 +222,8 @@ name = "ccamp-remittance"
 version = "0.1.0"
 dependencies = [
  "candid",
- "ic-cdk",
- "ic-cdk-timers",
+ "ic-cdk 0.16.0",
+ "ic-cdk-timers 0.10.0",
  "verity-dp-ic",
 ]
 
@@ -606,7 +606,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dd8ecacd682fa05a985253592963306cb9799622d7b1cce4b1edb89c6ec85be1"
 dependencies = [
  "candid",
- "ic-cdk-macros",
+ "ic-cdk-macros 0.16.0",
+ "ic0",
+ "serde",
+ "serde_bytes",
+]
+
+[[package]]
+name = "ic-cdk"
+version = "0.17.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b2abdf9341da9f9f6b451a40609cb69645a05a8e9eb7784c16209f16f2c0f76f"
+dependencies = [
+ "candid",
+ "ic-cdk-macros 0.17.0",
  "ic0",
  "serde",
  "serde_bytes",
@@ -627,13 +640,41 @@ dependencies = [
 ]
 
 [[package]]
+name = "ic-cdk-macros"
+version = "0.17.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b8df41980e95dead28735ab0f748c75477b0c5eab37a09a5641c78ec406a1db0"
+dependencies = [
+ "candid",
+ "proc-macro2",
+ "quote",
+ "serde",
+ "serde_tokenstream",
+ "syn 2.0.90",
+]
+
+[[package]]
 name = "ic-cdk-timers"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0c7c528bbb3d4d934b43a364855995d318649217c7510f40f92ad52eba3ff7be"
 dependencies = [
  "futures",
- "ic-cdk",
+ "ic-cdk 0.16.0",
+ "ic0",
+ "serde",
+ "serde_bytes",
+ "slotmap",
+]
+
+[[package]]
+name = "ic-cdk-timers"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fb8fd812a9e26f6aa00594546f8fbf4d4853f39c3ba794c8ff11ecf86fd3c9e4"
+dependencies = [
+ "futures",
+ "ic-cdk 0.17.0",
  "ic0",
  "serde",
  "serde_bytes",
@@ -1365,15 +1406,12 @@ dependencies = [
  "eth-encode-packed",
  "getrandom",
  "hex",
- "ic-cdk",
- "ic-cdk-timers",
+ "ic-cdk 0.17.0",
+ "ic-cdk-timers 0.11.0",
  "libsecp256k1",
  "rand",
  "serde",
- "serde_derive",
  "serde_json",
- "sha3 0.10.8",
- "solabi",
 ]
 
 [[package]]

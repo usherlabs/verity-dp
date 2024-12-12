@@ -44,3 +44,7 @@ packages/host-node/fixtures/*.data.json
 
 # rust build
 target
+
+# generated docs
+docs/packages
+docs/index.*
