@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"attr":["trace"],"macro":["evaluate","test_circ"]};

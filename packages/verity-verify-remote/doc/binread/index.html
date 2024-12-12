@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="A Rust crate for helping parse binary data using ✨macro magic✨."><title>binread - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="binread" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../binread/index.html">binread</a><span class="version">2.2.0</span></h2></div><div class="sidebar-elems"><ul class="block"><li><a id="all-types" href="all.html">All Items</a></li></ul><section id="rustdoc-toc"><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#example" title="Example">Example</a></li><li><a href="#the-basics" title="The Basics">The Basics</a></li><li><a href="#derive-macro" title="Derive Macro">Derive Macro</a><ul><li><a href="#basic-derive-example" title="Basic Derive Example">Basic Derive Example</a></li><li><a href="#attributes" title="Attributes">Attributes</a></li><li><a href="#generics" title="Generics">Generics</a></li><li><a href="#features" title="Features">Features</a></li></ul></li></ul><h3><a href="#modules">Crate Items</a></h3><ul class="block"><li><a href="#modules" title="Modules">Modules</a></li><li><a href="#structs" title="Structs">Structs</a></li><li><a href="#enums" title="Enums">Enums</a></li><li><a href="#traits" title="Traits">Traits</a></li><li><a href="#functions" title="Functions">Functions</a></li><li><a href="#types" title="Type Aliases">Type Aliases</a></li><li><a href="#attributes-1" title="Attribute Macros">Attribute Macros</a></li><li><a href="#derives" title="Derive Macros">Derive Macros</a></li></ul></section><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Crate <span>binread</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/binread/lib.rs.html#1-325">source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>A Rust crate for helping parse binary data using ✨macro magic✨.</p>
+<h2 id="example"><a class="doc-anchor" href="#example">§</a>Example</h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<span class="attr">#[derive(BinRead)]
+#[br(magic = <span class="string">b"DOG"</span>, assert(name.len() != <span class="number">0</span>))]
+</span><span class="kw">struct </span>Dog {
+    bone_pile_count: u8,
+
+    <span class="attr">#[br(big, count = bone_pile_count)]
+    </span>bone_piles: Vec&lt;u16&gt;,
+
+    <span class="attr">#[br(align_before = <span class="number">0xA</span>)]
+    </span>name: NullString
+}
+
+<span class="kw">let </span><span class="kw-2">mut </span>reader = Cursor::new(<span class="string">b"DOG\x02\x00\x01\x00\x12\0\0Rudy\0"</span>);
+<span class="kw">let </span>dog: Dog = reader.read_ne().unwrap();
+<span class="macro">assert_eq!</span>(dog.bone_piles, <span class="kw-2">&amp;</span>[<span class="number">0x1</span>, <span class="number">0x12</span>]);
+<span class="macro">assert_eq!</span>(dog.name.into_string(), <span class="string">"Rudy"</span>)</code></pre></div>
+<h2 id="the-basics"><a class="doc-anchor" href="#the-basics">§</a>The Basics</h2>
+<p>At the core of <code>binread</code> is the <a href="trait.BinRead.html" title="trait binread::BinRead"><code>BinRead</code></a> trait. It defines how to read
+a type from bytes and is already implemented for most primitives and simple collections.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>binread::{BinRead, io::Cursor};
+
+<span class="kw">let </span><span class="kw-2">mut </span>reader = Cursor::new(<span class="string">b"\0\0\0\x01"</span>);
+<span class="kw">let </span>val = u32::read(<span class="kw-2">&amp;mut </span>reader).unwrap();</code></pre></div>
+<p>However, <a href="trait.BinRead.html#method.read" title="associated function binread::BinRead::read"><code>read</code></a> is intentionally simple and, as a result, doesn’t even
+allow you to configure the byte order. For that you need <a href="trait.BinRead.html#tymethod.read_options" title="associated function binread::BinRead::read_options"><code>read_options</code></a>
+which, while more powerful, isn’t exactly ergonomics.</p>
+<p>So, as a balance between ergonomics and configurability you have the <a href="trait.BinReaderExt.html" title="trait binread::BinReaderExt"><code>BinReaderExt</code></a>
+trait. It is an extension for readers to allow for you to directly read any BinRead types from
+any reader.</p>
+<p>Example:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>binread::{BinReaderExt, io::Cursor};
+
+<span class="kw">let </span><span class="kw-2">mut </span>reader = Cursor::new(<span class="string">b"\x00\x0A"</span>);
+<span class="kw">let </span>val: u16 = reader.read_be().unwrap();
+<span class="macro">assert_eq!</span>(val, <span class="number">10</span>);</code></pre></div>
+<p>It even works for tuples and arrays of BinRead types for up to size 32.</p>
+<h2 id="derive-macro"><a class="doc-anchor" href="#derive-macro">§</a>Derive Macro</h2>
+<p>The most significant feature of binread is its ability to use the Derive macro to
+implement <a href="trait.BinRead.html" title="trait binread::BinRead"><code>BinRead</code></a> for your own types. This allows you to replace repetitive
+imperative code with declarative struct definitions for your binary data parsing.</p>
+<h3 id="basic-derive-example"><a class="doc-anchor" href="#basic-derive-example">§</a>Basic Derive Example</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead)]
+</span><span class="kw">struct </span>MyType {
+    first: u32,
+    second: u32
+}
+
+<span class="comment">// Also works with tuple types!
+</span><span class="attr">#[derive(BinRead)]
+</span><span class="kw">struct </span>MyType2(u32, u32);</code></pre></div>
+<h3 id="attributes"><a class="doc-anchor" href="#attributes">§</a>Attributes</h3>
+<p>The BinRead derive macro uses attributes in order to allow for more complicated parsers. For
+example you can use <code>big</code> or <code>little</code> at either the struct-level or the field-level in order
+to override the byte order of values.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead)]
+#[br(little)]
+</span><span class="kw">struct </span>MyType (
+    <span class="attr">#[br(big)] </span>u32, <span class="comment">// will be big endian
+    </span>u32, <span class="comment">// will be little endian
+</span>);</code></pre></div>
+<p>The order of precedence is: (from highest to lowest)</p>
+<ol>
+<li>Field-level</li>
+<li>Variant-level (for enums)</li>
+<li>Top-level</li>
+<li>Configured (i.e. what endianess was passed in)</li>
+<li>Native endianess</li>
+</ol>
+<p>For a list of attributes see the <a href="attribute/index.html" title="mod binread::attribute"><code>attribute</code></a> module</p>
+<h3 id="generics"><a class="doc-anchor" href="#generics">§</a>Generics</h3>
+<p>The BinRead derive macro also allows for generic parsing. That way you can build up
+higher-level parsers that can have their type swapped out to allow greater reuse of code.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead)]
+</span><span class="kw">struct </span>U32CountVec&lt;T: BinRead&lt;Args=()&gt;&gt; {
+    count: u32,
+    <span class="attr">#[br(count = count)]
+    </span>data: Vec&lt;T&gt;,
+}</code></pre></div>
+<p>In order to parse generically, we have to (in some way) bound <code>Args</code>. The easiest way to do
+this is to bound <code>&lt;T as BinRead&gt;::Args</code> to <code>()</code> (no arguments), however it is also possible to
+either accept a specific set of arguments or be generic over the given arguments.</p>
+<h3 id="features"><a class="doc-anchor" href="#features">§</a>Features</h3>
+<ul>
+<li><code>const_generics</code> - Change array <a href="trait.BinRead.html" title="trait binread::BinRead"><code>BinRead</code></a> implementation to use const generics</li>
+<li><code>std</code> - Disable this feature to enable <code>no_std</code> support, on by default</li>
+</ul>
+</div></details><h2 id="modules" class="section-header">Modules<a href="#modules" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="mod" href="attribute/index.html" title="mod binread::attribute">attribute</a></div><div class="desc docblock-short">A documentation-only module for the possible directives used in <code>#[br]</code> and
+<code>#[binread]</code> attributes.</div></li><li><div class="item-name"><a class="mod" href="binary_template/index.html" title="mod binread::binary_template">binary_<wbr>template</a></div></li><li><div class="item-name"><a class="mod" href="endian/index.html" title="mod binread::endian">endian</a></div><div class="desc docblock-short">An enum to represent what endianness to read as</div></li><li><div class="item-name"><a class="mod" href="error/index.html" title="mod binread::error">error</a></div><div class="desc docblock-short">Error types and internal error handling functions</div></li><li><div class="item-name"><a class="mod" href="file_ptr/index.html" title="mod binread::file_ptr">file_<wbr>ptr</a></div><div class="desc docblock-short">A wrapper type for representing a layer of indirection within a file.</div></li><li><div class="item-name"><a class="mod" href="helpers/index.html" title="mod binread::helpers">helpers</a></div></li><li><div class="item-name"><a class="mod" href="io/index.html" title="mod binread::io">io</a></div><div class="desc docblock-short">A swappable version of <a href="https://doc.rust-lang.org/1.83.0/std/io/index.html" title="mod std::io">std::io</a> that works in <code>no_std + alloc</code> environments.
+If the feature flag <code>std</code> is enabled (as it is by default), this will just re-export types from <code>std::io</code>.</div></li><li><div class="item-name"><a class="mod" href="prelude/index.html" title="mod binread::prelude">prelude</a></div><div class="desc docblock-short">The collection of traits and types you’ll likely need when working with binread and are
+unlikely to cause name conflicts.</div></li><li><div class="item-name"><a class="mod" href="punctuated/index.html" title="mod binread::punctuated">punctuated</a></div><div class="desc docblock-short">A module for <a href="punctuated/struct.Punctuated.html" title="struct binread::punctuated::Punctuated"><code>Punctuated&lt;T, P&gt;</code></a>, a series of items to parse of type T separated
+by punction of type <code>P</code>.</div></li></ul><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.FilePtr.html" title="struct binread::FilePtr">FilePtr</a></div><div class="desc docblock-short">A wrapper type for representing a layer of indirection within a file.</div></li><li><div class="item-name"><a class="struct" href="struct.NullString.html" title="struct binread::NullString">Null<wbr>String</a></div><div class="desc docblock-short">A null terminated UTF-8 string designed to make reading any null-terminated data easier.</div></li><li><div class="item-name"><a class="struct" href="struct.NullWideString.html" title="struct binread::NullWideString">Null<wbr>Wide<wbr>String</a></div><div class="desc docblock-short">A null terminated UTF-16 string designed to make reading any 16 bit wide null-terminated data easier.</div></li><li><div class="item-name"><a class="struct" href="struct.PosValue.html" title="struct binread::PosValue">PosValue</a></div><div class="desc docblock-short">A wrapper where the position it was read from is stored alongside the value</div></li><li><div class="item-name"><a class="struct" href="struct.ReadOptions.html" title="struct binread::ReadOptions">Read<wbr>Options</a></div><div class="desc docblock-short">Runtime-configured options for reading the type using <a href="trait.BinRead.html" title="trait binread::BinRead"><code>BinRead</code></a></div></li></ul><h2 id="enums" class="section-header">Enums<a href="#enums" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="enum" href="enum.Endian.html" title="enum binread::Endian">Endian</a></div><div class="desc docblock-short">An enum to represent what endianness to read as</div></li><li><div class="item-name"><a class="enum" href="enum.Error.html" title="enum binread::Error">Error</a></div><div class="desc docblock-short">An error while parsing a BinRead type</div></li></ul><h2 id="traits" class="section-header">Traits<a href="#traits" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="trait" href="trait.BinRead.html" title="trait binread::BinRead">BinRead</a></div><div class="desc docblock-short">A <code>BinRead</code> trait allows reading a structure from anything that implements <a href="io/trait.Read.html" title="trait binread::io::Read"><code>io::Read</code></a> and <a href="io/trait.Seek.html" title="trait binread::io::Seek"><code>io::Seek</code></a>
+BinRead is implemented on the type to be read out of the given reader</div></li><li><div class="item-name"><a class="trait" href="trait.BinReaderExt.html" title="trait binread::BinReaderExt">BinReader<wbr>Ext</a></div><div class="desc docblock-short">An extension trait for <a href="io/trait.Read.html" title="trait binread::io::Read"><code>io::Read</code></a> to provide methods for reading a value directly</div></li></ul><h2 id="functions" class="section-header">Functions<a href="#functions" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="fn" href="fn.count.html" title="fn binread::count">count</a></div><div class="desc docblock-short">A helper equivelant to <code>#[br(count = N)]</code> which can be used with any collection.</div></li><li><div class="item-name"><a class="fn" href="fn.until.html" title="fn binread::until">until</a></div><div class="desc docblock-short">Read items until a condition is met. The final item will be included.</div></li><li><div class="item-name"><a class="fn" href="fn.until_eof.html" title="fn binread::until_eof">until_<wbr>eof</a></div><div class="desc docblock-short">Read items until the end of the file is hit.</div></li><li><div class="item-name"><a class="fn" href="fn.until_exclusive.html" title="fn binread::until_exclusive">until_<wbr>exclusive</a></div><div class="desc docblock-short">Read items until a condition is met. The last item will <em>not</em> be named.</div></li></ul><h2 id="types" class="section-header">Type Aliases<a href="#types" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="type" href="type.BinResult.html" title="type binread::BinResult">BinResult</a></div><div class="desc docblock-short">A Result for any binread function that can return an error</div></li><li><div class="item-name"><a class="type" href="type.FilePtr8.html" title="type binread::FilePtr8">File<wbr>Ptr8</a></div><div class="desc docblock-short">Type alias for 8-bit pointers</div></li><li><div class="item-name"><a class="type" href="type.FilePtr16.html" title="type binread::FilePtr16">File<wbr>Ptr16</a></div><div class="desc docblock-short">Type alias for 16-bit pointers</div></li><li><div class="item-name"><a class="type" href="type.FilePtr32.html" title="type binread::FilePtr32">File<wbr>Ptr32</a></div><div class="desc docblock-short">Type alias for 32-bit pointers</div></li><li><div class="item-name"><a class="type" href="type.FilePtr64.html" title="type binread::FilePtr64">File<wbr>Ptr64</a></div><div class="desc docblock-short">Type alias for 64-bit pointers</div></li><li><div class="item-name"><a class="type" href="type.FilePtr128.html" title="type binread::FilePtr128">File<wbr>Ptr128</a></div><div class="desc docblock-short">Type alias for 128-bit pointers</div></li></ul><h2 id="attributes-1" class="section-header">Attribute Macros<a href="#attributes-1" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="attr" href="attr.derive_binread.html" title="attr binread::derive_binread">derive_<wbr>binread</a></div><div class="desc docblock-short">Equivalent to <code>derive(BinRead)</code> but allows for temporary variables.</div></li></ul><h2 id="derives" class="section-header">Derive Macros<a href="#derives" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="derive" href="derive.BinRead.html" title="derive binread::BinRead">BinRead</a></div><div class="desc docblock-short">Derive macro for BinRead. <a href="trait.BinRead.html" title="trait binread::BinRead">Usage here</a>.</div></li></ul></section></div></main></body></html>

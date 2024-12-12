@@ -1,0 +1,118 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Implementations of `serde::Serialize` and `serde::Deserialize` for `BiHashMap` and `BiBTreeMap`."><title>bimap::serde - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bimap" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../sidebar-items.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../bimap/index.html">bimap</a><span class="version">0.6.3</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Module serde</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#examples" title="Examples">Examples</a></li><li><a href="#implementation-details" title="Implementation details">Implementation details</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="../index.html">In crate bimap</a></h2></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><span class="rustdoc-breadcrumbs"><a href="../index.html">bimap</a></span><h1>Module <span>serde</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/bimap/serde.rs.html#1-361">source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Implementations of <code>serde::Serialize</code> and <code>serde::Deserialize</code> for
+<code>BiHashMap</code> and <code>BiBTreeMap</code>.</p>
+<p>You do not need to import anything from this module to use this
+functionality, simply enable the <code>serde</code> feature in your dependency
+manifest. Note that currently, this requires the <code>std</code> feature to also be
+enabled, and thus cannot be used in <code>no_std</code> enviroments.</p>
+<h2 id="examples"><a class="doc-anchor" href="#examples">§</a>Examples</h2>
+<p>You can easily serialize and deserialize bimaps with any serde-compatbile
+serializer or deserializer.</p>
+<p>Serializing and deserializing a <a href="../hash/struct.BiHashMap.html" title="struct bimap::hash::BiHashMap"><code>BiHashMap</code></a>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// create a new bimap
+</span><span class="kw">let </span><span class="kw-2">mut </span>map = BiHashMap::new();
+
+<span class="comment">// insert some pairs
+</span>map.insert(<span class="string">'A'</span>, <span class="number">1</span>);
+map.insert(<span class="string">'B'</span>, <span class="number">2</span>);
+map.insert(<span class="string">'C'</span>, <span class="number">3</span>);
+
+<span class="comment">// convert the bimap to json
+</span><span class="kw">let </span>json = serde_json::to_string(<span class="kw-2">&amp;</span>map).unwrap();
+
+<span class="comment">// convert the json back into a bimap
+</span><span class="kw">let </span>map2 = serde_json::from_str(<span class="kw-2">&amp;</span>json).unwrap();
+
+<span class="comment">// check that the two bimaps are equal
+</span><span class="macro">assert_eq!</span>(map, map2);</code></pre></div>
+<p>Serializing and deserializing a <a href="../btree/struct.BiBTreeMap.html" title="struct bimap::btree::BiBTreeMap"><code>BiBTreeMap</code></a>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// create a new bimap
+</span><span class="kw">let </span><span class="kw-2">mut </span>map = BiBTreeMap::new();
+
+<span class="comment">// insert some pairs
+</span>map.insert(<span class="string">'A'</span>, <span class="number">3</span>);
+map.insert(<span class="string">'B'</span>, <span class="number">2</span>);
+map.insert(<span class="string">'C'</span>, <span class="number">1</span>);
+
+<span class="comment">// convert the bimap to json
+</span><span class="kw">let </span>json = serde_json::to_string(<span class="kw-2">&amp;</span>map).unwrap();
+
+<span class="comment">// convert the json back into a bimap
+</span><span class="kw">let </span>map2 = serde_json::from_str(<span class="kw-2">&amp;</span>json).unwrap();
+
+<span class="comment">// check that the two bimaps are equal
+</span><span class="macro">assert_eq!</span>(map, map2);</code></pre></div>
+<p>Of course, this is only possible for bimaps where the values also implement
+<code>Serialize</code> and <code>Deserialize</code> respectively:</p>
+
+<div class="example-wrap compile_fail"><a href="#" class="tooltip" title="This example deliberately fails to compile">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="comment">// this type doesn't implement Serialize or Deserialize!
+</span><span class="attr">#[derive(PartialEq, Eq, Hash)]
+</span><span class="kw">enum </span>MyEnum { A, B, C }
+
+<span class="comment">// create a bimap and add some pairs
+</span><span class="kw">let </span><span class="kw-2">mut </span>map = BiHashMap::new();
+map.insert(MyEnum::A, <span class="number">1</span>);
+map.insert(MyEnum::B, <span class="number">2</span>);
+map.insert(MyEnum::C, <span class="number">3</span>);
+
+<span class="comment">// this line will cause the code to fail to compile
+</span><span class="kw">let </span>json = serde_json::to_string(<span class="kw-2">&amp;</span>map).unwrap();</code></pre></div>
+<h2 id="implementation-details"><a class="doc-anchor" href="#implementation-details">§</a>Implementation details</h2>
+<p>Bimaps are serialized and deserialized as a map data type in serde.
+Consequentially, it is possible to serialize and deserialize bimaps to/from
+other types that are represented the same way. <em>This is considered an
+implementation detail and should not be relied upon.</em></p>
+<p>For example, a bimap can be deserialized from the serialized form of a
+standard <a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html"><code>HashMap</code></a>. However, <em>deserializing a bimap silently overwrites
+any conflicting pairs</em>, leading to non-deterministic results.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// construct a regular map
+</span><span class="kw">let </span><span class="kw-2">mut </span>map = HashMap::new();
+
+<span class="comment">// insert some entries
+// note that both 'B' and 'C' are associated with the value 2 here
+</span>map.insert(<span class="string">'A'</span>, <span class="number">1</span>);
+map.insert(<span class="string">'B'</span>, <span class="number">2</span>);
+map.insert(<span class="string">'C'</span>, <span class="number">2</span>);
+
+<span class="comment">// serialize the map
+</span><span class="kw">let </span>json = serde_json::to_string(<span class="kw-2">&amp;</span>map).unwrap();
+
+<span class="comment">// deserialize it into a bimap
+</span><span class="kw">let </span>bimap: BiHashMap&lt;char, i32&gt; = serde_json::from_str(<span class="kw-2">&amp;</span>json).unwrap();
+
+<span class="comment">// deserialization succeeds, but the bimap is now in a non-deterministic
+// state - either ('B', 2) or ('C', 2) will have been overwritten while
+// deserializing, but this depends on the iteration order of the original
+// HashMap that was serialized.
+
+// we can still demonstrate that certain properties of the bimap are still
+// in a known state, but this shouldn't be relied upon
+</span><span class="macro">assert_eq!</span>(bimap.len(), <span class="number">2</span>);
+<span class="macro">assert_eq!</span>(bimap.get_by_left(<span class="kw-2">&amp;</span><span class="string">'A'</span>), <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">1</span>));
+<span class="macro">assert!</span>(bimap.get_by_left(<span class="kw-2">&amp;</span><span class="string">'B'</span>) == <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">2</span>) || bimap.get_by_left(<span class="kw-2">&amp;</span><span class="string">'C'</span>) == <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">2</span>))</code></pre></div>
+<p>The reverse is also possible: bimaps may be serialized and then
+deserialized as other compatible types, such as a <a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html"><code>HashMap</code></a>.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// construct a bimap
+</span><span class="kw">let </span><span class="kw-2">mut </span>bimap = BiHashMap::new();
+
+<span class="comment">// insert some pairs
+</span>bimap.insert(<span class="string">'A'</span>, <span class="number">1</span>);
+bimap.insert(<span class="string">'B'</span>, <span class="number">2</span>);
+bimap.insert(<span class="string">'C'</span>, <span class="number">3</span>);
+
+<span class="comment">// serialize the bimap
+</span><span class="kw">let </span>json = serde_json::to_string(<span class="kw-2">&amp;</span>bimap).unwrap();
+
+<span class="comment">// deserialize it as a regular map
+</span><span class="kw">let </span>map: HashMap&lt;char, i32&gt; = serde_json::from_str(<span class="kw-2">&amp;</span>json).unwrap();
+
+<span class="comment">// this succeeds and the result is sensible, but this is still an
+// implementation detail and shouldn't be relied upon.
+</span><span class="macro">assert_eq!</span>(map.len(), <span class="number">3</span>);
+<span class="macro">assert_eq!</span>(map[<span class="kw-2">&amp;</span><span class="string">'A'</span>], <span class="number">1</span>);
+<span class="macro">assert_eq!</span>(map[<span class="kw-2">&amp;</span><span class="string">'B'</span>], <span class="number">2</span>);
+<span class="macro">assert_eq!</span>(map[<span class="kw-2">&amp;</span><span class="string">'C'</span>], <span class="number">3</span>);</code></pre></div>
+</div></details></section></div></main></body></html>

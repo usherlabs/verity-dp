@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["id","iter","range","tuple"]};

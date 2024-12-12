@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/alloy-sol-macro-expander-0.8.14/src/expand/enum.rs`."><title>enum.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="alloy_sol_macro_expander" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/alloy-rs/core/main/assets/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">alloy_sol_macro_expander/expand/</div>enum.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/alloy-sol-macro-expander-0.8.15/src/expand/enum.rs`."><title>enum.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="alloy_sol_macro_expander" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/alloy-rs/core/main/assets/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">alloy_sol_macro_expander/expand/</div>enum.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -196,12 +196,7 @@
 <a href="#195" id="195">195</a>
 <a href="#196" id="196">196</a>
 <a href="#197" id="197">197</a>
-<a href="#198" id="198">198</a>
-<a href="#199" id="199">199</a>
-<a href="#200" id="200">200</a>
-<a href="#201" id="201">201</a>
-<a href="#202" id="202">202</a>
-<a href="#203" id="203">203</a></pre></div><pre class="rust"><code><span class="doccomment">//! [`ItemEnum`] expansion.
+<a href="#198" id="198">198</a></pre></div><pre class="rust"><code><span class="doccomment">//! [`ItemEnum`] expansion.
 
 </span><span class="kw">use </span><span class="kw">super</span>::ExpCtxt;
 <span class="kw">use </span>alloy_sol_macro_input::{derives_mapped, mk_doc, ContainsSolAttrs};
@@ -273,6 +268,12 @@
     <span class="kw">let </span>uint8 = <span class="macro">quote!</span>(alloy_sol_types::sol_data::Uint&lt;<span class="number">8</span>&gt;);
     <span class="kw">let </span>uint8_st = <span class="macro">quote!</span>(&lt;#uint8 <span class="kw">as </span>alloy_sol_types::SolType&gt;);
 
+    <span class="kw">let </span>index_to_variant = variants.iter().enumerate().map(|(idx, variant)| {
+        <span class="kw">let </span>ident = <span class="kw-2">&amp;</span>variant.ident;
+        <span class="kw">let </span>idx = idx <span class="kw">as </span>u8;
+        <span class="macro">quote!</span> { #idx =&gt; ::core::result::Result::Ok(<span class="self">Self</span>::#ident), }
+    });
+
     <span class="kw">let </span>doc = docs.then(|| mk_doc(<span class="macro">format!</span>(<span class="string">"```solidity\n{enumm}\n```"</span>)));
     <span class="kw">let </span>tokens = <span class="macro">quote!</span> {
         #(#attrs)*
@@ -301,15 +302,13 @@
             </span><span class="kw">impl </span>::core::convert::TryFrom&lt;u8&gt; <span class="kw">for </span>#name {
                 <span class="kw">type </span>Error = alloy_sol_types::Error;
 
-                <span class="attr">#[allow(unsafe_code)]
-                #[inline]
-                </span><span class="kw">fn </span>try_from(v: u8) -&gt; alloy_sol_types::Result&lt;<span class="self">Self</span>&gt; {
-                    <span class="kw">if </span>v &lt;= #max {
-                        ::core::result::Result::Ok(<span class="kw">unsafe </span>{ ::core::mem::transmute(v) })
-                    } <span class="kw">else </span>{
-                        ::core::result::Result::Err(alloy_sol_types::Error::InvalidEnumValue {
+                <span class="attr">#[inline]
+                </span><span class="kw">fn </span>try_from(value: u8) -&gt; alloy_sol_types::Result&lt;<span class="self">Self</span>&gt; {
+                    <span class="kw">match </span>value {
+                        #(#index_to_variant)*
+                        value =&gt; ::core::result::Result::Err(alloy_sol_types::Error::InvalidEnumValue {
                             name: #name_s,
-                            value: v,
+                            value,
                             max: #max,
                         })
                     }
@@ -330,7 +329,7 @@
 
                 <span class="attr">#[inline]
                 </span><span class="kw">fn </span>stv_eip712_data_word(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; alloy_sol_types::Word {
-                    #uint8_st::eip712_data_word(<span class="self">self</span>.as_u8())
+                    #uint8_st::eip712_data_word(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><span class="self">self </span><span class="kw">as </span>u8))
                 }
 
                 <span class="attr">#[inline]
@@ -373,32 +372,23 @@
             </span><span class="kw">impl </span>alloy_sol_types::EventTopic <span class="kw">for </span>#name {
                 <span class="attr">#[inline]
                 </span><span class="kw">fn </span>topic_preimage_length(rust: <span class="kw-2">&amp;</span><span class="self">Self</span>::RustType) -&gt; usize {
-                    &lt;#uint8 <span class="kw">as </span>alloy_sol_types::EventTopic&gt;::topic_preimage_length(rust.as_u8())
+                    &lt;#uint8 <span class="kw">as </span>alloy_sol_types::EventTopic&gt;::topic_preimage_length(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span>rust <span class="kw">as </span>u8))
                 }
 
                 <span class="attr">#[inline]
                 </span><span class="kw">fn </span>encode_topic_preimage(rust: <span class="kw-2">&amp;</span><span class="self">Self</span>::RustType, out: <span class="kw-2">&amp;mut </span>alloy_sol_types::private::Vec&lt;u8&gt;) {
-                    &lt;#uint8 <span class="kw">as </span>alloy_sol_types::EventTopic&gt;::encode_topic_preimage(rust.as_u8(), out);
+                    &lt;#uint8 <span class="kw">as </span>alloy_sol_types::EventTopic&gt;::encode_topic_preimage(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span>rust <span class="kw">as </span>u8), out);
                 }
 
                 <span class="attr">#[inline]
                 </span><span class="kw">fn </span>encode_topic(rust: <span class="kw-2">&amp;</span><span class="self">Self</span>::RustType) -&gt; alloy_sol_types::abi::token::WordToken {
-                    &lt;#uint8 <span class="kw">as </span>alloy_sol_types::EventTopic&gt;::encode_topic(rust.as_u8())
+                    &lt;#uint8 <span class="kw">as </span>alloy_sol_types::EventTopic&gt;::encode_topic(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span>rust <span class="kw">as </span>u8))
                 }
             }
 
             <span class="attr">#[automatically_derived]
             </span><span class="kw">impl </span>alloy_sol_types::SolEnum <span class="kw">for </span>#name {
                 <span class="kw">const </span>COUNT: usize = #count;
-            }
-
-            <span class="attr">#[automatically_derived]
-            </span><span class="kw">impl </span>#name {
-                <span class="attr">#[allow(unsafe_code, clippy::inline_always)]
-                #[inline(always)]
-                </span><span class="kw">fn </span>as_u8(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>u8 {
-                    <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>(<span class="self">self </span><span class="kw">as </span><span class="kw-2">*const </span><span class="self">Self </span><span class="kw">as </span><span class="kw-2">*const </span>u8) }
-                }
             }
         };
     };

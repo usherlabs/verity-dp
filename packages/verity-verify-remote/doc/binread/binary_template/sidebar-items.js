@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_next_color","get_next_var_name","set_output","set_output_file","unset_output","write","write_comment","write_end_struct","write_named","write_start_struct","write_vec","write_vec_named"]};

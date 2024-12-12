@@ -1,0 +1,1 @@
+searchState.loadedDescShard("clmul", 0, "CarryLess MULtiplication (clmul) based on the crate: …\nCarryless multiplication\nPerforms carryless multiplication\nReturns the argument unchanged.\nCalls <code>U::from(self)</code>.\nReduces the polynomial represented in bits modulo the GCM …")

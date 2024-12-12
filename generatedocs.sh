@@ -5,10 +5,10 @@ main() {
     # Create an array of destinations we want to generate docs for
     projects_dirs=(
         "../ic/libraries"
+        "../rs/verify-local"
+        "../rs/verify-remote"
+        "../rs/verify-tls"
         "../rs/verity-client"
-        "../rs/local-verify"
-        "../rs/remote-verify"
-        "../rs/verifier"
         "../zk/guest"
         "../zk/host"
     )

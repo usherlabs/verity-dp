@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Error","PublicKeyFormat"],"fn":["recover","recover_with_context","verify","verify_with_context"],"mod":["curve","util"],"struct":["ECMULT_CONTEXT","ECMULT_GEN_CONTEXT","Message","PublicKey","RecoveryId","SecretKey","SharedSecret","Signature"]};

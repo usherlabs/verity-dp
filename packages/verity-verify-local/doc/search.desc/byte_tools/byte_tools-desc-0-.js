@@ -1,0 +1,1 @@
+searchState.loadedDescShard("byte_tools", 0, "Copy bytes from <code>src</code> to <code>dst</code>\nSets all bytes in <code>dst</code> equal to <code>value</code>\nZero all bytes in <code>dst</code>")

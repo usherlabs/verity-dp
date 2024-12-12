@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["BinaryRepr","TypeError","Value","ValueType"],"struct":["Bit","U128","U16","U32","U64","U8"],"trait":["BinaryLength","PrimitiveType","StaticValueType","ToBinaryRepr"]};

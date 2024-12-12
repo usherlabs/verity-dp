@@ -1,0 +1,593 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="A documentation-only module for the possible directives used in `#[br]` and `#[binread]` attributes."><title>binread::attribute - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="binread" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../sidebar-items.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../binread/index.html">binread</a><span class="version">2.2.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Module attribute</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#list-of-directives" title="List of directives">List of directives</a></li><li><a href="#byte-order" title="Byte order">Byte order</a><ul><li><a href="#examples" title="Examples">Examples</a></li></ul></li><li><a href="#magic" title="Magic">Magic</a><ul><li><a href="#examples-1" title="Examples">Examples</a></li><li><a href="#errors" title="Errors">Errors</a></li></ul></li><li><a href="#assert" title="Assert">Assert</a><ul><li><a href="#examples-2" title="Examples">Examples</a></li><li><a href="#errors-1" title="Errors">Errors</a></li></ul></li><li><a href="#pre-assert" title="Pre-assert">Pre-assert</a><ul><li><a href="#examples-3" title="Examples">Examples</a></li></ul></li><li><a href="#arguments" title="Arguments">Arguments</a><ul><li><a href="#examples-4" title="Examples">Examples</a></li></ul></li><li><a href="#default" title="Default">Default</a><ul><li><a href="#examples-5" title="Examples">Examples</a></li></ul></li><li><a href="#temp" title="Temp">Temp</a><ul><li><a href="#examples-6" title="Examples">Examples</a></li></ul></li><li><a href="#postprocessing" title="Postprocessing">Postprocessing</a><ul><li><a href="#examples-7" title="Examples">Examples</a></li></ul></li><li><a href="#restore-position" title="Restore position">Restore position</a><ul><li><a href="#examples-8" title="Examples">Examples</a></li><li><a href="#errors-2" title="Errors">Errors</a></li></ul></li><li><a href="#try" title="Try">Try</a><ul><li><a href="#examples-9" title="Examples">Examples</a></li></ul></li><li><a href="#map" title="Map">Map</a><ul><li><a href="#examples-10" title="Examples">Examples</a></li><li><a href="#errors-3" title="Errors">Errors</a></li></ul></li><li><a href="#custom-parsers" title="Custom parsers">Custom parsers</a><ul><li><a href="#examples-11" title="Examples">Examples</a></li></ul></li><li><a href="#calculations" title="Calculations">Calculations</a><ul><li><a href="#examples-12" title="Examples">Examples</a></li></ul></li><li><a href="#count" title="Count">Count</a><ul><li><a href="#examples-13" title="Examples">Examples</a></li></ul></li><li><a href="#offset" title="Offset">Offset</a><ul><li><a href="#examples-14" title="Examples">Examples</a></li><li><a href="#errors-4" title="Errors">Errors</a></li></ul></li><li><a href="#conditional-values" title="Conditional values">Conditional values</a><ul><li><a href="#examples-15" title="Examples">Examples</a></li></ul></li><li><a href="#padding-and-alignment" title="Padding and alignment">Padding and alignment</a><ul><li><a href="#examples-16" title="Examples">Examples</a></li><li><a href="#errors-5" title="Errors">Errors</a></li></ul></li><li><a href="#repr" title="Repr">Repr</a><ul><li><a href="#examples-17" title="Examples">Examples</a></li><li><a href="#errors-6" title="Errors">Errors</a></li></ul></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="../index.html">In crate binread</a></h2></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><span class="rustdoc-breadcrumbs"><a href="../index.html">binread</a></span><h1>Module <span>attribute</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/binread/attribute.rs.html#1-938">source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>A documentation-only module for the possible directives used in <code>#[br]</code> and
+<code>#[binread]</code> attributes.</p>
+<h2 id="list-of-directives"><a class="doc-anchor" href="#list-of-directives">§</a>List of directives</h2><div><table><thead><tr><th>Directive</th><th>Supports</th><th>Description</th></tr></thead><tbody>
+<tr><td><a href="#padding-and-alignment"><code>align_after</code></a></td><td>field</td><td>Aligns the reader to the Nth byte after reading data.</td></tr>
+<tr><td><a href="#padding-and-alignment"><code>align_before</code></a></td><td>field</td><td>Aligns the reader to the Nth byte before reading data.</td></tr>
+<tr><td><a href="#arguments"><code>args</code></a></td><td>struct field, data variant</td><td>Passes arguments to another <code>BinRead</code> object.</td></tr>
+<tr><td><a href="#arguments"><code>args_tuple</code></a></td><td>struct field, data variant</td><td>Like <code>args</code>, but specifies a tuple containing the arguments.</td></tr>
+<tr><td><a href="#assert"><code>assert</code></a></td><td>struct, field, non-unit enum, data variant</td><td>Asserts that a condition is true. Can be used multiple times.</td></tr>
+<tr><td><a href="#byte-order"><code>big</code></a></td><td>all except unit variant</td><td>Sets the byte order to big-endian.</td></tr>
+<tr><td><a href="#calculations"><code>calc</code></a></td><td>field</td><td>Computes the value of a field instead of reading data.</td></tr>
+<tr><td><a href="#count"><code>count</code></a></td><td>field</td><td>Sets the length of a vector.</td></tr>
+<tr><td><a href="#default"><code>default</code></a></td><td>field</td><td>Uses the <a href="https://doc.rust-lang.org/1.83.0/core/default/trait.Default.html" title="trait core::default::Default"><code>default</code></a> value for a field instead of reading data.</td></tr>
+<tr><td><a href="#postprocessing"><code>deref_now</code></a></td><td>field</td><td>An alias for <code>postprocess_now</code>.</td></tr>
+<tr><td><a href="#conditional-values"><code>if</code></a></td><td>field</td><td>Reads data only if a condition is true.</td></tr>
+<tr><td><a href="#default"><code>ignore</code></a></td><td>field</td><td>An alias for <code>default</code>.</td></tr>
+<tr><td><a href="#arguments"><code>import</code></a></td><td>struct, non-unit enum, unit-like enum</td><td>Defines extra arguments for a struct or enum.</td></tr>
+<tr><td><a href="#arguments"><code>import_tuple</code></a></td><td>struct, non-unit enum, unit-like enum</td><td>Like <code>import</code>, but receives the arguments as a tuple.</td></tr>
+<tr><td><a href="#byte-order"><code>is_big</code></a></td><td>field</td><td>Conditionally sets the byte order to big-endian.</td></tr>
+<tr><td><a href="#byte-order"><code>is_little</code></a></td><td>field</td><td>Conditionally set the byte order to little-endian.</td></tr>
+<tr><td><a href="#byte-order"><code>little</code></a></td><td>all except unit variant</td><td>Sets the byte order to little-endian.</td></tr>
+<tr><td><a href="#magic"><code>magic</code></a></td><td>all</td><td>Matches a magic number.</td></tr>
+<tr><td><a href="#map"><code>map</code></a></td><td>all except unit variant</td><td>Maps a read value to a new value. When used on a struct or enum, the map function must return <code>Self</code>.</td></tr>
+<tr><td><a href="#offset"><code>offset</code></a></td><td>field</td><td>Modifies the offset used by a <a href="../struct.FilePtr.html" title="struct binread::FilePtr"><code>FilePtr</code></a>.</td></tr>
+<tr><td><a href="#padding-and-alignment"><code>pad_after</code></a></td><td>field</td><td>Skips N bytes after reading a field.</td></tr>
+<tr><td><a href="#padding-and-alignment"><code>pad_before</code></a></td><td>field</td><td>Skips N bytes before reading a field.</td></tr>
+<tr><td><a href="#padding-and-alignment"><code>pad_size_to</code></a></td><td>field</td><td>Ensures the reader is at least N bytes after the starting position for this field.</td></tr>
+<tr><td><a href="#custom-parsers"><code>parse_with</code></a></td><td>field</td><td>Specifies a custom function for reading a field.</td></tr>
+<tr><td><a href="#postprocessing"><code>postprocess_now</code></a></td><td>field</td><td>Calls <a href="../trait.BinRead.html#method.after_parse" title="method binread::BinRead::after_parse"><code>after_parse</code></a> immediately after reading data instead of after all fields have been read.</td></tr>
+<tr><td><a href="#pre-assert"><code>pre_assert</code></a></td><td>struct, non-unit enum, unit variant</td><td>Like <code>assert</code>, but checks the condition before parsing.</td></tr>
+<tr><td><a href="#repr"><code>repr</code></a></td><td>unit-like enum</td><td>Specifies the underlying type for a unit-like (C-style) enum.</td></tr>
+<tr><td><a href="#restore-position"><code>restore_position</code></a></td><td>field</td><td>Restores the reader’s position after reading a field.</td></tr>
+<tr><td><a href="#enum-errors"><code>return_all_errors</code></a></td><td>non-unit enum</td><td>Returns a <a href="https://doc.rust-lang.org/1.83.0/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec"><code>Vec</code></a> containing the error which occurred on each variant of an enum on failure. This is the default.</td></tr>
+<tr><td><a href="#enum-errors"><code>return_unexpected_error</code></a></td><td>non-unit enum</td><td>Returns a single generic error on failure.</td></tr>
+<tr><td><a href="#padding-and-alignment"><code>seek_before</code></a></td><td>field</td><td>Moves the reader to a specific position before reading data.</td></tr>
+<tr><td><a href="#temp"><code>temp</code></a></td><td>field</td><td>Uses a field as a temporary variable. Only usable with the <a href="../attr.derive_binread.html" title="attr binread::derive_binread"><code>derive_binread</code></a> attribute macro.</td></tr>
+<tr><td><a href="#try"><code>try</code></a></td><td>field</td><td>Reads data into an <a href="https://doc.rust-lang.org/1.83.0/core/option/enum.Option.html" title="enum core::option::Option"><code>Option</code></a>, but stores <code>None</code> if parsing fails instead of returning an error.</td></tr>
+<tr><td><a href="#map"><code>try_map</code></a></td><td>all except unit variant</td><td>Like <code>map</code>, but returns a <a href="../type.BinResult.html" title="type binread::BinResult"><code>BinResult</code></a>.</td></tr>
+</tbody></table>
+</div><h2 id="byte-order"><a class="doc-anchor" href="#byte-order">§</a>Byte order</h2>
+<p>The <code>big</code> and <code>little</code> directives specify the <a href="https://en.wikipedia.org/wiki/Endianness">byte order</a>
+of data in a struct, enum, variant, or field:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(big)]
+#[br(little)]</code></pre></div>
+<p>The <code>is_big</code> and <code>is_little</code> directives conditionally set the byte order of
+a struct field:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(is_little = $cond:expr)] or #[br(is_little($cond:expr))]
+#[br(is_big = $cond:expr)] or #[br(is_big($cond:expr))]</code></pre></div>
+<p>The <code>is_big</code> and <code>is_little</code> directives are primarily useful when byte order
+is defined in the data itself. Any earlier field or <a href="#arguments">import</a> can
+be referenced in the condition. Conditional byte order directives can only
+be used on struct fields.</p>
+<p>The order of precedence (from highest to lowest) for determining byte order
+within an object is:</p>
+<ol>
+<li>A directive on a field</li>
+<li>A directive on an enum variant</li>
+<li>A directive on the struct or enum</li>
+<li>The <a href="../struct.ReadOptions.html#structfield.endian" title="field binread::ReadOptions::endian"><code>endian</code></a> property of the
+<a href="../struct.ReadOptions.html" title="struct binread::ReadOptions"><code>ReadOptions</code></a> object passed to
+<a href="../trait.BinRead.html#tymethod.read_options" title="associated function binread::BinRead::read_options"><code>BinRead::read_options</code></a> by the caller</li>
+<li>The host machine’s native byte order</li>
+</ol>
+<p>However, if a byte order directive is added to a struct or enum, that byte
+order will <em>always</em> be used, even if the object is embedded in another
+object or explicitly called with a different byte order:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead, Debug, PartialEq)]
+#[br(little)] </span><span class="comment">// ← this *forces* the struct to be little-endian
+</span><span class="kw">struct </span>Child(u32);
+
+<span class="attr">#[derive(BinRead, Debug)]
+</span><span class="kw">struct </span>Parent {
+    <span class="attr">#[br(big)] </span><span class="comment">// ← this will be ignored
+    </span>child: Child,
+};
+
+<span class="kw">let </span><span class="kw-2">mut </span>options = ReadOptions::default();
+options.endian = Endian::Big; <span class="comment">// ← this will be ignored
+</span>Child::read_options(<span class="kw-2">&amp;mut </span>Cursor::new(<span class="string">b"\x01\0\0\0"</span>), <span class="kw-2">&amp;</span>options, ())</code></pre></div>
+<p>When manually implementing
+<a href="../trait.BinRead.html#tymethod.read_options" title="associated function binread::BinRead::read_options"><code>BinRead::read_options</code></a> or a
+<a href="#custom-parsers">custom parser function</a>, the byte order is accessible
+from <a href="../struct.ReadOptions.html#structfield.endian" title="field binread::ReadOptions::endian"><code>ReadOptions::endian</code></a>.</p>
+<h3 id="examples"><a class="doc-anchor" href="#examples">§</a>Examples</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead)]
+#[br(little)]
+</span><span class="kw">struct </span>MyType (
+    <span class="attr">#[br(big)] </span>u32, <span class="comment">// ← will be big-endian
+    </span>u32, <span class="comment">// ← will be little-endian
+</span>);</code></pre></div>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead, Debug, PartialEq)]
+#[br(big)]
+</span><span class="kw">struct </span>MyType {
+    val: u8,
+    <span class="attr">#[br(is_little = (val == <span class="number">3</span>))]
+    </span>other_val: u16 <span class="comment">// ← little-endian if `val == 3`, otherwise big-endian
+</span>}
+</code></pre></div>
+<h2 id="magic"><a class="doc-anchor" href="#magic">§</a>Magic</h2>
+<p>The <code>magic</code> directive matches <a href="https://en.wikipedia.org/wiki/Magic_number_(programming)">magic numbers</a>
+in data:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(magic = $magic:literal)] or #[br(magic($magic:literal))]</code></pre></div>
+<p>The magic number can be a byte literal, byte string, char, float, or
+integer. When a magic number is matched, parsing begins with the first byte
+after the magic number in the data. When a magic number is not matched, an
+error is returned.</p>
+<h3 id="examples-1"><a class="doc-anchor" href="#examples-1">§</a>Examples</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead, Debug)]
+#[br(magic = <span class="string">b"TEST"</span>)]
+</span><span class="kw">struct </span>Test {
+    val: u32
+}
+
+<span class="attr">#[derive(BinRead, Debug)]
+#[br(magic = <span class="number">1.2f32</span>)]
+</span><span class="kw">struct </span>Version(u16);
+
+<span class="attr">#[derive(BinRead)]
+</span><span class="kw">enum </span>Command {
+    <span class="attr">#[br(magic = <span class="number">0u8</span>)] </span>Nop,
+    <span class="attr">#[br(magic = <span class="number">1u8</span>)] </span>Jump { loc: u32 },
+    <span class="attr">#[br(magic = <span class="number">2u8</span>)] </span>Begin { var_count: u16, local_count: u16 }
+}</code></pre></div>
+<h3 id="errors"><a class="doc-anchor" href="#errors">§</a>Errors</h3>
+<p>If the specified magic number does not match the data, a
+<a href="../enum.Error.html#variant.BadMagic" title="variant binread::Error::BadMagic"><code>BadMagic</code></a> error is returned and the reader’s
+position is reset to where it was before parsing started.</p>
+<h2 id="assert"><a class="doc-anchor" href="#assert">§</a>Assert</h2>
+<p>The <code>assert</code> directive validates objects and fields after they are read,
+returning an error if the assertion condition evaluates to <code>false</code>:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(assert($cond:expr $(,)?))]
+#[br(assert($cond:expr, $msg:literal $(,)?)]
+#[br(assert($cond:expr, $fmt:literal, $($arg:expr),* $(,)?))]
+#[br(assert($cond:expr, $err:expr $(,)?)]</code></pre></div>
+<p>Multiple assertion directives can be used; they will be combined and
+executed in order.</p>
+<p>Assertions added to the top of an enum will be checked against every variant
+in the enum.</p>
+<p>Any earlier field or <a href="#arguments">import</a> can be referenced by expressions
+in the directive.</p>
+<h3 id="examples-2"><a class="doc-anchor" href="#examples-2">§</a>Examples</h3><h4 id="formatted-error"><a class="doc-anchor" href="#formatted-error">§</a>Formatted error</h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, PartialEq)]
+</span><span class="kw">struct </span>NotSmallerError(u32, u32);
+
+<span class="attr">#[derive(BinRead, Debug)]
+#[br(assert(some_val &gt; some_smaller_val, <span class="string">"oops! {} &lt;= {}"</span>, some_val, some_smaller_val))]
+</span><span class="kw">struct </span>Test {
+    some_val: u32,
+    some_smaller_val: u32
+}
+
+<span class="kw">let </span>error = Cursor::new(<span class="string">b"\0\0\0\x01\0\0\0\xFF"</span>).read_be::&lt;Test&gt;();
+<span class="macro">assert!</span>(error.is_err());
+<span class="kw">let </span>error = error.unwrap_err();
+<span class="kw">let </span>expected = <span class="string">"oops! 1 &lt;= 255"</span>.to_string();
+<span class="macro">assert!</span>(<span class="macro">matches!</span>(error, binread::Error::AssertFail { message: expected, .. }));</code></pre></div>
+<h4 id="custom-error"><a class="doc-anchor" href="#custom-error">§</a>Custom error</h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, PartialEq)]
+</span><span class="kw">struct </span>NotSmallerError(u32, u32);
+
+<span class="attr">#[derive(BinRead, Debug)]
+#[br(assert(some_val &gt; some_smaller_val, NotSmallerError(some_val, some_smaller_val)))]
+</span><span class="kw">struct </span>Test {
+    some_val: u32,
+    some_smaller_val: u32
+}
+
+<span class="kw">let </span>error = Cursor::new(<span class="string">b"\0\0\0\x01\0\0\0\xFF"</span>).read_be::&lt;Test&gt;();
+<span class="macro">assert!</span>(error.is_err());
+<span class="kw">let </span>error = error.unwrap_err();
+<span class="macro">assert_eq!</span>(error.custom_err(), <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>NotSmallerError(<span class="number">0x1</span>, <span class="number">0xFF</span>)));</code></pre></div>
+<h3 id="errors-1"><a class="doc-anchor" href="#errors-1">§</a>Errors</h3>
+<p>If the assertion fails and there is no second argument, or a string literal
+is given as the second argument, an <a href="../enum.Error.html#variant.AssertFail" title="variant binread::Error::AssertFail"><code>AssertFail</code></a>
+error is returned.</p>
+<p>If the assertion fails and an expression is given as the second argument,
+a <a href="../enum.Error.html#variant.Custom" title="variant binread::Error::Custom"><code>Custom</code></a> error containing the result of the
+expression is returned.</p>
+<p>Arguments other than the condition are not evaluated unless the assertion
+fails, so it is safe for them to contain expensive operations without
+impacting performance.</p>
+<p>In all cases, the reader’s position is reset to where it was before parsing
+started.</p>
+<h2 id="pre-assert"><a class="doc-anchor" href="#pre-assert">§</a>Pre-assert</h2>
+<p><code>pre_assert</code> works like <a href="#assert"><code>assert</code></a>, but checks the condition before
+data is read instead of after. This is most useful when validating arguments
+or choosing an enum variant to parse.</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(pre_assert($cond:expr $(,)?))]
+#[br(pre_assert($cond:expr, $msg:literal $(,)?)]
+#[br(pre_assert($cond:expr, $fmt:literal, $($arg:expr),* $(,)?))]
+#[br(pre_assert($cond:expr, $err:expr $(,)?)]</code></pre></div><h3 id="examples-3"><a class="doc-anchor" href="#examples-3">§</a>Examples</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead, Debug, PartialEq)]
+#[br(import(ty: u8))]
+</span><span class="kw">enum </span>Command {
+    <span class="attr">#[br(pre_assert(ty == <span class="number">0</span>))] </span>Variant0(u16, u16),
+    <span class="attr">#[br(pre_assert(ty == <span class="number">1</span>))] </span>Variant1(u32)
+}
+
+<span class="attr">#[derive(BinRead, Debug, PartialEq)]
+</span><span class="kw">struct </span>Message {
+    ty: u8,
+    len: u8,
+    <span class="attr">#[br(args(ty))]
+    </span>data: Command
+}
+
+<span class="kw">let </span>msg = Cursor::new(<span class="string">b"\x01\x04\0\0\0\xFF"</span>).read_be::&lt;Message&gt;();
+<span class="macro">assert!</span>(msg.is_ok());
+<span class="kw">let </span>msg = msg.unwrap();
+<span class="macro">assert_eq!</span>(msg, Message { ty: <span class="number">1</span>, len: <span class="number">4</span>, data: Command::Variant1(<span class="number">0xFF</span>) });</code></pre></div>
+<h2 id="arguments"><a class="doc-anchor" href="#arguments">§</a>Arguments</h2>
+<p>The <code>import</code> and <code>args</code> directives define the type of
+<a href="../trait.BinRead.html#associatedtype.Args" title="associated type binread::BinRead::Args"><code>BinRead::Args</code></a> and the values passed in the <code>args</code>
+argument of a <a href="../trait.BinRead.html#tymethod.read_options" title="associated function binread::BinRead::read_options"><code>BinRead::read_options</code></a> call,
+respectively:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(import($($ident:ident : $ty:ty),* $(,)?))]
+#[br(args($($ident:ident),* $(,)?))]</code></pre></div>
+<p>Any earlier field or <a href="#arguments">import</a> can be referenced in <code>args</code>.</p>
+<h3 id="examples-4"><a class="doc-anchor" href="#examples-4">§</a>Examples</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead)]
+#[br(import(val1: u32, val2: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str))]
+</span><span class="kw">struct </span>ImportTest {
+    <span class="comment">// ...
+</span>}
+
+<span class="attr">#[derive(BinRead)]
+</span><span class="kw">struct </span>ArgsTets {
+    val: u32,
+    <span class="attr">#[br(args(val + <span class="number">3</span>, <span class="string">"test"</span>))]
+    </span>test: ImportTest
+}</code></pre></div>
+<h2 id="default"><a class="doc-anchor" href="#default">§</a>Default</h2>
+<p>The <code>default</code> directive, and its alias <code>ignore</code>, sets the value of the field
+to its <a href="https://doc.rust-lang.org/1.83.0/core/default/trait.Default.html" title="trait core::default::Default"><code>Default</code></a> instead of reading data from the
+reader:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(default)] or #[br(ignore)]</code></pre></div><h3 id="examples-5"><a class="doc-anchor" href="#examples-5">§</a>Examples</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead, Debug, PartialEq)]
+</span><span class="kw">struct </span>Test {
+    <span class="attr">#[br(default)]
+    </span>path: <span class="prelude-ty">Option</span>&lt;std::path::PathBuf&gt;,
+}
+
+<span class="macro">assert_eq!</span>(
+    Test::read(<span class="kw-2">&amp;mut </span>Cursor::new(<span class="string">b""</span>)).unwrap(),
+    Test { path: <span class="prelude-val">None </span>}
+);</code></pre></div>
+<h2 id="temp"><a class="doc-anchor" href="#temp">§</a>Temp</h2>
+<p><strong>This directive can only be used with <a href="../attr.derive_binread.html" title="attr binread::derive_binread"><code>derive_binread</code></a>. It will not work
+with <code>#[derive(BinRead)]</code>.</strong></p>
+<p>The <code>temp</code> directive causes a field to be treated as a temporary variable
+instead of an actual field. The field will be removed from the struct
+definition generated by <a href="../attr.derive_binread.html" title="attr binread::derive_binread"><code>derive_binread</code></a>:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(temp)]</code></pre></div>
+<p>This allows data to be read which is necessary for parsing an object but
+which doesn’t need to be stored in the final object. To skip data, entirely
+use an <a href="#padding-and-alignment">alignment directive</a> instead.</p>
+<h3 id="examples-6"><a class="doc-anchor" href="#examples-6">§</a>Examples</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive_binread]
+#[derive(Debug, PartialEq)]
+</span><span class="kw">struct </span>Test {
+    <span class="comment">// Since `Vec` stores its own length, this field is redundant
+    </span><span class="attr">#[br(temp, big)]
+    </span>len: u32,
+
+    <span class="attr">#[br(count = len)]
+    </span>data: Vec&lt;u8&gt;
+}
+
+<span class="macro">assert_eq!</span>(
+    Test::read(<span class="kw-2">&amp;mut </span>Cursor::new(<span class="string">b"\0\0\0\x05ABCDE"</span>)).unwrap(),
+    Test { data: Vec::from(<span class="kw-2">&amp;</span><span class="string">b"ABCDE"</span>[..]) }
+);</code></pre></div>
+<h2 id="postprocessing"><a class="doc-anchor" href="#postprocessing">§</a>Postprocessing</h2>
+<p>The <code>deref_now</code> directive, and its alias <code>postprocess_now</code>, cause a
+field’s <a href="../trait.BinRead.html#method.after_parse" title="method binread::BinRead::after_parse"><code>after_parse</code></a> function to be called
+immediately after the field is parsed, instead of deferring the call until
+the entire parent object has been parsed:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(deref_now)] or #[br(postprocess_now)]</code></pre></div>
+<p>The <a href="../trait.BinRead.html#method.after_parse" title="method binread::BinRead::after_parse"><code>BinRead::after_parse</code></a> function is
+normally used to perform additional work after the whole parent object has
+been parsed. For example, the <a href="../struct.FilePtr.html" title="struct binread::FilePtr"><code>FilePtr</code></a> type reads an
+object offset during parsing with
+<a href="../trait.BinRead.html#tymethod.read_options" title="associated function binread::BinRead::read_options"><code>read_options</code></a>, then actually seeks to and
+parses the pointed-to object in <code>after_parse</code>. This improves read
+performance by reading the whole parent object sequentially before seeking
+to read the pointed-to object.</p>
+<p>However, if another field in the parent object needs to access data from the
+pointed-to object, <code>after_parse</code> needs to be called earlier. Adding
+<code>deref_now</code> (or its alias, <code>postprocess_now</code>) to the earlier field causes
+this to happen.</p>
+<h3 id="examples-7"><a class="doc-anchor" href="#examples-7">§</a>Examples</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead, Debug)]
+#[br(big, magic = <span class="string">b"TEST"</span>)]
+</span><span class="kw">struct </span>TestFile {
+    <span class="attr">#[br(deref_now)]
+    </span>ptr: FilePtr32&lt;NullString&gt;,
+
+    value: i32,
+
+    <span class="comment">// Notice how `ptr` can be used as it has already been postprocessed
+    </span><span class="attr">#[br(calc = ptr.len())]
+    </span>ptr_len: usize,
+}
+</code></pre></div>
+<h2 id="restore-position"><a class="doc-anchor" href="#restore-position">§</a>Restore position</h2>
+<p>The <code>restore_position</code> directive restores the position of the reader after
+a field is read:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(restore_position)]</code></pre></div>
+<p>To seek to an arbitrary position, use <a href="#padding-and-alignment"><code>seek_before</code></a>
+instead.</p>
+<h3 id="examples-8"><a class="doc-anchor" href="#examples-8">§</a>Examples</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead, Debug, PartialEq)]
+</span><span class="kw">struct </span>MyType {
+    <span class="attr">#[br(restore_position)]
+    </span>test: u32,
+    test_bytes: [u8; <span class="number">4</span>]
+}
+</code></pre></div>
+<h3 id="errors-2"><a class="doc-anchor" href="#errors-2">§</a>Errors</h3>
+<p>If querying or restoring the reader position fails, an
+<a href="../enum.Error.html#variant.Io" title="variant binread::Error::Io"><code>Io</code></a> error is returned and the reader’s
+position is reset to where it was before parsing started.</p>
+<h2 id="try"><a class="doc-anchor" href="#try">§</a>Try</h2>
+<p>The <code>try</code> directive allows parsing of an <a href="https://doc.rust-lang.org/1.83.0/core/option/enum.Option.html" title="enum core::option::Option"><code>Option</code></a> field to fail instead
+of returning an error:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(try)]</code></pre></div>
+<p>If the field cannot be parsed, the position of the reader will be restored
+and the value of the field will be set to <a href="https://doc.rust-lang.org/1.83.0/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>.</p>
+<h3 id="examples-9"><a class="doc-anchor" href="#examples-9">§</a>Examples</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead)]
+</span><span class="kw">struct </span>MyType {
+    <span class="attr">#[br(<span class="kw">try</span>)]
+    </span>maybe_u32: <span class="prelude-ty">Option</span>&lt;u32&gt;
+}
+
+<span class="macro">assert_eq!</span>(Cursor::new(<span class="string">b""</span>).read_be::&lt;MyType&gt;().unwrap().maybe_u32, <span class="prelude-val">None</span>);</code></pre></div>
+<h2 id="map"><a class="doc-anchor" href="#map">§</a>Map</h2>
+<p>The <code>map</code> and <code>try_map</code> directives allow data to be read using one type and
+stored as another:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(map = $map_fn:expr)] or #[map($map_fn:expr))]
+#[br(try_map = $map_fn:expr)] or #[try_map($map_fn:expr))]</code></pre></div>
+<p>When using <code>map</code> on a field, the map function must explicitly declare the
+type of the data to be read in its first parameter and return a value which
+matches the type of the field. The map function can be a plain function,
+closure, or call expression which returns a plain function or closure.</p>
+<p>When using <code>try_map</code> on a field, the same rules apply, except that the
+function must return a <a href="https://doc.rust-lang.org/1.83.0/core/result/enum.Result.html" title="enum core::result::Result"><code>Result</code></a> instead.</p>
+<p>When using <code>map</code> or <code>try_map</code> on a struct or enum, the map function must
+return <code>Self</code> or <code>Result&lt;Self, E&gt;</code>.</p>
+<p>Any earlier field or <a href="#arguments">import</a> can be referenced by the
+expression in the directive.</p>
+<h3 id="examples-10"><a class="doc-anchor" href="#examples-10">§</a>Examples</h3><h4 id="using-map-on-a-field"><a class="doc-anchor" href="#using-map-on-a-field">§</a>Using <code>map</code> on a field</h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead)]
+</span><span class="kw">struct </span>MyType {
+    <span class="attr">#[br(map = |x: u8| x.to_string())]
+    </span>int_str: String
+}
+</code></pre></div>
+<h4 id="using-try_map-on-a-field"><a class="doc-anchor" href="#using-try_map-on-a-field">§</a>Using <code>try_map</code> on a field</h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead)]
+</span><span class="kw">struct </span>MyType {
+    <span class="attr">#[br(try_map = |x: i8| x.try_into())]
+    </span>value: u8
+}
+</code></pre></div>
+<h4 id="using-map-on-a-struct-to-create-a-bit-field"><a class="doc-anchor" href="#using-map-on-a-struct-to-create-a-bit-field">§</a>Using <code>map</code> on a struct to create a bit field</h4>
+<p>The <a href="https://docs.rs/modular-bitfield"><code>modular-bitfield</code></a> crate can be used
+along with <code>map</code> to create a struct out of raw bits.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>modular_bitfield::prelude::<span class="kw-2">*</span>;
+
+<span class="comment">// This reads a single byte from the reader
+</span><span class="attr">#[bitfield]
+#[derive(BinRead)]
+#[br(map = <span class="self">Self</span>::from_bytes)]
+</span><span class="kw">pub struct </span>PackedData {
+    status: B4,
+    is_fast: bool,
+    is_static: bool,
+    is_alive: bool,
+    is_good: bool,
+}
+
+<span class="comment">// example byte: 0x53
+// [good] [alive] [static] [fast] [status]
+//      0       1        0      1     0011
+//  false    true    false   true        3
+</span></code></pre></div>
+<h3 id="errors-3"><a class="doc-anchor" href="#errors-3">§</a>Errors</h3>
+<p>If the <code>try_map</code> function returns a <a href="../io/struct.Error.html" title="struct binread::io::Error"><code>binread::io::Error</code></a>
+or <a href="../io/struct.Error.html" title="struct binread::io::Error"><code>std::io::Error</code></a>, an <a href="../enum.Error.html#variant.Io" title="variant binread::Error::Io"><code>Io</code></a> error is returned. For
+any other error type, a <a href="../enum.Error.html#variant.Custom" title="variant binread::Error::Custom"><code>Custom</code></a> error is returned.</p>
+<p>In all cases, the reader’s position is reset to where it was before parsing
+started.</p>
+<h2 id="custom-parsers"><a class="doc-anchor" href="#custom-parsers">§</a>Custom parsers</h2>
+<p>The <code>parse_with</code> directive specifies a custom parsing function which can be
+used to override the default <a href="../trait.BinRead.html" title="trait binread::BinRead"><code>BinRead</code></a> implementation for
+a type, or to parse types which have no <code>BinRead</code> implementation at all:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(parse_with = $parse_fn:expr)] or #[br(parse_with($parse_fn:expr))]</code></pre></div>
+<p>Any earlier field or <a href="#arguments">import</a> can be referenced by the
+expression in the directive (for example, to construct a parser function at
+runtime by calling a function generator).</p>
+<h3 id="examples-11"><a class="doc-anchor" href="#examples-11">§</a>Examples</h3><h4 id="using-a-custom-parser-to-generate-a-hashmap"><a class="doc-anchor" href="#using-a-custom-parser-to-generate-a-hashmap">§</a>Using a custom parser to generate a <a href="https://doc.rust-lang.org/1.83.0/std/collections/hash/map/struct.HashMap.html" title="struct std::collections::hash::map::HashMap"><code>HashMap</code></a></h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn </span>custom_parser&lt;R: Read + Seek&gt;(reader: <span class="kw-2">&amp;mut </span>R, ro: <span class="kw-2">&amp;</span>ReadOptions, <span class="kw">_</span>: ())
+    -&gt; BinResult&lt;HashMap&lt;u16, u16&gt;&gt;
+{
+    <span class="kw">let </span><span class="kw-2">mut </span>map = HashMap::new();
+    map.insert(
+        reader.read_be().unwrap(),
+        reader.read_be().unwrap()
+    );
+    <span class="prelude-val">Ok</span>(map)
+}
+
+<span class="attr">#[derive(BinRead)]
+</span><span class="kw">struct </span>MyType {
+    <span class="attr">#[br(parse_with = custom_parser)]
+    </span>offsets: HashMap&lt;u16, u16&gt;
+}
+</code></pre></div>
+<h4 id="using-fileptrparse-to-read-a-nullstring-without-storing-a-fileptr"><a class="doc-anchor" href="#using-fileptrparse-to-read-a-nullstring-without-storing-a-fileptr">§</a>Using <code>FilePtr::parse</code> to read a <code>NullString</code> without storing a <code>FilePtr</code></h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead)]
+</span><span class="kw">struct </span>MyType {
+    <span class="attr">#[br(parse_with = FilePtr32::parse)]
+    </span>some_string: NullString,
+}
+</code></pre></div>
+<h2 id="calculations"><a class="doc-anchor" href="#calculations">§</a>Calculations</h2>
+<p>The <code>calc</code> directive computes the value of a field instead of reading data
+from the reader:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(calc = $value:expr)] or #[br(calc($value:expr))]</code></pre></div>
+<p>Any earlier field or <a href="#arguments">import</a> can be referenced by the
+expression in the directive.</p>
+<h3 id="examples-12"><a class="doc-anchor" href="#examples-12">§</a>Examples</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead)]
+</span><span class="kw">struct </span>MyType {
+    var: u32,
+    <span class="attr">#[br(calc = <span class="number">3 </span>+ var)]
+    </span>var_plus_3: u32,
+}
+</code></pre></div>
+<h2 id="count"><a class="doc-anchor" href="#count">§</a>Count</h2>
+<p>The <code>count</code> directive sets the number of values to read into a repeating
+collection type like a <a href="https://doc.rust-lang.org/1.83.0/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec"><code>Vec</code></a>:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(count = $count:expr) or #[br(count($count:expr))]</code></pre></div>
+<p>When manually implementing
+<a href="../trait.BinRead.html#tymethod.read_options" title="associated function binread::BinRead::read_options"><code>BinRead::read_options</code></a> or a
+<a href="#custom-parsers">custom parser function</a>, the <code>count</code> value is accessible
+from <a href="../struct.ReadOptions.html#structfield.count" title="field binread::ReadOptions::count"><code>ReadOptions::count</code></a>.</p>
+<p>Any earlier field or <a href="#arguments">import</a> can be referenced by the
+expression in the directive.</p>
+<h3 id="examples-13"><a class="doc-anchor" href="#examples-13">§</a>Examples</h3><h4 id="using-count-with-vec"><a class="doc-anchor" href="#using-count-with-vec">§</a>Using <code>count</code> with <a href="https://doc.rust-lang.org/1.83.0/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec"><code>Vec</code></a></h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead)]
+</span><span class="kw">struct </span>MyType {
+    size: u32,
+    <span class="attr">#[br(count = size)]
+    </span>data: Vec&lt;u8&gt;,
+}
+</code></pre></div>
+<h4 id="using-count-with-fileptr-and-vec"><a class="doc-anchor" href="#using-count-with-fileptr-and-vec">§</a>Using <code>count</code> with <a href="../struct.FilePtr.html" title="struct binread::FilePtr"><code>FilePtr</code></a> and <code>Vec</code></h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead)]
+</span><span class="kw">struct </span>MyType {
+    size: u32,
+    <span class="attr">#[br(count = size)]
+    </span>data: FilePtr&lt;u32, Vec&lt;u8&gt;&gt;,
+}
+</code></pre></div>
+<h2 id="offset"><a class="doc-anchor" href="#offset">§</a>Offset</h2>
+<p>The <code>offset</code> and <code>offset_after</code> directives specify an additional relative
+offset to a value accessed by a <code>BinRead</code> implementation which reads data
+from an offset, like <a href="../struct.FilePtr.html" title="struct binread::FilePtr"><code>FilePtr</code></a>:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(offset = $offset:expr)] or #[br(offset($offset:expr))]
+#[br(offset_after = $offset:expr)] or #[br(offset_after($offset:expr))]</code></pre></div>
+<p>When manually implementing
+<a href="../trait.BinRead.html#tymethod.read_options" title="associated function binread::BinRead::read_options"><code>BinRead::read_options</code></a> or a
+<a href="#custom-parsers">custom parser function</a>, the offset is accessible
+from <a href="../struct.ReadOptions.html#structfield.offset" title="field binread::ReadOptions::offset"><code>ReadOptions::offset</code></a>.</p>
+<p>For <code>offset</code>, any earlier field or <a href="#arguments">import</a> can be referenced by
+the expression in the directive.</p>
+<p>For <code>offset_after</code>, <em>all</em> fields and imports can be referenced by the
+expression in the directive, but <a href="#postprocessing"><code>deref_now</code></a> cannot be
+used.</p>
+<h3 id="examples-14"><a class="doc-anchor" href="#examples-14">§</a>Examples</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead, Debug, PartialEq)]
+</span><span class="kw">struct </span>OffsetTest {
+    <span class="attr">#[br(little, offset = <span class="number">4</span>)]
+    </span>test: FilePtr&lt;u8, u16&gt;
+}
+</code></pre></div>
+<h3 id="errors-4"><a class="doc-anchor" href="#errors-4">§</a>Errors</h3>
+<p>If seeking to or reading from the offset fails, an <a href="../enum.Error.html#variant.Io" title="variant binread::Error::Io"><code>Io</code></a>
+error is returned and the reader’s position is reset to where it was before
+parsing started.</p>
+<h2 id="conditional-values"><a class="doc-anchor" href="#conditional-values">§</a>Conditional values</h2>
+<p>The <code>if</code> directive allows conditional parsing of a field, reading from data
+if the condition is true and using a computed value if the condition is
+false:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(if = $cond:expr)] or #[br(if($cond:expr))]
+#[br(if = $cond:expr, $alternate:expr)] or #[br(if($cond:expr, $alternate:expr))]</code></pre></div>
+<p>If an alternate is provided, that value will be used when the condition is
+false; otherwise, the <a href="https://doc.rust-lang.org/1.83.0/core/default/trait.Default.html" title="trait core::default::Default"><code>default</code></a> value for the type
+will be used.</p>
+<p>The alternate expression is not evaluated unless the condition is false, so
+it is safe for it to contain expensive operations without impacting
+performance.</p>
+<p>Any earlier field or <a href="#arguments">import</a> can be referenced by the
+expression in the directive.</p>
+<h3 id="examples-15"><a class="doc-anchor" href="#examples-15">§</a>Examples</h3><h4 id="using-an-option-field-with-no-alternate"><a class="doc-anchor" href="#using-an-option-field-with-no-alternate">§</a>Using an <a href="https://doc.rust-lang.org/1.83.0/core/option/enum.Option.html" title="enum core::option::Option"><code>Option</code></a> field with no alternate</h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead)]
+</span><span class="kw">struct </span>MyType {
+    var: u32,
+
+    <span class="attr">#[br(<span class="kw">if</span>(var == <span class="number">1</span>))]
+    </span>original_byte: <span class="prelude-ty">Option</span>&lt;u8&gt;,
+
+    <span class="attr">#[br(<span class="kw">if</span>(var != <span class="number">1</span>))]
+    </span>other_byte: <span class="prelude-ty">Option</span>&lt;u8&gt;,
+}
+</code></pre></div>
+<h4 id="using-a-scalar-field-with-an-explicit-alternate"><a class="doc-anchor" href="#using-a-scalar-field-with-an-explicit-alternate">§</a>Using a scalar field with an explicit alternate</h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead)]
+</span><span class="kw">struct </span>MyType {
+    var: u32,
+
+    <span class="attr">#[br(<span class="kw">if</span>(var == <span class="number">1</span>, <span class="number">0</span>))]
+    </span>original_byte: u8,
+
+    <span class="attr">#[br(<span class="kw">if</span>(var != <span class="number">1</span>, <span class="number">42</span>))]
+    </span>other_byte: u8,
+}
+</code></pre></div>
+<h2 id="padding-and-alignment"><a class="doc-anchor" href="#padding-and-alignment">§</a>Padding and alignment</h2>
+<p>BinRead offers different directives for common forms of
+<a href="https://en.wikipedia.org/wiki/Data_structure_alignment#Data_structure_padding">data structure alignment</a>.</p>
+<p>The <code>pad_before</code> and <code>pad_after</code> directives skip a specific number of bytes
+either before or after reading a field, respectively:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(pad_after = $skip_bytes:expr)] or #[br(pad_after($skip_bytes:expr))]
+#[br(pad_before = $skip_bytes:expr)] or #[br(pad_before($skip_bytes:expr))]</code></pre></div>
+<p>The <code>align_before</code> and <code>align_after</code> directives align the next read to the
+given byte alignment either before or after reading a field, respectively:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(align_after = $align_to:expr)] or #[br(align_after($align_to:expr))]
+#[br(align_before = $align_to:expr)] or #[br(align_before($align_to:expr))]</code></pre></div>
+<p>The <code>seek_before</code> directive accepts a <a href="../io/enum.SeekFrom.html" title="enum binread::io::SeekFrom"><code>SeekFrom</code></a>
+object and seeks the reader to an arbitrary position before reading a field:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(seek_before = $seek_from:expr)] or #[br(seek_before($seek_from:expr))]</code></pre></div>
+<p>The position of the reader will not be restored after the seek; use the
+<a href="#restore-position"><code>restore_position</code></a> directive for this.</p>
+<p>The <code>pad_size_to</code> directive will ensure that the reader has advanced at
+least the number of bytes given after the field has been read:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(pad_size_to = $size:expr)] or #[br(pad_size_to($size:expr))]</code></pre></div>
+<p>For example, if a format uses a null-terminated string, but always reserves
+at least 256 bytes for that string, <a href="../struct.NullString.html" title="struct binread::NullString"><code>NullString</code></a> will
+read the string and <code>pad_size_to(256)</code> will ensure the reader skips whatever
+padding, if any, remains. If the string is longer than 256 bytes, no padding
+will be skipped.</p>
+<p>Any earlier field or <a href="#arguments">import</a> can be referenced by the
+expressions in any of these directives.</p>
+<h3 id="examples-16"><a class="doc-anchor" href="#examples-16">§</a>Examples</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead)]
+</span><span class="kw">struct </span>MyType {
+    <span class="attr">#[br(align_before = <span class="number">4</span>, pad_after = <span class="number">1</span>, align_after = <span class="number">4</span>)]
+    </span>str: NullString,
+
+    <span class="attr">#[br(pad_size_to = <span class="number">0x10</span>)]
+    </span>test: u64,
+
+    <span class="attr">#[br(seek_before = SeekFrom::End(-<span class="number">4</span>))]
+    </span>end: u32,
+}</code></pre></div>
+<h3 id="errors-5"><a class="doc-anchor" href="#errors-5">§</a>Errors</h3>
+<p>If seeking fails, an <a href="../enum.Error.html#variant.Io" title="variant binread::Error::Io"><code>Io</code></a> error is returned and the
+reader’s position is reset to where it was before parsing started.</p>
+<h2 id="repr"><a class="doc-anchor" href="#repr">§</a>Repr</h2>
+<p>The <code>repr</code> directive is used on a unit-like (C-style) enum to specify the
+underlying type to use when reading the field and matching variants:</p>
+<div class="example-wrap"><pre class="language-text"><code>#[br(repr = $ty:ty)] or #[br(repr($ty:ty))]</code></pre></div><h3 id="examples-17"><a class="doc-anchor" href="#examples-17">§</a>Examples</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(BinRead)]
+#[br(big, repr = i16)]
+</span><span class="kw">enum </span>FileKind {
+    Unknown = -<span class="number">1</span>,
+    Text,
+    Archive,
+    Document,
+    Picture,
+}</code></pre></div>
+<h3 id="errors-6"><a class="doc-anchor" href="#errors-6">§</a>Errors</h3>
+<p>If a read fails, an <a href="../enum.Error.html#variant.Io" title="variant binread::Error::Io"><code>Io</code></a> error is returned. If no
+variant matches, a <a href="../enum.Error.html#variant.NoVariantMatch" title="variant binread::Error::NoVariantMatch"><code>NoVariantMatch</code></a> error
+is returned.</p>
+<p>In all cases, the reader’s position is reset to where it was before parsing
+started.</p>
+</div></details></section></div></main></body></html>
