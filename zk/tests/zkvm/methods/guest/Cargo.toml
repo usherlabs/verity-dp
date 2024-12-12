@@ -7,6 +7,6 @@ edition = "2021"
 
 [dependencies]
 risc0-zkvm = { version = "1.1.2", default-features = false, features = ['std'] }
-verity-verifier = { path = "../../../../../rs/verifier", default-features = false, features = [
+verity-verify-tls = { path = "../../../../../rs/verifier", default-features = false, features = [
   "no-session",
 ] }

@@ -1,5 +1,5 @@
 [package]
-name = "verity-local-verify"
+name = "verity-verify-local"
 description = "A library providing utilities for locally verifying Merkle tree responses obtained from the managed Verity Verifier"
 keywords = ["verity", "IC", "canister", "merkleproof"]
 version.workspace = true

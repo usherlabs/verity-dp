@@ -5625,7 +5625,7 @@ dependencies = [
  "serde",
  "serde_json",
  "tlsn-core-no-session",
- "verity-remote-verify",
+ "verity-verify-remote",
 ]
 
 [[package]]
@@ -5642,11 +5642,11 @@ dependencies = [
  "serde_json",
  "tlsn-core",
  "verity-dp-ic",
- "verity-verifier",
+ "verity-verify-tls",
 ]
 
 [[package]]
-name = "verity-local-verify"
+name = "verity-verify-local"
 version = "0.2.0"
 dependencies = [
  "anyhow",
@@ -5657,7 +5657,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "verity-remote-verify"
+name = "verity-verify-remote"
 version = "0.2.0"
 dependencies = [
  "anyhow",
@@ -5665,11 +5665,11 @@ dependencies = [
  "ic-agent",
  "serde",
  "tokio",
- "verity-local-verify",
+ "verity-verify-local",
 ]
 
 [[package]]
-name = "verity-verifier"
+name = "verity-verify-tls"
 version = "0.0.0"
 dependencies = [
  "cfg-if",
