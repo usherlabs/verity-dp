@@ -7,8 +7,8 @@ edition = "2021"
 
 [dependencies]
 risc0-zkvm = { version = "1.1.2", default-features = false, features = ['std'] }
-verity-verify-local = { path = "../../../../../rs/local-verify" }
-verity-verify-tls = { path = "../../../../../rs/verifier", default-features = false, features = [
+verity-verify-local = { path = "../../../../../rs/verify-local" }
+verity-verify-tls = { path = "../../../../../rs/verify-tls", default-features = false, features = [
   "no-session",
 ] }
 serde = "1.0"

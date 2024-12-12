@@ -21,8 +21,8 @@ anyhow = "1.0.94"
 risc0-zkvm = { version = "1.1.2" }
 verity-client = { path = "../../../rs/verity-client" }
 verity-dp-zk-host = { path = "../../host" }
-verity-verify-remote = { path = "../../../rs/remote-verify" }
-verity-verify-tls = { path = "../../../rs/verifier" }
+verity-verify-remote = { path = "../../../rs/verify-remote" }
+verity-verify-tls = { path = "../../../rs/verify-tls" }
 
 # Always optimize; building and running the guest takes much longer without optimization.
 [profile.dev]

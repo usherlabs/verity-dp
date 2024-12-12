@@ -18,4 +18,4 @@ tracing-subscriber = { workspace = true, features = ["env-filter"] }
 verity-client = { workspace = true }
 verity-dp-zk-host = { workspace = true }
 verity-verify-remote = { workspace = true }
-verity-verify-tls = { path = "../../../../rs/verifier" }
+verity-verify-tls = { path = "../../../../rs/verify-tls" }
