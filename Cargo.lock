@@ -5577,7 +5577,7 @@ checksum = "accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426"
 
 [[package]]
 name = "verity-client"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "anyhow",
  "futures",
@@ -5595,7 +5595,7 @@ dependencies = [
 
 [[package]]
 name = "verity-dp-ic"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "anyhow",
  "candid",
@@ -5613,7 +5613,7 @@ dependencies = [
 
 [[package]]
 name = "verity-dp-rs-tests-load"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "reqwest",
  "serde_json",
@@ -5623,7 +5623,7 @@ dependencies = [
 
 [[package]]
 name = "verity-dp-zk-guest"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "dotenv",
  "risc0-build",
@@ -5634,7 +5634,7 @@ dependencies = [
 
 [[package]]
 name = "verity-dp-zk-host"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "alloy-sol-types",
  "anyhow",
@@ -5651,7 +5651,7 @@ dependencies = [
 
 [[package]]
 name = "verity-ic-verifier"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "candid",
  "hex",
@@ -5668,7 +5668,7 @@ dependencies = [
 
 [[package]]
 name = "verity-verify-local"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "anyhow",
  "easy-hasher",
@@ -5679,7 +5679,7 @@ dependencies = [
 
 [[package]]
 name = "verity-verify-remote"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "anyhow",
  "candid",
