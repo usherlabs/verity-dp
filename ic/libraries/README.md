@@ -1,4 +1,4 @@
-# Verity Data Processor (VDP) - Internet Computer (IC) Libraries
+# [Verity Data Processor (VDP) - Internet Computer (IC) Libraries](https://github.com/usherlabs/verity-dp)
 
 ![License](https://img.shields.io/crates/l/verity_ic) [![verity_ic on crates.io](https://img.shields.io/crates/v/verity_ic)](https://crates.io/crates/verity_ic) [![verity_ic on docs.rs](https://docs.rs/verity_ic/badge.svg)](https://docs.rs/verity_ic)
 

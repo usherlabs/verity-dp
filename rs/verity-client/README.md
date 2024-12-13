@@ -1,4 +1,6 @@
-# Verity Client
+# [Verity Client](https://github.com/usherlabs/verity-dp)
+
+![License](https://img.shields.io/crates/l/verity-client) [![verity-client on crates.io](https://img.shields.io/crates/v/verity-client)](https://crates.io/crates/verity-client) [![verity-client on docs.rs](https://docs.rs/verity-client/badge.svg)](https://docs.rs/verity-client)
 
 ## Overview
 
