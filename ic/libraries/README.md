@@ -72,14 +72,7 @@ Below is a basic example demonstrating the usage of some modules:
 use verity_ic::{crypto, owner, random, remittance, whitelist};
 
 fn main() {
-    // Example: Generating a random number
-    let random_number = random::generate();
-    println!("Random number: {}", random_number);
-
-    // Example: Adding a principal to the whitelist
-    let mut wl = whitelist::Whitelist::new();
-    wl.add("principal-id", true);
-    println!("Is whitelisted: {}", wl.is_whitelisted("principal-id"));
+    ...
 }
 ```
 
