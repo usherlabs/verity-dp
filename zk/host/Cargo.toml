@@ -1,5 +1,6 @@
 [package]
 name = "verity-dp-zk-host"
+description = "A library for utilities related to the ZK host"
 version.workspace = true
 authors.workspace = true
 homepage.workspace = true
