@@ -1,5 +1,6 @@
 #!/bin/bash
 # run this command to generate docs `bash generatedocs.sh`
+# ! Make sure you run the script directly from the docs directory it resides in
 
 main() {
     # Create an array of destinations we want to generate docs for
