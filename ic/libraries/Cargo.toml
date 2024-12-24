@@ -1,6 +1,6 @@
 [package]
 name = "verity-ic"
-description = "A library containing utilities for the Verity IC components"
+description = "Utilities for Verity IC (Internet Computer) components, used by Managed Verifier or third-party IC Canisters."
 keywords = ["verity", "IC", "canister"]
 readme = "./README.md"
 version.workspace = true

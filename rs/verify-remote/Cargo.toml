@@ -1,7 +1,7 @@
 [package]
 name = "verity-verify-remote"
-description = "A library providing utilities for fetching and verifying Merkle tree responses from a managed Verity Verifier in response to proof requests."
-keywords = ["verity", "IC", "canister", "merkleproof", "ecdsa", "merkle"]
+description = "Utility for delegating TLS proof verification to managed Verity Verifier, returning a signed Merkle tree for local/on-chain/in-zkVM verification."
+keywords = ["verity", "IC", "canister", "merkleproof", "ecdsa", "merkle", "tls"]
 version.workspace = true
 authors.workspace = true
 homepage.workspace = true

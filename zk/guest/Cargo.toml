@@ -1,6 +1,6 @@
 [package]
 name = "verity-dp-zk-guest"
-description = "A library for utilities regarding the ZK guest"
+description = "Utilities for Verity zkTLS components that reside in the guest/zkVM"
 version.workspace = true
 authors.workspace = true
 homepage.workspace = true

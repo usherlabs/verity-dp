@@ -1,6 +1,6 @@
 [package]
 name = "verity-dp-zk-host"
-description = "A library for utilities related to the ZK host"
+description = "Utilities for Verity zkTLS components that reside in the host, orchestrating the zkVM to aggregate TLS proofs."
 version.workspace = true
 authors.workspace = true
 homepage.workspace = true

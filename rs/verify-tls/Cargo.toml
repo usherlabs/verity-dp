@@ -1,6 +1,6 @@
 [package]
 name = "verity-verify-tls"
-description = "Verity Verifier"
+description = "Utility for verifying Verity TLS proofs"
 edition = "2021"
 
 [dependencies]

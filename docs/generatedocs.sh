@@ -10,7 +10,6 @@ main() {
         "../rs/verify-remote"
         "../rs/verify-tls"
         "../rs/verity-client"
-        "../examples/zktls"
         "../zk/guest"
         "../zk/host"
     )
@@ -20,15 +19,17 @@ main() {
 
     # The filled template
     package_list_html=''
-    package_version=$(grep -oP '^version\s*=\s*"\K[^"]+' "../Cargo.toml")
+    package_version=$(grep '^version\s*=' "../Cargo.toml" | awk -F '"' '{print $2}')
 
     for current_dir in ${projects_dirs[@]}; do
         # Obtain the Cargo.toml file to the current_directory in the integration
         manifest_path="$current_dir/Cargo.toml"
 
         # Use grep and sed to extract the value of the name, description and version of the package
-        package_name=$(grep -oP '^name\s*=\s*"\K[^"]+' "$manifest_path")
-        package_description=$(grep -oP '^description\s*=\s*"\K[^"]+' "$manifest_path")
+        # package_name=$(grep -oP '^name\s*=\s*"\K[^"]+' "$manifest_path")
+        # package_description=$(grep -oP '^description\s*=\s*"\K[^"]+' "$manifest_path")
+        package_name=$(grep '^name\s*=' "$manifest_path" | awk -F '"' '{print $2}')
+        package_description=$(grep '^description\s*=' "$manifest_path" | awk -F '"' '{print $2}')
 
         package_name_and_version="$package_name-$package_version"
 
