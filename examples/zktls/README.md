@@ -1,5 +1,9 @@
 # Verity zkTLS Demo
 
+zkTLS acts as a cryptographic primitive that transforms a comprehensive data pipeline into a succinct proof. The Verity DP framework empowers you to develop your own verifiable data pipelines, allowing data to be sourced from any location, processed, and utilised on a blockchain in a trust-minimised manner. This significantly enhances the integrity of data-driven on-chain financial markets and liquidity management.
+
+These verifiable data pipelines result in zkTLS proofs (using either SNARK or STARK) that can be verified across major blockchains.
+
 ## Prerequisites
 
 - [dfx](https://internetcomputer.org/docs/current/developer-docs/developer-tools/cli-tools/cli-reference/dfx-parent)

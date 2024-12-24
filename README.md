@@ -35,7 +35,8 @@ The framework is divided into the following modules:
      - Full verification is only necessary when the data processed is public, which is rare as the zkVM is designed to maintain data privacy and roll up various TLS attestations into a single succinct proof.
    - `local-verify`: Completes the partial verification performed by the IC within the zkVM guest environment.
 3. `evm`: Smart Contracts templates for integrating various chains in an app-specific multi-chain protocol powered by the IC and Verity.
-4. `zk`: Utilities and tests supporting zkVM usage.
+4. `examples`: Examples of how to use the Verity Data Processor Framework to generate zkTLS proofs.
+5. `zk`: Utilities and tests supporting zkVM usage.
 
 ## SDK Reference
 
@@ -67,7 +68,7 @@ zkTLS acts as a cryptographic primitive that transforms a comprehensive data pip
 
 These verifiable data pipelines result in zkTLS proofs (using either SNARK or STARK) that can be verified across major blockchains.
 
-For a full implementation of zkTLS, please visit the [zkTLS demo directory](./zk/tests/zktls).
+For a full implementation of zkTLS, please visit the [zkTLS demo directory](./examples/zktls).
 
 ## Why Internet Computer?
 

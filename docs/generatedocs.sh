@@ -10,6 +10,7 @@ main() {
         "../rs/verify-remote"
         "../rs/verify-tls"
         "../rs/verity-client"
+        "../examples/zktls"
         "../zk/guest"
         "../zk/host"
     )
