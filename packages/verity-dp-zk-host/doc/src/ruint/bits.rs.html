@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ruint-1.12.3/src/bits.rs`."><title>bits.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="ruint" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">ruint/</div>bits.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ruint-1.12.4/src/bits.rs`."><title>bits.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="ruint" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">ruint/</div>bits.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -919,51 +919,7 @@
 <a href="#918" id="918">918</a>
 <a href="#919" id="919">919</a>
 <a href="#920" id="920">920</a>
-<a href="#921" id="921">921</a>
-<a href="#922" id="922">922</a>
-<a href="#923" id="923">923</a>
-<a href="#924" id="924">924</a>
-<a href="#925" id="925">925</a>
-<a href="#926" id="926">926</a>
-<a href="#927" id="927">927</a>
-<a href="#928" id="928">928</a>
-<a href="#929" id="929">929</a>
-<a href="#930" id="930">930</a>
-<a href="#931" id="931">931</a>
-<a href="#932" id="932">932</a>
-<a href="#933" id="933">933</a>
-<a href="#934" id="934">934</a>
-<a href="#935" id="935">935</a>
-<a href="#936" id="936">936</a>
-<a href="#937" id="937">937</a>
-<a href="#938" id="938">938</a>
-<a href="#939" id="939">939</a>
-<a href="#940" id="940">940</a>
-<a href="#941" id="941">941</a>
-<a href="#942" id="942">942</a>
-<a href="#943" id="943">943</a>
-<a href="#944" id="944">944</a>
-<a href="#945" id="945">945</a>
-<a href="#946" id="946">946</a>
-<a href="#947" id="947">947</a>
-<a href="#948" id="948">948</a>
-<a href="#949" id="949">949</a>
-<a href="#950" id="950">950</a>
-<a href="#951" id="951">951</a>
-<a href="#952" id="952">952</a>
-<a href="#953" id="953">953</a>
-<a href="#954" id="954">954</a>
-<a href="#955" id="955">955</a>
-<a href="#956" id="956">956</a>
-<a href="#957" id="957">957</a>
-<a href="#958" id="958">958</a>
-<a href="#959" id="959">959</a>
-<a href="#960" id="960">960</a>
-<a href="#961" id="961">961</a>
-<a href="#962" id="962">962</a>
-<a href="#963" id="963">963</a>
-<a href="#964" id="964">964</a>
-<a href="#965" id="965">965</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::Uint;
+<a href="#921" id="921">921</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::Uint;
 <span class="kw">use </span>core::ops::{
     BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, BitXorAssign, Not, Shl, ShlAssign, Shr,
     ShrAssign,
@@ -1219,53 +1175,22 @@
     /// the shift is larger than `BITS` (which is IMHO not very useful).
     </span><span class="attr">#[inline]
     #[must_use]
-    </span><span class="kw">pub fn </span>overflowing_shl(<span class="kw-2">mut </span><span class="self">self</span>, rhs: usize) -&gt; (<span class="self">Self</span>, bool) {
+    </span><span class="kw">pub fn </span>overflowing_shl(<span class="self">self</span>, rhs: usize) -&gt; (<span class="self">Self</span>, bool) {
         <span class="kw">let </span>(limbs, bits) = (rhs / <span class="number">64</span>, rhs % <span class="number">64</span>);
         <span class="kw">if </span>limbs &gt;= LIMBS {
             <span class="kw">return </span>(<span class="self">Self</span>::ZERO, <span class="self">self </span>!= <span class="self">Self</span>::ZERO);
         }
-        <span class="kw">if </span>bits == <span class="number">0 </span>{
-            <span class="comment">// Check for overflow
-            </span><span class="kw">let </span><span class="kw-2">mut </span>overflow = <span class="bool-val">false</span>;
-            <span class="kw">for </span>i <span class="kw">in </span>(LIMBS - limbs)..LIMBS {
-                overflow |= <span class="self">self</span>.limbs[i] != <span class="number">0</span>;
-            }
-            <span class="kw">if </span><span class="self">self</span>.limbs[LIMBS - limbs - <span class="number">1</span>] &gt; <span class="self">Self</span>::MASK {
-                overflow = <span class="bool-val">true</span>;
-            }
 
-            <span class="comment">// Shift
-            </span><span class="kw">for </span>i <span class="kw">in </span>(limbs..LIMBS).rev() {
-                <span class="macro">assume!</span>(i &gt;= limbs &amp;&amp; i - limbs &lt; LIMBS);
-                <span class="self">self</span>.limbs[i] = <span class="self">self</span>.limbs[i - limbs];
-            }
-            <span class="self">self</span>.limbs[..limbs].fill(<span class="number">0</span>);
-            <span class="self">self</span>.limbs[LIMBS - <span class="number">1</span>] &amp;= <span class="self">Self</span>::MASK;
-            <span class="kw">return </span>(<span class="self">self</span>, overflow);
+        <span class="kw">let </span>word_bits = <span class="number">64</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>r = <span class="self">Self</span>::ZERO;
+        <span class="kw">let </span><span class="kw-2">mut </span>carry = <span class="number">0</span>;
+        <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="self">Self</span>::LIMBS - limbs {
+            <span class="kw">let </span>x = <span class="self">self</span>.limbs[i];
+            r.limbs[i + limbs] = (x &lt;&lt; bits) | carry;
+            carry = (x &gt;&gt; (word_bits - bits - <span class="number">1</span>)) &gt;&gt; <span class="number">1</span>;
         }
-
-        <span class="comment">// Check for overflow
-        </span><span class="kw">let </span><span class="kw-2">mut </span>overflow = <span class="bool-val">false</span>;
-        <span class="kw">for </span>i <span class="kw">in </span>(LIMBS - limbs)..LIMBS {
-            overflow |= <span class="self">self</span>.limbs[i] != <span class="number">0</span>;
-        }
-        <span class="kw">if </span><span class="self">self</span>.limbs[LIMBS - limbs - <span class="number">1</span>] &gt;&gt; (<span class="number">64 </span>- bits) != <span class="number">0 </span>{
-            overflow = <span class="bool-val">true</span>;
-        }
-        <span class="kw">if </span><span class="self">self</span>.limbs[LIMBS - limbs - <span class="number">1</span>] &lt;&lt; bits &gt; <span class="self">Self</span>::MASK {
-            overflow = <span class="bool-val">true</span>;
-        }
-
-        <span class="comment">// Shift
-        </span><span class="kw">for </span>i <span class="kw">in </span>(limbs + <span class="number">1</span>..LIMBS).rev() {
-            <span class="macro">assume!</span>(i - limbs &lt; LIMBS &amp;&amp; i - limbs - <span class="number">1 </span>&lt; LIMBS);
-            <span class="self">self</span>.limbs[i] = <span class="self">self</span>.limbs[i - limbs] &lt;&lt; bits;
-            <span class="self">self</span>.limbs[i] |= <span class="self">self</span>.limbs[i - limbs - <span class="number">1</span>] &gt;&gt; (<span class="number">64 </span>- bits);
-        }
-        <span class="self">self</span>.limbs[limbs] = <span class="self">self</span>.limbs[<span class="number">0</span>] &lt;&lt; bits;
-        <span class="self">self</span>.limbs[..limbs].fill(<span class="number">0</span>);
-        <span class="self">self</span>.limbs[LIMBS - <span class="number">1</span>] &amp;= <span class="self">Self</span>::MASK;
-        (<span class="self">self</span>, overflow)
+        r.limbs[LIMBS - <span class="number">1</span>] &amp;= <span class="self">Self</span>::MASK;
+        (r, carry != <span class="number">0</span>)
     }
 
     <span class="doccomment">/// Left shift by `rhs` bits.
@@ -1314,38 +1239,21 @@
     /// the shift is larger than `BITS` (which is IMHO not very useful).
     </span><span class="attr">#[inline]
     #[must_use]
-    </span><span class="kw">pub fn </span>overflowing_shr(<span class="kw-2">mut </span><span class="self">self</span>, rhs: usize) -&gt; (<span class="self">Self</span>, bool) {
+    </span><span class="kw">pub fn </span>overflowing_shr(<span class="self">self</span>, rhs: usize) -&gt; (<span class="self">Self</span>, bool) {
         <span class="kw">let </span>(limbs, bits) = (rhs / <span class="number">64</span>, rhs % <span class="number">64</span>);
         <span class="kw">if </span>limbs &gt;= LIMBS {
             <span class="kw">return </span>(<span class="self">Self</span>::ZERO, <span class="self">self </span>!= <span class="self">Self</span>::ZERO);
         }
-        <span class="kw">if </span>bits == <span class="number">0 </span>{
-            <span class="comment">// Check for overflow
-            </span><span class="kw">let </span><span class="kw-2">mut </span>overflow = <span class="bool-val">false</span>;
-            <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..limbs {
-                overflow |= <span class="self">self</span>.limbs[i] != <span class="number">0</span>;
-            }
 
-            <span class="comment">// Shift
-            </span><span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..(LIMBS - limbs) {
-                <span class="self">self</span>.limbs[i] = <span class="self">self</span>.limbs[i + limbs];
-            }
-            <span class="self">self</span>.limbs[LIMBS - limbs..].fill(<span class="number">0</span>);
-            <span class="kw">return </span>(<span class="self">self</span>, overflow);
+        <span class="kw">let </span>word_bits = <span class="number">64</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>r = <span class="self">Self</span>::ZERO;
+        <span class="kw">let </span><span class="kw-2">mut </span>carry = <span class="number">0</span>;
+        <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..LIMBS - limbs {
+            <span class="kw">let </span>x = <span class="self">self</span>.limbs[LIMBS - <span class="number">1 </span>- i];
+            r.limbs[LIMBS - <span class="number">1 </span>- i - limbs] = (x &gt;&gt; bits) | carry;
+            carry = (x &lt;&lt; (word_bits - bits - <span class="number">1</span>)) &lt;&lt; <span class="number">1</span>;
         }
-
-        <span class="comment">// Check for overflow
-        </span><span class="kw">let </span>overflow = <span class="self">self</span>.limbs[LIMBS - limbs - <span class="number">1</span>] &gt;&gt; (bits - <span class="number">1</span>) &amp; <span class="number">1 </span>!= <span class="number">0</span>;
-
-        <span class="comment">// Shift
-        </span><span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..(LIMBS - limbs - <span class="number">1</span>) {
-            <span class="macro">assume!</span>(i + limbs &lt; LIMBS &amp;&amp; i + limbs + <span class="number">1 </span>&lt; LIMBS);
-            <span class="self">self</span>.limbs[i] = <span class="self">self</span>.limbs[i + limbs] &gt;&gt; bits;
-            <span class="self">self</span>.limbs[i] |= <span class="self">self</span>.limbs[i + limbs + <span class="number">1</span>] &lt;&lt; (<span class="number">64 </span>- bits);
-        }
-        <span class="self">self</span>.limbs[LIMBS - limbs - <span class="number">1</span>] = <span class="self">self</span>.limbs[LIMBS - <span class="number">1</span>] &gt;&gt; bits;
-        <span class="self">self</span>.limbs[LIMBS - limbs..].fill(<span class="number">0</span>);
-        (<span class="self">self</span>, overflow)
+        (r, carry != <span class="number">0</span>)
     }
 
     <span class="doccomment">/// Right shift by `rhs` bits.
@@ -1739,7 +1647,11 @@
     }
 
     <span class="attr">#[test]
-    #[allow(clippy::cast_lossless, clippy::cast_possible_truncation)]
+    #[allow(
+        clippy::cast_lossless,
+        clippy::cast_possible_truncation,
+        clippy::cast_possible_wrap
+    )]
     </span><span class="kw">fn </span>test_small() {
         <span class="macro">const_for!</span>(BITS <span class="kw">in </span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">16</span>, <span class="number">32</span>, <span class="number">63</span>, <span class="number">64</span>] {
             <span class="kw">type </span>U = Uint::&lt;BITS, <span class="number">1</span>&gt;;
@@ -1805,8 +1717,8 @@
             <span class="kw">type </span>U = Uint::&lt;BITS, LIMBS&gt;;
             <span class="macro">proptest!</span>(|(value: U, shift <span class="kw">in  </span><span class="number">0</span>..=BITS + <span class="number">2</span>)| {
                 <span class="kw">let </span>shifted = value.arithmetic_shr(shift);
-                <span class="macro">dbg!</span>(value, shifted, shift);
-                <span class="macro">assert_eq!</span>(shifted.leading_ones(), <span class="kw">match </span>value.leading_ones() {
+                <span class="comment">// dbg!(value, shifted, shift);
+                </span><span class="macro">assert_eq!</span>(shifted.leading_ones(), <span class="kw">match </span>value.leading_ones() {
                     <span class="number">0 </span>=&gt; <span class="number">0</span>,
                     n =&gt; min(BITS, n + shift)
                 });
@@ -1834,7 +1746,7 @@
         // Expects resulting limbs: [0x0080_0000_0000_000, 0] with no fractional part.
         </span><span class="macro">assert_eq!</span>(
             Uint::&lt;<span class="number">65</span>, <span class="number">2</span>&gt;::from_limbs([<span class="number">0x0010_0000_0000_0000</span>, <span class="number">0</span>]).overflowing_shr(<span class="number">1</span>),
-            (Uint::&lt;<span class="number">65</span>, <span class="number">2</span>&gt;::from_limbs([<span class="number">0x0080_0000_0000_000</span>, <span class="number">0</span>]), <span class="bool-val">false</span>)
+            (Uint::&lt;<span class="number">65</span>, <span class="number">2</span>&gt;::from_limbs([<span class="number">0x0008_0000_0000_0000</span>, <span class="number">0</span>]), <span class="bool-val">false</span>)
         );
 
         <span class="comment">// Test: Shift beyond single limb capacity with MAX value.

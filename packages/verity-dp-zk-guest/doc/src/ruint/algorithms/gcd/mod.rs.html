@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ruint-1.12.3/src/algorithms/gcd/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="ruint" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">ruint/algorithms/gcd/</div>mod.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ruint-1.12.4/src/algorithms/gcd/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="ruint" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">ruint/algorithms/gcd/</div>mod.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -249,13 +249,11 @@
 <a href="#248" id="248">248</a>
 <a href="#249" id="249">249</a>
 <a href="#250" id="250">250</a>
-<a href="#251" id="251">251</a>
-<a href="#252" id="252">252</a>
-<a href="#253" id="253">253</a>
-<a href="#254" id="254">254</a>
-<a href="#255" id="255">255</a></pre></div><pre class="rust"><code><span class="attr">#![allow(clippy::module_name_repetitions)]
+<a href="#251" id="251">251</a></pre></div><pre class="rust"><code><span class="attr">#![allow(clippy::module_name_repetitions)]
 
-</span><span class="comment">// TODO: Make these algorithms work on limb slices.
+</span><span class="comment">// TODO: https://github.com/bitcoin-core/secp256k1/blob/master/doc/safegcd_implementation.md
+
+// TODO: Make these algorithms work on limb slices.
 </span><span class="kw">mod </span>matrix;
 
 <span class="kw">pub use </span><span class="self">self</span>::matrix::Matrix <span class="kw">as </span>LehmerMatrix;
@@ -446,7 +444,6 @@
 </span><span class="kw">mod </span>tests {
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
     <span class="kw">use crate</span>::{const_for, nlimbs};
-    <span class="kw">use </span>core::cmp::min;
     <span class="kw">use </span>proptest::{proptest, test_runner::Config};
 
     <span class="attr">#[test]
@@ -478,9 +475,7 @@
         <span class="macro">const_for!</span>(BITS <span class="kw">in </span>SIZES {
             <span class="kw">const </span>LIMBS: usize = nlimbs(BITS);
             <span class="kw">type </span>U = Uint&lt;BITS, LIMBS&gt;;
-            <span class="comment">// TODO: Increase cases when perf is better.
-            </span><span class="kw">let </span><span class="kw-2">mut </span>config = Config::default();
-            config.cases = min(config.cases, <span class="kw">if </span>BITS &gt; <span class="number">500 </span>{ <span class="number">9 </span>} <span class="kw">else </span>{ <span class="number">30 </span>});
+            <span class="kw">let </span>config = Config { cases: <span class="number">10</span>, ..Default::default()};
             <span class="macro">proptest!</span>(config, |(a: U, b: U)| {
                 <span class="macro">assert_eq!</span>(gcd(a, b), gcd_ref(a, b));
             });
@@ -488,14 +483,11 @@
     }
 
     <span class="attr">#[test]
-    #[allow(clippy::absurd_extreme_comparisons)] </span><span class="comment">// Generated code
     </span><span class="kw">fn </span>test_gcd_extended() {
         <span class="macro">const_for!</span>(BITS <span class="kw">in </span>SIZES {
             <span class="kw">const </span>LIMBS: usize = nlimbs(BITS);
             <span class="kw">type </span>U = Uint&lt;BITS, LIMBS&gt;;
-            <span class="comment">// TODO: Increase cases when perf is better.
-            </span><span class="kw">let </span><span class="kw-2">mut </span>config = Config::default();
-            config.cases = min(config.cases, <span class="kw">if </span>BITS &gt; <span class="number">500 </span>{ <span class="number">3 </span>} <span class="kw">else </span>{ <span class="number">10 </span>});
+            <span class="kw">let </span>config = Config { cases: <span class="number">5</span>, ..Default::default() };
             <span class="macro">proptest!</span>(config, |(a: U, b: U)| {
                 <span class="kw">let </span>(g, x, y, sign) = gcd_extended(a, b);
                 <span class="macro">assert_eq!</span>(g, gcd_ref(a, b));

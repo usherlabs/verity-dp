@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ruint-1.12.3/src/algorithms/mul.rs`."><title>mul.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="ruint" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">ruint/algorithms/</div>mul.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ruint-1.12.4/src/algorithms/mul.rs`."><title>mul.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="ruint" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">ruint/algorithms/</div>mul.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -337,64 +337,9 @@
 <a href="#336" id="336">336</a>
 <a href="#337" id="337">337</a>
 <a href="#338" id="338">338</a>
-<a href="#339" id="339">339</a>
-<a href="#340" id="340">340</a>
-<a href="#341" id="341">341</a>
-<a href="#342" id="342">342</a>
-<a href="#343" id="343">343</a>
-<a href="#344" id="344">344</a>
-<a href="#345" id="345">345</a>
-<a href="#346" id="346">346</a>
-<a href="#347" id="347">347</a>
-<a href="#348" id="348">348</a>
-<a href="#349" id="349">349</a>
-<a href="#350" id="350">350</a>
-<a href="#351" id="351">351</a>
-<a href="#352" id="352">352</a>
-<a href="#353" id="353">353</a>
-<a href="#354" id="354">354</a></pre></div><pre class="rust"><code><span class="attr">#![allow(clippy::module_name_repetitions)]
+<a href="#339" id="339">339</a></pre></div><pre class="rust"><code><span class="attr">#![allow(clippy::module_name_repetitions)]
 
 </span><span class="kw">use </span><span class="kw">crate</span>::algorithms::{ops::sbb, DoubleWord};
-
-<span class="attr">#[inline]
-#[allow(clippy::cast_possible_truncation)] </span><span class="comment">// Intentional truncation.
-</span><span class="attr">#[allow(dead_code)] </span><span class="comment">// Used for testing
-</span><span class="kw">pub fn </span>addmul_ref(result: <span class="kw-2">&amp;mut </span>[u64], a: <span class="kw-2">&amp;</span>[u64], b: <span class="kw-2">&amp;</span>[u64]) -&gt; bool {
-    <span class="kw">let </span><span class="kw-2">mut </span>overflow = <span class="number">0</span>;
-    <span class="kw">for </span>(i, a) <span class="kw">in </span>a.iter().copied().enumerate() {
-        <span class="kw">let </span><span class="kw-2">mut </span>result = result.iter_mut().skip(i);
-        <span class="kw">let </span><span class="kw-2">mut </span>b = b.iter().copied();
-        <span class="kw">let </span><span class="kw-2">mut </span>carry = <span class="number">0_u128</span>;
-        <span class="kw">loop </span>{
-            <span class="kw">match </span>(result.next(), b.next()) {
-                <span class="comment">// Partial product.
-                </span>(<span class="prelude-val">Some</span>(result), <span class="prelude-val">Some</span>(b)) =&gt; {
-                    carry += u128::from(<span class="kw-2">*</span>result) + u128::from(a) * u128::from(b);
-                    <span class="kw-2">*</span>result = carry <span class="kw">as </span>u64;
-                    carry &gt;&gt;= <span class="number">64</span>;
-                }
-                <span class="comment">// Carry propagation.
-                </span>(<span class="prelude-val">Some</span>(result), <span class="prelude-val">None</span>) =&gt; {
-                    carry += u128::from(<span class="kw-2">*</span>result);
-                    <span class="kw-2">*</span>result = carry <span class="kw">as </span>u64;
-                    carry &gt;&gt;= <span class="number">64</span>;
-                }
-                <span class="comment">// Excess product.
-                </span>(<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(b)) =&gt; {
-                    carry += u128::from(a) * u128::from(b);
-                    overflow |= carry <span class="kw">as </span>u64;
-                    carry &gt;&gt;= <span class="number">64</span>;
-                }
-                <span class="comment">// Fin.
-                </span>(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) =&gt; {
-                    <span class="kw">break</span>;
-                }
-            }
-        }
-        overflow |= carry <span class="kw">as </span>u64;
-    }
-    overflow != <span class="number">0
-</span>}
 
 <span class="doccomment">/// ⚠️ Computes `result += a * b` and checks for overflow.
 ///
@@ -416,7 +361,7 @@
 /// assert_eq!(overflow, false);
 /// assert_eq!(result, [12]);
 /// ```
-</span><span class="attr">#[inline]
+</span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>addmul(<span class="kw-2">mut </span>lhs: <span class="kw-2">&amp;mut </span>[u64], <span class="kw-2">mut </span>a: <span class="kw-2">&amp;</span>[u64], <span class="kw-2">mut </span>b: <span class="kw-2">&amp;</span>[u64]) -&gt; bool {
     <span class="comment">// Trim zeros from `a`
     </span><span class="kw">while let </span>[<span class="number">0</span>, rest @ ..] = a {
@@ -470,15 +415,13 @@
 }
 
 <span class="doccomment">/// Computes `lhs += a` and returns the carry.
-</span><span class="attr">#[inline]
+</span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>add_nx1(lhs: <span class="kw-2">&amp;mut </span>[u64], <span class="kw-2">mut </span>a: u64) -&gt; u64 {
     <span class="kw">if </span>a == <span class="number">0 </span>{
         <span class="kw">return </span><span class="number">0</span>;
     }
     <span class="kw">for </span>lhs <span class="kw">in </span>lhs {
-        <span class="kw">let </span>sum = u128::add(<span class="kw-2">*</span>lhs, a);
-        <span class="kw-2">*</span>lhs = sum.low();
-        a = sum.high();
+        (<span class="kw-2">*</span>lhs, a) = u128::add(<span class="kw-2">*</span>lhs, a).split();
         <span class="kw">if </span>a == <span class="number">0 </span>{
             <span class="kw">return </span><span class="number">0</span>;
         }
@@ -501,18 +444,16 @@
         <span class="number">2 </span>=&gt; addmul_2(lhs, a, b),
         <span class="number">3 </span>=&gt; addmul_3(lhs, a, b),
         <span class="number">4 </span>=&gt; addmul_4(lhs, a, b),
-        <span class="kw">_ </span>=&gt; {
-            <span class="kw">let _ </span>= addmul(lhs, a, b);
-        }
+        <span class="kw">_ </span>=&gt; <span class="kw">_ </span>= addmul(lhs, a, b),
     }
 }
 
 <span class="doccomment">/// Computes `lhs += a * b` for 1 limb.
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">fn </span>addmul_1(lhs: <span class="kw-2">&amp;mut </span>[u64], a: <span class="kw-2">&amp;</span>[u64], b: <span class="kw-2">&amp;</span>[u64]) {
-    <span class="macro">assert_eq!</span>(lhs.len(), <span class="number">1</span>);
-    <span class="macro">assert_eq!</span>(a.len(), <span class="number">1</span>);
-    <span class="macro">assert_eq!</span>(b.len(), <span class="number">1</span>);
+    <span class="macro">assume!</span>(lhs.len() == <span class="number">1</span>);
+    <span class="macro">assume!</span>(a.len() == <span class="number">1</span>);
+    <span class="macro">assume!</span>(b.len() == <span class="number">1</span>);
 
     mac(<span class="kw-2">&amp;mut </span>lhs[<span class="number">0</span>], a[<span class="number">0</span>], b[<span class="number">0</span>], <span class="number">0</span>);
 }
@@ -520,9 +461,9 @@
 <span class="doccomment">/// Computes `lhs += a * b` for 2 limbs.
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">fn </span>addmul_2(lhs: <span class="kw-2">&amp;mut </span>[u64], a: <span class="kw-2">&amp;</span>[u64], b: <span class="kw-2">&amp;</span>[u64]) {
-    <span class="macro">assert_eq!</span>(lhs.len(), <span class="number">2</span>);
-    <span class="macro">assert_eq!</span>(a.len(), <span class="number">2</span>);
-    <span class="macro">assert_eq!</span>(b.len(), <span class="number">2</span>);
+    <span class="macro">assume!</span>(lhs.len() == <span class="number">2</span>);
+    <span class="macro">assume!</span>(a.len() == <span class="number">2</span>);
+    <span class="macro">assume!</span>(b.len() == <span class="number">2</span>);
 
     <span class="kw">let </span>carry = mac(<span class="kw-2">&amp;mut </span>lhs[<span class="number">0</span>], a[<span class="number">0</span>], b[<span class="number">0</span>], <span class="number">0</span>);
     mac(<span class="kw-2">&amp;mut </span>lhs[<span class="number">1</span>], a[<span class="number">0</span>], b[<span class="number">1</span>], carry);
@@ -533,9 +474,9 @@
 <span class="doccomment">/// Computes `lhs += a * b` for 3 limbs.
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">fn </span>addmul_3(lhs: <span class="kw-2">&amp;mut </span>[u64], a: <span class="kw-2">&amp;</span>[u64], b: <span class="kw-2">&amp;</span>[u64]) {
-    <span class="macro">assert_eq!</span>(lhs.len(), <span class="number">3</span>);
-    <span class="macro">assert_eq!</span>(a.len(), <span class="number">3</span>);
-    <span class="macro">assert_eq!</span>(b.len(), <span class="number">3</span>);
+    <span class="macro">assume!</span>(lhs.len() == <span class="number">3</span>);
+    <span class="macro">assume!</span>(a.len() == <span class="number">3</span>);
+    <span class="macro">assume!</span>(b.len() == <span class="number">3</span>);
 
     <span class="kw">let </span>carry = mac(<span class="kw-2">&amp;mut </span>lhs[<span class="number">0</span>], a[<span class="number">0</span>], b[<span class="number">0</span>], <span class="number">0</span>);
     <span class="kw">let </span>carry = mac(<span class="kw-2">&amp;mut </span>lhs[<span class="number">1</span>], a[<span class="number">0</span>], b[<span class="number">1</span>], carry);
@@ -550,9 +491,9 @@
 <span class="doccomment">/// Computes `lhs += a * b` for 4 limbs.
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">fn </span>addmul_4(lhs: <span class="kw-2">&amp;mut </span>[u64], a: <span class="kw-2">&amp;</span>[u64], b: <span class="kw-2">&amp;</span>[u64]) {
-    <span class="macro">assert_eq!</span>(lhs.len(), <span class="number">4</span>);
-    <span class="macro">assert_eq!</span>(a.len(), <span class="number">4</span>);
-    <span class="macro">assert_eq!</span>(b.len(), <span class="number">4</span>);
+    <span class="macro">assume!</span>(lhs.len() == <span class="number">4</span>);
+    <span class="macro">assume!</span>(a.len() == <span class="number">4</span>);
+    <span class="macro">assume!</span>(b.len() == <span class="number">4</span>);
 
     <span class="kw">let </span>carry = mac(<span class="kw-2">&amp;mut </span>lhs[<span class="number">0</span>], a[<span class="number">0</span>], b[<span class="number">0</span>], <span class="number">0</span>);
     <span class="kw">let </span>carry = mac(<span class="kw-2">&amp;mut </span>lhs[<span class="number">1</span>], a[<span class="number">0</span>], b[<span class="number">1</span>], carry);
@@ -577,13 +518,11 @@
 }
 
 <span class="doccomment">/// Computes `lhs *= a` and returns the carry.
-</span><span class="attr">#[inline]
+</span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>mul_nx1(lhs: <span class="kw-2">&amp;mut </span>[u64], a: u64) -&gt; u64 {
     <span class="kw">let </span><span class="kw-2">mut </span>carry = <span class="number">0</span>;
-    <span class="kw">for </span>lhs <span class="kw">in </span><span class="kw-2">&amp;mut *</span>lhs {
-        <span class="kw">let </span>product = u128::muladd(<span class="kw-2">*</span>lhs, a, carry);
-        <span class="kw-2">*</span>lhs = product.low();
-        carry = product.high();
+    <span class="kw">for </span>lhs <span class="kw">in </span>lhs {
+        (<span class="kw-2">*</span>lhs, carry) = u128::muladd(<span class="kw-2">*</span>lhs, a, carry).split();
     }
     carry
 }
@@ -598,14 +537,12 @@
 /// \\\\ \mathsf{carry} &amp;= \floor{\frac{\mathsf{lhs} + \mathsf{a} ⋅ \mathsf{b}
 /// }{2^{64⋅N}}} \end{aligned}
 /// $$
-</span><span class="attr">#[inline]
+</span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>addmul_nx1(lhs: <span class="kw-2">&amp;mut </span>[u64], a: <span class="kw-2">&amp;</span>[u64], b: u64) -&gt; u64 {
-    <span class="macro">debug_assert_eq!</span>(lhs.len(), a.len());
+    <span class="macro">assume!</span>(lhs.len() == a.len());
     <span class="kw">let </span><span class="kw-2">mut </span>carry = <span class="number">0</span>;
-    <span class="kw">for </span>(lhs, a) <span class="kw">in </span>lhs.iter_mut().zip(a.iter().copied()) {
-        <span class="kw">let </span>product = u128::muladd2(a, b, carry, <span class="kw-2">*</span>lhs);
-        <span class="kw-2">*</span>lhs = product.low();
-        carry = product.high();
+    <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..a.len() {
+        (lhs[i], carry) = u128::muladd2(a[i], b, carry, lhs[i]).split();
     }
     carry
 }
@@ -621,23 +558,18 @@
 /// \mathsf{lhs}}{2^{64⋅N}}} \end{aligned}
 /// $$
 </span><span class="comment">// OPT: `carry` and `borrow` can probably be merged into a single var.
-</span><span class="attr">#[inline]
+</span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>submul_nx1(lhs: <span class="kw-2">&amp;mut </span>[u64], a: <span class="kw-2">&amp;</span>[u64], b: u64) -&gt; u64 {
-    <span class="macro">debug_assert_eq!</span>(lhs.len(), a.len());
+    <span class="macro">assume!</span>(lhs.len() == a.len());
     <span class="kw">let </span><span class="kw-2">mut </span>carry = <span class="number">0</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>borrow = <span class="number">0</span>;
-    <span class="kw">for </span>(lhs, a) <span class="kw">in </span>lhs.iter_mut().zip(a.iter().copied()) {
+    <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..a.len() {
         <span class="comment">// Compute product limbs
-        </span><span class="kw">let </span>limb = {
-            <span class="kw">let </span>product = u128::muladd(a, b, carry);
-            carry = product.high();
-            product.low()
-        };
+        </span><span class="kw">let </span>limb;
+        (limb, carry) = u128::muladd(a[i], b, carry).split();
 
         <span class="comment">// Subtract
-        </span><span class="kw">let </span>(new, b) = sbb(<span class="kw-2">*</span>lhs, limb, borrow);
-        <span class="kw-2">*</span>lhs = new;
-        borrow = b;
+        </span>(lhs[i], borrow) = sbb(lhs[i], limb, borrow);
     }
     borrow + carry
 }
@@ -646,6 +578,44 @@
 </span><span class="kw">mod </span>tests {
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
     <span class="kw">use </span>proptest::{collection, num::u64, proptest};
+
+    <span class="attr">#[allow(clippy::cast_possible_truncation)] </span><span class="comment">// Intentional truncation.
+    </span><span class="kw">fn </span>addmul_ref(result: <span class="kw-2">&amp;mut </span>[u64], a: <span class="kw-2">&amp;</span>[u64], b: <span class="kw-2">&amp;</span>[u64]) -&gt; bool {
+        <span class="kw">let </span><span class="kw-2">mut </span>overflow = <span class="number">0</span>;
+        <span class="kw">for </span>(i, a) <span class="kw">in </span>a.iter().copied().enumerate() {
+            <span class="kw">let </span><span class="kw-2">mut </span>result = result.iter_mut().skip(i);
+            <span class="kw">let </span><span class="kw-2">mut </span>b = b.iter().copied();
+            <span class="kw">let </span><span class="kw-2">mut </span>carry = <span class="number">0_u128</span>;
+            <span class="kw">loop </span>{
+                <span class="kw">match </span>(result.next(), b.next()) {
+                    <span class="comment">// Partial product.
+                    </span>(<span class="prelude-val">Some</span>(result), <span class="prelude-val">Some</span>(b)) =&gt; {
+                        carry += u128::from(<span class="kw-2">*</span>result) + u128::from(a) * u128::from(b);
+                        <span class="kw-2">*</span>result = carry <span class="kw">as </span>u64;
+                        carry &gt;&gt;= <span class="number">64</span>;
+                    }
+                    <span class="comment">// Carry propagation.
+                    </span>(<span class="prelude-val">Some</span>(result), <span class="prelude-val">None</span>) =&gt; {
+                        carry += u128::from(<span class="kw-2">*</span>result);
+                        <span class="kw-2">*</span>result = carry <span class="kw">as </span>u64;
+                        carry &gt;&gt;= <span class="number">64</span>;
+                    }
+                    <span class="comment">// Excess product.
+                    </span>(<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(b)) =&gt; {
+                        carry += u128::from(a) * u128::from(b);
+                        overflow |= carry <span class="kw">as </span>u64;
+                        carry &gt;&gt;= <span class="number">64</span>;
+                    }
+                    <span class="comment">// Fin.
+                    </span>(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) =&gt; {
+                        <span class="kw">break</span>;
+                    }
+                }
+            }
+            overflow |= carry <span class="kw">as </span>u64;
+        }
+        overflow != <span class="number">0
+    </span>}
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_addmul() {

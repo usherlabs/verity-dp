@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/alloy-chains-0.1.48/src/named.rs`."><title>named.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="alloy_chains" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/alloy-rs/core/main/assets/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">alloy_chains/</div>named.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/alloy-chains-0.1.51/src/named.rs`."><title>named.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="alloy_chains" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/alloy-rs/core/main/assets/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">alloy_chains/</div>named.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -1708,7 +1708,24 @@
 <a href="#1707" id="1707">1707</a>
 <a href="#1708" id="1708">1708</a>
 <a href="#1709" id="1709">1709</a>
-<a href="#1710" id="1710">1710</a></pre></div><pre class="rust"><code><span class="kw">use </span>alloy_primitives::{address, Address};
+<a href="#1710" id="1710">1710</a>
+<a href="#1711" id="1711">1711</a>
+<a href="#1712" id="1712">1712</a>
+<a href="#1713" id="1713">1713</a>
+<a href="#1714" id="1714">1714</a>
+<a href="#1715" id="1715">1715</a>
+<a href="#1716" id="1716">1716</a>
+<a href="#1717" id="1717">1717</a>
+<a href="#1718" id="1718">1718</a>
+<a href="#1719" id="1719">1719</a>
+<a href="#1720" id="1720">1720</a>
+<a href="#1721" id="1721">1721</a>
+<a href="#1722" id="1722">1722</a>
+<a href="#1723" id="1723">1723</a>
+<a href="#1724" id="1724">1724</a>
+<a href="#1725" id="1725">1725</a>
+<a href="#1726" id="1726">1726</a>
+<a href="#1727" id="1727">1727</a></pre></div><pre class="rust"><code><span class="kw">use </span>alloy_primitives::{address, Address};
 <span class="kw">use </span>core::{cmp::Ordering, fmt, time::Duration};
 <span class="kw">use </span>num_enum::TryFromPrimitiveError;
 
@@ -1934,6 +1951,7 @@
 
     Shimmer = <span class="number">148</span>,
 
+    Ink = <span class="number">57073</span>,
     <span class="attr">#[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"ink_sepolia_testnet"</span>, alias = <span class="string">"ink-sepolia"</span>))]
     </span>InkSepolia = <span class="number">763373</span>,
 
@@ -2086,6 +2104,8 @@
     Core = <span class="number">1116</span>,
     Merlin = <span class="number">4200</span>,
     Bitlayer = <span class="number">200901</span>,
+    Vana = <span class="number">1480</span>,
+    Zeta = <span class="number">7000</span>,
 
     <span class="attr">#[strum(to_string = <span class="string">"unichain-sepolia"</span>)]
     #[cfg_attr(feature = <span class="string">"serde"</span>, serde(alias = <span class="string">"unichain-sepolia"</span>))]
@@ -2233,6 +2253,7 @@
                 | BaseSepolia
                 | Fraxtal
                 | FraxtalTestnet
+                | Ink
                 | InkSepolia
                 | Mode
                 | ModeSepolia
@@ -2297,7 +2318,7 @@
             | ApeChain
             | Curtis =&gt; <span class="number">260</span>,
 
-            Optimism | OptimismGoerli | OptimismSepolia | Base | BaseGoerli | BaseSepolia
+            Optimism | OptimismGoerli | OptimismSepolia | Base | BaseGoerli | BaseSepolia | Ink
             | InkSepolia | Blast | BlastSepolia | Fraxtal | FraxtalTestnet | Zora | ZoraGoerli
             | ZoraSepolia | Mantle | MantleSepolia | Mode | ModeSepolia | Pgn | PgnSepolia
             | SoneiumMinatoTestnet =&gt; <span class="number">2_000</span>,
@@ -2368,6 +2389,8 @@
             Core =&gt; <span class="number">3_000</span>,
             Merlin =&gt; <span class="number">3_000</span>,
             Bitlayer =&gt; <span class="number">3_000</span>,
+            Vana =&gt; <span class="number">6_000</span>,
+            Zeta =&gt; <span class="number">6_000</span>,
 
             UnichainSepolia =&gt; <span class="number">1_000</span>,
 
@@ -2465,6 +2488,7 @@
             | Zora
             | ZoraGoerli
             | ZoraSepolia
+            | Ink
             | InkSepolia
             | Mantle
             | MantleSepolia
@@ -2505,7 +2529,7 @@
             </span>Dev | AnvilHardhat | Morden | Ropsten | Rinkeby | Cronos | CronosTestnet | Kovan
             | Sokol | Poa | Moonbeam | MoonbeamDev | Moonriver | Moonbase | Evmos
             | EvmosTestnet | Aurora | AuroraTestnet | Canto | CantoTestnet | Iotex | Core
-            | Merlin | Bitlayer | SonicTestnet =&gt; <span class="bool-val">false</span>,
+            | Merlin | Bitlayer | SonicTestnet | Vana | Zeta =&gt; <span class="bool-val">false</span>,
         }
     }
 
@@ -2625,6 +2649,7 @@
             | FraxtalTestnet
             | LineaGoerli
             | LineaSepolia
+            | Ink
             | InkSepolia
             | MantleTestnet
             | MantleSepolia
@@ -2675,7 +2700,7 @@
             | Fraxtal | Linea | ZkSync | Mantle | GravityAlphaMainnet | Xai | Zora | Pgn | Mode
             | Viction | Elastos | Degen | OpBNBMainnet | Ronin | Taiko | Flare | Acala | Karura
             | Darwinia | Cfx | Crab | Pulsechain | Etherlink | Immutable | World | Iotex | Core
-            | Merlin | Bitlayer | ApeChain =&gt; <span class="bool-val">false</span>,
+            | Merlin | Bitlayer | ApeChain | Vana | Zeta =&gt; <span class="bool-val">false</span>,
         }
     }
 
@@ -2725,6 +2750,8 @@
             Core =&gt; <span class="string">"CORE"</span>,
             Merlin =&gt; <span class="string">"BTC"</span>,
             Bitlayer =&gt; <span class="string">"BTC"</span>,
+            Vana =&gt; <span class="string">"VANA"</span>,
+            Zeta =&gt; <span class="string">"ZETA"</span>,
 
             ApeChain | Curtis =&gt; <span class="string">"APE"</span>,
 
@@ -2854,6 +2881,7 @@
                 (<span class="string">"https://api-sepolia.scrollscan.com/api"</span>, <span class="string">"https://sepolia.scrollscan.com"</span>)
             }
 
+            Ink =&gt; (<span class="string">"https://explorer.inkonchain.com/api/v2"</span>, <span class="string">"https://explorer.inkonchain.com"</span>),
             InkSepolia =&gt; (
                 <span class="string">"https://explorer-sepolia.inkonchain.com/api/v2"</span>,
                 <span class="string">"https://explorer-sepolia.inkonchain.com"</span>,
@@ -3061,6 +3089,8 @@
             Core =&gt; (<span class="string">"https://scan.coredao.org"</span>, <span class="string">"https://openapi.coredao.org/api"</span>),
             Merlin =&gt; (<span class="string">"https://scan.merlinchain.io"</span>, <span class="string">"https://scan.merlinchain.io/api"</span>),
             Bitlayer =&gt; (<span class="string">"https://www.btrscan.com"</span>, <span class="string">"https://api.btrscan.com/scan/api"</span>),
+            Vana =&gt; (<span class="string">"https://vanascan.io"</span>, <span class="string">"https://instance_base_url/api"</span>),
+            Zeta =&gt; (<span class="string">"https://zetachain.blockscout.com"</span>, <span class="string">"https://zetachain.blockscout.com/api"</span>),
 
             ApeChain =&gt; (<span class="string">"https://api.apescan.io/api"</span>, <span class="string">"https://apescan.io"</span>),
             Curtis =&gt; (<span class="string">"https://curtis.explorer.caldera.xyz/api/v2"</span>, <span class="string">"https://curtis.apescan.io"</span>),
@@ -3149,7 +3179,7 @@
             | Etherlink | EtherlinkTestnet | Flare | FlareCoston2 | KakarotSepolia | Karura
             | KaruraTestnet | Mode | ModeSepolia | Pgn | PgnSepolia | Shimmer | Zora
             | ZoraGoerli | ZoraSepolia | Darwinia | Crab | Koi | Immutable | ImmutableTestnet
-            | SoneiumMinatoTestnet | World | WorldSepolia | Curtis | InkSepolia =&gt; {
+            | SoneiumMinatoTestnet | World | WorldSepolia | Curtis | Ink | InkSepolia =&gt; {
                 <span class="string">"BLOCKSCOUT_API_KEY"
             </span>}
 
@@ -3158,6 +3188,8 @@
             Core =&gt; <span class="string">"CORESCAN_API_KEY"</span>,
             Merlin =&gt; <span class="string">"MERLINSCAN_API_KEY"</span>,
             Bitlayer =&gt; <span class="string">"BITLAYERSCAN_API_KEY"</span>,
+            Vana =&gt; <span class="string">"VANASCAN_API_KEY"</span>,
+            Zeta =&gt; <span class="string">"ZETASCAN_API_KEY"</span>,
 
             <span class="comment">// Explicitly exhaustive. See NB above.
             </span>Metis
@@ -3278,6 +3310,8 @@
             Merlin =&gt; <span class="macro">address!</span>(<span class="string">"F6D226f9Dc15d9bB51182815b320D3fBE324e1bA"</span>),
             Bitlayer =&gt; <span class="macro">address!</span>(<span class="string">"ff204e2681a6fa0e2c3fade68a1b28fb90e4fc5f"</span>),
             ApeChain =&gt; <span class="macro">address!</span>(<span class="string">"48b62137EdfA95a428D35C09E44256a739F6B557"</span>),
+            Vana =&gt; <span class="macro">address!</span>(<span class="string">"00EDdD9621Fb08436d0331c149D1690909a5906d"</span>),
+            Zeta =&gt; <span class="macro">address!</span>(<span class="string">"5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf"</span>),
             <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
         };
 

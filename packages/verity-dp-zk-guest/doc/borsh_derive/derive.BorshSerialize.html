@@ -27,7 +27,7 @@ found in item’s fields.</p>
     </span>y: V,
 }</code></pre></div>
 <h3 id="attributes"><a class="doc-anchor" href="#attributes">§</a>Attributes</h3><h4 id="1-borshcrate--pathtoborsh-item-level-attribute"><a class="doc-anchor" href="#1-borshcrate--pathtoborsh-item-level-attribute">§</a>1. <code>#[borsh(crate = "path::to::borsh")]</code> (item level attribute)</h4><h6 id="syntax"><a class="doc-anchor" href="#syntax">§</a>syntax</h6>
-<p>Attribute takes literal string value, which is the syn’s <a href="https://docs.rs/syn/2.0.90/syn/path/struct.Path.html" title="struct syn::path::Path">Path</a> to <code>borsh</code> crate used.</p>
+<p>Attribute takes literal string value, which is the syn’s <a href="https://docs.rs/syn/2.0.91/syn/path/struct.Path.html" title="struct syn::path::Path">Path</a> to <code>borsh</code> crate used.</p>
 <h6 id="usage"><a class="doc-anchor" href="#usage">§</a>usage</h6>
 <p>Attribute is optional.</p>
 <ol>
@@ -129,7 +129,7 @@ You must specify <code>use_discriminant</code> for all enums with explicit discr
     </span>y: f32,
 }</code></pre></div>
 <h4 id="4-borshboundserialize---field-level-attribute"><a class="doc-anchor" href="#4-borshboundserialize---field-level-attribute">§</a>4. <code>#[borsh(bound(serialize = ...))]</code> (field level attribute)</h4><h6 id="syntax-1"><a class="doc-anchor" href="#syntax-1">§</a>syntax</h6>
-<p>Attribute takes literal string value, which is a comma-separated list of syn’s <a href="https://docs.rs/syn/2.0.90/syn/generics/enum.WherePredicate.html" title="enum syn::generics::WherePredicate">WherePredicate</a>-s, which may be empty.</p>
+<p>Attribute takes literal string value, which is a comma-separated list of syn’s <a href="https://docs.rs/syn/2.0.91/syn/generics/enum.WherePredicate.html" title="enum syn::generics::WherePredicate">WherePredicate</a>-s, which may be empty.</p>
 <h6 id="usage-1"><a class="doc-anchor" href="#usage-1">§</a>usage</h6>
 <p>Attribute adds possibility to override bounds for <code>BorshSerialize</code> in order to enable:</p>
 <ol>
@@ -162,7 +162,7 @@ You must specify <code>use_discriminant</code> for all enums with explicit discr
 <p><code>#[borsh(bound(serialize = ...))]</code> replaces bounds, which are derived automatically,
 irrelevant of whether <code>#[borsh(skip)]</code> attribute is present.</p>
 <h4 id="5-borshserialize_with---field-level-attribute"><a class="doc-anchor" href="#5-borshserialize_with---field-level-attribute">§</a>5. <code>#[borsh(serialize_with = ...)]</code> (field level attribute)</h4><h6 id="syntax-2"><a class="doc-anchor" href="#syntax-2">§</a>syntax</h6>
-<p>Attribute takes literal string value, which is a syn’s <a href="https://docs.rs/syn/2.0.90/syn/expr/struct.ExprPath.html" title="struct syn::expr::ExprPath">ExprPath</a>.</p>
+<p>Attribute takes literal string value, which is a syn’s <a href="https://docs.rs/syn/2.0.91/syn/expr/struct.ExprPath.html" title="struct syn::expr::ExprPath">ExprPath</a>.</p>
 <h6 id="usage-2"><a class="doc-anchor" href="#usage-2">§</a>usage</h6>
 <p>Attribute adds possibility to specify full path of function, optionally qualified with generics,
 with which to serialize the annotated field.</p>

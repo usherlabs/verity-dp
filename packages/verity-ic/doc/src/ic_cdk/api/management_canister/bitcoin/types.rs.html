@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ic-cdk-0.17.0/src/api/management_canister/bitcoin/types.rs`."><title>types.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="ic_cdk" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">ic_cdk/api/management_canister/bitcoin/</div>types.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ic-cdk-0.17.1/src/api/management_canister/bitcoin/types.rs`."><title>types.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="ic_cdk" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">ic_cdk/api/management_canister/bitcoin/</div>types.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -153,7 +153,42 @@
 <a href="#152" id="152">152</a>
 <a href="#153" id="153">153</a>
 <a href="#154" id="154">154</a>
-<a href="#155" id="155">155</a></pre></div><pre class="rust"><code><span class="kw">use </span>candid::CandidType;
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a>
+<a href="#161" id="161">161</a>
+<a href="#162" id="162">162</a>
+<a href="#163" id="163">163</a>
+<a href="#164" id="164">164</a>
+<a href="#165" id="165">165</a>
+<a href="#166" id="166">166</a>
+<a href="#167" id="167">167</a>
+<a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
+<a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
+<a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
+<a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
+<a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a></pre></div><pre class="rust"><code><span class="kw">use </span>candid::CandidType;
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="doccomment">/// 10^8 Satoshi = 1 Bitcoin.
@@ -189,10 +224,10 @@
 <span class="doccomment">/// Block Hash.
 </span><span class="kw">pub type </span>BlockHash = Vec&lt;u8&gt;;
 
-<span class="doccomment">/// Element in the Response of [bitcoin_get_current_fee_percentiles](super::bitcoin_get_current_fee_percentiles).
+<span class="doccomment">/// Element in the Response of [`bitcoin_get_current_fee_percentiles`](super::bitcoin_get_current_fee_percentiles).
 </span><span class="kw">pub type </span>MillisatoshiPerByte = u64;
 
-<span class="doccomment">/// Identifier of [Utxo].
+<span class="doccomment">/// Identifier of [`Utxo`].
 </span><span class="attr">#[derive(
     CandidType, Serialize, Deserialize, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Clone, Default,
 )]
@@ -208,7 +243,7 @@
     CandidType, Serialize, Deserialize, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Clone, Default,
 )]
 </span><span class="kw">pub struct </span>Utxo {
-    <span class="doccomment">/// See [Outpoint].
+    <span class="doccomment">/// See [`Outpoint`].
     </span><span class="kw">pub </span>outpoint: Outpoint,
     <span class="doccomment">/// Value in the units of satoshi.
     </span><span class="kw">pub </span>value: Satoshi,
@@ -227,38 +262,38 @@
     <span class="doccomment">/// Page reference.
     ///
     /// DON'T construct it from scratch.
-    /// Only get it from the `next_page` field of [GetUtxosResponse].
+    /// Only get it from the `next_page` field of [`GetUtxosResponse`].
     </span><span class="attr">#[serde(rename = <span class="string">"page"</span>)]
     </span>Page(Vec&lt;u8&gt;),
 }
 
-<span class="doccomment">/// Argument type of [bitcoin_get_balance](super::bitcoin_get_balance).
+<span class="doccomment">/// Argument type of [`bitcoin_get_balance`](super::bitcoin_get_balance).
 </span><span class="attr">#[derive(
     CandidType, Serialize, Deserialize, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Clone, Default,
 )]
 </span><span class="kw">pub struct </span>GetBalanceRequest {
-    <span class="doccomment">/// See [BitcoinAddress].
+    <span class="doccomment">/// See [`BitcoinAddress`].
     </span><span class="kw">pub </span>address: BitcoinAddress,
-    <span class="doccomment">/// See [BitcoinNetwork].
+    <span class="doccomment">/// See [`BitcoinNetwork`].
     </span><span class="kw">pub </span>network: BitcoinNetwork,
     <span class="doccomment">/// Minimum number of confirmations. There is an upper bound of 144. Typically set to a value around 6 in practice.
     </span><span class="kw">pub </span>min_confirmations: <span class="prelude-ty">Option</span>&lt;u32&gt;,
 }
 
-<span class="doccomment">/// Argument type of [bitcoin_get_utxos](super::bitcoin_get_utxos).
+<span class="doccomment">/// Argument type of [`bitcoin_get_utxos`](super::bitcoin_get_utxos).
 </span><span class="attr">#[derive(
     CandidType, Serialize, Deserialize, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Clone, Default,
 )]
 </span><span class="kw">pub struct </span>GetUtxosRequest {
-    <span class="doccomment">/// See [BitcoinAddress].
+    <span class="doccomment">/// See [`BitcoinAddress`].
     </span><span class="kw">pub </span>address: BitcoinAddress,
-    <span class="doccomment">/// See [BitcoinNetwork].
+    <span class="doccomment">/// See [`BitcoinNetwork`].
     </span><span class="kw">pub </span>network: BitcoinNetwork,
-    <span class="doccomment">/// See [UtxoFilter].
+    <span class="doccomment">/// See [`UtxoFilter`].
     </span><span class="kw">pub </span>filter: <span class="prelude-ty">Option</span>&lt;UtxoFilter&gt;,
 }
 
-<span class="doccomment">/// Response type of [bitcoin_get_utxos](super::bitcoin_get_utxos).
+<span class="doccomment">/// Response type of [`bitcoin_get_utxos`](super::bitcoin_get_utxos).
 </span><span class="attr">#[derive(
     CandidType, Serialize, Deserialize, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Clone, Default,
 )]
@@ -271,11 +306,11 @@
     </span><span class="kw">pub </span>tip_height: u32,
     <span class="doccomment">/// Page reference when the response needs to be paginated.
     ///
-    /// To be used in [UtxoFilter::Page].
+    /// To be used in [`UtxoFilter::Page`].
     </span><span class="kw">pub </span>next_page: <span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;,
 }
 
-<span class="doccomment">/// Argument type of [bitcoin_send_transaction](super::bitcoin_send_transaction).
+<span class="doccomment">/// Argument type of [`bitcoin_send_transaction`](super::bitcoin_send_transaction).
 </span><span class="attr">#[derive(
     CandidType, Serialize, Deserialize, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Clone, Default,
 )]
@@ -285,11 +320,11 @@
     /// Several checks are performed.
     /// See [IC method `bitcoin_send_transaction`](https://internetcomputer.org/docs/current/references/ic-interface-spec/#ic-bitcoin_send_transaction).
     </span><span class="kw">pub </span>transaction: Vec&lt;u8&gt;,
-    <span class="doccomment">/// See [BitcoinNetwork].
+    <span class="doccomment">/// See [`BitcoinNetwork`].
     </span><span class="kw">pub </span>network: BitcoinNetwork,
 }
 
-<span class="doccomment">/// Argument type of [bitcoin_get_current_fee_percentiles](super::bitcoin_get_current_fee_percentiles).
+<span class="doccomment">/// Argument type of [`bitcoin_get_current_fee_percentiles`](super::bitcoin_get_current_fee_percentiles).
 </span><span class="attr">#[derive(
     CandidType,
     Serialize,
@@ -305,7 +340,42 @@
     Default,
 )]
 </span><span class="kw">pub struct </span>GetCurrentFeePercentilesRequest {
-    <span class="doccomment">/// See [BitcoinNetwork].
+    <span class="doccomment">/// See [`BitcoinNetwork`].
     </span><span class="kw">pub </span>network: BitcoinNetwork,
+}
+
+<span class="doccomment">/// Argument type of [`bitcoin_get_block_headers`](super::bitcoin_get_block_headers).
+</span><span class="attr">#[derive(
+    CandidType,
+    Serialize,
+    Deserialize,
+    Debug,
+    PartialEq,
+    Eq,
+    PartialOrd,
+    Ord,
+    Hash,
+    Clone,
+    Copy,
+    Default,
+)]
+</span><span class="kw">pub struct </span>GetBlockHeadersRequest {
+    <span class="doccomment">/// The starting block height for the request.
+    </span><span class="kw">pub </span>start_height: u32,
+    <span class="doccomment">/// The ending block height for the request, or `None` for the current tip.
+    </span><span class="kw">pub </span>end_height: <span class="prelude-ty">Option</span>&lt;u32&gt;,
+    <span class="doccomment">/// See [`BitcoinNetwork`].
+    </span><span class="kw">pub </span>network: BitcoinNetwork,
+}
+
+<span class="doccomment">/// Response type of [`bitcoin_get_block_headers`](super::bitcoin_get_block_headers).
+</span><span class="attr">#[derive(
+    CandidType, Serialize, Deserialize, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Clone, Default,
+)]
+</span><span class="kw">pub struct </span>GetBlockHeadersResponse {
+    <span class="doccomment">/// The tip of the blockchain when this request was filled.
+    </span><span class="kw">pub </span>tip_height: u32,
+    <span class="doccomment">/// The requested block headers.
+    </span><span class="kw">pub </span>block_headers: Vec&lt;Vec&lt;u8&gt;&gt;,
 }
 </code></pre></div></section></main></body></html>
