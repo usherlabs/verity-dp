@@ -1,7 +1,7 @@
 [package]
 name = "verity-verify-private-transcript"
-authors = ["TLSNotary Team"]
-description = "Core types for TLSNotary"
+authors = ["Usher Labs"]
+description = "Utility to enable verification of Transcript sub-proof of TLS proof, and accept pre-computed encodings."
 keywords = ["tls", "mpc", "2pc", "types"]
 categories = ["cryptography"]
 license = "MIT OR Apache-2.0"
