@@ -125,6 +125,7 @@ pub enum SignatureScheme {
     ED25519 = 0x0807,
 }
 
+// ! Comment out functionality traditionally dependent on `ring` lib
 // impl TryFrom<tls_core::msgs::enums::SignatureScheme> for SignatureScheme {
 //     type Error = &'static str;
 

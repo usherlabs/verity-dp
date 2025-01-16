@@ -2,14 +2,14 @@
 //!
 //! ## Generation
 //!
-//! During the verification of the `EncodingProof` within the `Transcript`
-//! A bottle neck is the generation of the encodings. Thus in order to optimise the transcript verification
-//! Thus the process of generating the encodings can be seperated from the `Transcript` verification process
+//! During the verification of the `EncodingProof` within the `Transcript`,
+//! a bottleneck is the generation of the encodings. To optimize the transcript verification,
+//! the process of generating the encodings can be separated from the `Transcript` verification process.
 //!
 //! ## Verification
-//! This is a custom verification method which takes in the precomputed encodings as a parameter
-//! and uses it to perform an optimized verification since it doesnt have to compute the encodings on the fly
-//! as it is provided as a parameter
+//! This custom verification method accepts precomputed encodings as a parameter,
+//! enabling optimized verification by eliminating the need to compute encodings on the fly.
+//! This approach leverages the provided encodings for a more efficient verification process.
 
 use crate::{
     presentation::Presentation,
@@ -85,7 +85,8 @@ mod tests {
     fn test_encodings_precompute() {
         // HOST
         // get the partial openings  and commitment seed on the 'host'
-        let bytes_input: Vec<u8> = fs::read("src/fixtures_data/data/example.presentation.tlsn").unwrap();
+        let bytes_input: Vec<u8> =
+            fs::read("src/fixtures_data/data/example.presentation.tlsn").unwrap();
         let presentation: Presentation = bincode::deserialize(&bytes_input).unwrap();
         let EncodingPayload {
             partial_openings,
@@ -100,11 +101,8 @@ mod tests {
 
         // ZKVM
         // use the encodings to verify the presentation's transcript in the 'ZKVM'
-        let partial_transcript_response = verify(
-                &presentation,
-                Some(&encodings_precompute),
-            )
-            .unwrap();
+        let partial_transcript_response =
+            verify(&presentation, Some(&encodings_precompute)).unwrap();
 
         assert_eq!(partial_transcript_response.len_sent(), EXPECTED_LEN_SENT);
         assert_eq!(
