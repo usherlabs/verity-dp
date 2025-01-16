@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["DEFAULT_IC_GATEWAY_LOCAL","DEFAULT_IC_GATEWAY_MAINNET","DEFAULT_IC_GATEWAY_MAINNET_TRAILING_SLASH"],"enum":["ProofResponse"],"struct":["PublicKeyReply","VerificationResponse","Verifier"]};

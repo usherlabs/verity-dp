@@ -1,0 +1,4 @@
+var searchIndex = new Map(JSON.parse('[["verity_verify_local",{"t":"CCHHH","n":["ecdsa","merkle","validate_ecdsa_signature","generate_merkle_tree","validate_merkle_tree"],"q":[[0,"verity_verify_local"],[2,"verity_verify_local::ecdsa"],[3,"verity_verify_local::merkle"],[5,"alloc::string"],[6,"anyhow"],[7,"alloc::vec"],[8,"rs_merkle::algorithms::sha256"],[9,"rs_merkle::merkle_tree"]],"i":"`````","f":"``{{{d{b}}{d{b}}{d{b}}}{{h{f}}}}{{{d{{n{{l{j}}}}}}}{{Ab{A`}}}}{{{d{{n{b}}}}{d{b}}}f}","D":"f","p":[[5,"String",5],[1,"reference"],[1,"bool"],[8,"Result",6],[1,"u8"],[1,"array"],[5,"Vec",7],[5,"Sha256Algorithm",8],[5,"MerkleTree",9]],"r":[],"b":[],"c":"OjAAAAAAAAA=","e":"OjAAAAEAAAAAAAIAEAAAAAAAAQACAA=="}]]'));
+if (typeof exports !== 'undefined') exports.searchIndex = searchIndex;
+else if (window.initSearch) window.initSearch(searchIndex);
+//{"start":39,"fragment_lengths":[669]}

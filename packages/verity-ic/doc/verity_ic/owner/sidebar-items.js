@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_owner","init_owner","only_owner"]};

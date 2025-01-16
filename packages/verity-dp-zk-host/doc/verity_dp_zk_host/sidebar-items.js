@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["builder","generate_groth16_proof","ic"]};

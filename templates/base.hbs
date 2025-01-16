@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verity Data Processor (VDP) Framework - Documentation by Usher Labs</title>
+    <link rel="icon" href="https://usherlabs.imgix.net/wp-content/uploads/2023/07/Labs-Icon-Concept-2.png?auto=format%2Ccompress&fit=crop&ixlib=php-3.3.0&max-h=800&max-w=800&s=ee768be555714c020bd0a18bffa7dfe3" type="image/png">
+</head>
+
+<body>
+    <!-- the nav section -->
+    <nav>
+        <div>
+            <img src="https://usherlabs.imgix.net/wp-content/uploads/2023/07/Labs-Icon-Concept-2.png?auto=format%2Ccompress&fit=crop&ixlib=php-3.3.0&max-h=800&max-w=800&s=ee768be555714c020bd0a18bffa7dfe3"
+                alt="" srcset="" height="13px">
+            <p>
+                DOCS.RS
+            </p>
+        </div>
+    </nav>
+    <!-- the nav section -->
+
+    <!-- the body section -->
+
+    <section class="page__content">
+
+        <!-- heading section -->
+        <section class="heading">
+            <div class="heading__text">
+                <img src="https://usherlabs.imgix.net/wp-content/uploads/2023/07/Labs-Icon-Concept-2.png?auto=format%2Ccompress&fit=crop&ixlib=php-3.3.0&max-h=800&max-w=800&s=ee768be555714c020bd0a18bffa7dfe3"
+                    alt="" srcset="" height="13px">
+                <h2>
+                    Verity Data Processor (VDP) Framework
+                </h2>
+            </div>
+        </section>
+        <!-- heading section -->
+
+        <section class="packages">
+
+            <!-- sample package structure -->
+            <!-- <ul class="packages__list">
+
+                <li class="packages__list__item">
+                    <span class="package__name">
+                        micromegas-tracing-0.2.2
+                    </span>
+                    <span class="package__description">
+                        instrumentation module, part of micromegas
+                    </span>
+                </li>
+
+            </ul> -->
+            <!-- sample package structure -->
+
+            <p class="packages__title">Packages</p>
+            <ul class="packages__list">
+
+                <!-- !DONOTCHANGE a script is going to use this keyword to inject content -->
+                {{packages_list}}
+                <!-- !DONOTCHANGE a script is going to use this keyword to inject content-->
+
+            </ul>
+
+        </section>
+        <!-- packages section -->
+        <!-- packages section -->
+
+    </section>
+
+    <!-- the body section -->
+
+</body>
+<style>
+    :root {
+        --max-width: 1160px;
+        --color-background: #353535;
+        --color-navbar-standard: #ddd;
+        --color-border: #4e4e4e;
+        --color-url: #d2991d;
+        --color-background-code: #2a2a2a;
+        --color-border: #4e4e4e;
+        --color-standard: #c0c0c0;
+    }
+
+    body {
+        padding: 0;
+        margin: 0;
+        position: relative;
+        min-height: 100vh;
+        text-align: center;
+        font: 16px / 1.4 "Fira Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        background-color: var(--color-background);
+        color: var(--color-standard);
+    }
+
+    nav {
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    nav div {
+        max-width: var(--max-width);
+        margin: auto;
+        display: flex;
+        color: white;
+        align-items: center;
+        gap: 10px;
+        padding: 6.4px 16px;
+    }
+
+    nav p {
+        font-size: 12.5px;
+        color: var(--color-navbar-standard);
+        margin: 0;
+        margin-top: 3px;
+    }
+
+    .page__content {
+        max-width: var(--max-width);
+        margin: auto;
+    }
+
+    section.heading {
+        padding-top: 22px;
+        padding-bottom: 60px;
+    }
+
+    .heading__text {
+        display: flex;
+        color: white;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin: 20px 0 10px 0;
+        padding-bottom: 6px;
+        font-size: 46px;
+    }
+
+    .heading__text img {
+        height: 54px;
+        border: 2px solid white;
+        border-radius: 50%;
+    }
+
+    .heading__text h2 {
+        font-size: 48px;
+        padding-bottom: 6px;
+        color: var(--color-brand);
+        margin: 0;
+        margin-top: 7px;
+    }
+
+    .packages {
+        max-width: var(--max-width);
+        margin: auto;
+    }
+
+
+    ul.packages__list {
+        color: white;
+        list-style-type: none;
+        padding-left: 0;
+        margin-top: 0;
+    }
+
+    li.packages__list__item {
+        text-align: left;
+        cursor: pointer;
+        padding: 7px 0px;
+        margin: 0px 16px;
+        transition: 300ms;
+        border-top: 1px solid var(--color-border);
+    }
+
+    .packages__list__item a {
+        display: grid;
+        grid-template-columns: 235px 1fr;
+        gap: 2px 10px;
+        text-decoration: none;
+    }
+
+    li.packages__list__item:hover {
+        background-color: var(--color-background-code);
+    }
+
+    span.package__name {
+        color: var(--color-url);
+        font-weight: bold;
+    }
+
+    span.package__description {
+        color: rgb(192, 192, 192);
+    }
+
+    p.packages__title {
+        color: var(--color-standard);
+        text-align: left;
+        font-weight: bold;
+        padding: 7px 0px;
+        margin: 0px 16px;
+    }
+</style>
+
+</html>

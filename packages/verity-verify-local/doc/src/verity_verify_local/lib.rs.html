@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rs/verify-local/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b0742ba02757f159.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="verity_verify_local" data-themes="" data-resource-suffix="" data-rustdoc-version="1.83.0 (90b35a623 2024-11-26)" data-channel="1.83.0" data-search-js="search-f0d225181b97f9a4.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-f070b9041d14864c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">verity_verify_local/</div>lib.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<a href="#1" id="1">1</a>
+<a href="#2" id="2">2</a>
+<a href="#3" id="3">3</a>
+<a href="#4" id="4">4</a>
+<a href="#5" id="5">5</a>
+<a href="#6" id="6">6</a>
+<a href="#7" id="7">7</a>
+<a href="#8" id="8">8</a>
+<a href="#9" id="9">9</a>
+<a href="#10" id="10">10</a>
+<a href="#11" id="11">11</a>
+<a href="#12" id="12">12</a>
+<a href="#13" id="13">13</a>
+<a href="#14" id="14">14</a>
+<a href="#15" id="15">15</a>
+<a href="#16" id="16">16</a>
+<a href="#17" id="17">17</a>
+<a href="#18" id="18">18</a>
+<a href="#19" id="19">19</a>
+<a href="#20" id="20">20</a>
+<a href="#21" id="21">21</a>
+<a href="#22" id="22">22</a>
+<a href="#23" id="23">23</a>
+<a href="#24" id="24">24</a>
+<a href="#25" id="25">25</a>
+<a href="#26" id="26">26</a>
+<a href="#27" id="27">27</a>
+<a href="#28" id="28">28</a>
+<a href="#29" id="29">29</a>
+<a href="#30" id="30">30</a>
+<a href="#31" id="31">31</a>
+<a href="#32" id="32">32</a>
+<a href="#33" id="33">33</a>
+<a href="#34" id="34">34</a>
+<a href="#35" id="35">35</a>
+<a href="#36" id="36">36</a>
+<a href="#37" id="37">37</a></pre></div><pre class="rust"><code><span class="kw">pub mod </span>ecdsa;
+<span class="kw">pub mod </span>merkle;
+
+<span class="attr">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+	<span class="kw">use </span>merkle::validate_merkle_tree;
+
+	<span class="kw">use </span>ecdsa::validate_ecdsa_signature;
+
+	<span class="kw">use super</span>::<span class="kw-2">*</span>;
+
+	<span class="attr">#[test]
+	</span><span class="kw">fn </span>test_validate_merkle_tree() {
+		<span class="kw">let </span>sample_leaves: Vec&lt;String&gt; = <span class="macro">vec!</span>[
+			<span class="string">"HTTP/1.1 200 OK\r\nDate: Sun, 08 Sep 2024 11:32:39 GMT\r\nContent-Type: application/json; charset=utf-8\r\nContent-Length: 209\r\nConnection: close\r\nReport-To: {\"group\":\"heroku-nel\",\"max_age\":3600,\"endpoints\":[{\"url\":\"https://nel.heroku.com/reports?ts=1725782677&amp;sid=e11707d5-02a7-43ef-b45e-2cf4d2036f7d&amp;s=dxmGA3CFr3P4tKzR6kQOerpS%2FCNt3RMuKSMoJYDrIz0%3D\"}]}\r\nReporting-Endpoints: heroku-nel=https://nel.heroku.com/reports?ts=1725782677&amp;sid=e11707d5-02a7-43ef-b45e-2cf4d2036f7d&amp;s=dxmGA3CFr3P4tKzR6kQOerpS%2FCNt3RMuKSMoJYDrIz0%3D\r\nNel: {\"report_to\":\"heroku-nel\",\"max_age\":3600,\"success_fraction\":0.005,\"failure_fraction\":0.05,\"response_headers\":[\"Via\"]}\r\nX-Powered-By: Express\r\nX-Ratelimit-Limit: 1000\r\nX-Ratelimit-Remaining: 999\r\nX-Ratelimit-Reset: 1725782707\r\nVary: Origin, Accept-Encoding\r\nAccess-Control-Allow-Credentials: true\r\nCache-Control: max-age=43200\r\nPragma: no-cache\r\nExpires: -1\r\nX-Content-Type-Options: nosniff\r\nEtag: W/\"d1-AdCHAQW37rE37t8vXTeQZeKV7Cg\"\r\nVia: 1.1 vegur\r\nCF-Cache-Status: HIT\r\nAge: 12482\r\nAccept-Ranges: bytes\r\nServer: cloudflare\r\nCF-RAY: 8bfe9e828bc295f9-JNB\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n{\n  \"userId\": 10,\n  \"id\": 98,\n  \"title\": \"laboriosam dolor voluptates\",\n  \"body\": \"doloremque ex facilis sit sint culpa\\nsoluta assumenda eligendi non ut eius\\nsequi ducimus vel quasi\\nveritatis est dolores\"\n}\n\nGET https://jsonplaceholder.typicode.com/posts/98 HTTP/1.1\r\nhost: jsonplaceholder.typicode.com\r\naccept: XXX\r\ncache-control: XXXXXXXX\r\nconnection: XXXXX\r\naccept-encoding: XXXXXXXX\r\n\r\n"</span>.to_string(),
+			<span class="string">"2ba160a93050b676d0e4ae0b929f145f8382fe5920852cfc3ef550f230c1526a"</span>.to_string()
+		];
+		<span class="kw">let </span>expected_root_hash =
+			<span class="string">"7136b39c952e510735fef9fdb32a47151cc4474b0d718495a71d18ae88787eab"</span>.to_string();
+		<span class="kw">let </span>public_key = <span class="string">"c4bb0da5d7cc269bca64a55e2149e6dc91dc7157"</span>.to_string();
+		<span class="kw">let </span>expected_signature =
+			<span class="string">"07a53a039f4c2f2338d04953ed2c01753f7454b76c38ba86d3058d3cb449e432673069fd5b7ac15916afeced3c0a7a74fe10679f0006f5a93764ef9cbe96c1db1c"</span>.to_string();
+
+		<span class="comment">// generate and validate merkle tree root hash
+		</span><span class="kw">let </span>is_merkle_root_valid = validate_merkle_tree(<span class="kw-2">&amp;</span>sample_leaves, <span class="kw-2">&amp;</span>expected_root_hash);
+
+		<span class="comment">// perform an ecdsa signature verification on the tree root and signature
+		</span><span class="kw">let </span>is_signature_valid = validate_ecdsa_signature(
+			<span class="kw-2">&amp;</span>expected_signature,
+			<span class="kw-2">&amp;</span>expected_root_hash,
+			<span class="kw-2">&amp;</span>public_key
+		).unwrap();
+
+		<span class="macro">assert!</span>(is_merkle_root_valid, <span class="string">"INVALID MERKLE ROOT"</span>);
+		<span class="macro">assert!</span>(is_signature_valid, <span class="string">"INVALID ECDSA SIGNATURE"</span>);
+	}
+}
+</code></pre></div></section></main></body></html>

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_available_balance","get_canister_balance","get_reciept","get_withheld_balance","init","name","owner","public_key","remit","subscribe_to_dc","subscribe_to_pdc","update_remittance"],"mod":["external_router","state","types","utils"]};

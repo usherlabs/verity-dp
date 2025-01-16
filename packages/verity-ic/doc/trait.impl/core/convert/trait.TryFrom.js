@@ -1,0 +1,9 @@
+(function() {
+    var implementors = Object.fromEntries([["verity_ic",[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.83.0/core/convert/trait.TryFrom.html\" title=\"trait core::convert::TryFrom\">TryFrom</a>&lt;<a class=\"struct\" href=\"https://doc.rust-lang.org/1.83.0/alloc/string/struct.String.html\" title=\"struct alloc::string::String\">String</a>&gt; for <a class=\"enum\" href=\"verity_ic/remittance/types/enum.Action.html\" title=\"enum verity_ic::remittance::types::Action\">Action</a>"],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.83.0/core/convert/trait.TryFrom.html\" title=\"trait core::convert::TryFrom\">TryFrom</a>&lt;<a class=\"struct\" href=\"https://doc.rust-lang.org/1.83.0/alloc/string/struct.String.html\" title=\"struct alloc::string::String\">String</a>&gt; for <a class=\"enum\" href=\"verity_ic/remittance/types/enum.Chain.html\" title=\"enum verity_ic::remittance::types::Chain\">Chain</a>"],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.83.0/core/convert/trait.TryFrom.html\" title=\"trait core::convert::TryFrom\">TryFrom</a>&lt;<a class=\"struct\" href=\"https://doc.rust-lang.org/1.83.0/alloc/string/struct.String.html\" title=\"struct alloc::string::String\">String</a>&gt; for <a class=\"struct\" href=\"verity_ic/remittance/types/struct.Wallet.html\" title=\"struct verity_ic::remittance::types::Wallet\">Wallet</a>"]]]]);
+    if (window.register_implementors) {
+        window.register_implementors(implementors);
+    } else {
+        window.pending_implementors = implementors;
+    }
+})()
+//{"start":57,"fragment_lengths":[1344]}
