@@ -19,7 +19,7 @@ The VDP Framework is divided into the following modules:
 - `ic`: Contains libraries and pre-built cross-chain asset manager canisters for the Internet Computer.
 - `rs`: Houses Rust libraries that abstract logic for engaging Verity, and ensuring verifiability in ZK data processing.
   - `verity-client`: A Rust SDK for interfacing with a Verity Prover. Usher Labs manages a Verity Prover to streamline zkTLS proof generation, otherwise you can run your own. For more information, please contact us via Discord.
-  - `verify-remote`: Used for sending TLS proofs/attestations to the IC for partial or full verification.
+  - `verify-remote`: Used for sending TLS proofs/attestations to the IC for partial or full verification.  
     *Only required if using ZK VDPE, or preparing TLS proofs for verification and data processing directly on destination chain.*
     - **Partial verification** is necessary when leveraging the zkVM, maintaining high performance by partially verifying proofs in a replicated compute platform to minimise ZK proving times.
     - **Full verification** is only necessary when the data processed is public, which is rare as the zkVM is designed to maintain data privacy and roll up various TLS attestations into a single succinct proof.
