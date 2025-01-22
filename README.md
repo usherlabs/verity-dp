@@ -12,7 +12,7 @@ This evolution involves extracting the logic within CCAMP that enables the IC as
 
 ## VDP Framework
 
-**Refer to the [Verity Documentation](https://docs.verity.usher.so/build/vdp) for a comprehensive overview of the VDP framework.**
+**Refer to the [Verity Documentation](https://docs.verity.usher.so/build/vdp) for a comprehensive overview of the [VDP Framework](https://docs.verity.usher.so/build/vdp).**
 
 The VDP Framework is divided into the following modules:
 
