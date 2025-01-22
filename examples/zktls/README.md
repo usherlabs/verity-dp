@@ -16,8 +16,9 @@ This means that we start a local IC (Internet Computer) node with Verity Verifie
 
 To do this, we run:
 
-1. Run `dfx start --clean`
-2. Run `dfx deploy`
+1. `cd` into the `ic/managed/verifier` directory
+2. Run `dfx start --clean`
+3. Run `dfx deploy`
 
 ## Step 2: Start Verity
 
@@ -28,7 +29,7 @@ This involves operating a local Notary, and Prover.
 
 ## Step 3: Run the ZK host
 
-From within the `zk/tests/zktls` directory, run:
+From within the `examples/zktls` directory, run:
 
 ```shell
   cargo run
