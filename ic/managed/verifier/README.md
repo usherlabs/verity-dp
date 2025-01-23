@@ -12,8 +12,11 @@ To learn about the Verity Verifier in detail, please refer to the [official docu
 
 **Ensure Rust is configured for for `wasm32-wasip1` target.**
 
+```bash
+rustup target add wasm32-wasip1
+```
+
 To deploy the canister locally, follow these steps:
 
 1. `dfx start --clean`
 2. `dfx deploy`
-
