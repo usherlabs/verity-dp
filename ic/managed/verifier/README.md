@@ -34,3 +34,20 @@ To deploy the canister locally, follow these steps:
 
 1. `dfx start --clean`
 2. `dfx deploy`
+
+### Caveats
+
+**On macOS:** If you are experiencing issues during `cargo build` where the `ring` library fails to compile, this is typically due to `clang` not being found.
+
+To resolve this, you can install `clang` using Homebrew. 
+
+```bash
+brew install clang llvm
+```
+
+Alternatively, you can set the following environment variables:
+
+```bash
+export WASI_SDK_PATH=/usr/local/wasi-sdk-25.0
+export CC_wasm32_wasip1="${WASI_SDK_PATH}/bin/clang"
+```
