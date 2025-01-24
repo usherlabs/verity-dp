@@ -10,11 +10,25 @@ To learn about the Verity Verifier in detail, please refer to the [official docu
 
 ### Prerequisites
 
-**Ensure Rust is configured for for `wasm32-wasip1` target.**
+1. **Ensure Rust is configured for for `wasm32-wasip1` target.**
 
 ```bash
 rustup target add wasm32-wasip1
 ```
+
+2. Install `wasi2ic`
+
+```bash
+cargo install wasi2ic
+```
+
+3. Install `binaryen`
+   1. Download [Binaryen](https://github.com/WebAssembly/binaryen/releases) from the releases page.
+   2. Extract the files - `tar -xzf binaryen-version.tar.gz`
+   3. Move to a directory - `sudo mv binaryen-version/bin/wasm-opt /usr/local/bin/`
+   4. `wasm-opt --version`
+
+### Deployment
 
 To deploy the canister locally, follow these steps:
 
