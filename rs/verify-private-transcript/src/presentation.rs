@@ -31,8 +31,7 @@ use crate::{
     connection::{ConnectionInfo, ServerIdentityProof, ServerIdentityProofError, ServerName},
     signing::VerifyingKey,
     transcript::{
-        encoding::{EncodingProof, PartialOpening},
-        PartialTranscript, TranscriptProof, TranscriptProofError,
+        encoding::EncodingProof, Direction, Idx, PartialTranscript, TranscriptProof, TranscriptProofError
     },
     CryptoProvider,
 };
@@ -52,7 +51,7 @@ pub struct Presentation {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EncodingPayload {
     /// partial openings
-    pub partial_openings: Vec<PartialOpening>,
+    pub partial_openings: Vec<(Direction, Idx)>,
     /// commitment seed
     pub commitment_seed: Vec<u8>,
 }
@@ -86,7 +85,7 @@ impl Presentation {
         self.attestation.clone()
     }
 
-    ///
+    /// genenrate the parameters needed to precompute the encodings required for verification
     pub fn get_encodings_compute_payload(&self) -> EncodingPayload {
         // derive the commitment seed
         let attestation_body = self.attestation.get_attestation_bodyproof();
@@ -95,7 +94,7 @@ impl Presentation {
 
         // derive the partial openings. which are basically a vector of openings without the blinder present.
         let encoding_proof = self.get_encoding_proof();
-        let partial_openings = encoding_proof.generate_partial_openings();
+        let partial_openings = encoding_proof.generate_encoding_parameters();
 
         EncodingPayload {
             partial_openings,

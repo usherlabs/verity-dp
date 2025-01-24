@@ -175,6 +175,9 @@
 
 pub mod attestation;
 pub mod connection;
+pub mod encodings_precompute;
+pub mod fixtures;
+pub mod fixtures_data;
 pub mod hash;
 pub(crate) mod index;
 pub(crate) mod merkle;
@@ -185,9 +188,7 @@ mod secrets;
 pub(crate) mod serialize;
 pub mod signing;
 pub mod transcript;
-pub mod encodings_precompute;
-pub mod fixtures_data;
-pub mod fixtures;
 
+pub use mpz_garble_core::{encoding_state::Full, ChaChaEncoder, EncodedValue};
 pub use provider::CryptoProvider;
 pub use secrets::Secrets;

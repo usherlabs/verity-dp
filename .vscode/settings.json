@@ -1,7 +1,3 @@
 {
-	"rust-analyzer.linkedProjects": [
-		"ic/canisters/asset_manager/Cargo.toml",
-		"examples/zktls/Cargo.toml",
-		"zk/tests/zkvm/Cargo.toml",
-	]
+
 }

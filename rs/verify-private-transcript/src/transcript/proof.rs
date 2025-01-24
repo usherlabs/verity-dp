@@ -6,16 +6,12 @@ use serde::{Deserialize, Serialize};
 use utils::range::ToRangeSet;
 
 use crate::{
-    attestation::Body,
-    hash::Blinded,
-    index::Index,
-    transcript::{
+    attestation::Body, encodings_precompute::EncodingsMapType, hash::Blinded, index::Index, transcript::{
         commit::TranscriptCommitmentKind,
         encoding::{EncodingProof, EncodingProofError, EncodingTree},
         hash::{PlaintextHashProof, PlaintextHashProofError, PlaintextHashSecret},
         Direction, Idx, PartialTranscript, Transcript,
-    },
-    CryptoProvider,
+    }, CryptoProvider
 };
 
 /// Proof of the contents of a transcript.
@@ -94,7 +90,7 @@ impl TranscriptProof {
         self,
         provider: &CryptoProvider,
         attestation_body: &Body,
-        encodings_precompute: Option<&Vec<Vec<u8>>>,
+        encodings_precompute: Option<&EncodingsMapType>,
     ) -> Result<PartialTranscript, TranscriptProofError> {
         let info = attestation_body.connection_info();
 
@@ -120,7 +116,7 @@ impl TranscriptProof {
                 })?
                 .to_owned();
 
-            let seq = proof.verify_with_provider_with_precompute(
+            let seq = proof.verify_with_provider_with_encodings(
                 provider,
                 &info.transcript_length,
                 commitment,

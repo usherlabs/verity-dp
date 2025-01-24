@@ -1,18 +1,14 @@
 use std::{collections::HashMap, fmt};
 
+use mpz_garble_core::{encoding_state::Full, EncodedValue};
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    connection::TranscriptLength,
-    hash::{Blinded, Blinder, HashAlgorithmExt, HashProviderError},
-    merkle::{MerkleError, MerkleProof},
-    transcript::{
+    connection::TranscriptLength, encodings_precompute::EncodingsMapType, hash::{Blinded, Blinder, HashAlgorithmExt, HashProviderError}, merkle::{MerkleError, MerkleProof}, transcript::{
         encoding::{
             new_encoder, tree::EncodingLeaf, Encoder, EncodingCommitment, MAX_TOTAL_COMMITTED_DATA,
-        },
-        Direction, PartialTranscript, Subsequence,
-    },
-    CryptoProvider,
+        }, Direction, Idx, PartialTranscript, Subsequence
+    }, CryptoProvider
 };
 
 /// An opening of a leaf in the encoding tree.
@@ -27,8 +23,9 @@ pub(super) struct Opening {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct PartialOpening {
     pub direction: Direction,
-    pub seq: Subsequence,
+    pub index: Idx,
 }
+
 
 opaque_debug::implement!(Opening);
 
@@ -110,6 +107,7 @@ impl EncodingProof {
             }
 
             let expected_encoding = encoder.encode_subsequence(direction, &seq);
+
             let expected_leaf =
                 Blinded::new_with_blinder(EncodingLeaf::new(expected_encoding), blinder);
 
@@ -131,24 +129,80 @@ impl EncodingProof {
         Ok(transcript)
     }
 
-
-    /// Verify with provider while providing a precompute
+    /// Generates the parameters needed for pre-computing some encodings .
     ///
-    /// Returns the partial sent and received transcripts, respectively.
+    /// Returns the vec containing the required parameters to compute the encodings.
+    pub fn generate_encoding_parameters(
+        self,
+    ) -> Vec<(Direction, Idx)>{
+        let mut encoding_parameters: Vec<(Direction, Idx)> = vec![];
+
+        for (
+            _id,
+            Opening {
+                direction,
+                seq,
+                blinder: _,
+            },
+        ) in self.openings
+        {
+            encoding_parameters.push((direction, seq.idx));
+        }
+
+        encoding_parameters
+
+    }
+
+    /// Generates the encodings for a given pre-generated parameters obtained from `self::generate_encoding_parameters` .
+    ///
+    /// Returns the vec containing the full encoded values.
     ///
     /// # Arguments
     ///
-    /// * `transcript_length` - The length of the transcript.
-    /// * `commitment` - The encoding commitment to verify against.
-    /// * `encodings_precompute` - The precomputed encodings.
-    pub fn verify_with_provider_with_precompute(
+    /// * `encodings_input` - The inputs to the encoding function containing items from the openings
+    /// * `commitment_seed` - The encoding commitment to verify against.
+    pub fn generate_byte_encodings(
+        self,
+        encodings_input: Vec<(Direction, Idx)>,
+        commitment_seed: &Vec<u8>,
+    ) -> Vec<Vec<EncodedValue<Full>>>{
+        let mut byte_encodings = vec![];
+        let seed: [u8; 32] = commitment_seed.clone().try_into().map_err(|_| {
+            EncodingProofError::new(ErrorKind::Commitment, "encoding seed not 32 bytes")
+        }).unwrap();
+
+        let encoder = new_encoder(seed);
+
+        for (direction, seq_idx) in encodings_input {
+            let generated_encodings = encoder.generate_encoded_bytes(direction, &seq_idx);
+            byte_encodings.push(generated_encodings);
+        }
+
+        return byte_encodings
+    }
+
+    /// Generates the encodings for a given pre-generated parameters obtained from `self::generate_encoding_parameters` .
+    ///
+    /// Returns the vec containing the full encoded values.
+    ///
+    /// # Arguments
+    ///
+    /// * `encodings_input` - The inputs to the encoding function containing items from the openings
+    /// * `commitment_seed` - The encoding commitment to verify against.
+    pub fn verify_with_provider_with_encodings(
         self,
         provider: &CryptoProvider,
         transcript_length: &TranscriptLength,
         commitment: &EncodingCommitment,
-        encodings_precompute: &Vec<Vec<u8>>
-    ) -> Result<PartialTranscript, EncodingProofError> {
+        encodings_precompute: &EncodingsMapType
+    ) -> Result<PartialTranscript, EncodingProofError>{
+        
         let hasher = provider.hash.get(&commitment.root.alg)?;
+        let seed: [u8; 32] = commitment.seed.clone().try_into().map_err(|_| {
+            EncodingProofError::new(ErrorKind::Commitment, "encoding seed not 32 bytes")
+        })?;
+
+        let encoder = new_encoder(seed);
 
         let Self {
             inclusion_proof,
@@ -166,7 +220,6 @@ impl EncodingProof {
             ))?;
         }
 
-        let mut num_opened = 0;
         let mut leaves = Vec::with_capacity(openings.len());
         let mut transcript = PartialTranscript::new(sent_len, recv_len);
         let mut total_opened = 0u128;
@@ -208,7 +261,10 @@ impl EncodingProof {
                 ));
             }
 
-            let expected_encoding = encodings_precompute[num_opened].clone();
+            let all_encodings = encodings_precompute.get(&(direction, seq.clone().idx)).unwrap().clone();
+            let expected_encoding = encoder.encode_subsequence_with_precompute(
+                direction, &seq, all_encodings
+            );
             let expected_leaf =
                 Blinded::new_with_blinder(EncodingLeaf::new(expected_encoding), blinder);
 
@@ -218,9 +274,6 @@ impl EncodingProof {
 
             // Union the authenticated subsequence into the transcript.
             transcript.union_subsequence(direction, &seq);
-
-            // increment the opened count
-            num_opened += 1;
         }
 
         // Verify that the expected hashes are present in the merkle tree.
@@ -233,21 +286,6 @@ impl EncodingProof {
         Ok(transcript)
     }
 
-    /// Generates a vector of partial openings with only the direction and sequence without the blinder
-    /// 
-    /// Returns the opening witout the blinders giving partial openings
-    pub fn generate_partial_openings(&self) -> Vec<PartialOpening> {
-        let openings = self.openings.clone();
-        let mut partial_openings = vec![];
-        for (_, opening) in openings {
-            partial_openings.push(PartialOpening {
-                direction: opening.direction,
-                seq: opening.seq,
-            });
-        }
-
-        partial_openings
-    }
 }
 
 /// Error for [`EncodingProof`].

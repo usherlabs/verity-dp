@@ -11,15 +11,23 @@
 //! enabling optimized verification by eliminating the need to compute encodings on the fly.
 //! This approach leverages the provided encodings for a more efficient verification process.
 
+use std::collections::HashMap;
+
+use mpz_garble_core::{encoding_state::Full, EncodedValue};
+
 use crate::{
     presentation::Presentation,
     transcript::{
-        encoding::{new_encoder, Encoder, EncodingProofError, ErrorKind, PartialOpening},
-        PartialTranscript, TranscriptProofError,
+        encoding::{new_encoder, Encoder, EncodingProofError, ErrorKind},
+        Direction, Idx, PartialTranscript, TranscriptProofError,
     },
     CryptoProvider,
 };
 
+/// The hashmap from direction and index to the precomputed encodings
+pub type EncodingsMapType = HashMap<(Direction, Idx), Vec<EncodedValue<Full>>>;
+
+// pub fn generate_encodings() -> {}
 /// Generates encodings for a given commitment_seed and openings
 ///
 /// # Arguments
@@ -27,22 +35,22 @@ use crate::{
 /// * `partial_openings` - The partial openings i.e openings without the blinder
 /// * `commitment_seed` - The seed to be used to generate an encoder
 pub fn generate(
-    partial_opening: &Vec<PartialOpening>,
+    partial_opening: &Vec<(Direction, Idx)>,
     commitment_seed: &Vec<u8>,
-) -> Result<Vec<Vec<u8>>, Box<dyn std::error::Error>> {
+) -> Result<EncodingsMapType, Box<dyn std::error::Error>> {
+    let mut byte_encodings: EncodingsMapType = EncodingsMapType::default();
     let seed: [u8; 32] = commitment_seed.clone().try_into().map_err(|_| {
         EncodingProofError::new(ErrorKind::Commitment, "encoding seed not 32 bytes")
     })?;
-    let mut computed_encodings = vec![];
 
-    // iterate through all the partial openings and generate a corresponging encoding
-    for PartialOpening { direction, seq } in partial_opening {
-        let encoder = new_encoder(seed);
-        let expected_encoding = encoder.encode_subsequence(direction.to_owned(), seq);
-        computed_encodings.push(expected_encoding);
+    let encoder = new_encoder(seed);
+
+    for (direction, seq_idx) in partial_opening {
+        let generated_encodings = encoder.generate_encoded_bytes(direction.clone(), &seq_idx);
+        byte_encodings.insert((direction.clone(), seq_idx.clone()), generated_encodings);
     }
 
-    Ok(computed_encodings)
+    return Ok(byte_encodings);
 }
 
 /// Verifies a provided presentation along with the precomputed encodings provided
@@ -53,7 +61,7 @@ pub fn generate(
 /// * `precomputed_encodings` - The precomputed encodings to be used in the verification process  
 pub fn verify(
     presentation: &Presentation,
-    precomputed_encodings: Option<&Vec<Vec<u8>>>,
+    precomputed_encodings: Option<&EncodingsMapType>,
 ) -> Result<PartialTranscript, TranscriptProofError> {
     // use the encodings to verify the presentation's transcript in the 'ZKVM'
     let provider = CryptoProvider::default();
@@ -72,6 +80,27 @@ pub fn verify(
     partial_transcript
 }
 
+///
+pub fn verify_raw(
+    presentation: &Presentation,
+) -> Result<PartialTranscript, TranscriptProofError> {
+    // use the encodings to verify the presentation's transcript in the 'ZKVM'
+    let provider = CryptoProvider::default();
+    let attestation_body = presentation
+        .get_attestation()
+        .get_attestation_bodyproof()
+        .body;
+
+    let transcript_proof = presentation.get_transcript().unwrap();
+    let partial_transcript = transcript_proof.verify_with_provider(
+        &provider,
+        &attestation_body,
+    );
+
+    partial_transcript
+}
+
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -88,6 +117,7 @@ mod tests {
         let bytes_input: Vec<u8> =
             fs::read("src/fixtures_data/data/example.presentation.tlsn").unwrap();
         let presentation: Presentation = bincode::deserialize(&bytes_input).unwrap();
+
         let EncodingPayload {
             partial_openings,
             commitment_seed,
