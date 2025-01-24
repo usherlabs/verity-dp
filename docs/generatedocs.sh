@@ -40,7 +40,7 @@ main() {
         target_dir="./packages/$package_name"
 
         # Run the command to generate the docs
-        cargo doc --manifest-path "$manifest_path" --target-dir "$target_dir"
+        cargo doc --no-deps --manifest-path "$manifest_path" --target-dir "$target_dir"
         path_to_docs=("./packages/$package_name/doc/$underscore_package_name/index.html")
 
         # Delete the build file because it takes space and is unnecessary to the docs
