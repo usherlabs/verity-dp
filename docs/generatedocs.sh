@@ -7,7 +7,7 @@ main() {
     projects_dirs=(
         "../ic/libraries"
         "../rs/verify-local"
-        "../rs/verify-remote"
+        "../rs/verify-remote-precompute"
         "../rs/verify-tls"
         "../rs/verity-client"
         "../zk/guest"

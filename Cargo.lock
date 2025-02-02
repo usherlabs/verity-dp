@@ -5653,7 +5653,7 @@ dependencies = [
  "serde",
  "serde_json",
  "tlsn-core-no-session",
- "verity-verify-remote",
+ "verity-verify-remote-precompute",
 ]
 
 [[package]]
@@ -5703,7 +5703,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "verity-verify-remote"
+name = "verity-verify-remote-precompute"
 version = "0.2.4"
 dependencies = [
  "anyhow",

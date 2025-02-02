@@ -5,7 +5,7 @@ members = [
     "rs/tests/load",
     "rs/tlsn-core-no-session",
     "rs/verify-local",
-    "rs/verify-remote",
+    "rs/verify-remote-precompute",
     "rs/verify-tls",
     "rs/verity-client",
     "zk/guest",
@@ -71,5 +71,5 @@ uuid = "1.11.0"
 verity-client = { path = "./rs/verity-client" }
 verity-ic = { path = "./ic/libraries" }
 verity-verify-local = { path = "./rs/verify-local" }
-verity-verify-remote = { path = "./rs/verify-remote" }
+verity-verify-remote-precompute = { path = "./rs/verify-remote-precompute" }
 verity-verify-tls = { path = "./rs/verify-tls" }
