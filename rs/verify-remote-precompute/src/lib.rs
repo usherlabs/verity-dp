@@ -2,7 +2,7 @@ pub mod config;
 pub mod ic;
 
 #[cfg(test)]
-mod tests {
+mod precompute_test {
 	use config::Config;
 	use ic::{ Verifier, DEFAULT_IC_GATEWAY_LOCAL };
 
