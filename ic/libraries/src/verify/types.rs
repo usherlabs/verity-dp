@@ -44,7 +44,7 @@ impl ProofResponse {
                     return "".to_string();
                 }
 
-                if http_parts[2].contains("application/json") {
+                if http_parts[0].contains("application/json") {
                     if let Some(start) = http_parts[1].find('{') {
                         if let Some(end) = http_parts[1].rfind('}') {
                             return http_parts[1][start..=end].to_string();
@@ -52,7 +52,7 @@ impl ProofResponse {
                     }
                 }
 
-                http_parts[2].to_string()
+                http_parts[1].to_string()
             }
             ProofResponse::SessionProof(_) => {
                 panic!("Cannot extract HTTP response for session proof")
