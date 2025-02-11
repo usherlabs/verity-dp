@@ -40,7 +40,6 @@ impl ProofResponse {
             ProofResponse::FullProof(text) => {
                 // Start of Selection
                 let http_parts: Vec<&str> = text.split("\n\n").filter(|s| !s.is_empty()).collect();
-                let response = http_parts[1].to_string();
 
                 // if empty body amd empty request is returned
                 if http_parts.len() == 2 {
@@ -55,9 +54,7 @@ impl ProofResponse {
                     }
                 }
 
-                let response_parts: Vec<&str> = response.split("\r\n\r\n").collect();
-                let http_body = response_parts[1].to_string();
-                http_body
+                http_parts[2].to_string()
             }
             ProofResponse::SessionProof(_) => {
                 panic!("Cannot extract HTTP response for session proof")
