@@ -1,6 +1,5 @@
-// Start of Selection
-use std::vec;
-
+use std::{collections::HashMap, vec};
+use httparse;
 use anyhow::Result;
 use candid::CandidType;
 use serde::Deserialize;
@@ -38,10 +37,9 @@ impl ProofResponse {
     pub fn get_http_response_body(&self) -> String {
         match self {
             ProofResponse::FullProof(text) => {
-                // Start of Selection
                 let http_parts: Vec<&str> = text.split("\n\n").filter(|s| !s.is_empty()).collect();
 
-                // if empty body amd empty request is returned
+                // if empty body and empty request is returned
                 if http_parts.len() == 2 {
                     return "".to_string();
                 }
@@ -55,6 +53,47 @@ impl ProofResponse {
                 }
 
                 http_parts[2].to_string()
+            }
+            ProofResponse::SessionProof(_) => {
+                panic!("Cannot extract HTTP response for session proof")
+            }
+        }
+    }
+
+    /// Parses the HTTP response and extracts the JSON response body.
+    /// This is applicable only for `FullProof`.
+    pub fn get_http_headers(&self) -> Result<HashMap<String, String>, String> {
+        match self {
+            ProofResponse::FullProof(text) => {
+                // if empty body and empty request is returned
+                let response_bytes=  text.as_bytes();
+
+                // Prepare space for headers
+                let mut headers = [httparse::EMPTY_HEADER; 64]; //64 max response header count
+                let mut parsed_response = httparse::Response::new(&mut headers);
+
+                // Parse the response
+                match parsed_response.parse(response_bytes) {
+                    Ok(httparse::Status::Complete(header_length)) => {
+                        let mut result = HashMap::new();
+
+                        // Insert status code
+                        if let Some(code) = parsed_response.code {
+                            result.insert("Status".to_string(), code.to_string());
+                        }
+
+                        // Insert headers into HashMap
+                        for header in parsed_response.headers.iter() {
+                            if let Ok(value) = std::str::from_utf8(header.value) {
+                                result.insert(header.name.to_string(), value.to_string());
+                            }
+                        }
+
+                        Ok(result)
+                    }
+                    Ok(httparse::Status::Partial) => Err("Incomplete HTTP response".to_string()),
+                    Err(e) => Err(format!("Failed to parse HTTP response: {:?}", e)),
+                }
             }
             ProofResponse::SessionProof(_) => {
                 panic!("Cannot extract HTTP response for session proof")
@@ -77,44 +116,10 @@ impl ProofResponse {
 mod type_test {
     use super::*;
 
-    #[test]
-    fn test_verification_canister_response_success() {
-        let proof = ProofResponse::SessionProof("hashed_content".to_string());
-        let verification_response = VerificationResponse {
-            results: vec![proof.clone()],
-            root: "abcd1234".to_string(),
-            signature: "signature1234".to_string(),
-        };
-        let response: VerificationCanisterResponse = Ok(verification_response.clone());
-
-        assert!(response.is_ok());
-        let res = response.unwrap();
-        assert_eq!(res.results.len(), 1);
-        assert_eq!(res.root, "abcd1234");
-        assert_eq!(res.signature, "signature1234");
-    }
-
-    #[test]
-    fn test_verification_canister_response_failure() {
-        let response: VerificationCanisterResponse = Err("error_message".to_string());
-
-        assert!(response.is_err());
-        let err = response.unwrap_err();
-        assert_eq!(err, "error_message");
-    }
-
-    #[test]
-    #[should_panic(expected = "Cannot extract HTTP response for session proof")]
-    fn test_proof_response_get_http_response_body_session_proof_panic() {
-        let proof = ProofResponse::SessionProof("session_hash".to_string());
-        proof.get_http_response_body();
-    }
-
-    #[test]
-    fn test_proof_response_get_http_response_body_full_proof_json() {
-        let test_cases = [
-            (
-                r#"HTTP/1.1 200 OK
+    // Define shared test cases to avoid duplication
+    const TEST_CASES: &[(&str, &str,&str)] = &[
+        (
+            r#"HTTP/1.1 200 OK
 Date: Mon, 10 Feb 2025 23:41:20 GMT
 Content-Type: application/json; charset=utf-8
 Transfer-Encoding: chunked
@@ -147,8 +152,6 @@ alt-svc: h3=":443"; ma=86400
 {"bitcoin":{"usd":97334}}
 0
 
-
-
 GET https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd HTTP/1.1
 host: api.coingecko.com
 accept: */*
@@ -159,10 +162,11 @@ content-type: application/json
 x-api-key: XXXXXX
 
 "#,
-                r#"{"bitcoin":{"usd":97334}}"#.to_string(),
-            ),
-            (
-                r#"HTTP/1.1 200 OK
+            r#"{"bitcoin":{"usd":97334}}"#,
+            "200"
+        ),
+        (
+            r#"HTTP/1.1 200 OK
 Date: Mon, 10 Feb 2025 23:56:29 GMT
 Content-Type: application/json
 Content-Length: 779
@@ -230,7 +234,7 @@ accept-encoding: identity
 content-type: application/json
 authorization: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 "#,
-                r#"{
+            r#"{
 "object": "list",
 "data": [
     {
@@ -270,11 +274,11 @@ authorization: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     "owned_by": "system"
     }
 ]
-}"#
-                .to_string(),
-            ),
-            (
-                r#"
+}"#,
+"200"
+        ),
+        (
+            r#"
 HTTP/1.1 201 Created
 Date: Fri, 21 Jun 2024 12:35:32 GMT
 Content-Type: application/json; charset=utf-8
@@ -321,16 +325,17 @@ content-length: 48
 
 {"title": "usher", "body": "labs", "userId": XX}
 "#,
-                r#"{
+            r#"{
 "title": "usher",
 "body": "labs",
 "userId": XX,
 "id": XX1
-}"#
-                .to_string(),
-            ),
-            (
-                r#"
+}"#,
+"201"
+
+        ),
+        (
+            r#"
 HTTP/1.1 200 OK
 Date: Mon, 10 Feb 2025 23:36:49 GMT
 Content-Type: application/json; charset=utf-8
@@ -364,8 +369,6 @@ alt-svc: h3=":443"; ma=86400
 {"bitcoin":{"usd":97281}}
 0
 
-
-
 GET https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd HTTP/1.1
 host: api.coingecko.com
 accept: */*
@@ -376,14 +379,71 @@ content-type: application/json
 x-api-key: XXXXXX
 content-length: 48
 "#,
-                r#"{"bitcoin":{"usd":97281}}"#.to_string(),
-            ),
-        ];
+            r#"{"bitcoin":{"usd":97281}}"#,
+            "200"
+        ),
+    ];
 
-        for (input, expected) in &test_cases {
+    #[test]
+    fn test_verification_canister_response_success() {
+        let proof = ProofResponse::SessionProof("hashed_content".to_string());
+        let verification_response = VerificationResponse {
+            results: vec![proof.clone()],
+            root: "abcd1234".to_string(),
+            signature: "signature1234".to_string(),
+        };
+        let response: VerificationCanisterResponse = Ok(verification_response.clone());
+
+        assert!(response.is_ok());
+        let res = response.unwrap();
+        assert_eq!(res.results.len(), 1);
+        assert_eq!(res.root, "abcd1234");
+        assert_eq!(res.signature, "signature1234");
+    }
+
+    #[test]
+    fn test_verification_canister_response_failure() {
+        let response: VerificationCanisterResponse = Err("error_message".to_string());
+
+        assert!(response.is_err());
+        let err = response.unwrap_err();
+        assert_eq!(err, "error_message");
+    }
+
+    #[test]
+    #[should_panic(expected = "Cannot extract HTTP response for session proof")]
+    fn test_proof_response_get_http_response_body_session_proof_panic() {
+        let proof = ProofResponse::SessionProof("session_hash".to_string());
+        proof.get_http_response_body();
+    }
+
+    #[test]
+    fn test_proof_response_get_http_response_body_full_proof_json() {
+        for (input, expected,_) in TEST_CASES {
             let proof = ProofResponse::FullProof(input.to_string());
             let http_body = proof.get_http_response_body();
             assert_eq!(http_body, *expected);
+        }
+    }
+
+    #[test]
+    fn test_proof_response_get_http_response_header_full_proof_json() {
+        for (input, expected,status_code) in TEST_CASES {
+            let proof = ProofResponse::FullProof(input.to_string());
+            let headers_result = proof.get_http_headers();
+            assert!(headers_result.is_ok(), "Failed to parse headers for input: {}", input);
+            let headers = headers_result.unwrap();
+
+            // Example assertions for specific headers
+            assert!(
+                headers.get("Content-Type").unwrap().contains("application/json"),
+                "Content-Type header mismatch for input: {}",
+                input
+            );
+            assert_eq!(
+                headers.get("Status").unwrap(),
+                status_code
+            );
         }
     }
 }

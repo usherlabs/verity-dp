@@ -26,7 +26,7 @@ jobs:
 
 
       - name: run Verify Test
-        run: |
+        run: | 
           rustup update
           cargo test -- --skip async_test_example // Skip async_test_example because of its dependency on a pem file
       
