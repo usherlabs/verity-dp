@@ -74,7 +74,7 @@ impl ProofResponse {
 
                 // Parse the response
                 match parsed_response.parse(response_bytes) {
-                    Ok(httparse::Status::Complete(header_length)) => {
+                    Ok(httparse::Status::Complete(_header_length)) => {
                         let mut result = HashMap::new();
 
                         // Insert status code

@@ -88,14 +88,25 @@ pub fn verify_proof_requests(
 	proof_responses
 }
 
-pub async fn verify_and_sign_proof_requests(
-	proof_requests: Vec<String>,
-	notary_pub_key: String
-) -> Result<DirectVerificationResponse, String> {
-	// iterate through the proofs and try verifying them
-	let proof_responses: Vec<ProofResponse> = verify_proof_requests(proof_requests, notary_pub_key);
+pub fn verify_proof_requests_batch(
+	batches: Vec<(Vec<String>, String)>
+) -> Vec<ProofResponse> {
+	batches.into_iter().flat_map(|(proof_requests, notary_pub_key)| {
+        // Unescape the public key.
+        let notary_pub_key = notary_pub_key.replace("\\n", "\n");
 
-	// generate a merkle tree based on  the content of the proof responses as leaves
+        // Process each proof request in this batch.
+        proof_requests.into_iter().map(|proof_str| {
+            let proof_request: ProofRequest = proof_str.try_into().unwrap();
+            proof_request.verify_request(&notary_pub_key).unwrap()
+        }).collect::<Vec<ProofResponse>>()
+    }).collect()
+}
+
+async fn process_and_sign(
+	proof_responses: Vec<ProofResponse>
+)->Result<DirectVerificationResponse, String>{
+    // generate a merkle tree based on  the content of the proof responses as leaves
 	let merkle_tree = generate_merkle_tree(&proof_responses);
 	let merkle_root = merkle_tree.root().expect("NOT ENOUGH LEAVES");
 	let merkle_root = hex::encode(merkle_root);
@@ -111,4 +122,25 @@ pub async fn verify_and_sign_proof_requests(
 		root: merkle_root.clone(),
 		signature,
 	})
+}
+
+pub async fn verify_and_sign_proof_requests(
+	proof_requests: Vec<String>,
+	notary_pub_key: String
+) -> Result<DirectVerificationResponse, String> {
+	// iterate through the proofs and try verifying them
+	let proof_responses: Vec<ProofResponse> = verify_proof_requests(proof_requests, notary_pub_key);
+
+	return process_and_sign(proof_responses).await;
+}
+
+
+
+pub async fn verify_and_sign_proof_requests_batch(
+	batches :Vec<( Vec<String>, String)>
+) -> Result<DirectVerificationResponse, String> {
+	// iterate through the proofs and try verifying them
+	let proof_responses: Vec<ProofResponse> = verify_proof_requests_batch(batches);
+
+	return process_and_sign(proof_responses).await;
 }
