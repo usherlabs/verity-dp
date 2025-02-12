@@ -1,7 +1,13 @@
 use crate::state::CONFIG;
 use candid::Principal;
 use ic_cdk::storage;
-use proof::{ verify_and_sign_proof_requests, verify_proof_requests, verify_proof_requests_batch, verify_and_sign_proof_requests_batch, DirectVerificationResponse };
+use proof::{ 
+	verify_and_sign_proof_requests, 
+	verify_proof_requests, 
+	verify_proof_requests_batch, 
+	verify_and_sign_proof_requests_batch, 
+	ProofBatch,
+	DirectVerificationResponse };
 use utils::init_canister;
 use verity_ic::{
 	crypto::{
@@ -42,7 +48,7 @@ async fn verify_proof_async(
 /// Asynchronously verifies batch proof requests; intended for canister calls
 #[ic_cdk::update]
 async fn verify_proof_async_batch(
-	batches: Vec<(Vec<String>, String)>
+	batches: Vec<ProofBatch>
 ) ->Vec<ProofResponse> {
 	let verification_responses = verify_proof_requests_batch(batches);
 	verification_responses
@@ -63,7 +69,7 @@ async fn verify_proof_direct(
 /// Returns a detailed verification response
 #[ic_cdk::update]
 async fn verify_proof_direct_batch(
-	batches: Vec<(Vec<String>, String)>
+	batches: Vec<ProofBatch>
 ) -> Result<DirectVerificationResponse, String> {
 	verify_and_sign_proof_requests_batch(batches).await
 }

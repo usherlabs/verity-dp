@@ -17,6 +17,12 @@ pub struct DirectVerificationResponse {
 	pub signature: String,
 }
 
+#[derive(CandidType, Deserialize)]
+pub struct ProofBatch {
+    pub proof_requests: Vec<String>,
+    pub notary_pub_key: String,
+}
+
 #[derive(CandidType, Deserialize, Debug, Clone)]
 pub enum ProofRequest {
 	SessionProof(String),
@@ -88,20 +94,20 @@ pub fn verify_proof_requests(
 	proof_responses
 }
 
-pub fn verify_proof_requests_batch(
-	batches: Vec<(Vec<String>, String)>
-) -> Vec<ProofResponse> {
-	batches.into_iter().flat_map(|(proof_requests, notary_pub_key)| {
-        // Unescape the public key.
-        let notary_pub_key = notary_pub_key.replace("\\n", "\n");
 
-        // Process each proof request in this batch.
-        proof_requests.into_iter().map(|proof_str| {
-            let proof_request: ProofRequest = proof_str.try_into().unwrap();
-            proof_request.verify_request(&notary_pub_key).unwrap()
-        }).collect::<Vec<ProofResponse>>()
-    }).collect()
+pub fn verify_proof_requests_batch(batches: Vec<ProofBatch>) -> Vec<ProofResponse> {
+	batches.into_iter().flat_map(|batch| {
+		// Unescape special characters in the public key.
+		let notary_pub_key = batch.notary_pub_key.replace("\\n", "\n");
+
+		// Process each proof request in this batch.
+		batch.proof_requests.into_iter().map(|proof_str| {
+			let proof_request: ProofRequest = proof_str.try_into().unwrap();
+			proof_request.verify_request(&notary_pub_key).unwrap()
+		}).collect::<Vec<ProofResponse>>()
+	}).collect()
 }
+	
 
 async fn process_and_sign(
 	proof_responses: Vec<ProofResponse>
@@ -137,7 +143,7 @@ pub async fn verify_and_sign_proof_requests(
 
 
 pub async fn verify_and_sign_proof_requests_batch(
-	batches :Vec<( Vec<String>, String)>
+	batches :Vec<ProofBatch>
 ) -> Result<DirectVerificationResponse, String> {
 	// iterate through the proofs and try verifying them
 	let proof_responses: Vec<ProofResponse> = verify_proof_requests_batch(batches);
