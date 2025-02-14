@@ -5666,6 +5666,7 @@ dependencies = [
  "eth-encode-packed",
  "getrandom",
  "hex",
+ "httparse",
  "ic-cdk 0.17.1",
  "ic-cdk-timers",
  "libsecp256k1",
