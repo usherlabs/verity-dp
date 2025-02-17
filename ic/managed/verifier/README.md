@@ -37,6 +37,8 @@ To deploy the canister locally, follow these steps:
 
 ### Caveats
 
+#### `clang` dependency
+
 **On macOS:** If you are experiencing issues during `cargo build` where the `ring` library fails to compile, this is typically due to `clang` not being found.
 
 To resolve this, you can install `clang` using Homebrew. 
@@ -51,3 +53,13 @@ Alternatively, you can set the following environment variables:
 export WASI_SDK_PATH=/usr/local/wasi-sdk-25.0
 export CC_wasm32_wasip1="${WASI_SDK_PATH}/bin/clang"
 ```
+
+#### `etherum_pk`
+
+The `etherum_pk` field in the `PublicKeyReply` struct is the Ethereum address derived from the Sec1 public key. This is done using the `get_address_from_public_key` function in the `ethereum` module.
+
+```rust
+let address = ethereum::get_address_from_public_key(res.public_key.clone()).expect("INVALID_PUBLIC_KEY");
+```
+
+*It should be spelled `ethereum_pk` and not `etherum_pk`.*
