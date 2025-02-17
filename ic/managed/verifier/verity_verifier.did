@@ -22,10 +22,17 @@ type DirectVerificationResult = variant {
 	Err : text;
 };
 
+type ProofBatch = record {
+  proof_requests : vec text;
+  notary_pub_key : text;
+};
+
 
 service : {
 	"ping" : () -> (text) query;
 	"verify_proof_direct" : (proof_requests : vec text, notary_pub_key : text) -> (DirectVerificationResult);
 	"verify_proof_async" : (proof_requests : vec text, notary_pub_key : text) -> (ProofVerificationResponse);
-	"public_key" : () -> (record { sec1_pk : text; etherum_pk : text });
+  	"verify_proof_direct_batch": (batches: vec ProofBatch) -> (DirectVerificationResult);
+  	"verify_proof_async_batch" : (batches: vec ProofBatch) -> (ProofVerificationResponse);
+	"public_key" : () -> (record { sec1_pk : text; ethereum_pk : text });
 };
