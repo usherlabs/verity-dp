@@ -35,6 +35,11 @@ To deploy the canister locally, follow these steps:
 1. `dfx start --clean`
 2. `dfx deploy`
 
+### Test
+
+1. `yarn prep`
+2. `yarn test`
+
 ### Caveats
 
 **On macOS:** If you are experiencing issues during `cargo build` where the `ring` library fails to compile, this is typically due to `clang` not being found.

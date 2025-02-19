@@ -52,7 +52,6 @@ async fn verify_proof_async_batch(
 ) ->Vec<ProofResponse> {
 	let verification_responses = verify_proof_requests_batch(batches);
 	verification_responses
-
 }
 
 /// Asynchronously verifies proof requests; intended for direct user calls
