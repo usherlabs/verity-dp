@@ -167,18 +167,15 @@ impl VerityClient {
                 e
             })?;
 
-            if response.status().is_success() {
+            // If T-PROOF-ID header has value, wait for the proof with the timeout,
+            // otherwise stop waiting
+            if response.headers().get("T-PROOF-ID").is_some() {
                 tokio::spawn(async move {
                     tokio::time::sleep(PROOF_TIMEOUT).await;
                     timeout_cancellation_token.cancel();
                 });
             } else {
                 request_cancellation_token.cancel();
-                error!(
-                    "Request is not success: {} {}",
-                    response.status().as_str(),
-                    response.status().canonical_reason().unwrap_or_default()
-                );
                 return Ok(response);
             }
 
