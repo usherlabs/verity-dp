@@ -37,8 +37,8 @@ To deploy the canister locally, follow these steps:
 
 ### Test
 
-1. `yarn prep`
-2. `yarn test`
+1. `pnpm prep`
+2. `pnpm test --run`
 
 ### Caveats
 
