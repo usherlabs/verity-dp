@@ -35,6 +35,11 @@ To deploy the canister locally, follow these steps:
 1. `dfx start --clean`
 2. `dfx deploy`
 
+### Test
+
+1. `pnpm prep`
+2. `pnpm test --run`
+
 ### Caveats
 
 #### `clang` dependency
