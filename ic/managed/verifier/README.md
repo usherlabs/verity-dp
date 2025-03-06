@@ -46,7 +46,7 @@ We have benchmarked the following functions to provide insight into their perfor
 
 #### verify_proof_async and verify_proof_async_batch
 
-- **Execution Time:** Constant time, regardless of input size.
+- **Execution Time:** Constant time, regardless of input size(~2100ms).   
 - **DFX Cycle Cost:** Ranges between 550-720 per TLS data bytes/length.
 
 #### verify_proof_direct and verify_proof_direct_batch
