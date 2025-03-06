@@ -1,7 +1,7 @@
 import { Secp256k1KeyIdentity } from "@dfinity/identity";
 import hdkey from "hdkey";
 import bip39 from "bip39";
-``;
+
 // Completely insecure seed phrase. Do not use for any purpose other than testing.
 const seed =
   "peacock peacock peacock peacock peacock peacock peacock peacock peacock peacock peacock peacock";
