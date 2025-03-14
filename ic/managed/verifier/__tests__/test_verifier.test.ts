@@ -1,8 +1,7 @@
 import { describe, expect, test, Vitest, vitest } from "vitest";
 import { getCanisterCycles, verifyVerifier, verifyVerifierCanister } from "./actor";
-import { readFileSync, readdirSync } from "fs"
-// biome-ignore lint/style/useImportType: <explanation>
-import { ProofVerificationResponse } from "../src/declarations/verity_verifier/verity_verifier.did";
+import { readFileSync, readdirSync } from "node:fs"
+import type { ProofVerificationResponse } from "../src/declarations/verity_verifier/verity_verifier.did";
 
 const test_files = readdirSync("./fixtures/").filter(file => file.endsWith(".json")).map(elem => readFileSync(`./fixtures/${elem}`, "utf8"))
 const public_key = readFileSync("./fixtures/notary.pub", "utf8")
