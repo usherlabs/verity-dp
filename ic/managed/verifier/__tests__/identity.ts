@@ -1,10 +1,9 @@
 import { Secp256k1KeyIdentity } from "@dfinity/identity";
-import hdkey from "hdkey";
 import bip39 from "bip39";
+import hdkey from "hdkey";
 
 // Completely insecure seed phrase. Do not use for any purpose other than testing.
-const seed =
-  "peacock peacock peacock peacock peacock peacock peacock peacock peacock peacock peacock peacock";
+const seed = "peacock peacock peacock peacock peacock peacock peacock peacock peacock peacock peacock peacock";
 
 export const identityFromSeed = async (phrase) => {
   const seed = await bip39.mnemonicToSeed(phrase);

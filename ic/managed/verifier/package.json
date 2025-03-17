@@ -6,7 +6,11 @@
   "scripts": {
     "test": "vitest",
     "ci": "vitest run",
-    "prep": "dfx stop; dfx start --background --clean; dfx deploy; dfx generate"
+    "prep": "dfx stop; dfx start --background --clean; dfx deploy; dfx generate",
+    "prepare": "husky",
+    "format": "biome format __tests__/ --fix",
+    "lint": "biome check __tests__/",
+    "lint:fix": "biome check __tests__/ --fix"
   },
   "keywords": [],
   "author": "",
@@ -21,8 +25,16 @@
     "hdkey": "^2.0.1",
     "isomorphic-fetch": "^3.0.0"
   },
+  "lint-staged": {
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,json,jsonc}": [
+      "biome check --apply --no-errors-on-unmatched"
+    ]
+  },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "child_process": "^1.0.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
     "vitest": "^0.17.1"
   }
 }
