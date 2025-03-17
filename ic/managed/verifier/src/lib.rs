@@ -33,7 +33,7 @@ fn ping() -> String {
 }
 
 /// Asynchronously verifies proof requests; intended for canister calls
-#[ic_cdk::update]
+#[ic_cdk::query]
 async fn verify_proof_async(
     proof_requests: Vec<String>,
     notary_pub_key: String,
@@ -43,7 +43,7 @@ async fn verify_proof_async(
 }
 
 /// Asynchronously verifies batch proof requests; intended for canister calls
-#[ic_cdk::update]
+#[ic_cdk::query]
 async fn verify_proof_async_batch(batches: Vec<ProofBatch>) -> Vec<ProofResponse> {
     let verification_responses = verify_proof_requests_batch(batches);
     verification_responses

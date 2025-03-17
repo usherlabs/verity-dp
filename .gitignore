@@ -48,3 +48,4 @@ target
 # generated docs
 docs/packages
 docs/index.*
+yarn.lock

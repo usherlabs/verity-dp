@@ -40,6 +40,20 @@ To deploy the canister locally, follow these steps:
 1. `pnpm prep`
 2. `pnpm test --run`
 
+### Performance Benchmarks
+
+We have benchmarked the following functions to provide insight into their performance:
+
+#### verify_proof_async and verify_proof_async_batch
+
+- **Execution Time:** Constant time, regardless of input size(~2100ms).   
+- **DFX Cycle Cost:** Ranges between 550-720 per TLS data bytes/length.
+
+#### verify_proof_direct and verify_proof_direct_batch
+
+- **Execution Time:** Linear time, calculated as 3x the execution time of `verify_proof_async` plus Signing Time (L).
+- **DFX Cycle Cost:** Almost the same as `verify_proof_async` and `verify_proof_async_batch`.
+
 ### Caveats
 
 #### `clang` dependency
