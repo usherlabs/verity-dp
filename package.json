@@ -1,0 +1,29 @@
+{
+	"name": "verity_dp",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"prepare": "husky",
+		"format": "npx biome format  --fix",
+		"lint": "npx biome check ",
+		"lint:fix": "npx biome check  --fix"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"husky": "^9.1.7",
+		"lint-staged": "^15.5.0"
+	},
+	"lint-staged": {
+		"*.{js,ts,cjs,mjs,d.cts,d.mts,json,jsonc}": [
+			"npx biome format --fix && npx biome check --write "
+		]
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": ["esbuild", "secp256k1"]
+	}
+}
