@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+cargo fmt --all
+cargo fmt --all -- --check
+
+if [ $? -ne 0 ]; then
+    echo "Rust formatting check failed! Please run 'cargo fmt --all' to fix formatting."
+    exit 1
+fi
+
+echo "All Rust files are correctly formatted! ✅"
+
+npx lint-staged
