@@ -12,6 +12,7 @@ use verity_ic::{
         ecdsa::{self, ECDSAPublicKeyReply, PublicKeyReply},
         ethereum,
     },
+    owner,
     verify::types::ProofResponse,
 };
 
@@ -23,6 +24,12 @@ pub mod utils;
 /// Initializes the canister with an optional environment configuration
 #[ic_cdk::init]
 fn init(env_opt: Option<Environment>) {
+    init_canister(env_opt);
+}
+
+#[ic_cdk::update]
+fn reinitialize(env_opt: Option<Environment>) {
+    owner::only_owner();
     init_canister(env_opt);
 }
 
