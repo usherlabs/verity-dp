@@ -20,7 +20,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8 # or whatever version you want
+          version: 10
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
         with:
