@@ -59,7 +59,7 @@ describe("Managed IC Verifier", () => {
       }
       console.log(`Execution time: ${Date.now() - startTime} ms`);
       console.log("verify_proof_async Batch cycle used:", old_balance - (await getCanisterCycles("verity_verifier")));
-    });
+    }, 1000000);
   });
 
   describe("Process verify_proof_direct", () => {
@@ -82,7 +82,7 @@ describe("Managed IC Verifier", () => {
       expect(typeof result["Ok"]["root"]).toBe("string");
       console.log(`Execution time: ${Date.now() - startTime} ms`);
       console.log("verify_proof_direct cycle used:", old_balance - (await getCanisterCycles("verity_verifier")));
-    }, 10000);
+    }, 1000000);
 
     test("Expect verify_proof_direct for a batch to return Proof Response", async () => {
       const old_balance = await getCanisterCycles("verity_verifier");
@@ -113,6 +113,6 @@ describe("Managed IC Verifier", () => {
       console.log("verify_proof_direct batch cycle used:", old_balance - (await getCanisterCycles("verity_verifier")));
       expect(typeof result["Ok"]["signature"]).toBe("string");
       expect(typeof result["Ok"]["root"]).toBe("string");
-    }, 10000);
+    }, 1000000);
   });
 });

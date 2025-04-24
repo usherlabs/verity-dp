@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest",
+    "test:prod": "export PROD=true; dfx generate;vitest",
     "ci": "vitest run",
     "prep": "dfx stop; dfx start --background --clean; dfx deploy; dfx generate",
     "prepare": "husky",
@@ -26,9 +27,7 @@
     "isomorphic-fetch": "^3.0.0"
   },
   "lint-staged": {
-    "*.{js,ts,cjs,mjs,d.cts,d.mts,json,jsonc}": [
-      "biome check --apply --no-errors-on-unmatched"
-    ]
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,json,jsonc}": ["biome check --apply --no-errors-on-unmatched"]
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

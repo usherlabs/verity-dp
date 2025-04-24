@@ -353,7 +353,7 @@ pub async fn public_key() -> Result<crypto::ecdsa::PublicKeyReply, Box<dyn std::
         (request,),
     )
     .await
-    .map_err(|e| format!("ECDSA_PUBLIC_KEY_FAILED {}", e.1))?;
+    .map_err(|e| format!("ECDSA_PUBLIC_KEY_FAILED: {}\t,Error_code:{:?}", e.1, e.0))?;
 
     let address = crypto::ethereum::get_address_from_public_key(res.public_key.clone())?;
 
