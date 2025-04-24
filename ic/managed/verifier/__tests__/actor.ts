@@ -29,12 +29,13 @@ export const createActor = async (canisterId, options) => {
     ...options?.actorOptions,
   });
 };
+const is_production = process.env.PROD?.toString() === "true";
 
-export const verifyVerifierCanister = canisterIds.verity_verifier.local;
+export const verifyVerifierCanister = is_production ? "yf57k-fyaaa-aaaaj-azw2a-cai" : canisterIds.verity_verifier.local;
 
 export const verifyVerifier = await createActor(verifyVerifierCanister, {
   agentOptions: {
-    host: "http://127.0.0.1:4943",
+    host: is_production ? "https://icp0.io" : "http://127.0.0.1:4943",
     fetch,
     identity: await identity,
   },
