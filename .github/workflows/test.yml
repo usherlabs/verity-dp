@@ -37,6 +37,6 @@ jobs:
       - name: run IC Check
         run: | 
           export DFXVM_INIT_YES=1
-          curl -fsSL https://sdk.dfinity.org/install.sh | sh -
+          curl -fsSL https://sdk.dfinity.org/install.sh | sh - &&  source "$HOME/.local/share/dfx/env"
           cd ic/managed/verifier/ &&  pnpm install &&  pnpm test:prod
       
