@@ -32,5 +32,6 @@ jobs:
 
       - name: run IC Check
         run: | 
-          cd ic/managed/verifier/ &&  npm install &&  npm run test:prod
+          curl -fsSL https://get.pnpm.io/install.sh | sh -
+          cd ic/managed/verifier/ &&  pnpm install &&  pnpm test:prod
       
