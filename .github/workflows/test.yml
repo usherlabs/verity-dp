@@ -21,6 +21,10 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: 10
+      - name: Setup dfx
+        uses: dfinity/setup-dfx@v1
+        with:
+          dfxVersion: latest 
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
         with:
@@ -36,5 +40,6 @@ jobs:
 
       - name: run IC Check
         run: | 
+          curl -L https://sdk.dfinity.org/install.sh | sh
           cd ic/managed/verifier/ &&  pnpm install &&  pnpm test:prod
       
