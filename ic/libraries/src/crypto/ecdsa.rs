@@ -113,7 +113,7 @@ pub async fn derive_pk(config: &Config) -> Vec<u8> {
         (request,),
     )
     .await
-    .map_err(|e| format!("ECDSA_PUBLIC_KEY_FAILED {}", e.1))
+    .map_err(|e| format!("ECDSA_PUBLIC_KEY_FAILED: {}\t,Error_code:{:?}", e.1, e.0))
     .unwrap();
 
     // Return the derived public key

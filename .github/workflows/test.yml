@@ -2,7 +2,7 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: RUST CI
+name: Verify-db TEST
 
 on:
   push:
@@ -29,4 +29,8 @@ jobs:
         run: | 
           rustup update
           cargo test -- --skip async_test_example // Skip async_test_example because of its dependency on a pem file
+
+      - name: run IC Check
+        run: | 
+          cd ic/managed/verifier/ &&  npm install &&  npm run test:prod
       
