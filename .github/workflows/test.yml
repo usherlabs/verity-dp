@@ -21,10 +21,6 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: 10
-      - name: Setup dfx
-        uses: dfinity/setup-dfx@v1
-        with:
-          dfxVersion: latest 
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
         with:
