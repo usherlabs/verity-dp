@@ -1,9 +1,22 @@
 import { execSync } from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
 import { Actor, HttpAgent } from "@dfinity/agent";
 import fetch from "isomorphic-fetch";
-import canisterIds from "../.dfx/local/canister_ids.json";
 import { idlFactory as verity_verifier_idl } from "../src/declarations/verity_verifier/verity_verifier.did.js";
 import { identity } from "./identity.ts";
+
+let canisterIds: Record<string, any> = {};
+const idsPath = path.resolve(__dirname, "../.dfx/local/canister_ids.json");
+if (fs.existsSync(idsPath)) {
+  try {
+    canisterIds = JSON.parse(fs.readFileSync(idsPath, "utf-8"));
+  } catch (e) {
+    console.warn("Failed to parse canister_ids.json:", e);
+  }
+} else {
+  console.info("No canister_ids.json found, proceeding without it.");
+}
 
 export function getCanisterCycles(canisterName: string): number {
   try {
@@ -18,11 +31,15 @@ export function getCanisterCycles(canisterName: string): number {
   return 0;
 }
 
-export const createActor = async (canisterId, options) => {
+export const createActor = async (
+  canisterId: string,
+  options?: {
+    agentOptions?: ConstructorParameters<typeof HttpAgent>[0];
+    actorOptions?: Omit<Parameters<typeof Actor.createActor>[1], "agent" | "canisterId">;
+  },
+) => {
   const agent = new HttpAgent({ ...options?.agentOptions });
-  const x = await agent.fetchRootKey();
-
-  // Creates an actor with using the candid interface and the HttpAgent
+  await agent.fetchRootKey();
   return Actor.createActor(verity_verifier_idl, {
     agent,
     canisterId,
@@ -31,7 +48,15 @@ export const createActor = async (canisterId, options) => {
 };
 const is_production = process.env.PROD?.toString() === "true";
 
-export const verifyVerifierCanister = is_production ? "yf57k-fyaaa-aaaaj-azw2a-cai" : canisterIds.verity_verifier.local;
+const is_production = process.env.PROD === "true";
+const DEV_CANISTER_ID = canisterIds.verity_verifier?.local ?? "";
+const PROD_CANISTER_ID = "yf57k-fyaaa-aaaaj-azw2a-cai";
+
+export const verifyVerifierCanister = is_production ? PROD_CANISTER_ID : DEV_CANISTER_ID;
+
+if (!verifyVerifierCanister) {
+  console.warn(`No canister ID for ${is_production ? "production" : "development"} build—createActor may fail.`);
+}
 
 export const verifyVerifier = await createActor(verifyVerifierCanister, {
   agentOptions: {
