@@ -1,6 +1,6 @@
 {
-	"name": "@usherlabs/client",
-	"version": "0.0.1",
+	"name": "@usher-labs/client",
+	"version": "0.0.3",
 	"description": "Verity Client",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -17,9 +17,10 @@
 	},
 	"keywords": ["client", "verity", "zk", "zk-tls", "tls"],
 	"repository": {
-		"type": "url",
-		"url": "https://github.com/usherlabs/verity-dp/tree/main/ts/verity-client"
+		"type": "git",
+		"url": "https://github.com/usherlabs/verity-dp.git"
 	},
+	"readme": "./README.md",
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org"
 	},
