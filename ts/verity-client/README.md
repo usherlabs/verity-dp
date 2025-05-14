@@ -16,7 +16,7 @@ A TypeScript client for interacting with a verifiable proxy that provides crypto
 ## 📦 Installation
 
 ```bash
-npm install @usher-labs/client
+npm install @usherlabs/verity-client
 ```
 
 ---
@@ -26,7 +26,7 @@ npm install @usher-labs/client
 ### Initialize the Client
 
 ```ts
-import { VerityClient } from "@usher-labs/client";
+import { VerityClient } from "@usherlabs/verity-client";
 
 const client = new VerityClient({ prover_url: "http://localhost:8080" });
 ```

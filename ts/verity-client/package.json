@@ -1,6 +1,6 @@
 {
-	"name": "@usher-labs/client",
-	"version": "0.0.3",
+	"name": "@usherlabs/verity-client",
+	"version": "0.0.1",
 	"description": "Verity Client",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
