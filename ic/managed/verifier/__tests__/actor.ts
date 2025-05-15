@@ -47,7 +47,7 @@ export const createActor = async (
   });
 };
 
-const is_production = process.env.PROD === "true";
+const is_production = process.env.PROD?.toString() === "true";
 const DEV_CANISTER_ID = canisterIds.verity_verifier?.local ?? "";
 const PROD_CANISTER_ID = "yf57k-fyaaa-aaaaj-azw2a-cai";
 
