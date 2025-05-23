@@ -9,16 +9,16 @@ import type {
 	RawAxiosResponseHeaders,
 } from "axios";
 
-interface INotaryInformation {
+export interface INotaryInformation {
 	version: string;
 	publicKey: string;
 	gitCommitHash: string;
 	gitCommitTimestamp: string;
 }
 
-interface VerityResponse extends AxiosResponse<any, any> {
-	proof: string;
-	notary_pub_key: string;
+export interface VerityResponse<T> extends AxiosResponse<T, any> {
+	proof?: string;
+	notary_pub_key?: string;
 }
 
 class VerityRequest<T> {
@@ -89,12 +89,9 @@ class VerityRequest<T> {
 		return this;
 	}
 
-	then<
-		TResult1 = AxiosResponse<T> & { proof?: string; notary_pub_key?: string },
-		TResult2 = never,
-	>(
+	then<TResult1 = VerityResponse<T>, TResult2 = never>(
 		onfulfilled?: (
-			value: AxiosResponse<T> & { proof?: string; notary_pub_key?: string },
+			value: VerityResponse<T>,
 		) => TResult1 | PromiseLike<TResult1>,
 		onrejected?: (reason: T) => TResult2 | PromiseLike<TResult2>,
 	) {
