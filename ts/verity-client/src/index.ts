@@ -28,6 +28,7 @@ class VerityRequest<T> {
 	private redacted: string | null = null;
 	public proofId: string | null;
 	public requestId: string;
+	public url: string;
 
 	constructor(
 		axiosInstance: AxiosInstance,
@@ -39,6 +40,7 @@ class VerityRequest<T> {
 		this.config = config || {};
 		this.proofId = null;
 		this.requestId = uuidv4().toString();
+		this.url = url;
 
 		this.axiosInstance = axiosInstance;
 
@@ -62,7 +64,7 @@ class VerityRequest<T> {
 
 		instance.interceptors.request.use(async (config) => {
 			config.headers["T-REQUEST-ID"] = this.requestId;
-			config.headers["T-PROXY-URL"] = url;
+			config.headers["T-PROXY-URL"] = this.url;
 			if (this.redacted) {
 				config.headers["T-REDACTED"] = this.redacted;
 			}
@@ -74,13 +76,6 @@ class VerityRequest<T> {
 			url: `${axiosInstance.defaults.baseURL}/proxy`,
 			data,
 			...this.config,
-			transformRequest: [
-				(data, headers) => {
-					headers["T-REQUEST-ID"] = this.requestId;
-					headers["T-PROXY-URL"] = url;
-					return data;
-				},
-			],
 		});
 	}
 
