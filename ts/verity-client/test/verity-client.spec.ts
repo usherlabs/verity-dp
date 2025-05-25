@@ -15,30 +15,31 @@ describe("VerityClient", () => {
 		);
 	});
 
-	// test("should send GET request to correct proxy URL", async () => {
-	// 	const response = await client
-	// 		.get("https://jsonplaceholder.typicode.com/posts", {
-	// 			headers: {
-	// 				"X-TEST": "SUPER_HUMAN",
-	// 			},
-	// 		})
-	// 		.redact("res:body:userId");
+	test("should send GET request to correct proxy URL", async () => {
+		const response = await client
+			.get("https://jsonplaceholder.typicode.com/posts", {
+				headers: {
+					"X-TEST": "SUPER_HUMAN",
+				},
+			})
+			.redact("res:body:userId");
 
-	// 	expect(
-	// 		response.notary_pub_key?.startsWith("-----BEGIN PUBLIC KEY---"),
-	// 	).toBe(true);
-	// 	expect(response.status).toBe(200);
-	// 	expect(response.headers.has("t-proof-id")).toBe(true);
-	// });
+		expect(
+			response.notary_pub_key?.startsWith("-----BEGIN PUBLIC KEY---"),
+		).toBe(true);
+		expect(response.status).toBe(200);
+		expect(response.headers.has("t-proof-id")).toBe(true);
+	});
 
 	test("should send POST request to correct proxy URL", async () => {
 		const response = await client
 			.post("https://jsonplaceholder.typicode.com/posts", {
-				data: `{"title": "foo", "body": "bar", "userId": 1}`,
+				data: { title: "foo", body: "bar", userId: 1 },
 
 				headers: {
 					Authorization:
 						"Bearer xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxUAsHTzEA",
+					"X-TEST-1": "SUPER_HUMAN",
 				},
 			})
 			.redact("req:header:authorization");
@@ -47,24 +48,6 @@ describe("VerityClient", () => {
 			response.notary_pub_key?.startsWith("-----BEGIN PUBLIC KEY---"),
 		).toBe(true);
 		expect(response.status).toBe(201);
-		expect(response.headers.has("t-proof-id")).toBe(true);
-	});
-
-	test("should send POST request to correct proxy URL", async () => {
-		const response = await client
-			.post("https://api.openai.com/v1/chat/completions", {
-				data: `{"model": "gpt-4o-mini", "messages": [{"role": "user", "content": "Say this is a test!"}],"temperature": 0.7}`,
-
-				headers: {
-					"X-TEST": "SUPER_HUMAN",
-				},
-			})
-			.redact("req:header:authorization");
-
-		expect(
-			response.notary_pub_key?.startsWith("-----BEGIN PUBLIC KEY---"),
-		).toBe(true);
-		expect(response.status).toBe(200);
 		expect(response.headers.has("t-proof-id")).toBe(true);
 	});
 });

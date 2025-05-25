@@ -157,7 +157,7 @@ export class VerityClient {
 		return new VerityRequest<T>(this.axios, "get", url, config);
 	}
 
-	post<T>(url: string, data?: any, config?: AxiosRequestConfig) {
+	post<T>(url: string, config?: AxiosRequestConfig, data?: any) {
 		return new VerityRequest<T>(this.axios, "post", url, config, data);
 	}
 
