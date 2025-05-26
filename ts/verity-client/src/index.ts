@@ -27,8 +27,9 @@ class VerityRequest<T> {
 	private axiosInstance: AxiosInstance;
 	private redacted: string | null = null;
 	public requestId: string;
-	public url: string;
-	public proof: Promise<string>;
+	private url: string;
+	private sse_is_ready = false;
+	private proof: Promise<string>;
 
 	constructor(
 		axiosInstance: AxiosInstance,
@@ -62,6 +63,17 @@ class VerityRequest<T> {
 		);
 
 		instance.interceptors.request.use(async (config) => {
+			const maxWaitTime = 60000; // 60 seconds
+			const interval = 20; // 20 ms
+			let waited = 0;
+
+			while (!this.sse_is_ready) {
+				if (waited >= maxWaitTime) {
+					throw new Error("Request aborted: SSE not ready after 60 seconds.");
+				}
+				await new Promise((resolve) => setTimeout(resolve, interval));
+				waited += interval;
+			}
 			config.headers["T-REQUEST-ID"] = this.requestId;
 			config.headers["T-PROXY-URL"] = this.url;
 			if (this.redacted) {
@@ -113,12 +125,13 @@ class VerityRequest<T> {
 			}, timeoutMs);
 
 			es.onopen = async (e) => {
+				this.sse_is_ready = true;
 				await this.axiosInstance.get(
 					`${this.axiosInstance.defaults.baseURL}/proxy`,
 					{
 						headers: {
 							"T-REQUEST-ID": this.requestId,
-							"T-PROXY-URL": this.url,
+							"T-PROXY-URL": "https://one.one.one.one/",
 						},
 					},
 				);
