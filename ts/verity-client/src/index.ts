@@ -126,15 +126,6 @@ class VerityRequest<T> {
 
 			es.onopen = async (e) => {
 				this.sse_is_ready = true;
-				await this.axiosInstance.get(
-					`${this.axiosInstance.defaults.baseURL}/proxy`,
-					{
-						headers: {
-							"T-REQUEST-ID": this.requestId,
-							"T-PROXY-URL": "https://one.one.one.one/",
-						},
-					},
-				);
 			};
 
 			es.onmessage = (event) => {
