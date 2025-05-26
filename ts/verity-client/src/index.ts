@@ -114,7 +114,7 @@ class VerityRequest<T> {
 		return this.promise.finally(onfinally);
 	}
 
-	private async subscribeToProof(timeoutMs = 300000): Promise<string> {
+	private async subscribeToProof(timeoutMs = 600000): Promise<string> {
 		const url = `${this.axiosInstance.defaults.baseURL}/proof/${this.requestId}`;
 		return new Promise((resolve, reject) => {
 			const es = new EventSource(url);
