@@ -26,9 +26,9 @@ class VerityRequest<T> {
 	private promise: Promise<AxiosResponse<T>>;
 	private axiosInstance: AxiosInstance;
 	private redacted: string | null = null;
-	public proofId: string | null;
 	public requestId: string;
 	public url: string;
+	public proof: Promise<string>;
 
 	constructor(
 		axiosInstance: AxiosInstance,
@@ -38,11 +38,11 @@ class VerityRequest<T> {
 		data?: any,
 	) {
 		this.config = config || {};
-		this.proofId = null;
 		this.requestId = uuidv4().toString();
 		this.url = url;
 
 		this.axiosInstance = axiosInstance;
+		this.proof = this.subscribeToProof();
 
 		const instance = axios.create();
 
@@ -53,8 +53,7 @@ class VerityRequest<T> {
 					notary_pub_key?: string;
 				},
 			) => {
-				this.proofId = `${response.headers["t-proof-id"]}`;
-				const data = await this.subscribeToProof();
+				const data = await this.proof;
 				const index = data.indexOf("|");
 				response.notary_pub_key = data.slice(0, index);
 				response.proof = data.slice(index + 1);
@@ -103,7 +102,7 @@ class VerityRequest<T> {
 		return this.promise.finally(onfinally);
 	}
 
-	private async subscribeToProof(timeoutMs = 100000): Promise<string> {
+	private async subscribeToProof(timeoutMs = 300000): Promise<string> {
 		const url = `${this.axiosInstance.defaults.baseURL}/proof/${this.requestId}`;
 		return new Promise((resolve, reject) => {
 			const es = new EventSource(url);
@@ -119,7 +118,7 @@ class VerityRequest<T> {
 					{
 						headers: {
 							"T-REQUEST-ID": this.requestId,
-							"T-PROXY-URL": "https://fast.com",
+							"T-PROXY-URL": this.url,
 						},
 					},
 				);
@@ -133,7 +132,7 @@ class VerityRequest<T> {
 
 			es.onerror = (err) => {
 				clearTimeout(timeout);
-				console.error("SSE error:", err);
+				console.error("SSE error:", err.data);
 				es.close();
 				reject(err);
 			};
