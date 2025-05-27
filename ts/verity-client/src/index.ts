@@ -63,13 +63,13 @@ class VerityRequest<T> {
 		);
 
 		instance.interceptors.request.use(async (config) => {
-			const maxWaitTime = 180000; // 180 seconds
+			const maxWaitTime = 180000; // 30 seconds
 			const interval = 20; // 20 ms
 			let waited = 0;
 
 			while (!this.sse_is_ready) {
 				if (waited >= maxWaitTime) {
-					throw new Error("Request aborted: SSE not ready after 180 seconds.");
+					throw new Error("Request aborted: SSE not ready after 180 seconds."); // prod DOESN'T CONNECT
 				}
 				await new Promise((resolve) => setTimeout(resolve, interval));
 				waited += interval;
