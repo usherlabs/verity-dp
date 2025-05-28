@@ -43,7 +43,11 @@ class VerityRequest<T> {
 		this.url = url;
 
 		this.axiosInstance = axiosInstance;
-		this.proof = this.subscribeToProof();
+		this.proof = this.subscribeToProof().catch((err) => {
+			console.error(`Proof SSE failed for ${this.requestId}:`, err);
+			// re-throw so downstream still sees the error
+			throw err;
+		});
 
 		const instance = axios.create();
 
@@ -68,7 +72,7 @@ class VerityRequest<T> {
 		);
 
 		instance.interceptors.request.use(async (config) => {
-			const maxWaitTime = 180000; // 30 seconds
+			const maxWaitTime = 600000; // 600 seconds
 			const interval = 20; // 20 ms
 			let waited = 0;
 
@@ -119,7 +123,7 @@ class VerityRequest<T> {
 		return this.promise.finally(onfinally);
 	}
 
-	private async subscribeToProof(timeoutMs = 600000): Promise<string> {
+	private async subscribeToProof(timeoutMs = 1800000): Promise<string> {
 		const url = `${this.axiosInstance.defaults.baseURL}/proof/${this.requestId}`;
 		return new Promise((resolve, reject) => {
 			const es = new EventSource(url);
