@@ -9,16 +9,16 @@ import type {
 	RawAxiosResponseHeaders,
 } from "axios";
 
-interface INotaryInformation {
+export interface INotaryInformation {
 	version: string;
 	publicKey: string;
 	gitCommitHash: string;
 	gitCommitTimestamp: string;
 }
 
-interface VerityResponse extends AxiosResponse<any, any> {
-	proof: string;
-	notary_pub_key: string;
+export interface VerityResponse<T> extends AxiosResponse<T, any> {
+	proof?: string;
+	notary_pub_key?: string;
 }
 
 class VerityRequest<T> {
@@ -26,8 +26,10 @@ class VerityRequest<T> {
 	private promise: Promise<AxiosResponse<T>>;
 	private axiosInstance: AxiosInstance;
 	private redacted: string | null = null;
-	public proofId: string | null;
 	public requestId: string;
+	private url: string;
+	private sse_is_ready = false;
+	private proof: Promise<string>;
 
 	constructor(
 		axiosInstance: AxiosInstance,
@@ -37,10 +39,15 @@ class VerityRequest<T> {
 		data?: any,
 	) {
 		this.config = config || {};
-		this.proofId = null;
 		this.requestId = uuidv4().toString();
+		this.url = url;
 
 		this.axiosInstance = axiosInstance;
+		this.proof = this.subscribeToProof().catch((err) => {
+			console.error(`Proof SSE failed for ${this.requestId}:`, err);
+			// re-throw so downstream still sees the error
+			throw err;
+		});
 
 		const instance = axios.create();
 
@@ -51,18 +58,33 @@ class VerityRequest<T> {
 					notary_pub_key?: string;
 				},
 			) => {
-				this.proofId = `${response.headers["t-proof-id"]}`;
-				const data = await this.subscribeToProof();
-				const index = data.indexOf("|");
-				response.notary_pub_key = data.slice(0, index);
-				response.proof = data.slice(index + 1);
-				return response;
+				try {
+					const data = await this.proof;
+					const index = data.indexOf("|");
+					response.notary_pub_key = data.slice(0, index);
+					response.proof = data.slice(index + 1);
+					return response;
+				} catch (error) {
+					console.log({ error });
+					return response;
+				}
 			},
 		);
 
 		instance.interceptors.request.use(async (config) => {
+			const maxWaitTime = 600000; // 600 seconds
+			const interval = 20; // 20 ms
+			let waited = 0;
+
+			while (!this.sse_is_ready) {
+				if (waited >= maxWaitTime) {
+					break;
+				}
+				await new Promise((resolve) => setTimeout(resolve, interval));
+				waited += interval;
+			}
 			config.headers["T-REQUEST-ID"] = this.requestId;
-			config.headers["T-PROXY-URL"] = url;
+			config.headers["T-PROXY-URL"] = this.url;
 			if (this.redacted) {
 				config.headers["T-REDACTED"] = this.redacted;
 			}
@@ -74,13 +96,6 @@ class VerityRequest<T> {
 			url: `${axiosInstance.defaults.baseURL}/proxy`,
 			data,
 			...this.config,
-			transformRequest: [
-				(data, headers) => {
-					headers["T-REQUEST-ID"] = this.requestId;
-					headers["T-PROXY-URL"] = url;
-					return data;
-				},
-			],
 		});
 	}
 
@@ -89,12 +104,9 @@ class VerityRequest<T> {
 		return this;
 	}
 
-	then<
-		TResult1 = AxiosResponse<T> & { proof?: string; notary_pub_key?: string },
-		TResult2 = never,
-	>(
+	then<TResult1 = VerityResponse<T>, TResult2 = never>(
 		onfulfilled?: (
-			value: AxiosResponse<T> & { proof?: string; notary_pub_key?: string },
+			value: VerityResponse<T>,
 		) => TResult1 | PromiseLike<TResult1>,
 		onrejected?: (reason: T) => TResult2 | PromiseLike<TResult2>,
 	) {
@@ -111,7 +123,7 @@ class VerityRequest<T> {
 		return this.promise.finally(onfinally);
 	}
 
-	private async subscribeToProof(timeoutMs = 100000): Promise<string> {
+	private async subscribeToProof(timeoutMs = 1800000): Promise<string> {
 		const url = `${this.axiosInstance.defaults.baseURL}/proof/${this.requestId}`;
 		return new Promise((resolve, reject) => {
 			const es = new EventSource(url);
@@ -122,15 +134,7 @@ class VerityRequest<T> {
 			}, timeoutMs);
 
 			es.onopen = async (e) => {
-				await this.axiosInstance.get(
-					`${this.axiosInstance.defaults.baseURL}/proxy`,
-					{
-						headers: {
-							"T-REQUEST-ID": this.requestId,
-							"T-PROXY-URL": "https://fast.com",
-						},
-					},
-				);
+				this.sse_is_ready = true;
 			};
 
 			es.onmessage = (event) => {
@@ -165,7 +169,7 @@ export class VerityClient {
 		return new VerityRequest<T>(this.axios, "get", url, config);
 	}
 
-	post<T>(url: string, data?: any, config?: AxiosRequestConfig) {
+	post<T>(url: string, config?: AxiosRequestConfig, data?: any) {
 		return new VerityRequest<T>(this.axios, "post", url, config, data);
 	}
 
