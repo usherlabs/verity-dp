@@ -1,6 +1,6 @@
 {
 	"name": "@usherlabs/verity-client",
-	"version": "0.0.15",
+	"version": "0.0.17",
 	"description": "Verity Client",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -11,9 +11,6 @@
 		"test": "jest --runInBand",
 		"format": "prettier --write \"src/**/*.ts\"",
 		"lint": "eslint . --ext .ts"
-	},
-	"bin": {
-		"lighthouse-web3": "dist/Commands/index.js"
 	},
 	"keywords": ["client", "verity", "zk", "zk-tls", "tls"],
 	"repository": {
@@ -34,8 +31,6 @@
 	"devDependencies": {
 		"@babel/preset-env": "^7.23.2",
 		"@babel/preset-typescript": "^7.21.4",
-		"@types/cli-spinner": "^0.2.1",
-		"@types/fs-extra": "^11.0.1",
 		"@types/jest": "^29.5.0",
 		"@types/mime-types": "^2.1.1",
 		"@types/node": "^20.5.3",

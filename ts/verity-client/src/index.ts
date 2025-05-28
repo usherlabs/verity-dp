@@ -54,11 +54,16 @@ class VerityRequest<T> {
 					notary_pub_key?: string;
 				},
 			) => {
-				const data = await this.proof;
-				const index = data.indexOf("|");
-				response.notary_pub_key = data.slice(0, index);
-				response.proof = data.slice(index + 1);
-				return response;
+				try {
+					const data = await this.proof;
+					const index = data.indexOf("|");
+					response.notary_pub_key = data.slice(0, index);
+					response.proof = data.slice(index + 1);
+					return response;
+				} catch (error) {
+					console.log({ error });
+					return response;
+				}
 			},
 		);
 
@@ -69,7 +74,7 @@ class VerityRequest<T> {
 
 			while (!this.sse_is_ready) {
 				if (waited >= maxWaitTime) {
-					throw new Error("Request aborted: SSE not ready after 180 seconds."); // prod DOESN'T CONNECT
+					break;
 				}
 				await new Promise((resolve) => setTimeout(resolve, interval));
 				waited += interval;
@@ -136,7 +141,7 @@ class VerityRequest<T> {
 
 			es.onerror = (err) => {
 				clearTimeout(timeout);
-				console.error("SSE error:", err.data);
+				console.error("SSE error:", err);
 				es.close();
 				reject(err);
 			};
