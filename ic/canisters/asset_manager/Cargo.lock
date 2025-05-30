@@ -600,6 +600,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70"
 
 [[package]]
+name = "httparse"
+version = "1.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f2d708df4e7140240a16cd6ab0ab65c972d7433ab77819ea693fde9c43811e2a"
+
+[[package]]
 name = "ic-cdk"
 version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1406,6 +1412,7 @@ dependencies = [
  "eth-encode-packed",
  "getrandom",
  "hex",
+ "httparse",
  "ic-cdk 0.17.0",
  "ic-cdk-timers 0.11.0",
  "libsecp256k1",

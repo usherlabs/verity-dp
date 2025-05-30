@@ -17,6 +17,7 @@ easy-hasher = { workspace = true }
 eth-encode-packed = { workspace = true }
 getrandom = { workspace = true, features = ["custom"] }
 hex = { workspace = true }
+httparse = "1.8"
 ic-cdk = { workspace = true }
 ic-cdk-timers = { workspace = true }
 libsecp256k1 = { workspace = true, default-features = false, features = [

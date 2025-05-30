@@ -67,6 +67,17 @@ impl RequestBuilder {
         }
     }
 
+    /// Add an instruction to prove failed request.
+    ///
+    /// This method adds a header to instruct Verity Prover to prove the response,
+    /// even if its status code is not success.
+    pub fn prove_failed_request(self) -> Self {
+        RequestBuilder {
+            inner: self.inner.header("T-PROVE-FAILED-REQ", "true"),
+            ..self
+        }
+    }
+
     /// Add a Redact instruction.
     ///
     /// This method adds a header to instruct Verity Prover on how to hide sensitive data.
