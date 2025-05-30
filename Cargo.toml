@@ -8,6 +8,7 @@ members = [
     "rs/verify-remote",
     "rs/verify-tls",
     "rs/verity-client",
+    "rs/verify-private-transcript",
     "zk/guest",
     "zk/host",
 ]
