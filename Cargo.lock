@@ -4417,40 +4417,14 @@ dependencies = [
 
 [[package]]
 name = "rstest"
-version = "0.17.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "de1bb486a691878cd320c2f0d319ba91eeaa2e894066d8b5f8f117c000e9d962"
-dependencies = [
- "futures",
- "futures-timer",
- "rstest_macros 0.17.0",
- "rustc_version 0.4.1",
-]
-
-[[package]]
-name = "rstest"
 version = "0.23.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0a2c585be59b6b5dd66a9d2084aa1d8bd52fbdb806eafdeffb52791147862035"
 dependencies = [
  "futures",
  "futures-timer",
- "rstest_macros 0.23.0",
+ "rstest_macros",
  "rustc_version 0.4.1",
-]
-
-[[package]]
-name = "rstest_macros"
-version = "0.17.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "290ca1a1c8ca7edb7c3283bd44dc35dd54fdec6253a3912e201ba1072018fca8"
-dependencies = [
- "cfg-if",
- "proc-macro2",
- "quote",
- "rustc_version 0.4.1",
- "syn 1.0.109",
- "unicode-ident",
 ]
 
 [[package]]
@@ -5359,7 +5333,7 @@ dependencies = [
 
 [[package]]
 name = "tlsn-core-no-session"
-version = "0.0.0"
+version = "0.2.4"
 dependencies = [
  "bimap",
  "bincode",
@@ -5369,7 +5343,7 @@ dependencies = [
  "mpz-garble-core",
  "opaque-debug 0.3.1",
  "rs_merkle 1.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "rstest 0.23.0",
+ "rstest",
  "serde",
  "serde_json",
  "thiserror 1.0.69",
@@ -5839,7 +5813,7 @@ dependencies = [
  "rand",
  "rand_core",
  "rs_merkle 1.4.2 (git+https://github.com/tlsnotary/rs-merkle.git?rev=85f3e82)",
- "rstest 0.17.0",
+ "rstest",
  "serde",
  "sha2 0.10.8",
  "thiserror 1.0.69",
@@ -5863,7 +5837,7 @@ dependencies = [
 
 [[package]]
 name = "verity-verify-tls"
-version = "0.0.0"
+version = "0.2.4"
 dependencies = [
  "cfg-if",
  "elliptic-curve",

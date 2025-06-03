@@ -1,20 +1,25 @@
 [package]
 name = "tlsn-core-no-session"
-edition = "2021"
+version.workspace = true
+authors.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+license.workspace = true
+edition.workspace = true
 
 [dependencies]
-bimap = { version = "0.6.3", features = ["serde"] }
-bincode = { version = "1.3.3" }
-bytes = { version = "1.6.1", features = ["serde"] }
-mpz-circuits = { git = "https://github.com/privacy-scaling-explorations/mpz", rev = "b8ae7ac" }
-mpz-core = { git = "https://github.com/privacy-scaling-explorations/mpz", rev = "b8ae7ac" }
-mpz-garble-core = { git = "https://github.com/privacy-scaling-explorations/mpz", rev = "b8ae7ac" }
-opaque-debug = "0.3.1"
-rs_merkle = "1.4.2"
-serde = "1.0.215"
-thiserror = "1.0.69"
-tlsn-utils = { git = "https://github.com/tlsnotary/tlsn-utils", rev = "45370cc" }
+bimap = { workspace = true, features = ["serde"] }
+bincode = { workspace = true }
+bytes = { workspace = true, features = ["serde"] }
+mpz-circuits = { workspace = true }
+mpz-core = { workspace = true }
+mpz-garble-core = { workspace = true }
+opaque-debug = { workspace = true }
+rs_merkle = { workspace = true }
+serde = { workspace = true }
+thiserror = { workspace = true }
+tlsn-utils = { workspace = true }
 
 [dev-dependencies]
-rstest = "0.23.0"
-serde_json = "1.0.133"
+rstest = { workspace = true }
+serde_json = { workspace = true }
