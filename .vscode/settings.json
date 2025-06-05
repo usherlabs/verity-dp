@@ -6,6 +6,7 @@
 		"zk/bench/precompute_benchmark/Cargo.toml",
 		"zk/bench/precompute_benchmark/core/Cargo.toml",
 		"zk/bench/precompute_benchmark/methods/guest/Cargo.toml",
+		"zk/tests/zkvm/methods/guest/Cargo.toml",
 		"zk/tests/zkvm/Cargo.toml",
 	]
 }

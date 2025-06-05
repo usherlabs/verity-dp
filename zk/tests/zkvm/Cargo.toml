@@ -12,9 +12,10 @@ license = "Apache-2.0"
 
 # TODO: move dependencies to the root Cargo.toml 
 [workspace.dependencies]
+bincode = "1.3.3"
 chrono = { version = "0.4" }
-serde = "1.0"
-tracing-subscriber = "0.3"
 risc0-build = { version = "1.0" }
 risc0-zkvm = { version = "1.0" }
-verity-verify-tls = { path = "../../../../verity/verify-tls" }
+serde_json = "1.0"
+tracing-subscriber = "0.3"
+verity-verify-private-transcript = { path = "../../../rs/verify-private-transcript" }
