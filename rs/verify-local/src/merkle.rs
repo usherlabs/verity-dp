@@ -1,4 +1,4 @@
-use rs_merkle::{ algorithms::Sha256, Hasher, MerkleTree };
+use rs_merkle::{algorithms::Sha256, Hasher, MerkleTree};
 
 /// Generate a merkle tree by providing the leaves as hashed strings
 pub fn generate_merkle_tree(leaves: &Vec<[u8; 32]>) -> MerkleTree<Sha256> {

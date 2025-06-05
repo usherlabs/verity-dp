@@ -1,9 +1,8 @@
+use crate::state::CONFIG;
 use candid::CandidType;
 use serde::Deserialize;
 use serde_json::Value;
-use verity_ic::{
-    crypto::ethereum::sign_message, remittance::state::CONFIG, verify::types::ProofResponse,
-};
+use verity_ic::{crypto::ethereum::sign_message, verify::types::ProofResponse};
 use verity_verify_tls::{verify_proof, verify_session};
 
 use crate::{

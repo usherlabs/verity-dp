@@ -1,0 +1,54 @@
+{
+	"name": "@usherlabs/verity-client",
+	"version": "0.0.1",
+	"description": "Verity Client",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": ["dist/**/*"],
+	"scripts": {
+		"build": "npx tsc",
+		"start": "npx ts-node src/index.ts",
+		"test": "jest --runInBand",
+		"format": "prettier --write \"src/**/*.ts\"",
+		"lint": "eslint . --ext .ts"
+	},
+	"bin": {
+		"lighthouse-web3": "dist/Commands/index.js"
+	},
+	"keywords": ["client", "verity", "zk", "zk-tls", "tls"],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/usherlabs/verity-dp.git"
+	},
+	"readme": "./README.md",
+	"publishConfig": {
+		"registry": "https://registry.npmjs.org"
+	},
+	"license": "MIT",
+	"dependencies": {
+		"@types/eventsource": "^1.1.15",
+		"axios": "^1.9.0",
+		"eventsource": "^2.0.2",
+		"uuid": "^11.1.0"
+	},
+	"devDependencies": {
+		"@babel/preset-env": "^7.23.2",
+		"@babel/preset-typescript": "^7.21.4",
+		"@types/cli-spinner": "^0.2.1",
+		"@types/fs-extra": "^11.0.1",
+		"@types/jest": "^29.5.0",
+		"@types/mime-types": "^2.1.1",
+		"@types/node": "^20.5.3",
+		"@types/read": "^0.0.29",
+		"@typescript-eslint/eslint-plugin": "^5.57.1",
+		"@typescript-eslint/parser": "^5.57.1",
+		"babel-jest": "^29.5.0",
+		"dotenv": "^16.3.1",
+		"eslint": "^8.38.0",
+		"jest": "^29.3.1",
+		"prettier": "^2.8.7",
+		"ts-node": "^10.9.1",
+		"typescript": "^5.0.4"
+	},
+	"contributors": ["Oki Ayobami (https://github.com/xlassix)"]
+}

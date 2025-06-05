@@ -1,8 +1,8 @@
-use std::{collections::HashMap, vec};
-use httparse;
 use anyhow::Result;
 use candid::CandidType;
+use httparse;
 use serde::Deserialize;
+use std::{collections::HashMap, vec};
 
 /// The response from the managed verifier canister.
 /// It is a `Result` type that contains either a `VerificationResponse` on success
@@ -66,7 +66,7 @@ impl ProofResponse {
         match self {
             ProofResponse::FullProof(text) => {
                 // if empty body and empty request is returned
-                let response_bytes=  text.as_bytes();
+                let response_bytes = text.as_bytes();
 
                 // Prepare space for headers
                 let mut headers = [httparse::EMPTY_HEADER; 64]; //64 max response header count
@@ -117,7 +117,7 @@ mod type_test {
     use super::*;
 
     // Define shared test cases to avoid duplication
-    const TEST_CASES: &[(&str, &str,&str)] = &[
+    const TEST_CASES: &[(&str, &str, &str)] = &[
         (
             r#"HTTP/1.1 200 OK
 Date: Mon, 10 Feb 2025 23:41:20 GMT
@@ -163,7 +163,7 @@ x-api-key: XXXXXX
 
 "#,
             r#"{"bitcoin":{"usd":97334}}"#,
-            "200"
+            "200",
         ),
         (
             r#"HTTP/1.1 200 OK
@@ -275,7 +275,7 @@ authorization: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     }
 ]
 }"#,
-"200"
+            "200",
         ),
         (
             r#"
@@ -331,8 +331,7 @@ content-length: 48
 "userId": XX,
 "id": XX1
 }"#,
-"201"
-
+            "201",
         ),
         (
             r#"
@@ -380,7 +379,7 @@ x-api-key: XXXXXX
 content-length: 48
 "#,
             r#"{"bitcoin":{"usd":97281}}"#,
-            "200"
+            "200",
         ),
     ];
 
@@ -419,7 +418,7 @@ content-length: 48
 
     #[test]
     fn test_proof_response_get_http_response_body_full_proof_json() {
-        for (input, expected,_) in TEST_CASES {
+        for (input, expected, _) in TEST_CASES {
             let proof = ProofResponse::FullProof(input.to_string());
             let http_body = proof.get_http_response_body();
             assert_eq!(http_body, *expected);
@@ -428,22 +427,26 @@ content-length: 48
 
     #[test]
     fn test_proof_response_get_http_response_header_full_proof_json() {
-        for (input, expected,status_code) in TEST_CASES {
+        for (input, expected, status_code) in TEST_CASES {
             let proof = ProofResponse::FullProof(input.to_string());
             let headers_result = proof.get_http_headers();
-            assert!(headers_result.is_ok(), "Failed to parse headers for input: {}", input);
+            assert!(
+                headers_result.is_ok(),
+                "Failed to parse headers for input: {}",
+                input
+            );
             let headers = headers_result.unwrap();
 
             // Example assertions for specific headers
             assert!(
-                headers.get("Content-Type").unwrap().contains("application/json"),
+                headers
+                    .get("Content-Type")
+                    .unwrap()
+                    .contains("application/json"),
                 "Content-Type header mismatch for input: {}",
                 input
             );
-            assert_eq!(
-                headers.get("Status").unwrap(),
-                status_code
-            );
+            assert_eq!(headers.get("Status").unwrap(), status_code);
         }
     }
 }

@@ -7,7 +7,7 @@ use elliptic_curve::pkcs8::DecodePublicKey;
 pub fn verify_session(proof: &String, pub_key: &String) -> Result<(), String> {
     let session: SessionProof =
         serde_json::from_str(proof.as_str()).or(Err("INVALID PROOF".to_owned()))?;
-        
+
     let pub_key = p256::PublicKey::from_public_key_pem(pub_key.as_str())
         .or(Err("INVALID PUBLIC KEY".to_owned()))?;
 

@@ -12,6 +12,7 @@ use verity_ic::{
         ecdsa::{self, ECDSAPublicKeyReply, PublicKeyReply},
         ethereum,
     },
+    owner,
     verify::types::ProofResponse,
 };
 
@@ -19,10 +20,29 @@ pub mod merkle;
 pub mod proof;
 pub mod state;
 pub mod utils;
+const MIN_BALANCE: u128 = 100_000_000_000; // 0.1 T Cycles
+
+fn ensure_sufficient_cycles() -> Result<(), String> {
+    let balance = ic_cdk::api::canister_balance128();
+    if balance < MIN_BALANCE {
+        Err(format!(
+            "Insufficient cycles: have {}, need at least {}",
+            balance, MIN_BALANCE
+        ))
+    } else {
+        Ok(())
+    }
+}
 
 /// Initializes the canister with an optional environment configuration
 #[ic_cdk::init]
 fn init(env_opt: Option<Environment>) {
+    init_canister(env_opt);
+}
+
+#[ic_cdk::update]
+fn reinitialize(env_opt: Option<Environment>) {
+    owner::only_owner();
     init_canister(env_opt);
 }
 
@@ -33,7 +53,7 @@ fn ping() -> String {
 }
 
 /// Asynchronously verifies proof requests; intended for canister calls
-#[ic_cdk::update]
+#[ic_cdk::query]
 async fn verify_proof_async(
     proof_requests: Vec<String>,
     notary_pub_key: String,
@@ -43,7 +63,7 @@ async fn verify_proof_async(
 }
 
 /// Asynchronously verifies batch proof requests; intended for canister calls
-#[ic_cdk::update]
+#[ic_cdk::query]
 async fn verify_proof_async_batch(batches: Vec<ProofBatch>) -> Vec<ProofResponse> {
     let verification_responses = verify_proof_requests_batch(batches);
     verification_responses
@@ -56,6 +76,7 @@ async fn verify_proof_direct(
     proof_requests: Vec<String>,
     notary_pub_key: String,
 ) -> Result<DirectVerificationResponse, String> {
+    ensure_sufficient_cycles()?;
     verify_and_sign_proof_requests(proof_requests, notary_pub_key).await
 }
 
@@ -65,12 +86,14 @@ async fn verify_proof_direct(
 async fn verify_proof_direct_batch(
     batches: Vec<ProofBatch>,
 ) -> Result<DirectVerificationResponse, String> {
+    ensure_sufficient_cycles()?;
     verify_and_sign_proof_requests_batch(batches).await
 }
 
 /// Retrieves the public key of the canister
 #[ic_cdk::update]
 async fn public_key() -> PublicKeyReply {
+    ensure_sufficient_cycles().unwrap();
     let config = crate::CONFIG.with(|c| c.borrow().clone());
 
     let request = ecdsa::ECDSAPublicKey {
@@ -85,7 +108,7 @@ async fn public_key() -> PublicKeyReply {
         (request,),
     )
     .await
-    .map_err(|e| format!("ECDSA_PUBLIC_KEY_FAILED {}", e.1))
+    .map_err(|e| format!("ECDSA_PUBLIC_KEY_FAILED: {}\t,Error_code:{:?}", e.1, e.0))
     .unwrap();
 
     let address =
