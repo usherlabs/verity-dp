@@ -3,12 +3,11 @@ members = [
     "ic/libraries",
     "ic/managed/verifier",
     "rs/tests/load",
-    "rs/tlsn-core-no-session",
     "rs/verify-local",
+    "rs/verify-private-transcript",
     "rs/verify-remote",
     "rs/verify-tls",
     "rs/verity-client",
-    "rs/verify-private-transcript",
     "zk/guest",
     "zk/host",
 ]
@@ -68,9 +67,7 @@ serde_json = "1.0.133"
 sha2 = { version = "0.10" }
 thiserror = "1.0.69"
 tiny-keccak = "2.0"
-tlsn-core = { git = "https://github.com/tlsnotary/tlsn", rev = "v0.1.0-alpha.6" }
-tlsn-core-no-session = { path = "./rs/tlsn-core-no-session" }
-tlsn-utils = { git = "https://github.com/tlsnotary/tlsn-utils", rev = "45370cc" }
+tlsn-utils = { git = "https://github.com/tlsnotary/tlsn-utils", rev = "e7b2db6" }
 tokio = "1.42.0"
 tokio-util = "0.7.13"
 tracing = "0.1.41"
@@ -79,6 +76,7 @@ uuid = "1.11.0"
 verity-client = { path = "./rs/verity-client" }
 verity-ic = { path = "./ic/libraries" }
 verity-verify-local = { path = "./rs/verify-local" }
+verity-verify-private-transcript = { path = "./rs/verify-private-transcript" }
 verity-verify-remote = { path = "./rs/verify-remote" }
 verity-verify-tls = { path = "./rs/verify-tls" }
 web-time = { version = "0.2" }

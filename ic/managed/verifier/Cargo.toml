@@ -19,6 +19,5 @@ ic-wasi-polyfill = { workspace = true }
 rs_merkle = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
-tlsn-core = { workspace = true }
 verity-ic = { workspace = true }
 verity-verify-tls = { workspace = true }

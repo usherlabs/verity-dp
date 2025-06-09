@@ -29,6 +29,6 @@ serde = { workspace = true }
 sha2 = { workspace = true }
 thiserror = { workspace = true }
 tiny-keccak = { workspace = true, features = ["keccak"] }
-tlsn-utils = { git = "https://github.com/tlsnotary/tlsn-utils", rev = "e7b2db6" }
+tlsn-utils = { workspace = true }
 web-time = { workspace = true }
 webpki-roots = { workspace = true }

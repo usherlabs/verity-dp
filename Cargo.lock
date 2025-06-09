@@ -883,12 +883,6 @@ checksum = "9e1b586273c5702936fe7b7d6896644d8be71e6314cfe09d3167c95f712589e8"
 
 [[package]]
 name = "base64"
-version = "0.21.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9d297deb1925b89f2ccc13d7635fa0714f12c87adce1c75356b39ca9b7178567"
-
-[[package]]
-name = "base64"
 version = "0.22.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6"
@@ -1800,7 +1794,6 @@ dependencies = [
  "digest 0.10.7",
  "elliptic-curve",
  "rfc6979",
- "serdect",
  "signature",
  "spki",
 ]
@@ -1848,7 +1841,6 @@ dependencies = [
  "pkcs8",
  "rand_core",
  "sec1",
- "serdect",
  "subtle",
  "zeroize",
 ]
@@ -3533,7 +3525,6 @@ dependencies = [
  "ecdsa",
  "elliptic-curve",
  "primeorder",
- "serdect",
  "sha2 0.10.8",
 ]
 
@@ -3752,7 +3743,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "353e1ca18966c16d9deb1c69278edbc5f194139612772bd9537af60ac231e1e6"
 dependencies = [
  "elliptic-curve",
- "serdect",
 ]
 
 [[package]]
@@ -4111,7 +4101,7 @@ dependencies = [
  "pin-project-lite",
  "quinn",
  "rustls",
- "rustls-pemfile 2.2.0",
+ "rustls-pemfile",
  "rustls-pki-types",
  "serde",
  "serde_json",
@@ -4542,15 +4532,6 @@ dependencies = [
 
 [[package]]
 name = "rustls-pemfile"
-version = "1.0.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1c74cae0a4cf6ccbbf5f359f08efdf8ee7e1dc532573bf0db71968cb56b1448c"
-dependencies = [
- "base64 0.21.7",
-]
-
-[[package]]
-name = "rustls-pemfile"
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dce314e5fee3f39953d46bb63bb8a46d40c2f8fb7cc5a3b6cab2bde9721d6e50"
@@ -4618,16 +4599,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 
 [[package]]
-name = "sct"
-version = "0.7.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "da046153aa2352493d6cb7da4b6e5c0c057d8a1d0a9aa8560baffdd945acd414"
-dependencies = [
- "ring",
- "untrusted",
-]
-
-[[package]]
 name = "sec1"
 version = "0.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4637,7 +4608,6 @@ dependencies = [
  "der",
  "generic-array 0.14.7",
  "pkcs8",
- "serdect",
  "subtle",
  "zeroize",
 ]
@@ -4795,16 +4765,6 @@ dependencies = [
  "form_urlencoded",
  "itoa",
  "ryu",
- "serde",
-]
-
-[[package]]
-name = "serdect"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a84f14a19e9a014bb9f4512488d9829a68e04ecabffb0f9904cd1ace94598177"
-dependencies = [
- "base16ct",
  "serde",
 ]
 
@@ -5309,75 +5269,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
-name = "tlsn-core"
-version = "0.1.0-alpha.6"
-source = "git+https://github.com/tlsnotary/tlsn?rev=v0.1.0-alpha.6#3554db83e17b2e5fc98293b397a2907b7f023496"
-dependencies = [
- "bimap",
- "bytes",
- "getrandom 0.2.15",
- "mpz-circuits",
- "mpz-core",
- "mpz-garble-core",
- "opaque-debug 0.3.1",
- "p256",
- "ring",
- "rs_merkle 1.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "serde",
- "thiserror 1.0.69",
- "tlsn-tls-core",
- "tlsn-utils 0.1.0 (git+https://github.com/tlsnotary/tlsn-utils?rev=45370cc)",
- "web-time 0.2.4",
- "webpki-roots",
-]
-
-[[package]]
-name = "tlsn-core-no-session"
-version = "0.2.4"
-dependencies = [
- "bimap",
- "bincode",
- "bytes",
- "mpz-circuits",
- "mpz-core",
- "mpz-garble-core",
- "opaque-debug 0.3.1",
- "rs_merkle 1.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "rstest",
- "serde",
- "serde_json",
- "thiserror 1.0.69",
- "tlsn-utils 0.1.0 (git+https://github.com/tlsnotary/tlsn-utils?rev=45370cc)",
-]
-
-[[package]]
-name = "tlsn-tls-core"
-version = "0.1.0-alpha.6"
-source = "git+https://github.com/tlsnotary/tlsn?rev=v0.1.0-alpha.6#3554db83e17b2e5fc98293b397a2907b7f023496"
-dependencies = [
- "futures",
- "hmac",
- "rand",
- "ring",
- "rustls-pemfile 1.0.4",
- "sct",
- "serde",
- "sha2 0.10.8",
- "thiserror 1.0.69",
- "tracing",
- "web-time 0.2.4",
- "webpki",
-]
-
-[[package]]
-name = "tlsn-utils"
-version = "0.1.0"
-source = "git+https://github.com/tlsnotary/tlsn-utils?rev=45370cc#45370ccc6112328615721daad4f4084ff080f157"
-dependencies = [
- "serde",
-]
-
-[[package]]
 name = "tlsn-utils"
 version = "0.1.0"
 source = "git+https://github.com/tlsnotary/tlsn-utils?rev=e7b2db6#e7b2db6a0c0d0202694754efb77625ee43a14f5a"
@@ -5743,7 +5634,6 @@ dependencies = [
  "risc0-zkvm",
  "serde",
  "serde_json",
- "tlsn-core-no-session",
  "verity-verify-remote",
 ]
 
@@ -5778,7 +5668,6 @@ dependencies = [
  "rs_merkle 1.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde",
  "serde_json",
- "tlsn-core",
  "verity-ic",
  "verity-verify-tls",
 ]
@@ -5818,7 +5707,7 @@ dependencies = [
  "sha2 0.10.8",
  "thiserror 1.0.69",
  "tiny-keccak",
- "tlsn-utils 0.1.0 (git+https://github.com/tlsnotary/tlsn-utils?rev=e7b2db6)",
+ "tlsn-utils",
  "web-time 0.2.4",
  "webpki-roots",
 ]
@@ -5839,12 +5728,9 @@ dependencies = [
 name = "verity-verify-tls"
 version = "0.2.4"
 dependencies = [
- "cfg-if",
- "elliptic-curve",
- "p256",
+ "bincode",
  "serde_json",
- "tlsn-core",
- "tlsn-core-no-session",
+ "verity-verify-private-transcript",
 ]
 
 [[package]]
@@ -5998,16 +5884,6 @@ checksum = "5a6580f308b1fad9207618087a65c04e7a10bc77e02c8e84e9b00dd4b12fa0bb"
 dependencies = [
  "js-sys",
  "wasm-bindgen",
-]
-
-[[package]]
-name = "webpki"
-version = "0.22.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ed63aea5ce73d0ff405984102c42de94fc55a6b75765d621c65262469b3c9b53"
-dependencies = [
- "ring",
- "untrusted",
 ]
 
 [[package]]

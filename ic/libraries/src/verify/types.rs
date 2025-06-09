@@ -26,7 +26,6 @@ pub struct VerificationResponse {
 /// It can be either a `SessionProof` or a `FullProof`.
 #[derive(CandidType, Deserialize, Debug, Clone)]
 pub enum ProofResponse {
-    SessionProof(String),
     FullProof(String),
 }
 
@@ -53,9 +52,6 @@ impl ProofResponse {
                 }
 
                 http_parts[1].to_string()
-            }
-            ProofResponse::SessionProof(_) => {
-                panic!("Cannot extract HTTP response for session proof")
             }
         }
     }
@@ -95,17 +91,12 @@ impl ProofResponse {
                     Err(e) => Err(format!("Failed to parse HTTP response: {:?}", e)),
                 }
             }
-            ProofResponse::SessionProof(_) => {
-                panic!("Cannot extract HTTP response for session proof")
-            }
         }
     }
 
     /// Retrieves the text content of a verified proof.
     pub fn get_content(&self) -> String {
         match self {
-            // The result of a verified session proof is a hash, so no further processing is needed.
-            ProofResponse::SessionProof(content) => content.clone(),
             // For a full proof, return the request/response pair.
             ProofResponse::FullProof(content) => content.clone(),
         }
@@ -385,7 +376,7 @@ content-length: 48
 
     #[test]
     fn test_verification_canister_response_success() {
-        let proof = ProofResponse::SessionProof("hashed_content".to_string());
+        let proof = ProofResponse::FullProof("hashed_content".to_string());
         let verification_response = VerificationResponse {
             results: vec![proof.clone()],
             root: "abcd1234".to_string(),
@@ -410,13 +401,6 @@ content-length: 48
     }
 
     #[test]
-    #[should_panic(expected = "Cannot extract HTTP response for session proof")]
-    fn test_proof_response_get_http_response_body_session_proof_panic() {
-        let proof = ProofResponse::SessionProof("session_hash".to_string());
-        proof.get_http_response_body();
-    }
-
-    #[test]
     fn test_proof_response_get_http_response_body_full_proof_json() {
         for (input, expected, _) in TEST_CASES {
             let proof = ProofResponse::FullProof(input.to_string());
@@ -427,7 +411,7 @@ content-length: 48
 
     #[test]
     fn test_proof_response_get_http_response_header_full_proof_json() {
-        for (input, expected, status_code) in TEST_CASES {
+        for (input, _expected, status_code) in TEST_CASES {
             let proof = ProofResponse::FullProof(input.to_string());
             let headers_result = proof.get_http_headers();
             assert!(

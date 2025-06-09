@@ -11,7 +11,6 @@ use verity_verify_remote::{
     ic::{Verifier, DEFAULT_IC_GATEWAY_LOCAL},
 };
 use verity_verify_tls::verify_proof;
-// use verity_dp_zk_host::generate_groth16_proof;
 
 pub const DEFAULT_PROVER_URL: &str = "http://127.0.0.1:8080";
 pub const DEFAULT_VERITY_VERIFIER_ID: &str = "bkyz2-fmaaa-aaaaa-qaaaq-cai";
@@ -23,6 +22,8 @@ pub const DEFAULT_VERITY_VERIFIER_ID: &str = "bkyz2-fmaaa-aaaaa-qaaaq-cai";
 pub struct ZkInputParam {
     /// Session header information
     pub tls_proof: String,
+    /// Precompute encodings
+    pub encodings: Option<Vec<u8>>,
     /// Proof of substrings
     pub remote_verifier_proof: String,
     /// Remote verifier's ECDSA public key
@@ -50,7 +51,7 @@ async fn main() -> anyhow::Result<()> {
 
     // -------------------- // THE PLAN // ------------------------
     // Generate a TLS attestation using Verity Client
-    // Pepare the TLS proof for the guest
+    // Prepare the TLS proof for the guest
     // Call the zkVM guest for zkSNARK
     // Verify the SNARK
     // -------------------- // THE PLAN // ------------------------
@@ -81,18 +82,6 @@ async fn main() -> anyhow::Result<()> {
     println!("json: {:#?}", json);
     println!("response.proof.len(): {:#?}", response.proof.len());
 
-    // Get the Notary information from the Prover
-    let notaryinfo = client.get_notary_info().await;
-    println!("notaryinfo: {:#?}", notaryinfo);
-
-    let notary_pub_key = match notaryinfo {
-        Ok(notaryinfo) => notaryinfo.public_key,
-        Err(e) => {
-            println!("Error: {}", e);
-            return Ok(());
-        }
-    };
-
     // An executor environment describes the configurations for the zkVM
     // including program inputs.
     // An default ExecutorEnv can be created like so:
@@ -107,13 +96,12 @@ async fn main() -> anyhow::Result<()> {
 
     // Totally optional to verify proof on host too.
     // For the sake of this demo, we'll verify the proof on the host to ensure both the zkVM and host agree to the verification.
-    let verified_by_host: (String, String) =
-        verify_proof(&response.proof, &notary_pub_key).unwrap();
+    let verified_by_host: (String, String) = verify_proof(&response.proof, None).unwrap();
     println!("verified_by_host: {:#?}", verified_by_host);
     // Perform the partial remote verification against decentralised compute
 
     // 1. Create a config file by specifying the params
-    // ? To optain this identity.pem, use `dfx identity export` - https://internetcomputer.org/docs/current/developer-docs/developer-tools/cli-tools/cli-reference/dfx-parent
+    // ? To obtain this identity.pem, use `dfx identity export` - https://internetcomputer.org/docs/current/developer-docs/developer-tools/cli-tools/cli-reference/dfx-parent
 
     // TODO: This should eventually be abstracted away from the user...
     let rv_identity_path = "fixtures/identity.pem";
@@ -127,16 +115,11 @@ async fn main() -> anyhow::Result<()> {
     // 2. Create verifier from a config file
     let remote_verifier = Verifier::from_config(&rv_config).await.unwrap();
 
-    // 3. Extract our the public/private sub-proofs
-    let proof_value: serde_json::Value = serde_json::from_str(&response.proof).unwrap();
-    let session = proof_value["session"].to_string();
-
-    // 4. Verify a proof and get the response
+    // 3.  Verify a proof and get the response
     let verified_by_remote = remote_verifier
         .verify_proof(
             // You can verify multiple proofs at once
-            vec![session],
-            notary_pub_key,
+            vec![response.proof.clone()],
         )
         .await
         .unwrap();
@@ -159,15 +142,16 @@ async fn main() -> anyhow::Result<()> {
     println!("\nverified_by_remote: {:#?}", remote_verifier_proof);
 
     // Now we have a proof of remote verification... We can use this to verify the private transcript data within the zkVM
-    // ? The reason to split the proofs is becuase the crypto primitives used for session verification are not compatible zkVM and/or dramatically increase ZK proving times.
+    // ? The reason to split the proofs is because the crypto primitives used for session verification are not compatible zkVM and/or dramatically increase ZK proving times.
 
     // Start with the remote verifier's ECDSA public key
     let remote_verifier_public_key = remote_verifier.get_public_key().await.unwrap();
 
-    // To do this, we need to seralize the data we pass to the zkVM
+    // To do this, we need to serialize the data we pass to the zkVM
     let input = serde_json::to_string(
         &(ZkInputParam {
             tls_proof: response.proof.clone(),
+            encodings: None,
             remote_verifier_proof: serde_json::to_string(&remote_verifier_proof).unwrap(),
             remote_verifier_public_key,
         }),
@@ -189,7 +173,7 @@ async fn main() -> anyhow::Result<()> {
     println!("Proving via zkVM...");
 
     // TODO: This zkVM prover will still take an absurd amount of time on a local machine...
-    // This is becasue the crypto primitives involve randomness that causes zkVM to take a long time.
+    // This is because the crypto primitives involve randomness that causes zkVM to take a long time.
     // This is still a WIP and Usher Labs aims to solve this.
     // For the purpose of this demo, we will ensure RSIC0_DEV_MODE=1 is active.
     let prove_info = prover.prove(env, VERITY_ZK_TESTS_ZKTLS_GUEST_ELF).unwrap();

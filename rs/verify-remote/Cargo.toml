@@ -17,4 +17,4 @@ serde = { workspace = true }
 verity-verify-local = { workspace = true }
 
 [dev-dependencies]
-tokio = { workspace = true }
+tokio = { workspace = true, features = ["macros"] }
