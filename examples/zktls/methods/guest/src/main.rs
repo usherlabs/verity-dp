@@ -11,6 +11,8 @@ use verity_verify_tls::verify_proof;
 pub struct ZkInputParam {
     /// Session header information
     pub tls_proof: String,
+    /// Precompute encodings
+    pub encodings: Option<Vec<u8>>,
     /// Proof of substrings
     pub remote_verifier_proof: String,
     /// Remote verifier's ECDSA public key
@@ -32,7 +34,7 @@ fn main() {
     let params: ZkInputParam = serde_json::from_str(params.as_str()).unwrap();
 
     // Verify the Tls proof -- partially.
-    let (recv, sent) = verify_proof(&params.tls_proof).unwrap();
+    let (recv, sent) = verify_proof(&params.tls_proof, params.encodings).unwrap();
 
     // Verify the remote verifier's verification of the other part.
     let remote_verification_proof: RemoteVerificationProof =

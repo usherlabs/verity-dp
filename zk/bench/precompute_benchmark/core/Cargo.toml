@@ -1,0 +1,8 @@
+[package]
+name = "zk-bench-core"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+serde = "1.0"
+verity-verify-private-transcript = { path = "../../../../rs/verify-private-transcript" }

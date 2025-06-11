@@ -18,5 +18,4 @@ risc0-ethereum-contracts = { workspace = true }
 risc0-zkvm = { workspace = true, features = ["client"] }
 serde = { workspace = true }
 serde_json = { workspace = true }
-tlsn-core-no-session = { workspace = true }
 verity-verify-remote = { workspace = true }

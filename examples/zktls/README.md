@@ -25,7 +25,7 @@ To do this, we run:
 This involves operating a local Notary, and Prover.
 
 1. Run `verity notary start --config ./config/notary.yaml`
-2. Run `verity prover start`
+2. Run `verity prover start --config ./config/prover.yaml`
 
 ## Step 3: Run the ZK host
 

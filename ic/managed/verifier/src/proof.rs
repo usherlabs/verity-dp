@@ -3,12 +3,9 @@ use candid::CandidType;
 use serde::Deserialize;
 use serde_json::Value;
 use verity_ic::{crypto::ethereum::sign_message, verify::types::ProofResponse};
-use verity_verify_tls::{verify_proof, verify_session};
+use verity_verify_tls::verify_proof;
 
-use crate::{
-    merkle::generate_merkle_tree,
-    utils::{hash, validate_json_proof},
-};
+use crate::{merkle::generate_merkle_tree, utils::validate_json_proof};
 
 #[derive(CandidType, Deserialize, Debug, Clone)]
 pub struct DirectVerificationResponse {
@@ -25,26 +22,20 @@ pub struct ProofBatch {
 
 #[derive(CandidType, Deserialize, Debug, Clone)]
 pub enum ProofRequest {
-    SessionProof(String),
-    FullProof(String),
+    Presentation(String),
 }
 
 impl TryFrom<String> for ProofRequest {
     type Error = String;
 
     fn try_from(proof_string: String) -> Result<Self, Self::Error> {
-        let full_proof_keys = vec!["session", "substrings"];
-        let session_proof_keys = vec!["header", "signature", "session_info"];
+        let presentation_keys = vec!["attestation", "identity", "transcript"];
 
         let proof_json: Value = serde_json::from_str(proof_string.as_str()).unwrap();
 
         // check the keys present in the proof to determine what kind of proof it is
-        if validate_json_proof(&proof_json, &full_proof_keys) {
-            return Ok(ProofRequest::FullProof(proof_string));
-        }
-
-        if validate_json_proof(&proof_json, &session_proof_keys) {
-            return Ok(ProofRequest::SessionProof(proof_string));
+        if validate_json_proof(&proof_json, &presentation_keys) {
+            return Ok(ProofRequest::Presentation(proof_string));
         }
 
         Err("INVALID PROOF".to_string())
@@ -54,17 +45,11 @@ impl TryFrom<String> for ProofRequest {
 impl ProofRequest {
     /// Depending on the kind of proof we are trying to verify
     /// Check and use the appropriate verifier on the input proof
-    pub fn verify_request(&self, notary_pub_key: &String) -> Result<ProofResponse, String> {
+    pub fn verify_request(&self) -> Result<ProofResponse, String> {
         match self {
-            // verify the session proof and return a hash of the input as a response
-            ProofRequest::SessionProof(proof_string) => {
-                let _ = verify_session(&proof_string, &notary_pub_key)?;
-                let response = hash(&proof_string);
-                Ok(ProofResponse::SessionProof(response))
-            }
             // verify the full proof and return the request/response pair
-            ProofRequest::FullProof(proof_string) => {
-                let (res, req) = verify_proof(&proof_string, &notary_pub_key)?;
+            ProofRequest::Presentation(proof_string) => {
+                let (res, req) = verify_proof(&proof_string, None)?;
                 let response = format!("{}\n\n{}", req, res);
                 Ok(ProofResponse::FullProof(response))
             }
@@ -72,13 +57,7 @@ impl ProofRequest {
     }
 }
 
-pub fn verify_proof_requests(
-    proof_requests: Vec<String>,
-    notary_pub_key: String,
-) -> Vec<ProofResponse> {
-    // by default icp escapes special characters, so we need to unescape them
-    let notary_pub_key = notary_pub_key.replace("\\n", "\n");
-
+pub fn verify_proof_requests(proof_requests: Vec<String>) -> Vec<ProofResponse> {
     // convert the string proofs to the actual type casted version of the proof
     let proof_requests: Vec<ProofRequest> = proof_requests
         .iter()
@@ -88,12 +67,7 @@ pub fn verify_proof_requests(
     // iterate through the proofs and try verifying them
     let proof_responses: Vec<ProofResponse> = proof_requests
         .iter()
-        .map(|proof_request| {
-            proof_request
-                .clone()
-                .verify_request(&notary_pub_key)
-                .unwrap()
-        })
+        .map(|proof_request| proof_request.clone().verify_request().unwrap())
         .collect();
 
     proof_responses
@@ -103,16 +77,13 @@ pub fn verify_proof_requests_batch(batches: Vec<ProofBatch>) -> Vec<ProofRespons
     batches
         .into_iter()
         .flat_map(|batch| {
-            // Unescape special characters in the public key.
-            let notary_pub_key = batch.notary_pub_key.replace("\\n", "\n");
-
             // Process each proof request in this batch.
             batch
                 .proof_requests
                 .into_iter()
                 .map(|proof_str| {
                     let proof_request: ProofRequest = proof_str.try_into().unwrap();
-                    proof_request.verify_request(&notary_pub_key).unwrap()
+                    proof_request.verify_request().unwrap()
                 })
                 .collect::<Vec<ProofResponse>>()
         })
@@ -142,10 +113,9 @@ async fn process_and_sign(
 
 pub async fn verify_and_sign_proof_requests(
     proof_requests: Vec<String>,
-    notary_pub_key: String,
 ) -> Result<DirectVerificationResponse, String> {
     // iterate through the proofs and try verifying them
-    let proof_responses: Vec<ProofResponse> = verify_proof_requests(proof_requests, notary_pub_key);
+    let proof_responses: Vec<ProofResponse> = verify_proof_requests(proof_requests);
 
     return process_and_sign(proof_responses).await;
 }
