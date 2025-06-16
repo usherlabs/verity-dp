@@ -17,7 +17,7 @@ pub struct DirectVerificationResponse {
 #[derive(CandidType, Deserialize)]
 pub struct ProofBatch {
     pub proof_requests: Vec<String>,
-    pub notary_pub_key: String,
+    pub notary_pub_key: Vec<u8>,
 }
 
 #[derive(CandidType, Deserialize, Debug, Clone)]
@@ -45,11 +45,11 @@ impl TryFrom<String> for ProofRequest {
 impl ProofRequest {
     /// Depending on the kind of proof we are trying to verify
     /// Check and use the appropriate verifier on the input proof
-    pub fn verify_request(&self) -> Result<ProofResponse, String> {
+    pub fn verify_request(&self, notary_pub_key: &Vec<u8>) -> Result<ProofResponse, String> {
         match self {
             // verify the full proof and return the request/response pair
             ProofRequest::Presentation(proof_string) => {
-                let (res, req) = verify_proof(&proof_string, None)?;
+                let (res, req) = verify_proof(&proof_string, &notary_pub_key, None)?;
                 let response = format!("{}\n\n{}", req, res);
                 Ok(ProofResponse::FullProof(response))
             }
@@ -57,7 +57,10 @@ impl ProofRequest {
     }
 }
 
-pub fn verify_proof_requests(proof_requests: Vec<String>) -> Vec<ProofResponse> {
+pub fn verify_proof_requests(
+    proof_requests: Vec<String>,
+    notary_pub_key: &Vec<u8>,
+) -> Vec<ProofResponse> {
     // convert the string proofs to the actual type casted version of the proof
     let proof_requests: Vec<ProofRequest> = proof_requests
         .iter()
@@ -67,7 +70,12 @@ pub fn verify_proof_requests(proof_requests: Vec<String>) -> Vec<ProofResponse> 
     // iterate through the proofs and try verifying them
     let proof_responses: Vec<ProofResponse> = proof_requests
         .iter()
-        .map(|proof_request| proof_request.clone().verify_request().unwrap())
+        .map(|proof_request| {
+            proof_request
+                .clone()
+                .verify_request(notary_pub_key)
+                .unwrap()
+        })
         .collect();
 
     proof_responses
@@ -83,7 +91,7 @@ pub fn verify_proof_requests_batch(batches: Vec<ProofBatch>) -> Vec<ProofRespons
                 .into_iter()
                 .map(|proof_str| {
                     let proof_request: ProofRequest = proof_str.try_into().unwrap();
-                    proof_request.verify_request().unwrap()
+                    proof_request.verify_request(&batch.notary_pub_key).unwrap()
                 })
                 .collect::<Vec<ProofResponse>>()
         })
@@ -113,9 +121,10 @@ async fn process_and_sign(
 
 pub async fn verify_and_sign_proof_requests(
     proof_requests: Vec<String>,
+    notary_pub_key: &Vec<u8>,
 ) -> Result<DirectVerificationResponse, String> {
     // iterate through the proofs and try verifying them
-    let proof_responses: Vec<ProofResponse> = verify_proof_requests(proof_requests);
+    let proof_responses: Vec<ProofResponse> = verify_proof_requests(proof_requests, notary_pub_key);
 
     return process_and_sign(proof_responses).await;
 }

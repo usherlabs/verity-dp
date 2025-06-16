@@ -6,9 +6,14 @@ use verity_verify_private_transcript::{
 
 pub fn verify_proof(
     presentation_string: &String,
+    notary_pub_key: &Vec<u8>,
     encodings: Option<Vec<u8>>,
 ) -> Result<(String, String), String> {
     let presentation: Presentation = serde_json::from_str(&presentation_string).unwrap();
+
+    if notary_pub_key != &presentation.verifying_key().data {
+        return Err("Failed to verify notary public key".into());
+    }
 
     let encodings = encodings.map(|e| bincode::deserialize::<EncodingsMapType>(&e).unwrap());
 

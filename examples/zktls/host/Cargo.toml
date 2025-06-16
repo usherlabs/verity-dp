@@ -8,6 +8,7 @@ edition.workspace = true
 
 [dependencies]
 anyhow = { workspace = true }
+k256 = { workspace = true }
 risc0-zkvm = { workspace = true, default-features = true }
 serde = { workspace = true }
 serde_json = { workspace = true }

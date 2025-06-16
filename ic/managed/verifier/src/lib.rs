@@ -54,8 +54,11 @@ fn ping() -> String {
 
 /// Asynchronously verifies proof requests; intended for canister calls
 #[ic_cdk::query]
-async fn verify_proof_async(proof_requests: Vec<String>) -> Vec<ProofResponse> {
-    let verification_response = verify_proof_requests(proof_requests);
+async fn verify_proof_async(
+    proof_requests: Vec<String>,
+    notary_pub_key: Vec<u8>,
+) -> Vec<ProofResponse> {
+    let verification_response = verify_proof_requests(proof_requests, &notary_pub_key);
     verification_response
 }
 
@@ -71,9 +74,10 @@ async fn verify_proof_async_batch(batches: Vec<ProofBatch>) -> Vec<ProofResponse
 #[ic_cdk::update]
 async fn verify_proof_direct(
     proof_requests: Vec<String>,
+    notary_pub_key: Vec<u8>,
 ) -> Result<DirectVerificationResponse, String> {
     ensure_sufficient_cycles()?;
-    verify_and_sign_proof_requests(proof_requests).await
+    verify_and_sign_proof_requests(proof_requests, &notary_pub_key).await
 }
 
 /// Asynchronously verifies proof requests; intended for direct user calls

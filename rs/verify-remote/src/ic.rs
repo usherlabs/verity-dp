@@ -105,6 +105,7 @@ impl Verifier {
     pub async fn verify_proof(
         &self,
         string_proofs: Vec<String>,
+        notary_pub_key: Vec<u8>,
     ) -> Result<VerificationResponse, Box<dyn Error>> {
         let verifier_method = "verify_proof_direct";
 
@@ -112,7 +113,7 @@ impl Verifier {
         let response = self
             .agent
             .update(&self.canister, verifier_method)
-            .with_arg(candid::encode_one(string_proofs)?)
+            .with_arg(candid::encode_args((string_proofs, notary_pub_key))?)
             .call_and_wait()
             .await?;
 
