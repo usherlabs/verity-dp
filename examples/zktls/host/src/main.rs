@@ -119,11 +119,10 @@ async fn main() -> anyhow::Result<()> {
     // ? To obtain this identity.pem, use `dfx identity export` - https://internetcomputer.org/docs/current/developer-docs/developer-tools/cli-tools/cli-reference/dfx-parent
 
     // TODO: This should eventually be abstracted away from the user...
-    let rv_identity_path = "fixtures/identity.pem";
     let rv_id = DEFAULT_VERITY_VERIFIER_ID.to_string();
     let rv_config = Config::new(
         DEFAULT_IC_GATEWAY_LOCAL.to_string(),
-        rv_identity_path.to_string(),
+        verity_fixtures::ic::IDENTITY_PATH.to_string(),
         rv_id,
     );
 
@@ -135,7 +134,7 @@ async fn main() -> anyhow::Result<()> {
         .verify_proof(
             // You can verify multiple proofs at once
             vec![response.proof.clone()],
-            notary_pub_key.clone(),            
+            notary_pub_key.clone(),
         )
         .await
         .unwrap();

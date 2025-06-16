@@ -5795,6 +5795,7 @@ dependencies = [
  "tracing-subscriber 0.3.19",
  "verity-client",
  "verity-dp-examples-zktls-methods",
+ "verity-fixtures",
  "verity-verify-remote",
  "verity-verify-tls",
 ]
@@ -5843,6 +5844,10 @@ dependencies = [
  "serde_json",
  "verity-verify-remote",
 ]
+
+[[package]]
+name = "verity-fixtures"
+version = "0.2.4"
 
 [[package]]
 name = "verity-ic"
@@ -5929,6 +5934,7 @@ dependencies = [
  "k256",
  "serde",
  "tokio",
+ "verity-fixtures",
  "verity-verify-local",
 ]
 

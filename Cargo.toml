@@ -3,6 +3,7 @@ members = [
     "examples/zktls/host",
     "examples/zktls/methods",
     "examples/zktls/methods/guest",
+    "fixtures",
     "ic/libraries",
     "ic/managed/verifier",
     "rs/tests/load",
@@ -76,6 +77,7 @@ uuid = "1.11.0"
 verity-client = { path = "./rs/verity-client" }
 verity-dp-examples-zktls-methods = { path = "./examples/zktls/methods" }
 verity-dp-zk-host = { path = "./zk/host" }
+verity-fixtures = { path = "./fixtures" }
 verity-ic = { path = "./ic/libraries" }
 verity-verify-local = { path = "./rs/verify-local" }
 verity-verify-private-transcript = { path = "./rs/verify-private-transcript" }

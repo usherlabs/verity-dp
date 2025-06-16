@@ -10,4 +10,5 @@ methods = { path = "../methods" }
 risc0-zkvm = { workspace = true }
 serde_json = { workspace = true }
 tracing-subscriber = { workspace = true, features = ["env-filter"] }
+verity-fixtures = { workspace = true }
 verity-verify-private-transcript = { workspace = true }

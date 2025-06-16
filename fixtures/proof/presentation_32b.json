@@ -42,7 +42,10 @@
           "data": {
             "time": 1749100454,
             "version": "v1_2",
-            "transcript_length": { "sent": 223, "received": 279 }
+            "transcript_length": {
+              "sent": 223,
+              "received": 279
+            }
           }
         },
         "server_ephemeral_key": {
@@ -89,7 +92,13 @@
         },
         "plaintext_hashes": []
       },
-      "proof": { "alg": 2, "tree_len": 5, "proof": { "proof_hashes": [] } }
+      "proof": {
+        "alg": 2,
+        "tree_len": 5,
+        "proof": {
+          "proof_hashes": []
+        }
+      }
     }
   },
   "identity": {
@@ -277,15 +286,23 @@
       "inclusion_proof": {
         "alg": 2,
         "tree_len": 2,
-        "proof": { "proof_hashes": [] }
+        "proof": {
+          "proof_hashes": []
+        }
       },
       "openings": {
         "1": {
           "direction": "Sent",
           "seq": {
             "idx": [
-              { "start": 0, "end": 173 },
-              { "start": 185, "end": 223 }
+              {
+                "start": 0,
+                "end": 173
+              },
+              {
+                "start": 185,
+                "end": 223
+              }
             ],
             "data": [
               71, 69, 84, 32, 104, 116, 116, 112, 115, 58, 47, 47, 99, 111, 110,
@@ -314,9 +331,18 @@
           "direction": "Received",
           "seq": {
             "idx": [
-              { "start": 0, "end": 208 },
-              { "start": 221, "end": 258 },
-              { "start": 261, "end": 279 }
+              {
+                "start": 0,
+                "end": 208
+              },
+              {
+                "start": 221,
+                "end": 258
+              },
+              {
+                "start": 261,
+                "end": 279
+              }
             ],
             "data": [
               72, 84, 84, 80, 47, 49, 46, 49, 32, 50, 48, 48, 32, 79, 75, 13,

@@ -19,3 +19,4 @@ verity-verify-local = { workspace = true }
 [dev-dependencies]
 k256 = { workspace = true }
 tokio = { workspace = true, features = ["macros"] }
+verity-fixtures = { workspace = true }

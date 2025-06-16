@@ -16,5 +16,6 @@ tokio = { workspace = true }
 tracing-subscriber = { workspace = true, features = ["env-filter"] }
 verity-client = { workspace = true }
 verity-dp-examples-zktls-methods = { workspace = true }
+verity-fixtures = { workspace = true }
 verity-verify-remote = { workspace = true }
 verity-verify-tls = { workspace = true }

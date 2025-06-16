@@ -9,21 +9,19 @@ mod tests {
 
     // Import everything from the outer scope
     use super::*;
-    use std::fs;
 
     // Simple test
     #[tokio::test]
     async fn async_test_example() -> anyhow::Result<()> {
-        // Read the file content into a string
-        let proof = fs::read_to_string("./fixtures/32b.presentation.json")?;
-        let notary_pub_key = fs::read_to_string("./fixtures/notary.pub")?;
-        let notary_pub_key = k256::PublicKey::from_public_key_pem(&notary_pub_key)?;
+        let proof = verity_fixtures::proof::PRESENTATION_32B.to_string();
+        let notary_pub_key =
+            k256::PublicKey::from_public_key_pem(verity_fixtures::notary::PUB_KEY)?;
         let notary_pub_key = notary_pub_key.to_sec1_bytes().into_vec();
 
-        // 1. Create a config file by specifying the params
+        // 1. Create a configuration by specifying the params
         let config = Config::new(
             DEFAULT_IC_GATEWAY_LOCAL.to_string(),
-            "./fixtures/identity.pem".to_string(),
+            verity_fixtures::ic::IDENTITY_PATH.to_string(),
             "bkyz2-fmaaa-aaaaa-qaaaq-cai".to_string(),
         );
 
