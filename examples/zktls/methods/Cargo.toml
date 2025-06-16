@@ -9,6 +9,7 @@ edition.workspace = true
 
 [build-dependencies]
 risc0-build = { workspace = true }
+verity-dp-zk-host = { workspace = true }
 
 [package.metadata.risc0]
 methods = ["guest"]

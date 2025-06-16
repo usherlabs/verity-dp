@@ -5804,6 +5804,7 @@ name = "verity-dp-examples-zktls-methods"
 version = "0.2.4"
 dependencies = [
  "risc0-build",
+ "verity-dp-zk-host",
 ]
 
 [[package]]
