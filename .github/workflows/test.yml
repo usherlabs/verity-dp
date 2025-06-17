@@ -14,6 +14,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: binaryen
+          version: 1.0
+
       - uses: actions/checkout@v2
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -37,10 +42,30 @@ jobs:
           rzup install
           rzup show
 
+      - name: Install WASI Polyfill Tool
+        run: |
+          cargo install wasi2ic
+
+      - name: Install IC
+        run: |
+          export DFX_VERSION=0.24.2
+          export DFXVM_INIT_YES=1
+          curl -fsSL https://sdk.dfinity.org/install.sh | sh -
+          echo "$HOME/.local/share/dfx/bin" >> $GITHUB_PATH
+
+      - name: Start IC local replica
+        run: |
+          dfx start --background
+
+      - name: Deploy Managed Verifier canister to IC local replica
+        run: |
+          cd ./ic/managed/verifier
+          dfx deploy
+
       - name: run Verify Test
         run: |
           rustup update
-          cargo test -- --skip async_test_example // Skip async_test_example because of its dependency on a pem file
+          cargo test
 
       - name: run IC Check
         run: |
