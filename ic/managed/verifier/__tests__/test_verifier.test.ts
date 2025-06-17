@@ -1,17 +1,21 @@
 import { readFileSync, readdirSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, test } from "vitest";
-import type { ProofVerificationResponse } from "../src/declarations/verity_verifier/verity_verifier.did";
-import { getCanisterCycles, verifyVerifier } from "./actor";
+import type { ProofResponse, Result } from "../src/declarations/verity_verifier/verity_verifier.did";
+import { getCanisterCycles, verityVerifier } from "./actor";
+import { to_sec1_bytes } from "./crypto";
 
-const test_files = readdirSync("./fixtures/")
+const fixtures_dir = resolve("../../../fixtures");
+const test_files = readdirSync(`${fixtures_dir}/proof/`)
   .filter((file) => file.endsWith(".json"))
-  .map((elem) => readFileSync(`./fixtures/${elem}`, "utf8"));
-const public_key = readFileSync("./fixtures/notary.pub", "utf8");
+  .map((elem) => readFileSync(`${fixtures_dir}/proof/${elem}`, "utf8"));
+const public_key_string = readFileSync(`${fixtures_dir}/notary/notary.pub`, "utf8");
+const public_key = to_sec1_bytes(public_key_string);
 
 describe("Managed IC Verifier", () => {
   test("expect Ping", async () => {
     const old_balance = await getCanisterCycles("verity_verifier");
-    const result = await verifyVerifier.ping();
+    const result = await verityVerifier.ping();
     console.log("Ping cycle used:", old_balance - (await getCanisterCycles("verity_verifier")));
     expect(result).toBe("Ping");
   });
@@ -22,7 +26,7 @@ describe("Managed IC Verifier", () => {
       const old_balance = await getCanisterCycles("verity_verifier");
       const startTime = Date.now();
       console.log({ length: test_files.reduce((prev, curr) => prev + curr.length, 0) });
-      const result = (await verifyVerifier.verify_proof_async(test_files, public_key)) as ProofVerificationResponse;
+      const result = (await verityVerifier.verify_proof_async(test_files, public_key)) as ProofResponse[];
       expect(Array.isArray(result)).toBe(true);
       expect(result.length).toBe(test_files.length);
 
@@ -39,7 +43,7 @@ describe("Managed IC Verifier", () => {
     test("Expect verify_proof_async_batch to return Proof Response", async () => {
       const old_balance = await getCanisterCycles("verity_verifier");
       const startTime = Date.now();
-      const result = (await verifyVerifier.verify_proof_async_batch([
+      const result = (await verityVerifier.verify_proof_async_batch([
         {
           proof_requests: test_files.slice(0, test_files.length / 2),
           notary_pub_key: public_key,
@@ -48,7 +52,7 @@ describe("Managed IC Verifier", () => {
           proof_requests: test_files.slice(test_files.length / 2),
           notary_pub_key: public_key,
         },
-      ])) as ProofVerificationResponse;
+      ])) as ProofResponse[];
       expect(Array.isArray(result)).toBe(true);
       expect(result.length).toBe(test_files.length);
       for (const item of result) {
@@ -67,7 +71,7 @@ describe("Managed IC Verifier", () => {
       const old_balance = await getCanisterCycles("verity_verifier");
       const startTime = Date.now();
 
-      const result = (await verifyVerifier.verify_proof_direct(test_files, public_key)) as ProofVerificationResponse;
+      const result = (await verityVerifier.verify_proof_direct(test_files, public_key)) as Result;
       expect(Array.isArray(result)).toBe(false);
       expect(Object.keys(result)).toMatch(/^(Ok|Err)$/);
 
@@ -88,7 +92,7 @@ describe("Managed IC Verifier", () => {
       const old_balance = await getCanisterCycles("verity_verifier");
       const startTime = Date.now();
 
-      const result = (await verifyVerifier.verify_proof_direct_batch([
+      const result = (await verityVerifier.verify_proof_direct_batch([
         {
           proof_requests: test_files.slice(0, test_files.length / 2),
           notary_pub_key: public_key,
@@ -97,7 +101,7 @@ describe("Managed IC Verifier", () => {
           proof_requests: test_files.slice(test_files.length / 2),
           notary_pub_key: public_key,
         },
-      ])) as ProofVerificationResponse;
+      ])) as Result;
       expect(Array.isArray(result)).toBe(false);
       expect(Object.keys(result)).toMatch(/^(Ok|Err)$/);
 

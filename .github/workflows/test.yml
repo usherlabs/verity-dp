@@ -53,6 +53,10 @@ jobs:
           curl -fsSL https://sdk.dfinity.org/install.sh | sh -
           echo "$HOME/.local/share/dfx/bin" >> $GITHUB_PATH
 
+      - name: Install candid-extractor - a CLI tool to extract the Candid interface from a Canister WASM.
+        run: |
+          cargo install candid-extractor
+
       - name: Start IC local replica
         run: |
           dfx start --background
@@ -61,6 +65,7 @@ jobs:
         run: |
           cd ./ic/managed/verifier
           dfx deploy
+          dfx generate
 
       - name: run Verify Test
         run: |
@@ -69,6 +74,6 @@ jobs:
 
       - name: run IC Check
         run: |
-          export DFXVM_INIT_YES=1
-          curl -fsSL https://sdk.dfinity.org/install.sh | sh - &&  source "$HOME/.local/share/dfx/env"
-          cd ic/managed/verifier/ &&  pnpm install &&  pnpm test:prod
+          cd ic/managed/verifier/
+          pnpm install
+          pnpm test
