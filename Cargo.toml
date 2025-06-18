@@ -12,8 +12,9 @@ members = [
     "rs/verify-remote",
     "rs/verify-tls",
     "rs/verity-client",
-    "zk/guest",
     "zk/host",
+    "zk/methods",
+    "zk/methods/guest",
 ]
 resolver = "2"
 
@@ -74,14 +75,17 @@ tokio-util = "0.7.13"
 tracing = "0.1.41"
 tracing-subscriber = "0.3.19"
 uuid = "1.11.0"
+web-time = { version = "0.2" }
+webpki-roots = { version = "0.26" }
+
+# Verity packages
 verity-client = { path = "./rs/verity-client" }
 verity-dp-examples-zktls-methods = { path = "./examples/zktls/methods" }
 verity-dp-zk-host = { path = "./zk/host" }
+verity-dp-zk-methods = { path = "./zk/methods" }
 verity-fixtures = { path = "./fixtures" }
 verity-ic = { path = "./ic/libraries" }
 verity-verify-local = { path = "./rs/verify-local" }
 verity-verify-private-transcript = { path = "./rs/verify-private-transcript" }
 verity-verify-remote = { path = "./rs/verify-remote" }
 verity-verify-tls = { path = "./rs/verify-tls" }
-web-time = { version = "0.2" }
-webpki-roots = { version = "0.26" }

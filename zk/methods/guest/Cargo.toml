@@ -9,8 +9,7 @@ license.workspace = true
 edition.workspace = true
 
 [dependencies]
-dotenv = { workspace = true }
-risc0-build = { workspace = true, features = ["docker"] }
-risc0-build-ethereum = { workspace = true }
-risc0-ethereum-contracts = { workspace = true }
-risc0-zkvm = { workspace = true, default_features = false }
+bincode = { workspace = true }
+risc0-zkvm = { workspace = true, default_features = false, features = ['std'] }
+serde_json = { workspace = true }
+verity-verify-private-transcript = { workspace = true }

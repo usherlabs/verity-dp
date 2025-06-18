@@ -4,8 +4,8 @@
 use std::env;
 
 // use chrono::Local;
-use methods::{ZKVM_GUEST_ELF, ZKVM_GUEST_ID};
 use risc0_zkvm::{default_prover, ExecutorEnv};
+use verity_dp_zk_methods::{VERITY_DP_ZK_GUEST_ELF, VERITY_DP_ZK_GUEST_ID};
 use verity_verify_private_transcript::{presentation::Presentation, CryptoProvider};
 
 #[test]
@@ -64,9 +64,9 @@ fn host_works() {
     // This struct contains the receipt along with statistics about execution of the guest
     println!("Proving...");
     println!("Proof size: {:?}", presentation_string.len());
-    println!("ELF size: {:?}", ZKVM_GUEST_ELF.len());
+    println!("ELF size: {:?}", VERITY_DP_ZK_GUEST_ELF.len());
     println!("--------------------------------");
-    let prove_info = prover.prove(env, ZKVM_GUEST_ELF).unwrap();
+    let prove_info = prover.prove(env, VERITY_DP_ZK_GUEST_ELF).unwrap();
 
     // extract the receipt.
     let receipt = prove_info.receipt;
@@ -77,5 +77,5 @@ fn host_works() {
 
     // The receipt was verified at the end of proving, but the below code is an
     // example of how someone else could verify this receipt.
-    receipt.verify(ZKVM_GUEST_ID).unwrap();
+    receipt.verify(VERITY_DP_ZK_GUEST_ID).unwrap();
 }
