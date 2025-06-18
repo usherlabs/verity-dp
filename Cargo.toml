@@ -14,7 +14,9 @@ members = [
     "rs/verity-client",
     "zk/host",
     "zk/methods",
+    "zk/methods/benchmark",
     "zk/methods/guest",
+    "zk/shared",
 ]
 resolver = "2"
 
@@ -83,6 +85,7 @@ verity-client = { path = "./rs/verity-client" }
 verity-dp-examples-zktls-methods = { path = "./examples/zktls/methods" }
 verity-dp-zk-host = { path = "./zk/host" }
 verity-dp-zk-methods = { path = "./zk/methods" }
+verity-dp-zk-shared = { path = "./zk/shared" }
 verity-fixtures = { path = "./fixtures" }
 verity-ic = { path = "./ic/libraries" }
 verity-verify-local = { path = "./rs/verify-local" }

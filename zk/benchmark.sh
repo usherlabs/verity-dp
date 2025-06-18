@@ -7,7 +7,7 @@
 # should use precompute in this benchmark run or not
 use_precompute="true"
 # number of iterations to get an average over
-iteration_count=10
+iteration_count=3
 
 # Function to calculate the average of an array and return the average value
 calculate_average() {
@@ -37,20 +37,22 @@ main() {
     # store the time each iteration took to run
     runtimes=()
 
-    for iteration_count in $(seq 1 $iteration_count); do
+    for iteration in $(seq 1 $iteration_count); do
+        echo "[BENCHMARK]: Starting iteration $iteration of $iteration_count..."
+
         if [ "$use_precompute" = true ]; then
-            program_output=$(cargo run precompute)
+            program_output=$(cargo run --example benchmark -- precompute)
         else
-            program_output=$(cargo run)
+            program_output=$(cargo run --example benchmark)
         fi
         iteration_runtime=$(echo "$program_output" | grep -oP '\d+(?=\sseconds)')
-        echo iteration_runtime
+        echo "[BENCHMARK]: Iteration $iteration took $iteration_runtime seconds"
         runtimes+=("$iteration_runtime")
     done
 
     # Print the captured output
     average_value=$(calculate_average "${runtimes[@]}")
-    echo "The average time taken to run is $average_value" seconds
+    echo "[BENCHMARK]: The average time taken to run is $average_value" seconds
 }
 
 # call the main function

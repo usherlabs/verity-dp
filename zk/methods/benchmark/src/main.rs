@@ -1,11 +1,11 @@
 use std::io::Read;
 
 use risc0_zkvm::guest::env;
+use verity_dp_zk_shared::{ZKInput, ZKOutput};
 use verity_verify_private_transcript::{
     encodings_precompute::{verify, verify_raw},
     transcript::PartialTranscript,
 };
-use zk_bench_core::{ZKInput, ZKOutput};
 
 fn main() {
     let mut zk_input_bytes: Vec<u8> = vec![];

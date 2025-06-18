@@ -5819,6 +5819,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "verity-dp-zk-benchmark"
+version = "0.2.4"
+dependencies = [
+ "bincode",
+ "risc0-zkvm",
+ "serde_json",
+ "verity-dp-zk-shared",
+ "verity-verify-private-transcript",
+]
+
+[[package]]
 name = "verity-dp-zk-guest"
 version = "0.2.4"
 dependencies = [
@@ -5844,6 +5855,7 @@ dependencies = [
  "serde_json",
  "tracing-subscriber 0.3.19",
  "verity-dp-zk-methods",
+ "verity-dp-zk-shared",
  "verity-fixtures",
  "verity-verify-private-transcript",
  "verity-verify-remote",
@@ -5854,6 +5866,14 @@ name = "verity-dp-zk-methods"
 version = "0.2.4"
 dependencies = [
  "risc0-build",
+]
+
+[[package]]
+name = "verity-dp-zk-shared"
+version = "0.2.4"
+dependencies = [
+ "serde",
+ "verity-verify-private-transcript",
 ]
 
 [[package]]

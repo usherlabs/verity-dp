@@ -2,8 +2,5 @@
 	"rust-analyzer.linkedProjects": [
 		"ic/canisters/asset_manager/Cargo.toml",
 		"ic/managed/verifier/Cargo.toml",
-		"zk/bench/precompute_benchmark/Cargo.toml",
-		"zk/bench/precompute_benchmark/core/Cargo.toml",
-		"zk/bench/precompute_benchmark/methods/guest/Cargo.toml",
 	]
 }

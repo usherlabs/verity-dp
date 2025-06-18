@@ -5,6 +5,7 @@ This script runs a program multiple times, measures how long each run takes, and
 ---
 
 ### **Variables to change**
+
 - `BONSAI_API_KEY`: Bonsai credentials
 - `BONSAI_API_URL`: Bonsai Credentials
 - `use_precompute`: Determines if the program should run with the `precompute` optimization.
@@ -13,9 +14,11 @@ This script runs a program multiple times, measures how long each run takes, and
 ---
 
 ### **Benchmark Execution**
+
+```bash
+bash benchmark.sh
 ```
-bash bonsairun.sh
-```
+
 ---
 
 ### **Average Calculation**
@@ -35,6 +38,7 @@ The final output shows the average time it took for the program to run across al
 ### **Example of the Output**
 
 If each program run takes 10, 12, and 8 seconds respectively:
-```bash
-The average time taken to run is 10 seconds
+
+```
+[BENCHMARK]: The average time taken to run is 4 seconds
 ```

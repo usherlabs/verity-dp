@@ -21,6 +21,7 @@ serde = { workspace = true }
 serde_json = { workspace = true }
 tracing-subscriber = { workspace = true, features = ["env-filter"] }
 verity-dp-zk-methods = { workspace = true }
+verity-dp-zk-shared = { workspace = true }
 verity-fixtures = { workspace = true }
 verity-verify-private-transcript = { workspace = true }
 verity-verify-remote = { workspace = true }
