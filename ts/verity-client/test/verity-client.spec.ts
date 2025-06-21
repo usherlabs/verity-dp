@@ -26,6 +26,6 @@ describe("VerityClient", () => {
 			response.notary_pub_key?.startsWith("-----BEGIN PUBLIC KEY---"),
 		).toBe(true);
 		expect(response.status).toBe(200);
-		expect(response.headers.has("t-proof-id")).toBe(true);
+		expect((response.headers as any)?.has("t-proof-id")).toBe(true);
 	});
 });
