@@ -1,0 +1,16 @@
+[package]
+name = "verity-dp-zk-benchmark"
+description = "Utilities to benchmark proof verification in the guest/zkVM with and without precomputed encodings"
+version.workspace = true
+authors.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+license.workspace = true
+edition.workspace = true
+
+[dependencies]
+bincode = { workspace = true }
+risc0-zkvm = { workspace = true, default_features = false, features = ['std'] }
+serde_json = { workspace = true }
+verity-dp-zk-shared = { workspace = true }
+verity-verify-private-transcript = { workspace = true }

@@ -105,7 +105,7 @@ impl Verifier {
     pub async fn verify_proof(
         &self,
         string_proofs: Vec<String>,
-        notary_pub_key: String,
+        notary_pub_key: Vec<u8>,
     ) -> Result<VerificationResponse, Box<dyn Error>> {
         let verifier_method = "verify_proof_direct";
 
@@ -115,8 +115,7 @@ impl Verifier {
             .update(&self.canister, verifier_method)
             .with_arg(candid::encode_args((string_proofs, notary_pub_key))?)
             .call_and_wait()
-            .await
-            .unwrap();
+            .await?;
 
         // Parses the response into the appropriate struct and returns it
         let verification_response = Decode!(&response, CanisterResponseType)??;

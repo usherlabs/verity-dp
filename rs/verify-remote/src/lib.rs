@@ -5,23 +5,23 @@ pub mod ic;
 mod tests {
     use config::Config;
     use ic::{Verifier, DEFAULT_IC_GATEWAY_LOCAL};
+    use k256::pkcs8::DecodePublicKey;
 
     // Import everything from the outer scope
     use super::*;
-    use std::fs;
 
     // Simple test
     #[tokio::test]
     async fn async_test_example() -> anyhow::Result<()> {
-        // Read the file content into a string
-        let proof1 = fs::read_to_string("./fixtures/proof.json")?;
-        let proof2 = fs::read_to_string("./fixtures/session.json")?;
-        let notary_pub_key = fs::read_to_string("./fixtures/notary.pub")?;
+        let proof = verity_fixtures::proof::PRESENTATION_32B.to_string();
+        let notary_pub_key =
+            k256::PublicKey::from_public_key_pem(verity_fixtures::notary::PUB_KEY)?;
+        let notary_pub_key = notary_pub_key.to_sec1_bytes().into_vec();
 
-        // 1. Create a config file by specifying the params
+        // 1. Create a configuration by specifying the params
         let config = Config::new(
             DEFAULT_IC_GATEWAY_LOCAL.to_string(),
-            "./identity.pem".to_string(),
+            verity_fixtures::ic::IDENTITY_PATH.to_string(),
             "bkyz2-fmaaa-aaaaa-qaaaq-cai".to_string(),
         );
 
@@ -29,14 +29,16 @@ mod tests {
         let verifier = Verifier::from_config(&config).await.unwrap();
 
         // 3. verify a proof and get the response
-        let response = verifier
-            .verify_proof(vec![proof1, proof2], notary_pub_key)
-            .await;
+        let response = verifier.verify_proof(vec![proof], notary_pub_key).await;
 
         // get the public key of the canister for ecdsa signature verification
         let _ = verifier.get_public_key().await.unwrap();
 
-        assert!(response.is_ok());
+        assert!(
+            response.is_ok(),
+            "Expected Ok, got Error: {:?}",
+            response.err().unwrap()
+        );
 
         Ok(())
     }

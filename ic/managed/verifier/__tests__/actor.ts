@@ -51,13 +51,13 @@ const is_production = process.env.PROD?.toString() === "true";
 const DEV_CANISTER_ID = canisterIds.verity_verifier?.local ?? "";
 const PROD_CANISTER_ID = "yf57k-fyaaa-aaaaj-azw2a-cai";
 
-export const verifyVerifierCanister = is_production ? PROD_CANISTER_ID : DEV_CANISTER_ID;
+export const verityVerifierCanister = is_production ? PROD_CANISTER_ID : DEV_CANISTER_ID;
 
-if (!verifyVerifierCanister) {
+if (!verityVerifierCanister) {
   console.warn(`No canister ID for ${is_production ? "production" : "development"} build—createActor may fail.`);
 }
 
-export const verifyVerifier = await createActor(verifyVerifierCanister, {
+export const verityVerifier = await createActor(verityVerifierCanister, {
   agentOptions: {
     host: is_production ? "https://icp0.io" : "http://127.0.0.1:4943",
     fetch,

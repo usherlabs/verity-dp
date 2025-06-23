@@ -56,9 +56,9 @@ fn ping() -> String {
 #[ic_cdk::query]
 async fn verify_proof_async(
     proof_requests: Vec<String>,
-    notary_pub_key: String,
+    notary_pub_key: Vec<u8>,
 ) -> Vec<ProofResponse> {
-    let verification_response = verify_proof_requests(proof_requests, notary_pub_key);
+    let verification_response = verify_proof_requests(proof_requests, &notary_pub_key);
     verification_response
 }
 
@@ -74,10 +74,10 @@ async fn verify_proof_async_batch(batches: Vec<ProofBatch>) -> Vec<ProofResponse
 #[ic_cdk::update]
 async fn verify_proof_direct(
     proof_requests: Vec<String>,
-    notary_pub_key: String,
+    notary_pub_key: Vec<u8>,
 ) -> Result<DirectVerificationResponse, String> {
     ensure_sufficient_cycles()?;
-    verify_and_sign_proof_requests(proof_requests, notary_pub_key).await
+    verify_and_sign_proof_requests(proof_requests, &notary_pub_key).await
 }
 
 /// Asynchronously verifies proof requests; intended for direct user calls
@@ -139,3 +139,6 @@ async fn post_upgrade() {
     init_canister(env_opt);
 }
 // --------------------------- upgrade hooks ------------------------- //
+
+// Enable Candid export
+ic_cdk::export_candid!();

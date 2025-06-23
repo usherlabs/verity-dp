@@ -1,0 +1,11 @@
+[package]
+name = "verity-fixtures"
+description = "Verity fixtures that make developer's life easier"
+version.workspace = true
+authors.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+license.workspace = true
+edition.workspace = true
+
+[dependencies]

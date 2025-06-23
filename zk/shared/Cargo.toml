@@ -1,0 +1,13 @@
+[package]
+name = "verity-dp-zk-shared"
+description = "Shared zkVM data structures usable on host and guest sides for passing arguments and returning results"
+version.workspace = true
+authors.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+license.workspace = true
+edition.workspace = true
+
+[dependencies]
+serde = { workspace = true }
+verity-verify-private-transcript = { workspace = true }
