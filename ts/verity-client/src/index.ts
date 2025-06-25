@@ -1,13 +1,7 @@
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 import EventSource from "eventsource";
-import type {
-	AxiosInstance,
-	AxiosRequestConfig,
-	AxiosResponse,
-	AxiosResponseHeaders,
-	RawAxiosResponseHeaders,
-} from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 export interface INotaryInformation {
 	version: string;
