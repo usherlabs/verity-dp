@@ -1,6 +1,6 @@
 {
 	"name": "@usherlabs/verity-client",
-	"version": "0.0.19",
+	"version": "0.0.20",
 	"description": "Verity zkTLS Stack - Typescript Client",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -31,8 +31,10 @@
 	"dependencies": {
 		"@types/eventsource": "^1.1.15",
 		"axios": "^1.9.0",
-		"eventsource": "^2.0.2",
 		"uuid": "^11.1.0"
+	},
+	"peerDependencies": {
+		"eventsource": "^2.0.2"
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.23.2",

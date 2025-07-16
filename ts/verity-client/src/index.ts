@@ -10,13 +10,28 @@ import type {
 
 // Dynamic EventSource import for cross-platform compatibility
 let EventSource: any;
-if (typeof window !== "undefined" && window.EventSource) {
-	// Browser environment - use native EventSource
-	EventSource = window.EventSource;
-} else {
-	// Node.js environment - use the eventsource package
-	EventSource = require("eventsource");
+
+// Initialize EventSource based on environment
+function initializeEventSource() {
+	if (typeof window !== "undefined" && window.EventSource) {
+		// Browser environment - use native EventSource
+		EventSource = window.EventSource;
+	} else {
+		// Node.js environment - use the eventsource package
+		try {
+			// Use require for Node.js environments
+			EventSource = require("eventsource");
+		} catch (error) {
+			console.warn(
+				"eventsource package not available, EventSource functionality may not work in Node.js environment",
+			);
+			EventSource = null;
+		}
+	}
 }
+
+// Initialize immediately
+initializeEventSource();
 
 export interface INotaryInformation {
 	version: string;
@@ -133,8 +148,21 @@ class VerityRequest<T> {
 	}
 
 	private async subscribeToProof(timeoutMs = 1800000): Promise<string> {
+		// Ensure EventSource is initialized
+		if (!EventSource) {
+			initializeEventSource();
+		}
+
 		const url = `${this.axiosInstance.defaults.baseURL}/proof/${this.requestId}`;
 		return new Promise((resolve, reject) => {
+			if (!EventSource) {
+				reject(
+					new Error(
+						"EventSource not available in this environment. Please install 'eventsource' package for Node.js environments.",
+					),
+				);
+				return;
+			}
 			const es = new EventSource(url);
 
 			const timeout = setTimeout(() => {
@@ -142,17 +170,17 @@ class VerityRequest<T> {
 				reject(new Error("Timeout: No SSE event received"));
 			}, timeoutMs);
 
-			es.onopen = async (e) => {
+			es.onopen = async (e: any) => {
 				this.sse_is_ready = true;
 			};
 
-			es.onmessage = (event) => {
+			es.onmessage = (event: any) => {
 				clearTimeout(timeout);
 				es.close();
 				resolve(event.data);
 			};
 
-			es.onerror = (err) => {
+			es.onerror = (err: any) => {
 				clearTimeout(timeout);
 				console.error("SSE error:", err);
 				es.close();
