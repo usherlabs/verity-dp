@@ -1,7 +1,22 @@
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import axios from "axios";
-import EventSource from "eventsource";
 import { v4 as uuidv4 } from "uuid";
+import type {
+	AxiosInstance,
+	AxiosRequestConfig,
+	AxiosResponse,
+	AxiosResponseHeaders,
+	RawAxiosResponseHeaders,
+} from "axios";
+
+// Dynamic EventSource import for cross-platform compatibility
+let EventSource: any;
+if (typeof window !== "undefined" && window.EventSource) {
+	// Browser environment - use native EventSource
+	EventSource = window.EventSource;
+} else {
+	// Node.js environment - use the eventsource package
+	EventSource = require("eventsource");
+}
 
 export interface INotaryInformation {
 	version: string;
