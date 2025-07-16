@@ -58,13 +58,14 @@ class VerityRequest<T> {
 	constructor(
 		axiosInstance: AxiosInstance,
 		method: string,
-		url: string,
+		Url: string,
 		config?: AxiosRequestConfig,
 		data?: any,
 	) {
-		this.config = config || {};
+		const { url, ...rest } = config ?? {};
+		this.config = rest || {};
 		this.requestId = uuidv4().toString();
-		this.url = url;
+		this.url = Url;
 
 		this.axiosInstance = axiosInstance;
 		this.proof = this.subscribeToProof().catch((err) => {
@@ -96,7 +97,7 @@ class VerityRequest<T> {
 		);
 
 		instance.interceptors.request.use(async (config) => {
-			const maxWaitTime = 600000; // 600 seconds
+			const maxWaitTime = 100; // 0.1 seconds
 			const interval = 20; // 20 ms
 			let waited = 0;
 
@@ -198,6 +199,7 @@ export class VerityClient {
 		config?: AxiosRequestConfig,
 	) {
 		this.axios = axios.create({
+			...config,
 			baseURL: verify_config.prover_url,
 		});
 	}
