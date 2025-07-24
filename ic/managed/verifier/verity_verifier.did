@@ -1,19 +1,10 @@
-type DirectVerificationResponse = record {
-  signature : text;
-  root : text;
-  results : vec ProofResponse;
-};
 type Environment = variant { Production; Development; Staging };
-type ProofBatch = record { proof_requests : vec text; notary_pub_key : blob };
-type ProofResponse = variant { FullProof : text };
 type PublicKeyReply = record { sec1_pk : text; etherum_pk : text };
-type Result = variant { Ok : DirectVerificationResponse; Err : text };
+type Result = variant { Ok : VerifyReceiptReply; Err : text };
+type VerifyReceiptReply = record { signature : text; data : blob };
 service : (opt Environment) -> {
   ping : () -> (text) query;
   public_key : () -> (PublicKeyReply);
   reinitialize : (opt Environment) -> ();
-  verify_proof_async : (vec text, blob) -> (vec ProofResponse) query;
-  verify_proof_async_batch : (vec ProofBatch) -> (vec ProofResponse) query;
-  verify_proof_direct : (vec text, blob) -> (Result);
-  verify_proof_direct_batch : (vec ProofBatch) -> (Result);
+  verify_receipt : (blob) -> (Result);
 }

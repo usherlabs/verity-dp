@@ -8,6 +8,8 @@ edition.workspace = true
 
 [dependencies]
 anyhow = { workspace = true }
+bincode = { workspace = true }
+hex = { workspace = true }
 k256 = { workspace = true }
 risc0-zkvm = { workspace = true, default-features = true }
 serde = { workspace = true }
@@ -18,4 +20,7 @@ verity-client = { workspace = true }
 verity-dp-examples-zktls-methods = { workspace = true }
 verity-fixtures = { workspace = true }
 verity-verify-remote = { workspace = true }
-verity-verify-tls = { workspace = true }
+verity-verify-tls = { workspace = true, features = [
+  "private-facets",
+  "public-facets",
+] }

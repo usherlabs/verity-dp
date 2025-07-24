@@ -4,7 +4,7 @@ use crate::config::Config;
 use candid::{CandidType, Decode};
 use ic_agent::{export::Principal, Agent};
 use serde::Deserialize;
-use verity_verify_local::{self, ecdsa::validate_ecdsa_signature, merkle::validate_merkle_tree};
+// use verity_verify_local::{self, ecdsa::validate_ecdsa_signature, merkle::validate_merkle_tree};
 pub const DEFAULT_IC_GATEWAY_LOCAL: &str = "http://127.0.0.1:4943";
 pub const DEFAULT_IC_GATEWAY_MAINNET: &str = "https://icp0.io";
 pub const DEFAULT_IC_GATEWAY_MAINNET_TRAILING_SLASH: &str = "https://icp0.io/";
@@ -14,38 +14,23 @@ pub struct Verifier {
     pub canister: Principal,
 }
 
+/// Structure to hold public key reply data
 #[derive(CandidType, Deserialize, Debug)]
 pub struct PublicKeyReply {
+    /// SEC1 formatted public key
     pub sec1_pk: String,
+    /// Ethereum formatted public key
     pub etherum_pk: String,
 }
 
-#[derive(CandidType, Deserialize, Debug, Clone)]
-pub struct VerificationResponse {
-    pub results: Vec<ProofResponse>,
-    pub root: String,
+/// Structure to hold receipt verification reply data
+#[derive(CandidType, Deserialize, Debug)]
+pub struct VerifyReceiptReply {
+    /// Arbitrary data committed by zkVM program, serialized by bincode
+    pub data: Vec<u8>,
+    /// Signature in hexadecimal format
     pub signature: String,
 }
-
-#[derive(CandidType, Deserialize, Debug, Clone)]
-pub enum ProofResponse {
-    SessionProof(String), //takes in reques response
-    FullProof(String),    //takes in
-}
-
-impl ProofResponse {
-    /// Fetches the content of a proof
-    pub fn get_content(&self) -> String {
-        match self {
-            // Returns the content of a session proof
-            ProofResponse::SessionProof(content) => content.clone(),
-            // Returns the content of a full proof
-            ProofResponse::FullProof(content) => content.clone(),
-        }
-    }
-}
-
-type CanisterResponseType = Result<VerificationResponse, String>;
 
 /// A proxy verifier to interact with the managed verifier contract
 impl Verifier {
@@ -56,32 +41,6 @@ impl Verifier {
             agent,
             canister: config.canister_principal,
         })
-    }
-
-    /// Verifies a canister's response by checking the Merkle root hash
-    /// and validating the ECDSA signature
-    async fn verify_canister_response(
-        &self,
-        verification_response: &VerificationResponse,
-    ) -> Result<bool, Box<dyn Error>> {
-        // Extract parameters needed for verification
-        let signature_hex = &verification_response.signature;
-        let root_hash = &verification_response.root;
-        let leaves: Vec<String> = verification_response
-            .results
-            .iter()
-            .map(|proof_response| proof_response.get_content())
-            .collect();
-        let canister_public_key = self.get_public_key().await?;
-
-        // Verify the signature and the Merkle tree root
-        let is_signature_valid =
-            validate_ecdsa_signature(signature_hex, &root_hash, &canister_public_key)?;
-        let is_merkle_valid = validate_merkle_tree(&leaves, root_hash);
-
-        // Return the verification result
-        let is_response_valid = is_signature_valid && is_merkle_valid;
-        Ok(is_response_valid)
     }
 
     /// Retrieves the public key of the specified canister
@@ -101,32 +60,22 @@ impl Verifier {
         Ok(public_key_response.etherum_pk)
     }
 
-    /// Verifies a proof on-chain and validates the response locally
-    pub async fn verify_proof(
+    /// Verifies zkVM receipt, extracts its data and return it along with a signature
+    pub async fn verify_receipt(
         &self,
-        string_proofs: Vec<String>,
-        notary_pub_key: Vec<u8>,
-    ) -> Result<VerificationResponse, Box<dyn Error>> {
-        let verifier_method = "verify_proof_direct";
+        receipt: Vec<u8>,
+    ) -> Result<VerifyReceiptReply, Box<dyn std::error::Error>> {
+        let verifier_method = "verify_receipt";
 
-        // Makes a call to IC using the agent to verify the proof via the direct interface
         let response = self
             .agent
             .update(&self.canister, verifier_method)
-            .with_arg(candid::encode_args((string_proofs, notary_pub_key))?)
+            .with_arg(candid::encode_one(receipt)?)
             .call_and_wait()
             .await?;
 
-        // Parses the response into the appropriate struct and returns it
-        let verification_response = Decode!(&response, CanisterResponseType)??;
+        let result = Decode!(&response, Result<VerifyReceiptReply, String>)?;
 
-        // Validates the signature and Merkle tree
-        let is_response_valid = self
-            .verify_canister_response(&verification_response)
-            .await?;
-
-        assert!(is_response_valid, "INVALID_CANISTER_RESPONSE");
-
-        Ok(verification_response)
+        result.map_err(|e| e.into())
     }
 }

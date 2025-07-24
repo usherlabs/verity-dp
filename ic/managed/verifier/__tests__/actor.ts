@@ -1,10 +1,9 @@
 import { execSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { Actor, HttpAgent } from "@dfinity/agent";
 import fetch from "isomorphic-fetch";
-import { idlFactory as verity_verifier_idl } from "../src/declarations/verity_verifier/verity_verifier.did.js";
 import { identity } from "./identity.ts";
+import { createActor } from "../src/declarations/verity_verifier/index.js";
 
 let canisterIds: Record<string, any> = {};
 const idsPath = path.resolve(__dirname, "../.dfx/local/canister_ids.json");
@@ -30,22 +29,6 @@ export function getCanisterCycles(canisterName: string): number {
   }
   return 0;
 }
-
-export const createActor = async (
-  canisterId: string,
-  options?: {
-    agentOptions?: ConstructorParameters<typeof HttpAgent>[0];
-    actorOptions?: Omit<Parameters<typeof Actor.createActor>[1], "agent" | "canisterId">;
-  },
-) => {
-  const agent = new HttpAgent({ ...options?.agentOptions });
-  await agent.fetchRootKey();
-  return Actor.createActor(verity_verifier_idl, {
-    agent,
-    canisterId,
-    ...options?.actorOptions,
-  });
-};
 
 const is_production = process.env.PROD?.toString() === "true";
 const DEV_CANISTER_ID = canisterIds.verity_verifier?.local ?? "";

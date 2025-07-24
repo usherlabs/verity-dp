@@ -1,15 +1,27 @@
 #![allow(dead_code)]
 
 use candid::{CandidType, Principal};
+use ic_cdk::api::management_canister::ecdsa::{EcdsaCurve, EcdsaKeyId};
 use serde::{Deserialize, Serialize};
 
 use super::config::Config;
 
-// Structure to hold public key reply data
+/// Structure to hold public key reply data
 #[derive(CandidType, Serialize, Debug)]
 pub struct PublicKeyReply {
-    pub sec1_pk: String,    // SEC1 formatted public key
-    pub etherum_pk: String, // Ethereum formatted public key
+    /// SEC1 formatted public key
+    pub sec1_pk: String,
+    /// Ethereum formatted public key
+    pub etherum_pk: String,
+}
+
+/// Structure to hold receipt verification reply data
+#[derive(CandidType, Serialize, Debug)]
+pub struct VerifyReceiptReply {
+    /// Arbitrary data committed by zkVM program, serialized by bincode
+    pub data: Vec<u8>,
+    /// Signature in hexadecimal format
+    pub signature: String,
 }
 
 // Structure to hold signature reply data
@@ -54,20 +66,6 @@ pub struct SignWithECDSA {
 #[derive(CandidType, Deserialize, Debug)]
 pub struct SignWithECDSAReply {
     pub signature: Vec<u8>, // The generated signature
-}
-
-// Structure to represent an ECDSA key identifier
-#[derive(CandidType, Serialize, Debug, Clone)]
-pub struct EcdsaKeyId {
-    pub curve: EcdsaCurve, // The curve used for the key
-    pub name: String,      // Name of the key
-}
-
-// Enumeration of supported ECDSA curves
-#[derive(CandidType, Serialize, Debug, Clone)]
-pub enum EcdsaCurve {
-    #[serde(rename = "secp256k1")]
-    Secp256k1, // The secp256k1 curve
 }
 
 // Enumeration of ECDSA key identifiers

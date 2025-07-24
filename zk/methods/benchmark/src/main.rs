@@ -1,34 +1,23 @@
-use std::io::Read;
+#![no_main]
 
 use risc0_zkvm::guest::env;
-use verity_dp_zk_shared::{ZKInput, ZKOutput};
-use verity_verify_private_transcript::{
-    encodings_precompute::{verify, verify_raw},
-    transcript::PartialTranscript,
-};
+use verity_verify_tls::{verify_private_facets, PresentationBatch};
+
+risc0_zkvm::guest::entry!(main);
 
 fn main() {
-    let mut zk_input_bytes: Vec<u8> = vec![];
-    env::stdin().read_to_end(&mut zk_input_bytes).unwrap();
+    let input_bytes_len: usize = env::read();
+    let mut input_bytes = vec![0u8; input_bytes_len];
 
-    let ZKInput {
-        presentation,
-        encodings,
-    } = bincode::deserialize(&zk_input_bytes).unwrap();
+    env::read_slice(&mut input_bytes);
 
-    let mut partial_transcript: PartialTranscript = if encodings.is_some() {
-        verify(&presentation, encodings.as_ref()).unwrap()
-    } else {
-        verify_raw(&presentation).unwrap()
-    };
+    let batches: Vec<PresentationBatch> = bincode::deserialize(&input_bytes).unwrap();
 
-    partial_transcript.set_unauthed(b'X');
+    let (proof, payload_batches) = verify_private_facets(batches).unwrap();
 
-    let zk_output = ZKOutput {
-        sent: String::from_utf8(partial_transcript.sent_unsafe().to_vec()).unwrap(),
-        received: String::from_utf8(partial_transcript.received_unsafe().to_vec()).unwrap(),
-    };
+    // process payload batches and produce arbitrary output data
+    let data = bincode::serialize(&payload_batches).unwrap();
 
-    let zk_output_bytes = bincode::serialize(&zk_output).unwrap();
-    env::commit(&zk_output_bytes);
+    let output_bytes = &bincode::serialize(&(data, proof)).unwrap();
+    env::commit(output_bytes);
 }

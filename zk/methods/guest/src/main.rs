@@ -1,25 +1,23 @@
-use std::io::Read;
+#![no_main]
 
 use risc0_zkvm::guest::env;
-use verity_verify_private_transcript::{presentation::Presentation, CryptoProvider};
+use verity_verify_tls::{verify_private_facets, PresentationBatch};
+
+risc0_zkvm::guest::entry!(main);
 
 fn main() {
-    let mut presentation_bytes: Vec<u8> = vec![];
-    env::stdin().read_to_end(&mut presentation_bytes).unwrap();
+    let input_bytes_len: usize = env::read();
+    let mut input_bytes = vec![0u8; input_bytes_len];
 
-    let presentation: Presentation = bincode::deserialize(&presentation_bytes).unwrap();
+    env::read_slice(&mut input_bytes);
 
-    let mut transcript = presentation
-        .verify(&CryptoProvider::default())
-        .unwrap()
-        .transcript
-        .unwrap();
+    let batches: Vec<PresentationBatch> = bincode::deserialize(&input_bytes).unwrap();
 
-    transcript.set_unauthed(b'X');
+    let (proof, payload_batches) = verify_private_facets(batches).unwrap();
 
-    let sent = String::from_utf8(transcript.sent_unsafe().to_vec()).unwrap();
-    let received = String::from_utf8(transcript.received_unsafe().to_vec()).unwrap();
+    // process payload batches and produce arbitrary output data
+    let data = bincode::serialize(&payload_batches).unwrap();
 
-    env::commit(&sent);
-    env::commit(&received);
+    let output_bytes = &bincode::serialize(&(data, proof)).unwrap();
+    env::commit(output_bytes);
 }

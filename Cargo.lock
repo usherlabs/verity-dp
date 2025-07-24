@@ -492,7 +492,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2ac3e97dad3d31770db0fc89bd6a63b789fbae78963086733f960cf32c483904"
 dependencies = [
  "alloy-json-rpc",
- "base64",
+ "base64 0.22.1",
  "futures-util",
  "futures-utils-wasm",
  "serde",
@@ -878,6 +878,12 @@ checksum = "4c7f02d4ea65f2c1853089ffd8d2787bdbc63de2f0d29dedbcf8ccdfa0ccd4cf"
 
 [[package]]
 name = "base64"
+version = "0.21.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9d297deb1925b89f2ccc13d7635fa0714f12c87adce1c75356b39ca9b7178567"
+
+[[package]]
+name = "base64"
 version = "0.22.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6"
@@ -1010,6 +1016,7 @@ dependencies = [
  "cc",
  "cfg-if",
  "constant_time_eq",
+ "serde",
 ]
 
 [[package]]
@@ -1612,16 +1619,7 @@ version = "0.11.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d07adf7be193b71cc36b193d0f5fe60b918a3a9db4dad0449f57bcfd519704a3"
 dependencies = [
- "derive_builder_macro 0.11.2",
-]
-
-[[package]]
-name = "derive_builder"
-version = "0.12.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8d67778784b508018359cbc8696edb3db78160bab2c2a28ba7f56ef6932997f8"
-dependencies = [
- "derive_builder_macro 0.12.0",
+ "derive_builder_macro",
 ]
 
 [[package]]
@@ -1637,34 +1635,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "derive_builder_core"
-version = "0.12.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c11bdc11a0c47bc7d37d582b5285da6849c96681023680b906673c5707af7b0f"
-dependencies = [
- "darling",
- "proc-macro2",
- "quote",
- "syn 1.0.109",
-]
-
-[[package]]
 name = "derive_builder_macro"
 version = "0.11.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8f0314b72bed045f3a68671b3c86328386762c93f82d98c65c3cb5e5f573dd68"
 dependencies = [
- "derive_builder_core 0.11.2",
- "syn 1.0.109",
-]
-
-[[package]]
-name = "derive_builder_macro"
-version = "0.12.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ebcda35c7a396850a55ffeac740804b40ffec779b98fffbb1738f4033f0ee79e"
-dependencies = [
- "derive_builder_core 0.12.0",
+ "derive_builder_core",
  "syn 1.0.109",
 ]
 
@@ -1833,6 +1809,7 @@ dependencies = [
  "digest 0.10.7",
  "elliptic-curve",
  "rfc6979",
+ "serdect",
  "signature",
  "spki",
 ]
@@ -1880,6 +1857,7 @@ dependencies = [
  "pkcs8",
  "rand_core 0.6.4",
  "sec1",
+ "serdect",
  "subtle",
  "zeroize",
 ]
@@ -2530,7 +2508,7 @@ version = "0.1.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dc2fdfdbff08affe55bb779f33b053aa1fe5dd5b54c257343c17edfa55711bdb"
 dependencies = [
- "base64",
+ "base64 0.22.1",
  "bytes",
  "futures-channel",
  "futures-core",
@@ -2680,9 +2658,9 @@ dependencies = [
 
 [[package]]
 name = "ic-stable-structures"
-version = "0.6.8"
+version = "0.6.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f0f5684f577e0146738cd11afed789109c4f51ba963c75823c48c1501dc53278"
+checksum = "4d30d4cf17aff1024e13133897048bcba580e063c9000571ab766ca37e2996f4"
 dependencies = [
  "ic_principal",
 ]
@@ -3113,7 +3091,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e79019718125edc905a079a70cfa5f3820bc76139fc91d6f9abc27ea2a887139"
 dependencies = [
  "arrayref",
- "base64",
+ "base64 0.22.1",
  "digest 0.9.0",
  "lazy_static",
  "libsecp256k1-core",
@@ -3377,7 +3355,7 @@ dependencies = [
  "aes",
  "blake3",
  "cipher",
- "derive_builder 0.11.2",
+ "derive_builder",
  "itybity",
  "mpz-circuits",
  "mpz-core",
@@ -3595,6 +3573,7 @@ dependencies = [
  "ecdsa",
  "elliptic-curve",
  "primeorder",
+ "serdect",
  "sha2 0.10.9",
 ]
 
@@ -3702,7 +3681,7 @@ version = "3.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "38af38e8470ac9dee3ce1bae1af9c1671fffc44ddfd8bd1d0a3445bf349a8ef3"
 dependencies = [
- "base64",
+ "base64 0.22.1",
  "serde",
 ]
 
@@ -3822,6 +3801,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "353e1ca18966c16d9deb1c69278edbc5f194139612772bd9537af60ac231e1e6"
 dependencies = [
  "elliptic-curve",
+ "serdect",
 ]
 
 [[package]]
@@ -4233,7 +4213,7 @@ version = "0.12.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a2f8e5513d63f2e5b386eb5106dc67eaf3f84e95258e210489136b8b92ad6119"
 dependencies = [
- "base64",
+ "base64 0.22.1",
  "bytes",
  "encoding_rs",
  "futures-channel",
@@ -4688,6 +4668,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "rustls-pemfile"
+version = "1.0.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1c74cae0a4cf6ccbbf5f359f08efdf8ee7e1dc532573bf0db71968cb56b1448c"
+dependencies = [
+ "base64 0.21.7",
+]
+
+[[package]]
 name = "rustls-pki-types"
 version = "1.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4759,6 +4748,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 
 [[package]]
+name = "sct"
+version = "0.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "da046153aa2352493d6cb7da4b6e5c0c057d8a1d0a9aa8560baffdd945acd414"
+dependencies = [
+ "ring",
+ "untrusted",
+]
+
+[[package]]
 name = "sec1"
 version = "0.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4768,6 +4767,7 @@ dependencies = [
  "der",
  "generic-array 0.14.7",
  "pkcs8",
+ "serdect",
  "subtle",
  "zeroize",
 ]
@@ -4925,6 +4925,16 @@ dependencies = [
  "form_urlencoded",
  "itoa",
  "ryu",
+ "serde",
+]
+
+[[package]]
+name = "serdect"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a84f14a19e9a014bb9f4512488d9829a68e04ecabffb0f9904cd1ace94598177"
+dependencies = [
+ "base16ct",
  "serde",
 ]
 
@@ -5422,6 +5432,24 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
+name = "tlsn-tls-core"
+version = "0.1.0-alpha.7"
+source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.7#4d5102b6e141ecb84b8a835604be1d285ae6eaa5"
+dependencies = [
+ "futures",
+ "hmac",
+ "rand 0.8.5",
+ "ring",
+ "rustls-pemfile",
+ "sct",
+ "sha2 0.10.9",
+ "thiserror 1.0.69",
+ "tracing",
+ "web-time 0.2.4",
+ "webpki",
+]
+
+[[package]]
 name = "tlsn-utils"
 version = "0.1.0"
 source = "git+https://github.com/tlsnotary/tlsn-utils?rev=e7b2db6#e7b2db6a0c0d0202694754efb77625ee43a14f5a"
@@ -5775,10 +5803,8 @@ dependencies = [
 name = "verity-dp-examples-zktls-guest"
 version = "0.2.4"
 dependencies = [
+ "bincode",
  "risc0-zkvm",
- "serde",
- "serde_json",
- "verity-verify-local",
  "verity-verify-tls",
 ]
 
@@ -5787,6 +5813,8 @@ name = "verity-dp-examples-zktls-host"
 version = "0.2.4"
 dependencies = [
  "anyhow",
+ "bincode",
+ "hex",
  "k256",
  "risc0-zkvm",
  "serde",
@@ -5824,9 +5852,7 @@ version = "0.2.4"
 dependencies = [
  "bincode",
  "risc0-zkvm",
- "serde_json",
- "verity-dp-zk-shared",
- "verity-verify-private-transcript",
+ "verity-verify-tls",
 ]
 
 [[package]]
@@ -5835,8 +5861,7 @@ version = "0.2.4"
 dependencies = [
  "bincode",
  "risc0-zkvm",
- "serde_json",
- "verity-verify-private-transcript",
+ "verity-verify-tls",
 ]
 
 [[package]]
@@ -5847,6 +5872,8 @@ dependencies = [
  "anyhow",
  "bincode",
  "dotenv",
+ "hex",
+ "k256",
  "risc0-build",
  "risc0-build-ethereum",
  "risc0-ethereum-contracts",
@@ -5855,10 +5882,9 @@ dependencies = [
  "serde_json",
  "tracing-subscriber 0.3.19",
  "verity-dp-zk-methods",
- "verity-dp-zk-shared",
  "verity-fixtures",
- "verity-verify-private-transcript",
  "verity-verify-remote",
+ "verity-verify-tls",
 ]
 
 [[package]]
@@ -5866,14 +5892,6 @@ name = "verity-dp-zk-methods"
 version = "0.2.4"
 dependencies = [
  "risc0-build",
-]
-
-[[package]]
-name = "verity-dp-zk-shared"
-version = "0.2.4"
-dependencies = [
- "serde",
- "verity-verify-private-transcript",
 ]
 
 [[package]]
@@ -5885,6 +5903,7 @@ name = "verity-ic"
 version = "0.2.4"
 dependencies = [
  "anyhow",
+ "bincode",
  "candid",
  "easy-hasher",
  "eth-encode-packed",
@@ -5895,8 +5914,12 @@ dependencies = [
  "ic-cdk-timers",
  "libsecp256k1",
  "rand 0.8.5",
+ "risc0-zkp",
+ "risc0-zkvm",
  "serde",
  "serde_json",
+ "thiserror 1.0.69",
+ "verity-verify-tls",
 ]
 
 [[package]]
@@ -5908,11 +5931,9 @@ dependencies = [
  "ic-cdk 0.17.2",
  "ic-cdk-timers",
  "ic-wasi-polyfill",
- "rs_merkle 1.5.0",
  "serde",
  "serde_json",
  "verity-ic",
- "verity-verify-tls",
 ]
 
 [[package]]
@@ -5927,14 +5948,26 @@ dependencies = [
 ]
 
 [[package]]
-name = "verity-verify-private-transcript"
+name = "verity-verify-remote"
+version = "0.2.4"
+dependencies = [
+ "anyhow",
+ "candid",
+ "ic-agent",
+ "k256",
+ "serde",
+ "tokio",
+ "verity-fixtures",
+]
+
+[[package]]
+name = "verity-verify-tls"
 version = "0.2.4"
 dependencies = [
  "bcs",
  "bimap",
  "bincode",
  "blake3",
- "derive_builder 0.12.0",
  "hex",
  "k256",
  "mpz-circuits",
@@ -5947,35 +5980,14 @@ dependencies = [
  "rs_merkle 1.4.2",
  "rstest",
  "serde",
+ "serde_json",
  "sha2 0.10.9",
  "thiserror 1.0.69",
  "tiny-keccak",
+ "tlsn-tls-core",
  "tlsn-utils",
  "web-time 0.2.4",
  "webpki-roots 0.26.11",
-]
-
-[[package]]
-name = "verity-verify-remote"
-version = "0.2.4"
-dependencies = [
- "anyhow",
- "candid",
- "ic-agent",
- "k256",
- "serde",
- "tokio",
- "verity-fixtures",
- "verity-verify-local",
-]
-
-[[package]]
-name = "verity-verify-tls"
-version = "0.2.4"
-dependencies = [
- "bincode",
- "serde_json",
- "verity-verify-private-transcript",
 ]
 
 [[package]]
@@ -6129,6 +6141,16 @@ checksum = "5a6580f308b1fad9207618087a65c04e7a10bc77e02c8e84e9b00dd4b12fa0bb"
 dependencies = [
  "js-sys",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "webpki"
+version = "0.22.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ed63aea5ce73d0ff405984102c42de94fc55a6b75765d621c65262469b3c9b53"
+dependencies = [
+ "ring",
+ "untrusted",
 ]
 
 [[package]]

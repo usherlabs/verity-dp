@@ -14,7 +14,7 @@ anyhow = { workspace = true }
 candid = { workspace = true }
 ic-agent = { workspace = true }
 serde = { workspace = true }
-verity-verify-local = { workspace = true }
+# verity-verify-local = { workspace = true }
 
 [dev-dependencies]
 k256 = { workspace = true }

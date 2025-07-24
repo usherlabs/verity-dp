@@ -3,10 +3,13 @@
 
 use std::env;
 
-// use chrono::Local;
+use k256::pkcs8::DecodePublicKey;
 use risc0_zkvm::{default_prover, ExecutorEnv};
 use verity_dp_zk_methods::{VERITY_DP_ZK_GUEST_ELF, VERITY_DP_ZK_GUEST_ID};
-use verity_verify_private_transcript::{presentation::Presentation, CryptoProvider};
+use verity_verify_tls::{
+    tlsn_core::presentation::Presentation, verify_private_facets, NotaryPubKey, PresentationBatch,
+    ZkTlsProof,
+};
 
 #[test]
 fn host_works() {
@@ -33,27 +36,31 @@ fn host_works() {
     // creates an ExecutorEnvBuilder. When you're done adding input, call
     // ExecutorEnvBuilder::build().
 
-    let presentation_string = verity_fixtures::proof::PRESENTATION_32B;
+    let notary_pub_key: NotaryPubKey =
+        k256::PublicKey::from_public_key_pem(verity_fixtures::notary::PUB_KEY)
+            .unwrap()
+            .to_sec1_bytes()
+            .into_vec();
+
+    let presentation_string = verity_fixtures::presentation::PRESENTATION_32B;
 
     let presentation: Presentation = serde_json::from_str(&presentation_string).unwrap();
 
-    let presentation_bytes = bincode::serialize(&presentation).unwrap();
+    let presentation_batch = PresentationBatch {
+        notary_pub_key: notary_pub_key.clone(),
+        presentations: vec![presentation],
+    };
 
-    let mut transcript = presentation
-        .verify(&CryptoProvider::default())
-        .unwrap()
-        .transcript
-        .unwrap();
+    let presentation_batches = vec![presentation_batch];
 
-    transcript.set_unauthed(b'X');
+    let (verified_by_host, _) = verify_private_facets(presentation_batches.clone()).unwrap();
 
-    let verified_by_host = (
-        String::from_utf8(transcript.sent_unsafe().to_vec()).unwrap(),
-        String::from_utf8(transcript.received_unsafe().to_vec()).unwrap(),
-    );
+    let input_bytes = bincode::serialize(&presentation_batches).unwrap();
 
     let env = ExecutorEnv::builder()
-        .write_slice(&presentation_bytes)
+        .write(&input_bytes.len())
+        .unwrap()
+        .write_slice(&input_bytes)
         .build()
         .unwrap();
 
@@ -63,7 +70,7 @@ fn host_works() {
     // Proof information by proving the specified ELF binary.
     // This struct contains the receipt along with statistics about execution of the guest
     println!("Proving...");
-    println!("Proof size: {:?}", presentation_string.len());
+    println!("Presentation size: {:?}", presentation_string.len());
     println!("ELF size: {:?}", VERITY_DP_ZK_GUEST_ELF.len());
     println!("--------------------------------");
     let prove_info = prover.prove(env, VERITY_DP_ZK_GUEST_ELF).unwrap();
@@ -71,9 +78,12 @@ fn host_works() {
     // extract the receipt.
     let receipt = prove_info.receipt;
 
-    let verified_by_guest: (String, String) = receipt.journal.decode().unwrap();
+    let zkvm_result_bytes: Vec<u8> = receipt.journal.decode().unwrap();
 
-    assert_eq!(verified_by_guest, verified_by_host);
+    let (_data, verified_by_guest): (Vec<u8>, ZkTlsProof) =
+        bincode::deserialize(&zkvm_result_bytes).unwrap();
+
+    assert_eq!(verified_by_guest.hash, verified_by_host.hash);
 
     // The receipt was verified at the end of proving, but the below code is an
     // example of how someone else could verify this receipt.

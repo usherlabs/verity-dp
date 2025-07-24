@@ -10,6 +10,7 @@ edition.workspace = true
 
 [dependencies]
 bincode = { workspace = true }
-risc0-zkvm = { workspace = true, default_features = false, features = ['std'] }
-serde_json = { workspace = true }
-verity-verify-private-transcript = { workspace = true }
+risc0-zkvm = { workspace = true, default-features = false, features = ['std'] }
+verity-verify-tls = { workspace = true, default-features = false, features = [
+  "private-facets",
+] }

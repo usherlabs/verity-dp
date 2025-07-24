@@ -8,7 +8,37 @@ documentation.workspace = true
 license.workspace = true
 edition.workspace = true
 
+[features]
+default = ["private-facets", "public-facets"]
+private-facets = []
+public-facets = ["dep:tlsn-tls-core", "dep:web-time"]
+
 [dependencies]
+bcs = { workspace = true }
+bimap = { workspace = true, features = ["serde"] }
 bincode = { workspace = true }
+blake3 = { workspace = true, features = ["serde"] }
+hex = { workspace = true }
+k256 = { workspace = true }
+mpz-circuits = { workspace = true }
+mpz-core = { workspace = true }
+mpz-garble-core = { workspace = true }
+opaque-debug = { workspace = true }
+p256 = { workspace = true, features = ["serde"] }
+rand = { workspace = true }
+rand_core = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
-verity-verify-private-transcript = { workspace = true }
+sha2 = { workspace = true }
+thiserror = { workspace = true }
+tiny-keccak = { workspace = true, features = ["keccak"] }
+web-time = { workspace = true, optional = true }
+webpki-roots = { workspace = true }
+
+# TLSNotary packages
+tlsn_rs_merkle = { workspace = true, features = ["serde"] }
+tlsn-tls-core = { workspace = true, optional = true }
+tlsn-utils = { workspace = true }
+
+[dev-dependencies]
+rstest = { workspace = true }
