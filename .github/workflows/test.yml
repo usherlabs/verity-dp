@@ -72,7 +72,10 @@ jobs:
       - name: run Verify Test
         run: |
           rustup update
-          cargo test
+          cargo test --workspace \
+            --exclude verity-dp-examples-zktls-guest \
+            --exclude verity-dp-zk-benchmark \
+            --exclude verity-dp-zk-guest
 
       - name: run IC Check
         run: |
