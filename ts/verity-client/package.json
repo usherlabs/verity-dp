@@ -1,12 +1,10 @@
 {
 	"name": "@usherlabs/verity-client",
-	"version": "0.0.1",
+	"version": "0.0.24",
 	"description": "Verity zkTLS Stack - Typescript Client",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"files": [
-		"dist/**/*"
-	],
+	"files": ["dist/**/*"],
 	"scripts": {
 		"build": "tsc",
 		"start": "ts-node src/index.ts",
@@ -15,16 +13,7 @@
 		"lint:fix": "biome check src/ --fix",
 		"format": "biome format src/ --fix"
 	},
-	"bin": {
-		"lighthouse-web3": "dist/Commands/index.js"
-	},
-	"keywords": [
-		"client",
-		"verity",
-		"zk",
-		"zk-tls",
-		"tls"
-	],
+	"keywords": ["client", "verity", "zk", "zk-tls", "tls"],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/usherlabs/verity-dp.git"
@@ -42,15 +31,12 @@
 	"dependencies": {
 		"@types/eventsource": "^1.1.15",
 		"axios": "^1.9.0",
-		"eventsource": "^2.0.2",
-		"uuid": "^11.1.0"
+		"uuid": "^11.1.0",
+		"eventsource": "^2.0.2"
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.23.2",
 		"@babel/preset-typescript": "^7.21.4",
-		"@biomejs/biome": "2.0.0",
-		"@types/cli-spinner": "^0.2.1",
-		"@types/fs-extra": "^11.0.1",
 		"@types/jest": "^29.5.0",
 		"@types/mime-types": "^2.1.1",
 		"@types/node": "^20.5.3",
@@ -61,7 +47,5 @@
 		"ts-node": "^10.9.1",
 		"typescript": "^5.0.4"
 	},
-	"contributors": [
-		"Oki Ayobami (https://github.com/xlassix)"
-	]
+	"contributors": ["Oki Ayobami (https://github.com/xlassix)"]
 }
