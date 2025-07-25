@@ -69,13 +69,19 @@ jobs:
           dfx deploy
           dfx generate
 
-      - name: run Verify Test
+      - name: run Cargo Tests
         run: |
           rustup update
           cargo test --workspace \
             --exclude verity-dp-examples-zktls-guest \
             --exclude verity-dp-zk-benchmark \
             --exclude verity-dp-zk-guest
+
+      - name: Build Verity Fixtures JS package
+        run: |
+          cd ./fixtures/ts
+          pnpm install
+          pnpm build
 
       - name: run IC Check
         run: |
