@@ -5800,15 +5800,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "verity-dp-examples-zktls-guest"
-version = "0.2.4"
-dependencies = [
- "bincode",
- "risc0-zkvm",
- "verity-verify-tls",
-]
-
-[[package]]
 name = "verity-dp-examples-zktls-host"
 version = "0.2.4"
 dependencies = [
@@ -5822,18 +5813,10 @@ dependencies = [
  "tokio",
  "tracing-subscriber 0.3.19",
  "verity-client",
- "verity-dp-examples-zktls-methods",
+ "verity-dp-zk-methods",
  "verity-fixtures",
  "verity-verify-remote",
  "verity-verify-tls",
-]
-
-[[package]]
-name = "verity-dp-examples-zktls-methods"
-version = "0.2.4"
-dependencies = [
- "risc0-build",
- "verity-dp-zk-host",
 ]
 
 [[package]]
@@ -5844,24 +5827,6 @@ dependencies = [
  "serde_json",
  "tokio",
  "verity-client",
-]
-
-[[package]]
-name = "verity-dp-zk-benchmark"
-version = "0.2.4"
-dependencies = [
- "bincode",
- "risc0-zkvm",
- "verity-verify-tls",
-]
-
-[[package]]
-name = "verity-dp-zk-guest"
-version = "0.2.4"
-dependencies = [
- "bincode",
- "risc0-zkvm",
- "verity-verify-tls",
 ]
 
 [[package]]
@@ -5892,6 +5857,15 @@ name = "verity-dp-zk-methods"
 version = "0.2.4"
 dependencies = [
  "risc0-build",
+]
+
+[[package]]
+name = "verity-dp-zk-verify"
+version = "0.2.4"
+dependencies = [
+ "bincode",
+ "risc0-zkvm",
+ "verity-verify-tls",
 ]
 
 [[package]]

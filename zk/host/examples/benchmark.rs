@@ -58,7 +58,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let prove_info = prover
         .prove_with_opts(
             env,
-            verity_dp_zk_methods::VERITY_DP_ZK_BENCHMARK_ELF,
+            verity_dp_zk_methods::VERITY_DP_ZK_VERIFY_ELF,
             &ProverOpts::succinct(),
         )
         .unwrap();
@@ -83,7 +83,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // The receipt was verified at the end of proving, but the below code is an
     // example of how someone else could verify this receipt.
     receipt
-        .verify(verity_dp_zk_methods::VERITY_DP_ZK_BENCHMARK_ID)
+        .verify(verity_dp_zk_methods::VERITY_DP_ZK_VERIFY_ID)
         .unwrap();
 
     Ok(())

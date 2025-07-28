@@ -1,8 +1,6 @@
 [workspace]
 members = [
     "examples/zktls/host",
-    "examples/zktls/methods",
-    "examples/zktls/methods/guest",
     "fixtures/rs",
     "ic/libraries",
     "ic/managed/verifier",
@@ -13,8 +11,7 @@ members = [
     "rs/verity-client",
     "zk/host",
     "zk/methods",
-    "zk/methods/benchmark",
-    "zk/methods/guest",
+    "zk/methods/verify",
 ]
 resolver = "2"
 

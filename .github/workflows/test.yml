@@ -73,9 +73,7 @@ jobs:
         run: |
           rustup update
           cargo test --workspace \
-            --exclude verity-dp-examples-zktls-guest \
-            --exclude verity-dp-zk-benchmark \
-            --exclude verity-dp-zk-guest
+            --exclude verity-dp-zk-verify
 
       - name: Build Verity Fixtures JS package
         run: |
