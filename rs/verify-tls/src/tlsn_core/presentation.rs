@@ -59,6 +59,49 @@ impl Presentation {
         self.attestation.verifying_key()
     }
 
+    /// Verifies both private and public facets of the presentation.
+    /// # Availability
+    ///
+    /// This function is only available when both 'private-facets'
+    /// and `public-facets` features are enabled.
+    #[cfg(all(feature = "private-facets", feature = "public-facets"))]
+    pub fn verify(
+        self,
+        provider: &CryptoProvider,
+    ) -> Result<PresentationOutput, PresentationError> {
+        let Self {
+            attestation,
+            identity,
+            transcript,
+        } = self;
+
+        let attestation = attestation.verify(provider)?;
+
+        let server_name = identity
+            .map(|identity| {
+                identity.verify_with_provider(
+                    provider,
+                    attestation.body.connection_info().time,
+                    attestation.body.server_ephemeral_key(),
+                    attestation.body.cert_commitment(),
+                )
+            })
+            .transpose()?;
+
+        let connection_info = attestation.body.connection_info().clone();
+
+        let transcript = transcript
+            .map(|transcript| transcript.verify_with_provider(provider, &attestation.body))
+            .transpose()?;
+
+        Ok(PresentationOutput {
+            attestation,
+            server_name,
+            connection_info,
+            transcript,
+        })
+    }
+
     /// Verifies only private facets of the presentation.
     ///
     /// # Availability
@@ -77,11 +120,11 @@ impl Presentation {
 
         let attestation = attestation.verify(provider)?;
 
+        let connection_info = attestation.body.connection_info().clone();
+
         let transcript = transcript
             .map(|transcript| transcript.verify_with_provider(provider, &attestation.body))
             .transpose()?;
-
-        let connection_info = attestation.body.connection_info().clone();
 
         Ok(PresentationOutput {
             attestation,
