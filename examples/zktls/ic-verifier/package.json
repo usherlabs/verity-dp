@@ -1,0 +1,22 @@
+{
+	"name": "ic-verifier-test",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "vitest"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@dfinity/agent": "^0.12.0",
+		"@dfinity/candid": "^2.3.0",
+		"@dfinity/identity": "^0.12.0",
+		"@dfinity/principal": "^0.12.0",
+		"bip39": "^3.0.4",
+		"hdkey": "^2.0.1",
+		"verity-fixtures": "link:../../../fixtures/ts",
+		"vitest": "^0.17.1"
+	}
+}

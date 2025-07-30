@@ -2682,6 +2682,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "ic-verifier"
+version = "0.2.4"
+dependencies = [
+ "candid",
+ "hex",
+ "ic-cdk 0.17.2",
+ "ic-wasi-polyfill",
+ "verity-ic",
+]
+
+[[package]]
 name = "ic-verify-bls-signature"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5805,7 +5816,9 @@ version = "0.2.4"
 dependencies = [
  "anyhow",
  "bincode",
+ "candid",
  "hex",
+ "ic-agent",
  "k256",
  "risc0-zkvm",
  "serde",

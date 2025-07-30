@@ -1,0 +1,14 @@
+[package]
+name = "ic-verifier"
+version = { workspace = true }
+edition = { workspace = true }
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+candid = { workspace = true }
+hex = { workspace = true }
+ic-cdk = { workspace = true }
+ic-wasi-polyfill = { workspace = true }
+verity-ic = { workspace = true }

@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "examples/zktls/host",
+    "examples/zktls/ic-verifier",
     "fixtures/rs",
     "ic/libraries",
     "ic/managed/verifier",

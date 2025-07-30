@@ -9,7 +9,9 @@ edition.workspace = true
 [dependencies]
 anyhow = { workspace = true }
 bincode = { workspace = true }
+candid = { workspace = true }
 hex = { workspace = true }
+ic-agent = { workspace = true }
 k256 = { workspace = true }
 risc0-zkvm = { workspace = true, default-features = true }
 serde = { workspace = true }
