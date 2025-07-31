@@ -173,7 +173,7 @@ async fn verify_by_ic(receipt: Receipt) -> Result<VerifyReceiptReply, Box<dyn st
     // This is required when talking to a local test instance
     agent.fetch_root_key().await?;
 
-    let canister = Principal::from_text(verity_fixtures::ic::VERIFIER)?;
+    let canister = Principal::from_text(verity_fixtures::ic::ZKTLS_VERIFIER)?;
     let method = "verify_receipt";
 
     let receipt_bytes = bincode::serialize(&receipt)?;

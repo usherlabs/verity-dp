@@ -16,7 +16,7 @@ mod tests {
         let config = Config::new(
             DEFAULT_IC_GATEWAY_LOCAL.to_string(),
             verity_fixtures::ic::IDENTITY_PATH.to_string(),
-            verity_fixtures::ic::VERIFIER.to_string(),
+            verity_fixtures::ic::ZKTLS_VERIFIER.to_string(),
         );
 
         // 2. Create verifier from a config file

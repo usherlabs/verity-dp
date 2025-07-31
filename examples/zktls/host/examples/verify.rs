@@ -9,7 +9,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let rv_config = Config::new(
         DEFAULT_IC_GATEWAY_LOCAL.to_string(),
         verity_fixtures::ic::IDENTITY_PATH.to_string(),
-        verity_fixtures::ic::VERIFIER.to_string(),
+        verity_fixtures::ic::ZKTLS_VERIFIER.to_string(),
     );
 
     let remote_verifier = Verifier::from_config(&rv_config).await?;
