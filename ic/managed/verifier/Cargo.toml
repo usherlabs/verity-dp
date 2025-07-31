@@ -16,6 +16,11 @@ hex = { workspace = true }
 ic-cdk = { workspace = true }
 ic-cdk-timers = { workspace = true }
 ic-wasi-polyfill = { workspace = true }
+rs_merkle = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 verity-ic = { workspace = true }
+verity-verify-tls = { workspace = true, features = [
+  "private-facets",
+  "public-facets"
+]}

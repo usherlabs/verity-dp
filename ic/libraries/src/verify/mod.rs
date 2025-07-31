@@ -5,6 +5,8 @@ use verity_verify_tls::{
     tlsn_core::presentation::PresentationError, verify_public_facets, ZkTlsProof,
 };
 
+pub mod types;
+
 pub fn verify_receipt(
     zkvm_receipt: Vec<u8>,
     zkvm_image_id: [u32; 8],

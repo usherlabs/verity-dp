@@ -1,22 +1,31 @@
-use crate::state::CONFIG;
-use candid::Principal;
+use crate::{
+    merkle::{generate_merkle_tree, sign_merkle_root},
+    state::CONFIG,
+};
+use candid::{CandidType, Principal};
 use ic_cdk::storage;
 use utils::init_canister;
 use verity_ic::{
     crypto::{
         config::{Config, Environment},
-        ecdsa::{self, ECDSAPublicKeyReply, PublicKeyReply, VerifyReceiptReply},
-        ethereum::{self, sign_message},
+        ecdsa::{self, ECDSAPublicKeyReply, PublicKeyReply},
+        ethereum,
     },
     owner,
+    verify::types::{PayloadBatch, PresentationBatch},
 };
+use verity_verify_tls::verify;
 
+pub mod merkle;
 pub mod state;
 pub mod utils;
 
-const ZKVM_IMAGE_ID: [u32; 8] = [
-    1324762123, 3725222091, 219773637, 2850312562, 2267315945, 1981181991, 635971720, 265935955,
-];
+#[derive(CandidType)]
+pub struct VerificationResponse {
+    pub payload_batches: Vec<PayloadBatch>,
+    pub root: String,
+    pub signature: String,
+}
 
 fn ensure_sufficient_cycles(demand: u64) -> Result<(), String> {
     let balance = ic_cdk::api::canister_balance128();
@@ -48,20 +57,55 @@ fn ping() -> String {
     format!("Ping")
 }
 
+/// Asynchronously verifies a vector of PresentationBatches; intended for canister calls
+#[ic_cdk::query]
+async fn verify_async(
+    presentation_batches: Vec<PresentationBatch>,
+) -> Result<Vec<PayloadBatch>, String> {
+    // Convert from Candid type
+    let presentation_batches: Vec<verity_verify_tls::PresentationBatch> =
+        presentation_batches.into_iter().map(|b| b.into()).collect();
+
+    let (_, payload_batches) = verify(presentation_batches).map_err(|e| e.to_string())?;
+
+    // Convert into Candid type
+    let payload_batches: Vec<PayloadBatch> =
+        payload_batches.into_iter().map(|b| b.into()).collect();
+
+    Ok(payload_batches)
+}
+
+/// Asynchronously verifies proof requests; intended for direct user calls
+/// Returns a detailed verification response
 #[ic_cdk::update]
-async fn verify_receipt(receipt: Vec<u8>) -> Result<VerifyReceiptReply, String> {
+async fn verify_direct(
+    presentation_batches: Vec<PresentationBatch>,
+) -> Result<VerificationResponse, String> {
     let config = crate::CONFIG.with(|c| c.borrow().clone());
     ensure_sufficient_cycles(config.sign_cycles)?;
 
-    let data =
-        verity_ic::verify::verify_receipt(receipt, ZKVM_IMAGE_ID).map_err(|e| e.to_string())?;
+    // Convert from Candid type
+    let presentation_batches: Vec<verity_verify_tls::PresentationBatch> =
+        presentation_batches.into_iter().map(|b| b.into()).collect();
 
-    let signature = sign_message(&data, &config)
+    let (_, payload_batches) = verify(presentation_batches).map_err(|e| e.to_string())?;
+
+    let merkle_tree = generate_merkle_tree(&payload_batches);
+    let merkle_root = merkle_tree.root().ok_or("NOT ENOUGH LEAVES")?;
+
+    let signature = sign_merkle_root(merkle_root)
         .await
-        .map_err(|e| e.to_string())?
-        .signature_hex;
+        .map_err(|e| e.to_string())?;
 
-    Ok(VerifyReceiptReply { data, signature })
+    // Convert into Candid type
+    let payload_batches: Vec<PayloadBatch> =
+        payload_batches.into_iter().map(|b| b.into()).collect();
+
+    Ok(VerificationResponse {
+        payload_batches,
+        root: hex::encode(merkle_root),
+        signature,
+    })
 }
 
 /// Retrieves the public key of the canister

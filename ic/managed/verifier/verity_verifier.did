@@ -1,10 +1,22 @@
 type Environment = variant { Production; Development; Staging };
+type Payload = record { sent : text; received : text };
+type PayloadBatch = record { payloads : vec Payload; notary_pub_key : blob };
+type PresentationBatch = record {
+  presentations : vec text;
+  notary_pub_key : blob;
+};
 type PublicKeyReply = record { sec1_pk : text; etherum_pk : text };
-type Result = variant { Ok : VerifyReceiptReply; Err : text };
-type VerifyReceiptReply = record { signature : text; data : blob };
+type Result = variant { Ok : vec PayloadBatch; Err : text };
+type Result_1 = variant { Ok : VerificationResponse; Err : text };
+type VerificationResponse = record {
+  signature : text;
+  root : text;
+  payload_batches : vec PayloadBatch;
+};
 service : (opt Environment) -> {
   ping : () -> (text) query;
   public_key : () -> (PublicKeyReply);
   reinitialize : (opt Environment) -> ();
-  verify_receipt : (blob) -> (Result);
+  verify_async : (vec PresentationBatch) -> (Result) query;
+  verify_direct : (vec PresentationBatch) -> (Result_1);
 }

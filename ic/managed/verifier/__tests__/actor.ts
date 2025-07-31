@@ -2,8 +2,8 @@ import { execSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import fetch from "isomorphic-fetch";
-import { identity } from "./identity.ts";
 import { createActor } from "../src/declarations/verity_verifier/index.js";
+import { identity } from "./identity.ts";
 
 let canisterIds: Record<string, any> = {};
 const idsPath = path.resolve(__dirname, "../.dfx/local/canister_ids.json");
@@ -40,7 +40,7 @@ if (!verityVerifierCanister) {
   console.warn(`No canister ID for ${is_production ? "production" : "development"} build—createActor may fail.`);
 }
 
-export const verityVerifier = await createActor(verityVerifierCanister, {
+export const actor = await createActor(verityVerifierCanister, {
   agentOptions: {
     host: is_production ? "https://icp0.io" : "http://127.0.0.1:4943",
     fetch,

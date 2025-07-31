@@ -1,14 +1,19 @@
-import { describe, expect, test } from "vitest";
-import { getCanisterCycles, verityVerifier } from "./actor";
-import * as fixtures from "verity-fixtures"
 import { fail } from "node:assert";
+import * as fixtures from "verity-fixtures";
+import { describe, expect, test } from "vitest";
+import type {
+  PayloadBatch,
+  PresentationBatch,
+  VerificationResponse,
+} from "../src/declarations/verity_verifier/verity_verifier.did";
+import { actor, getCanisterCycles } from "./actor";
 
 const CANISTER_NAME = "verity_verifier";
 
 describe("Managed Verifier", () => {
   test("ping", async () => {
     const old_balance = await getCanisterCycles(CANISTER_NAME);
-    const result = await verityVerifier.ping();
+    const result = await actor.ping();
     console.log("ping cycle used:", old_balance - (await getCanisterCycles(CANISTER_NAME)));
     expect(result).toBe("Ping");
   });
@@ -17,7 +22,7 @@ describe("Managed Verifier", () => {
     const old_balance = await getCanisterCycles(CANISTER_NAME);
     const startTime = Date.now();
 
-    const result = await verityVerifier.public_key();
+    const result = await actor.public_key();
 
     expect(typeof result).toBe("object");
     expect(Object.keys(result).length).toBe(2);
@@ -34,15 +39,20 @@ describe("Managed Verifier", () => {
     console.log("public_key cycle used:", old_balance - (await getCanisterCycles(CANISTER_NAME)));
   });
 
-  describe("verify_receipt", () => {
-    test("Verify a receipt of verification of a request for 32bytes payload", async () => {
+  describe("Process verify_async", () => {
+    test("Expect verify_async to return PayloadBatches", async () => {
       // Start timing execution
-      const old_balance = await getCanisterCycles(CANISTER_NAME);
+      const old_balance = await getCanisterCycles("verity_verifier");
       const startTime = Date.now();
+      const presentationBatches: PresentationBatch[] = [
+        {
+          notary_pub_key: fixtures.notary.PUB_KEY,
+          presentations: [fixtures.presentation.PRESENTATION_32B, fixtures.presentation.PRESENTATION_1KB],
+        },
+      ];
+      const result = await actor.verify_async(presentationBatches);
 
-      const result = await verityVerifier.verify_receipt(fixtures.receipt.RECEIPT_32B);
-
-      // Ensure that the canister returns an object of type Result<VerifyReceiptReply, Error>
+      // Ensure that the canister returns an object of type Result<Vec<PayloadBatch>, String>
       expect(typeof result).toBe("object");
       expect(Object.keys(result).length).toBe(1);
       expect(Object.keys(result)[0]).toMatch(/^(Ok|Err)$/);
@@ -52,30 +62,37 @@ describe("Managed Verifier", () => {
         fail(result["Err"]);
       }
 
-      const reply = result["Ok"];
-      expect(typeof reply).toBe("object");
+      const payloadBatches = result["Ok"] as PayloadBatch[];
+      expect(Array.isArray(payloadBatches)).toBe(true);
+      expect(payloadBatches.length).toBe(presentationBatches.length);
 
-      // Data
-      expect(Object.keys(reply).includes("data")).toBeTruthy();
-      expect(reply["data"] instanceof Uint8Array).toBeTruthy()
-
-      // Signature
-      expect(Object.keys(reply).includes("signature")).toBeTruthy();
-      expect(typeof reply["signature"]).toBe("string");
-      expect(reply["signature"].length).toBe(130);
+      for (const payloadBatch of payloadBatches) {
+        expect(payloadBatch.payloads.length).toBe(2);
+        for (const payload of payloadBatch.payloads) {
+          expect(payload.sent.length).toBeGreaterThan(0);
+          expect(payload.received.length).toBeGreaterThan(0);
+        }
+      }
 
       console.log(`Execution time: ${Date.now() - startTime} ms`);
-      console.log("verify_receipt cycle used:", old_balance - (await getCanisterCycles(CANISTER_NAME)));
+      console.log("verify_proof_async cycle used:", old_balance - (await getCanisterCycles("verity_verifier")));
     });
+  });
 
-    test("Verify a receipt of verification of a request for 1Kb payload", async () => {
+  describe("Process verify_direct", () => {
+    test("Expect verify_direct to return PayloadBatches, Merkle root and Signature", async () => {
       // Start timing execution
-      const old_balance = await getCanisterCycles(CANISTER_NAME);
+      const old_balance = await getCanisterCycles("verity_verifier");
       const startTime = Date.now();
+      const presentationBatches: PresentationBatch[] = [
+        {
+          notary_pub_key: fixtures.notary.PUB_KEY,
+          presentations: [fixtures.presentation.PRESENTATION_32B, fixtures.presentation.PRESENTATION_1KB],
+        },
+      ];
+      const result = await actor.verify_direct(presentationBatches);
 
-      const result = await verityVerifier.verify_receipt(fixtures.receipt.RECEIPT_1KB);
-
-      // Ensure that the canister returns an object of type Result<VerifyReceiptReply, Error>
+      // Ensure that the canister returns an object of type Result<Vec<PayloadBatch>, String>
       expect(typeof result).toBe("object");
       expect(Object.keys(result).length).toBe(1);
       expect(Object.keys(result)[0]).toMatch(/^(Ok|Err)$/);
@@ -85,21 +102,21 @@ describe("Managed Verifier", () => {
         fail(result["Err"]);
       }
 
-      const reply = result["Ok"];
-      expect(typeof reply).toBe("object");
+      const response = result["Ok"] as VerificationResponse;
+      expect(response.payload_batches.length).toBe(presentationBatches.length);
 
-      // Data
-      expect(Object.keys(reply).includes("data")).toBeTruthy();
-      expect(reply["data"] instanceof Uint8Array).toBeTruthy()
+      const payloadBatch = response.payload_batches[0];
+      expect(payloadBatch.payloads.length).toBe(2);
+      for (const payload of payloadBatch.payloads) {
+        expect(payload.sent.length).toBeGreaterThan(0);
+        expect(payload.received.length).toBeGreaterThan(0);
+      }
 
-      // Signature
-      expect(Object.keys(reply).includes("signature")).toBeTruthy();
-      expect(typeof reply["signature"]).toBe("string");
-      expect(reply["signature"].length).toBe(130);
-
+      expect(response.root.length).toBe(64);
+      expect(response.signature.length).toBe(130);
 
       console.log(`Execution time: ${Date.now() - startTime} ms`);
-      console.log("verify_receipt cycle used:", old_balance - (await getCanisterCycles(CANISTER_NAME)));
+      console.log("verify_proof_async cycle used:", old_balance - (await getCanisterCycles("verity_verifier")));
     });
   });
 });
