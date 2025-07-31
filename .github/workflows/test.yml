@@ -63,17 +63,17 @@ jobs:
         run: |
           dfx start --background
 
+      - name: Deploy Managed Verifier canister to IC local replica
+        run: |
+          cd ./ic/managed/verifier
+          dfx deploy
+          dfx generate
+
       - name: Deploy sample zkTLS Verifier canister to IC local replica
         run: |
           cd ./examples/zktls/ic-verifier
           dfx deploy
           dfx generate
-
-      # - name: Deploy Managed Verifier canister to IC local replica
-      #   run: |
-      #     cd ./ic/managed/verifier
-      #     dfx deploy
-      #     dfx generate
 
       - name: run Cargo Tests
         run: |
@@ -87,14 +87,14 @@ jobs:
           pnpm install
           pnpm build
 
-      - name: Test sample zkTLS Verifier canister
+      - name: run Test Managed Verifier canister on IC Local replica
         run: |
-          cd ./examples/zktls/ic-verifier
+          cd ic/managed/verifier/
           pnpm install
           pnpm test
 
-      # - name: run IC Check
+      # - name: Test sample zkTLS Verifier canister on IC Local replica
       #   run: |
-      #     cd ic/managed/verifier/
+      #     cd ./examples/zktls/ic-verifier
       #     pnpm install
       #     pnpm test
