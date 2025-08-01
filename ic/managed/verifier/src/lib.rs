@@ -7,7 +7,7 @@ use ic_cdk::storage;
 use utils::init_canister;
 use verity_ic::{
     crypto::{
-        config::{Config, Environment},
+        config::{ensure_sufficient_cycles, Config, Environment},
         ecdsa::{self, ECDSAPublicKeyReply, PublicKeyReply},
         ethereum,
     },
@@ -25,18 +25,6 @@ pub struct VerificationResponse {
     pub payload_batches: Vec<PayloadBatch>,
     pub root: String,
     pub signature: String,
-}
-
-fn ensure_sufficient_cycles(demand: u64) -> Result<(), String> {
-    let balance = ic_cdk::api::canister_balance128();
-    if balance < demand as u128 {
-        Err(format!(
-            "Insufficient cycles: have {}, need at least {}",
-            balance, demand
-        ))
-    } else {
-        Ok(())
-    }
 }
 
 /// Initializes the canister with an optional environment configuration

@@ -18,15 +18,3 @@ pub fn init_canister(env_opt: Option<Environment>) {
         })
     }
 }
-
-pub fn ensure_sufficient_cycles(demand: u64) -> Result<(), String> {
-    let balance = ic_cdk::api::canister_balance128();
-    if balance < demand as u128 {
-        Err(format!(
-            "Insufficient cycles: have {}, need at least {}",
-            balance, demand
-        ))
-    } else {
-        Ok(())
-    }
-}

@@ -2,17 +2,14 @@ use candid::Principal;
 use ic_cdk::storage;
 use verity_ic::{
     crypto::{
-        config::{Config, Environment},
+        config::{ensure_sufficient_cycles, Config, Environment},
         ecdsa::{self, ECDSAPublicKeyReply, PublicKeyReply, VerifyReceiptReply},
         ethereum::{self, sign_message},
     },
     owner,
 };
 
-use crate::{
-    state::CONFIG,
-    utils::{ensure_sufficient_cycles, init_canister},
-};
+use crate::{state::CONFIG, utils::init_canister};
 
 pub mod state;
 pub mod utils;
