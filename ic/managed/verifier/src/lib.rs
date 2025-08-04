@@ -1,7 +1,4 @@
-use crate::{
-    merkle::{generate_merkle_tree, sign_merkle_root},
-    state::CONFIG,
-};
+use crate::state::CONFIG;
 use candid::{CandidType, Principal};
 use ic_cdk::storage;
 use utils::init_canister;
@@ -9,14 +6,14 @@ use verity_ic::{
     crypto::{
         config::{ensure_sufficient_cycles, Config, Environment},
         ecdsa::{self, ECDSAPublicKeyReply, PublicKeyReply},
-        ethereum,
+        ethereum::{self, sign_message},
+        merkle::generate_merkle_tree,
     },
     owner,
     verify::types::{PayloadBatch, PresentationBatch},
 };
 use verity_verify_tls::verify;
 
-pub mod merkle;
 pub mod state;
 pub mod utils;
 
@@ -81,9 +78,9 @@ async fn verify_direct(
     let merkle_tree = generate_merkle_tree(&payload_batches);
     let merkle_root = merkle_tree.root().ok_or("NOT ENOUGH LEAVES")?;
 
-    let signature = sign_merkle_root(merkle_root)
-        .await
-        .map_err(|e| e.to_string())?;
+    let signature = sign_message(&merkle_root.to_vec(), &config)
+        .await?
+        .signature_hex;
 
     // Convert into Candid type
     let payload_batches: Vec<PayloadBatch> =

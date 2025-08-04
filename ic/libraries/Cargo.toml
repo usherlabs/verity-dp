@@ -27,6 +27,7 @@ libsecp256k1 = { workspace = true, default-features = false, features = [
 rand = { workspace = true, features = ["getrandom"] }
 risc0-zkp = { workspace = true }
 risc0-zkvm = { workspace = true, default-features = false }
+rs_merkle = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 thiserror = { workspace = true }

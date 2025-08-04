@@ -3,6 +3,7 @@
 pub mod config;
 pub mod ecdsa;
 pub mod ethereum;
+pub mod merkle;
 
 /// Converts a hexadecimal string (optionally prefixed with '0x') to a vector of bytes.
 pub fn string_to_vec_u8(str: &str) -> Vec<u8> {
