@@ -32,6 +32,9 @@ importers:
       isomorphic-fetch:
         specifier: ^3.0.0
         version: 3.0.0
+      verity-fixtures:
+        specifier: link:../../../fixtures/ts
+        version: link:../../../fixtures/ts
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.9.4

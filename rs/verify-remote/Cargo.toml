@@ -14,7 +14,9 @@ anyhow = { workspace = true }
 candid = { workspace = true }
 ic-agent = { workspace = true }
 serde = { workspace = true }
-verity-verify-local = { workspace = true }
+# verity-verify-local = { workspace = true }
 
 [dev-dependencies]
-tokio = { workspace = true }
+k256 = { workspace = true }
+tokio = { workspace = true, features = ["macros"] }
+verity-fixtures = { workspace = true }

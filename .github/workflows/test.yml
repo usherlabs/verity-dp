@@ -1,4 +1,3 @@
-
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
@@ -14,29 +13,88 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-
     steps:
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: binaryen
+          version: 1.0
+
       - uses: actions/checkout@v2
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 10
+
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
         with:
-            toolchain: nightly
-            override: true
-            components: rustfmt, clippy, cargo, rustc
+          toolchain: nightly
+          override: true
+          components: rustfmt, clippy, cargo, rustc
 
+      - name: Install rzup
+        run: |
+          curl -L https://risczero.com/install | bash
+          echo "$HOME/.risc0/bin" >> $GITHUB_PATH
 
-      - name: run Verify Test
-        run: | 
-          rustup update
-          cargo test -- --skip async_test_example // Skip async_test_example because of its dependency on a pem file
+      - name: Install risc0 toolchain
+        run: |
+          rzup install rust 1.85.0
+          rzup install r0vm 1.2.6
+          rzup install cargo-risczero 1.2.6
+          rzup show
 
-      - name: run IC Check
-        run: | 
+      - name: Install WASI Polyfill Tool
+        run: |
+          cargo install wasi2ic
+
+      - name: Install IC
+        run: |
+          export DFX_VERSION=0.24.2
           export DFXVM_INIT_YES=1
-          curl -fsSL https://sdk.dfinity.org/install.sh | sh - &&  source "$HOME/.local/share/dfx/env"
-          cd ic/managed/verifier/ &&  pnpm install &&  pnpm test:prod
-      
+          curl -fsSL https://sdk.dfinity.org/install.sh | sh -
+          echo "$HOME/.local/share/dfx/bin" >> $GITHUB_PATH
+
+      - name: Install candid-extractor - a CLI tool to extract the Candid interface from a Canister WASM.
+        run: |
+          cargo install candid-extractor
+
+      - name: Start IC local replica
+        run: |
+          dfx start --background
+
+      - name: Deploy Managed Verifier canister to IC local replica
+        run: |
+          cd ./ic/managed/verifier
+          dfx deploy
+          dfx generate
+
+      - name: Deploy sample zkTLS Verifier canister to IC local replica
+        run: |
+          cd ./examples/zktls/ic-verifier
+          dfx deploy
+          dfx generate
+
+      - name: run Cargo Tests
+        run: |
+          rustup update
+          cargo test --workspace \
+            --exclude verity-dp-zk-verify
+
+      - name: Build Verity Fixtures JS package
+        run: |
+          cd ./fixtures/ts
+          pnpm install
+          pnpm build
+
+      - name: run Test Managed Verifier canister on IC Local replica
+        run: |
+          cd ic/managed/verifier/
+          pnpm install
+          pnpm test
+
+      # - name: Test sample zkTLS Verifier canister on IC Local replica
+      #   run: |
+      #     cd ./examples/zktls/ic-verifier
+      #     pnpm install
+      #     pnpm test

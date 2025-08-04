@@ -154,6 +154,21 @@ pub async fn sign_message(
     })
 }
 
+/// Validates an ECDSA signature against a given public key
+pub fn validate_ecdsa_signature(
+    signature_hex: &String,
+    message: &String,
+    public_key_hex: &String,
+) -> Result<bool, String> {
+    let signature_hex = signature_hex.replace("0x", "");
+    let public_key_hex = public_key_hex.replace("0x", "");
+
+    let recovered_key = recover_address_from_eth_signature(signature_hex, message.clone())?;
+    let is_equal = recovered_key.to_lowercase() == public_key_hex.to_lowercase();
+
+    Ok(is_equal)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -168,5 +183,19 @@ mod tests {
         let recovered_address =
             recover_address_from_eth_signature(metamask_signature, message).unwrap();
         assert_eq!(recovered_address, expected_address);
+    }
+
+    #[test]
+    fn test_validate_signature() {
+        let message =
+            "77ad25504555a257256919c8372236844ef886c4a1b2efa157be0e1e3a26d40a".to_string();
+        let public_key = "c4bb0da5d7cc269bca64a55e2149e6dc91dc7157".to_string();
+        let expected_signature =
+			"eeae5aee33e7ae31c84ff37dd85e1e25d8750a2b8598c67795b6246e18cb8ffe1b45b9e394b57e0b840e6d8e8b501c75a44b4580904660f11c8a435bbb8a37411c".to_string();
+
+        let is_valid =
+            validate_ecdsa_signature(&expected_signature, &message, &public_key).unwrap();
+
+        assert!(is_valid, "invalid message or signature")
     }
 }

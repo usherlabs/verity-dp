@@ -39,7 +39,7 @@ impl Default for SolidityBuildParams {
 /// Executes as a build hook in the guest repository.
 /// This function builds the necessary Solidity files to identify the circuit.
 /// Ensure it is added as a build dependency.
-pub fn build_for_evm(build_params: SolidityBuildParams) {
+pub fn build_for_evm(package_name: &str, build_params: SolidityBuildParams) {
     dotenv::dotenv().ok();
 
     // Builds can be made deterministic and reproducible by using Docker to build the
@@ -50,7 +50,7 @@ pub fn build_for_evm(build_params: SolidityBuildParams) {
 
     // Generate Rust source files for the methods crate.
     let guests = embed_methods_with_options(HashMap::from([(
-        "guests",
+        package_name,
         GuestOptions {
             features: Vec::new(),
             use_docker,

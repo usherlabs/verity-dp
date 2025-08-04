@@ -11,12 +11,18 @@ edition.workspace = true
 [dependencies]
 alloy-sol-types = { workspace = true }
 anyhow = { workspace = true }
+bincode = { workspace = true }
 dotenv = { workspace = true }
+hex = { workspace = true }
+k256 = { workspace = true }
 risc0-build = { workspace = true, features = ["docker"] }
 risc0-build-ethereum = { workspace = true }
 risc0-ethereum-contracts = { workspace = true }
 risc0-zkvm = { workspace = true, features = ["client"] }
 serde = { workspace = true }
 serde_json = { workspace = true }
-tlsn-core-no-session = { workspace = true }
+tracing-subscriber = { workspace = true, features = ["env-filter"] }
+verity-dp-zk-methods = { workspace = true }
+verity-fixtures = { workspace = true }
 verity-verify-remote = { workspace = true }
+verity-verify-tls = { workspace = true, features = ["private-facets"] }

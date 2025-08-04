@@ -1,0 +1,16 @@
+[package]
+name = "verity-dp-zk-verify"
+description = "Verifies a TLSProof privately in a ZK Virtual Machine"
+version.workspace = true
+authors.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+license.workspace = true
+edition.workspace = true
+
+[dependencies]
+bincode = { workspace = true }
+risc0-zkvm = { workspace = true, default-features = false, features = ['std'] }
+verity-verify-tls = { workspace = true, default-features = false, features = [
+  "private-facets",
+] }
