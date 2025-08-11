@@ -1,4 +1,4 @@
-# Verity Managed `verifier`
+# Verity Managed *General Purpose MPC-TLS* Verifier
 
 To learn about the Verity Verifier in detail, please refer to the [official documentation](https://docs.verity.usher.so/), specifically the [Verity Verifier](https://docs.verity.usher.so/build/verifier) section.
 
