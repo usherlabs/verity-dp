@@ -27,7 +27,7 @@ cargo install wasi2ic
    With Homebrew:
 
    ```bash
-brew install binaryen
+   brew install binaryen
    ```
 
    From the releases page:
