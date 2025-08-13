@@ -26,3 +26,6 @@ wasm-opt -Os -o ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm
 ic-wasm ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm \
   -o ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm \
   metadata candid:service -f verity_verifier.did -v public
+ic-wasm ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm \
+  -o ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm \
+  metadata candid:args -f verity_verifier.did -v public
