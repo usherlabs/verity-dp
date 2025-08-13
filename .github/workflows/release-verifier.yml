@@ -57,7 +57,7 @@ jobs:
           sha256sum ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm | tee ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm.sha256
 
       - name: Gzip WASM
-        run: gzip ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm
+        run: gzip --no-name --force ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm
 
       - name: Create GitHub Release and upload assets
         uses: softprops/action-gh-release@v2

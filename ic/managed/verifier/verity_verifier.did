@@ -9,11 +9,19 @@ type ProofResponse = variant { SessionProof : text; FullProof : text };
 type PublicKeyReply = record { sec1_pk : text; etherum_pk : text };
 type Result = variant { Ok : DirectVerificationResponse; Err : text };
 service : (opt Environment) -> {
+  // A simple test function that returns "Ping"
   ping : () -> (text) query;
+  // Retrieves the public key of the canister
   public_key : () -> (PublicKeyReply);
   reinitialize : (opt Environment) -> ();
+  // Asynchronously verifies proof requests; intended for canister calls
   verify_proof_async : (vec text, text) -> (vec ProofResponse) query;
+  // Asynchronously verifies batch proof requests; intended for canister calls
   verify_proof_async_batch : (vec ProofBatch) -> (vec ProofResponse) query;
+  // Asynchronously verifies proof requests; intended for direct user calls
+  // Returns a detailed verification response
   verify_proof_direct : (vec text, text) -> (Result);
+  // Asynchronously verifies proof requests; intended for direct user calls
+  // Returns a detailed verification response
   verify_proof_direct_batch : (vec ProofBatch) -> (Result);
 }

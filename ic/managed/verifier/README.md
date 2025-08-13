@@ -43,8 +43,7 @@ rustup target add wasm32-wasip1
 2. Install `wasi2ic`, `candid-extractor`, and `ic-wasm`:
 
 ```bash
-cargo install wasi2ic candid-extractor
-cargo install ic-wasm --version 0.3.5
+cargo install wasi2ic candid-extractor ic-wasm
 ```
 
 ### Deployment
