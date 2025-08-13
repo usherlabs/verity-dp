@@ -23,7 +23,6 @@
         "init_guide": "",
         "dependencies": []
 			},
-			"shrink": true,
 			"gzip": true
 		}
 	},
