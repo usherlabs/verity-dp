@@ -11,7 +11,11 @@
 			"build": [
 					"cargo build --target wasm32-wasip1 --release -p verity-ic-verifier",
 					"candid-extractor ../../../target/wasm32-wasip1/release/verity_ic_verifier.wasm > verity_verifier.did",
-					"wasi2ic ../../../target/wasm32-wasip1/release/verity_ic_verifier.wasm ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm"
+					"wasi2ic ../../../target/wasm32-wasip1/release/verity_ic_verifier.wasm ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm",
+					"ic-wasm ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm -o ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm shrink",
+					"ic-wasm ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm -o ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm metadata candid:service -f verity_verifier.did -v public",
+					"ic-wasm ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm -o ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm metadata candid:args -f verity_verifier.did -v public",
+					"metadata_json=$(jq -cMr '{pullable: { wasm_url: .canisters.verity_verifier.pullable.wasm_url, dependencies: [], init_guide: .canisters.verity_verifier.pullable.init_guide }}' dfx.json); ic-wasm ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm -o ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm metadata dfx -d \"$metadata_json\" -v public"
 			],
 			"pullable": {
 				"wasm_url": "https://github.com/usherlabs/verity-dp/releases/latest/download/verity_ic_verifier_ic.wasm.gz",
