@@ -39,8 +39,17 @@ jobs:
       - name: Verify dfx
         run: dfx --version
 
+      - name: Start local Node
+        run: dfx start --background
+
+      - name: Create canister
+        run: dfx canister create verity_verifier
+
       - name: Build verifier canister via dfx
         run: dfx build
+
+      - name: Stop local Node
+        run: dfx stop
 
       - name: Compute checksum
         run: |
