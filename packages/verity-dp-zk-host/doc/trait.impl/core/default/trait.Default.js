@@ -1,5 +1,5 @@
 (function() {
-    var implementors = Object.fromEntries([["verity_dp_zk_host",[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.83.0/core/default/trait.Default.html\" title=\"trait core::default::Default\">Default</a> for <a class=\"struct\" href=\"verity_dp_zk_host/builder/struct.SolidityBuildParams.html\" title=\"struct verity_dp_zk_host::builder::SolidityBuildParams\">SolidityBuildParams</a>"]]]]);
+    var implementors = Object.fromEntries([["verity_dp_zk_host",[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.88.0/core/default/trait.Default.html\" title=\"trait core::default::Default\">Default</a> for <a class=\"struct\" href=\"verity_dp_zk_host/builder/struct.SolidityBuildParams.html\" title=\"struct verity_dp_zk_host::builder::SolidityBuildParams\">SolidityBuildParams</a>"]]]]);
     if (window.register_implementors) {
         window.register_implementors(implementors);
     } else {
