@@ -19,10 +19,11 @@
 			],
 			"pullable": {
 				"wasm_url": "https://github.com/usherlabs/verity-dp/releases/latest/download/verity_ic_verifier_ic.wasm.gz",
-        "init_guide": "",
+        "init_guide": "Documentation: https://docs.verity.usher.so/build/verifier",
         "dependencies": []
 			},
-			"gzip": true
+			"gzip": true,
+			"init_arg": "(opt variant { Development })"
 		}
 	},
 	"output_env_file": ".env",
