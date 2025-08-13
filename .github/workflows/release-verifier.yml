@@ -28,7 +28,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y binaryen
+          sudo apt-get install -y jq
           cargo install --locked wasi2ic candid-extractor ic-wasm
 
       - name: Install DFX
