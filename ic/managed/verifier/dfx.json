@@ -1,11 +1,6 @@
 {
 	"canisters": {
 		"verity_verifier": {
-			"metadata": [
-				{
-					"name": "candid:service"
-				}
-			],
 			"candid": "verity_verifier.did",
 			"package": "verity-ic-verifier",
 			"declarations": {
