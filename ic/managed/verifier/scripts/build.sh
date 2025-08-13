@@ -13,9 +13,16 @@ set -ex
 # wasm-opt -Os -o ./target/wasm32-unknown-unknown/release/ic_af-ic.wasm \
 #         ./target/wasm32-unknown-unknown/release/ic_af-ic.wasm
 
+# # Add candid:service metadata to the optimized WASM
+# https://github.com/dfinity/ic-wasm
+# cargo install ic-wasm
+
 # export RUSTFLAGS=$RUSTFLAGS' -C target-feature=+simd128'
 cargo build --target wasm32-wasip1 --release -p verity-ic-verifier
 candid-extractor ../../../target/wasm32-wasip1/release/verity_ic_verifier.wasm > verity_verifier.did
 wasi2ic ../../../target/wasm32-wasip1/release/verity_ic_verifier.wasm ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm
 wasm-opt -Os -o ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm \
         ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm
+ic-wasm ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm \
+  -o ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm \
+  metadata candid:service -f verity_verifier.did -v public
