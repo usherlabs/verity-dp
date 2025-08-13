@@ -12,6 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    defaults:
+      run:
+        shell: bash
+        working-directory: ic/managed/verifier
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -36,7 +40,6 @@ jobs:
         run: dfx --version
 
       - name: Build verifier canister via dfx
-        working-directory: ic/managed/verifier
         run: dfx build
 
       - name: Compute checksum
