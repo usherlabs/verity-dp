@@ -37,7 +37,7 @@ jobs:
 
       - name: Build verifier canister via dfx
         working-directory: ic/managed/verifier
-        run: dfx build --skip-assets
+        run: dfx build
 
       - name: Compute checksum
         run: |
