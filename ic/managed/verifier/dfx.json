@@ -13,14 +13,18 @@
 			},
 			"type": "custom",
 			"wasm": "../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm",
-			"build": ["bash -c ./scripts/build.sh"],
+			"build": [
+					"cargo build --target wasm32-wasip1 --release -p verity-ic-verifier",
+					"candid-extractor ../../../target/wasm32-wasip1/release/verity_ic_verifier.wasm > verity_verifier.did",
+					"wasi2ic ../../../target/wasm32-wasip1/release/verity_ic_verifier.wasm ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm"
+			],
 			"pullable": {
-				"wasm_url": "https://github.com/usherlabs/verity-dp/releases/latest/download/verity_ic_verifier_ic.wasm",
+				"wasm_url": "https://github.com/usherlabs/verity-dp/releases/latest/download/verity_ic_verifier_ic.wasm.gz",
         "init_guide": "",
-        "dependencies": [],
-        "init_arg": null,
-        "wasm_hash": null
-			}
+        "dependencies": []
+			},
+			"shrink": true,
+			"gzip": true
 		}
 	},
 	"output_env_file": ".env",
