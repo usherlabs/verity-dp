@@ -13,7 +13,14 @@
 			},
 			"type": "custom",
 			"wasm": "../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm",
-			"build": ["bash -c ./scripts/build.sh"]
+			"build": ["bash -c ./scripts/build.sh"],
+			"pullable": {
+				"wasm_url": "https://github.com/usherlabs/verity-dp/releases/latest/download/verity_ic_verifier_ic.wasm",
+        "init_guide": "If running in production, call: `dfx canister call verity_verifier reinitialize '(opt variant { Production })' --ic` ",
+        "dependencies": [],
+        "init_arg": null,
+        "wasm_hash": null
+			}
 		}
 	},
 	"output_env_file": ".env",

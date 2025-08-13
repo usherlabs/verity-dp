@@ -139,3 +139,6 @@ async fn post_upgrade() {
     init_canister(env_opt);
 }
 // --------------------------- upgrade hooks ------------------------- //
+
+// Enable Candid export
+ic_cdk::export_candid!();

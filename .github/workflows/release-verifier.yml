@@ -1,0 +1,57 @@
+name: Release Verity Managed *General Purpose MPC-TLS* Verifier WASM
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch: {}
+
+jobs:
+  build-and-release:
+    name: Build and publish WASM
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Rust (stable) with wasm32-wasip1 target
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-wasip1
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y binaryen
+          cargo install --locked wasi2ic candid-extractor
+
+      - name: Install DFX
+        run: |
+          DFX_VERSION=0.27.0 sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
+          echo "$HOME/.local/share/dfx/bin" >> $GITHUB_PATH
+          echo "$HOME/bin" >> $GITHUB_PATH
+          dfx --version
+
+      - name: Build verifier canister via dfx
+        working-directory: ic/managed/verifier
+        run: dfx build --skip-assets
+
+      - name: Compute checksum
+        run: |
+          cd target/wasm32-wasip1/release
+          sha256sum verity_ic_verifier_ic.wasm | tee verity_ic_verifier_ic.wasm.sha256
+
+      - name: Create GitHub Release and upload assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm
+            target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm.sha256
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+

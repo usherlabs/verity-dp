@@ -1,38 +1,19 @@
-type ProofVerificationResponse = vec ProofResponse;
-
-type ProofResponse = variant {
-	SessionProof : text;
-	FullProof : text;
-};
-
-type MerkleTree = record {
-	nodes : vec text;
-	num_leaves : nat64;
-	root : text;
-};
-
 type DirectVerificationResponse = record {
-	results : ProofVerificationResponse;
-	root : text;
-	signature : text;
+  signature : text;
+  root : text;
+  results : vec ProofResponse;
 };
-
-type DirectVerificationResult = variant {
-	Ok : DirectVerificationResponse;
-	Err : text;
-};
-
-type ProofBatch = record {
-  proof_requests : vec text;
-  notary_pub_key : text;
-};
-
-
-service : {
-	"ping" : () -> (text) query;
-	"verify_proof_direct" : (proof_requests : vec text, notary_pub_key : text) -> (DirectVerificationResult);
-	"verify_proof_async" : (proof_requests : vec text, notary_pub_key : text) -> (ProofVerificationResponse);
-	"verify_proof_direct_batch": (batches: vec ProofBatch) -> (DirectVerificationResult);
-	"verify_proof_async_batch" : (batches: vec ProofBatch) -> (ProofVerificationResponse);
-	"public_key" : () -> (record { sec1_pk : text; etherum_pk : text });
-};
+type Environment = variant { Production; Development; Staging };
+type ProofBatch = record { proof_requests : vec text; notary_pub_key : text };
+type ProofResponse = variant { SessionProof : text; FullProof : text };
+type PublicKeyReply = record { sec1_pk : text; etherum_pk : text };
+type Result = variant { Ok : DirectVerificationResponse; Err : text };
+service : (opt Environment) -> {
+  ping : () -> (text) query;
+  public_key : () -> (PublicKeyReply);
+  reinitialize : (opt Environment) -> ();
+  verify_proof_async : (vec text, text) -> (vec ProofResponse) query;
+  verify_proof_async_batch : (vec ProofBatch) -> (vec ProofResponse) query;
+  verify_proof_direct : (vec text, text) -> (Result);
+  verify_proof_direct_batch : (vec ProofBatch) -> (Result);
+}
