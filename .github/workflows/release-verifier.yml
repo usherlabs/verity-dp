@@ -29,8 +29,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y jq
-          cargo install --locked wasi2ic candid-extractor
-          cargo install --locked ic-wasm --version 0.3.5
+          cargo install --locked wasi2ic candid-extractor ic-wasm
 
       - name: Install DFX
         uses: dfinity/setup-dfx@main
