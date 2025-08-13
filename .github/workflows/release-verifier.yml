@@ -59,8 +59,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm
-            ../../../target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm.sha256
+            target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm
+            target/wasm32-wasip1/release/verity_ic_verifier_ic.wasm.sha256
           draft: false
           prerelease: false
         env:
