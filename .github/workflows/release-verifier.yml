@@ -28,11 +28,12 @@ jobs:
           cargo install --locked wasi2ic candid-extractor
 
       - name: Install DFX
-        run: |
-          DFX_VERSION=0.27.0 sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
-          echo "$HOME/.local/share/dfx/bin" >> $GITHUB_PATH
-          echo "$HOME/bin" >> $GITHUB_PATH
-          dfx --version
+        uses: dfinity/setup-dfx@v1
+        with:
+          dfx-version: 0.27.0
+
+      - name: Verify dfx
+        run: dfx --version
 
       - name: Build verifier canister via dfx
         working-directory: ic/managed/verifier
