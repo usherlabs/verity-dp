@@ -52,8 +52,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = VerityClient::new(config);
 
     let response = client
-        .get("https://conn.verity.usher.so/32b.json")
-        // .get("https://conn.verity.usher.so/1kb.json")
+        .get("https://mock.verity.usher.so/32b.json")
+        // .get("https://mock.verity.usher.so/1kb.json")
         .header("API-KEY", "1234567890")
         .redact(String::from("req:header:api-key"))
         .send()
