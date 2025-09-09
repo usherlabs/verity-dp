@@ -5,9 +5,9 @@ name: Verify-db TEST
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  #   branches: [main]
+  # pull_request:
+  #   branches: [main]
 
 jobs:
   build:
