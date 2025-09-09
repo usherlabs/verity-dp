@@ -39,9 +39,9 @@ jobs:
 
       - name: Install risc0 toolchain
         run: |
-          rzup install rust 1.85.0
-          rzup install r0vm 1.2.6
-          rzup install cargo-risczero 1.2.6
+          rzup install rust 1.88.0
+          rzup install r0vm 3.0.3
+          rzup install cargo-risczero 3.0.3
           rzup show
 
       - name: Install WASI Polyfill Tool
