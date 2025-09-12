@@ -82,10 +82,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(proof_by_host.hash, proof_by_zkvm.hash);
 
     // Store the presentation
-    // std::fs::write("./presentation.json", serde_json::to_string(&presentation)?)?;
+    // std::fs::write(
+    //     "../../../fixtures/assets/presentation/presentation_32b.json",
+    //     // "../../../fixtures/assets/presentation/presentation_1kb.json",
+    //     serde_json::to_string(&presentation)?,
+    // )?;
 
     // Store the receipt
-    // std::fs::write("./receipt.bin", bincode::serialize(&receipt)?)?;
+    // std::fs::write(
+    //     "../../../fixtures/assets/receipt/receipt_32b.bin",
+    //     // "../../../fixtures/assets/receipt/receipt_1kb.bin",
+    //     bincode::serialize(&receipt)?,
+    // )?;
 
     let reply = verify_by_ic(receipt).await?;
 
