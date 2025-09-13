@@ -1,8 +1,8 @@
 pub mod ic {
     pub const IDENTITY_PATH: &str =
         concat!(env!("CARGO_MANIFEST_DIR"), "/../assets/ic/identity.pem");
-    pub const MANAGED_VERIFIER: &str = "bkyz2-fmaaa-aaaaa-qaaaq-cai";
-    pub const ZKTLS_VERIFIER: &str = "be2us-64aaa-aaaaa-qaabq-cai";
+    pub const MANAGED_VERIFIER: &str = "uxrrr-q7777-77774-qaaaq-cai";
+    pub const ZKTLS_VERIFIER: &str = "uzt4z-lp777-77774-qaabq-cai";
 }
 
 pub mod notary {

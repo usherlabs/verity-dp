@@ -51,7 +51,7 @@ impl From<Environment> for Config {
             Self {
                 env: Environment::Development,
                 key: ecdsa::EcdsaKeyIds::TestKeyLocalDevelopment,
-                sign_cycles: 25_000_000_000,
+                sign_cycles: 26_153_846_153,
             }
         }
     }

@@ -50,7 +50,7 @@ jobs:
 
       - name: Install IC
         run: |
-          export DFX_VERSION=0.24.2
+          export DFX_VERSION=0.29.1
           export DFXVM_INIT_YES=1
           curl -fsSL https://sdk.dfinity.org/install.sh | sh -
           echo "$HOME/.local/share/dfx/bin" >> $GITHUB_PATH
