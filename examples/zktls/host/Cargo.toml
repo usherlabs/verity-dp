@@ -1,5 +1,5 @@
 [package]
-name = "host"
+name = "verity-dp-examples-zktls-host"
 version.workspace = true
 authors.workspace = true
 homepage.workspace = true
@@ -8,14 +8,21 @@ edition.workspace = true
 
 [dependencies]
 anyhow = { workspace = true }
-methods = { path = "../methods" }
-reqwest = { workspace = true }
-risc0-zkvm = { workspace = true }
+bincode = { workspace = true }
+candid = { workspace = true }
+hex = { workspace = true }
+ic-agent = { workspace = true }
+k256 = { workspace = true }
+risc0-zkvm = { workspace = true, default-features = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 tokio = { workspace = true }
 tracing-subscriber = { workspace = true, features = ["env-filter"] }
 verity-client = { workspace = true }
-verity-dp-zk-host = { workspace = true }
+verity-dp-zk-methods = { workspace = true }
+verity-fixtures = { workspace = true }
 verity-verify-remote = { workspace = true }
-verity-verify-tls = { path = "../../../rs/verify-tls" }
+verity-verify-tls = { workspace = true, features = [
+  "private-facets",
+  "public-facets",
+] }

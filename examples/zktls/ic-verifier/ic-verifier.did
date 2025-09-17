@@ -1,0 +1,12 @@
+type Environment = variant { Production; Development; Staging };
+type PublicKeyReply = record { sec1_pk : text; etherum_pk : text };
+type Result = variant { Ok : VerifyReceiptReply; Err : text };
+type VerifyReceiptReply = record { signature : text; data : blob };
+service : (opt Environment) -> {
+  // A simple test function that returns "Ping"
+  ping : () -> (text) query;
+  // Retrieves the public key of the canister
+  public_key : () -> (PublicKeyReply);
+  reinitialize : (opt Environment) -> ();
+  verify_receipt : (blob) -> (Result);
+}

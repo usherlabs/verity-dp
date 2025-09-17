@@ -14,7 +14,7 @@
 
 use std::{collections::HashMap, env};
 
-use risc0_build::{embed_methods_with_options, DockerOptions, GuestOptions};
+use risc0_build::{embed_methods_with_options, DockerOptionsBuilder, GuestOptionsBuilder};
 use risc0_build_ethereum::generate_solidity_files;
 
 use dotenv;
@@ -39,22 +39,28 @@ impl Default for SolidityBuildParams {
 /// Executes as a build hook in the guest repository.
 /// This function builds the necessary Solidity files to identify the circuit.
 /// Ensure it is added as a build dependency.
-pub fn build_for_evm(build_params: SolidityBuildParams) {
+pub fn build_for_evm(package_name: &str, build_params: SolidityBuildParams) {
     dotenv::dotenv().ok();
 
     // Builds can be made deterministic and reproducible by using Docker to build the
     // guest. Check the RISC0_USE_DOCKER variable and use Docker to build the guest if set.
-    let use_docker = env::var("RISC0_USE_DOCKER").ok().map(|_| DockerOptions {
-        root_dir: Some("../".into()),
+    let docker_options = env::var("RISC0_USE_DOCKER").ok().map(|_| {
+        DockerOptionsBuilder::default()
+            .root_dir("../")
+            .build()
+            .unwrap()
     });
+
+    let mut guest_options = GuestOptionsBuilder::default();
+    let guest_options = match docker_options {
+        Some(docker_options) => guest_options.use_docker(docker_options),
+        None => &mut guest_options,
+    };
 
     // Generate Rust source files for the methods crate.
     let guests = embed_methods_with_options(HashMap::from([(
-        "guests",
-        GuestOptions {
-            features: Vec::new(),
-            use_docker,
-        },
+        package_name,
+        guest_options.build().unwrap(),
     )]));
 
     // Generate Solidity source files for use with Forge.

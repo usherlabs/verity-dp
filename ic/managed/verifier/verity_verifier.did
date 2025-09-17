@@ -1,27 +1,27 @@
-type DirectVerificationResponse = record {
+type Environment = variant { Production; Development; Staging };
+type Payload = record { sent : text; received : text };
+type PayloadBatch = record { payloads : vec Payload; notary_pub_key : blob };
+type PresentationBatch = record {
+  presentations : vec text;
+  notary_pub_key : blob;
+};
+type PublicKeyReply = record { sec1_pk : text; etherum_pk : text };
+type Result = variant { Ok : vec PayloadBatch; Err : text };
+type Result_1 = variant { Ok : VerificationResponse; Err : text };
+type VerificationResponse = record {
   signature : text;
   root : text;
-  results : vec ProofResponse;
+  payload_batches : vec PayloadBatch;
 };
-type Environment = variant { Production; Development; Staging };
-type ProofBatch = record { proof_requests : vec text; notary_pub_key : text };
-type ProofResponse = variant { SessionProof : text; FullProof : text };
-type PublicKeyReply = record { sec1_pk : text; etherum_pk : text };
-type Result = variant { Ok : DirectVerificationResponse; Err : text };
 service : (opt Environment) -> {
   // A simple test function that returns "Ping"
   ping : () -> (text) query;
   // Retrieves the public key of the canister
   public_key : () -> (PublicKeyReply);
   reinitialize : (opt Environment) -> ();
-  // Asynchronously verifies proof requests; intended for canister calls
-  verify_proof_async : (vec text, text) -> (vec ProofResponse) query;
-  // Asynchronously verifies batch proof requests; intended for canister calls
-  verify_proof_async_batch : (vec ProofBatch) -> (vec ProofResponse) query;
+  // Asynchronously verifies a vector of PresentationBatches; intended for canister calls
+  verify_async : (vec PresentationBatch) -> (Result) query;
   // Asynchronously verifies proof requests; intended for direct user calls
   // Returns a detailed verification response
-  verify_proof_direct : (vec text, text) -> (Result);
-  // Asynchronously verifies proof requests; intended for direct user calls
-  // Returns a detailed verification response
-  verify_proof_direct_batch : (vec ProofBatch) -> (Result);
+  verify_direct : (vec PresentationBatch) -> (Result_1);
 }

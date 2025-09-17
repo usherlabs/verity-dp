@@ -1,37 +1,27 @@
 use crate::state::CONFIG;
-use candid::Principal;
+use candid::{CandidType, Principal};
 use ic_cdk::storage;
-use proof::{
-    verify_and_sign_proof_requests, verify_and_sign_proof_requests_batch, verify_proof_requests,
-    verify_proof_requests_batch, DirectVerificationResponse, ProofBatch,
-};
 use utils::init_canister;
 use verity_ic::{
     crypto::{
-        config::{Config, Environment},
+        config::{ensure_sufficient_cycles, Config, Environment},
         ecdsa::{self, ECDSAPublicKeyReply, PublicKeyReply},
-        ethereum,
+        ethereum::{self, sign_message},
+        merkle::generate_merkle_tree,
     },
     owner,
-    verify::types::ProofResponse,
+    verify::types::{PayloadBatch, PresentationBatch},
 };
+use verity_verify_tls::verify;
 
-pub mod merkle;
-pub mod proof;
 pub mod state;
 pub mod utils;
-const MIN_BALANCE: u128 = 100_000_000_000; // 0.1 T Cycles
 
-fn ensure_sufficient_cycles() -> Result<(), String> {
-    let balance = ic_cdk::api::canister_balance128();
-    if balance < MIN_BALANCE {
-        Err(format!(
-            "Insufficient cycles: have {}, need at least {}",
-            balance, MIN_BALANCE
-        ))
-    } else {
-        Ok(())
-    }
+#[derive(CandidType)]
+pub struct VerificationResponse {
+    pub payload_batches: Vec<PayloadBatch>,
+    pub root: String,
+    pub signature: String,
 }
 
 /// Initializes the canister with an optional environment configuration
@@ -52,49 +42,62 @@ fn ping() -> String {
     format!("Ping")
 }
 
-/// Asynchronously verifies proof requests; intended for canister calls
+/// Asynchronously verifies a vector of PresentationBatches; intended for canister calls
 #[ic_cdk::query]
-async fn verify_proof_async(
-    proof_requests: Vec<String>,
-    notary_pub_key: String,
-) -> Vec<ProofResponse> {
-    let verification_response = verify_proof_requests(proof_requests, notary_pub_key);
-    verification_response
-}
+async fn verify_async(
+    presentation_batches: Vec<PresentationBatch>,
+) -> Result<Vec<PayloadBatch>, String> {
+    // Convert from Candid type
+    let presentation_batches: Vec<verity_verify_tls::PresentationBatch> =
+        presentation_batches.into_iter().map(|b| b.into()).collect();
 
-/// Asynchronously verifies batch proof requests; intended for canister calls
-#[ic_cdk::query]
-async fn verify_proof_async_batch(batches: Vec<ProofBatch>) -> Vec<ProofResponse> {
-    let verification_responses = verify_proof_requests_batch(batches);
-    verification_responses
+    let (_, payload_batches) = verify(presentation_batches).map_err(|e| e.to_string())?;
+
+    // Convert into Candid type
+    let payload_batches: Vec<PayloadBatch> =
+        payload_batches.into_iter().map(|b| b.into()).collect();
+
+    Ok(payload_batches)
 }
 
 /// Asynchronously verifies proof requests; intended for direct user calls
 /// Returns a detailed verification response
 #[ic_cdk::update]
-async fn verify_proof_direct(
-    proof_requests: Vec<String>,
-    notary_pub_key: String,
-) -> Result<DirectVerificationResponse, String> {
-    ensure_sufficient_cycles()?;
-    verify_and_sign_proof_requests(proof_requests, notary_pub_key).await
-}
+async fn verify_direct(
+    presentation_batches: Vec<PresentationBatch>,
+) -> Result<VerificationResponse, String> {
+    let config = crate::CONFIG.with(|c| c.borrow().clone());
+    ensure_sufficient_cycles(config.sign_cycles)?;
 
-/// Asynchronously verifies proof requests; intended for direct user calls
-/// Returns a detailed verification response
-#[ic_cdk::update]
-async fn verify_proof_direct_batch(
-    batches: Vec<ProofBatch>,
-) -> Result<DirectVerificationResponse, String> {
-    ensure_sufficient_cycles()?;
-    verify_and_sign_proof_requests_batch(batches).await
+    // Convert from Candid type
+    let presentation_batches: Vec<verity_verify_tls::PresentationBatch> =
+        presentation_batches.into_iter().map(|b| b.into()).collect();
+
+    let (_, payload_batches) = verify(presentation_batches).map_err(|e| e.to_string())?;
+
+    let merkle_tree = generate_merkle_tree(&payload_batches);
+    let merkle_root = merkle_tree.root().ok_or("NOT ENOUGH LEAVES")?;
+
+    let signature = sign_message(&merkle_root.to_vec(), &config)
+        .await?
+        .signature_hex;
+
+    // Convert into Candid type
+    let payload_batches: Vec<PayloadBatch> =
+        payload_batches.into_iter().map(|b| b.into()).collect();
+
+    Ok(VerificationResponse {
+        payload_batches,
+        root: hex::encode(merkle_root),
+        signature,
+    })
 }
 
 /// Retrieves the public key of the canister
 #[ic_cdk::update]
 async fn public_key() -> PublicKeyReply {
-    ensure_sufficient_cycles().unwrap();
     let config = crate::CONFIG.with(|c| c.borrow().clone());
+    ensure_sufficient_cycles(config.sign_cycles).unwrap();
 
     let request = ecdsa::ECDSAPublicKey {
         canister_id: None,

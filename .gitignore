@@ -36,7 +36,6 @@ yarn-error.log*
 .vercel
 
 # graph
-data
 dist
 
 # misc

@@ -1,118 +1,122 @@
-import { readFileSync, readdirSync } from "node:fs";
+import { fail } from "node:assert";
+import * as fixtures from "verity-fixtures";
 import { describe, expect, test } from "vitest";
-import type { ProofVerificationResponse } from "../src/declarations/verity_verifier/verity_verifier.did";
-import { getCanisterCycles, verifyVerifier } from "./actor";
+import type {
+  PayloadBatch,
+  PresentationBatch,
+  VerificationResponse,
+} from "../src/declarations/verity_verifier/verity_verifier.did";
+import { actor, getCanisterCycles } from "./actor";
 
-const test_files = readdirSync("./fixtures/")
-  .filter((file) => file.endsWith(".json"))
-  .map((elem) => readFileSync(`./fixtures/${elem}`, "utf8"));
-const public_key = readFileSync("./fixtures/notary.pub", "utf8");
+const CANISTER_NAME = "verity_verifier";
 
-describe("Managed IC Verifier", () => {
-  test("expect Ping", async () => {
-    const old_balance = await getCanisterCycles("verity_verifier");
-    const result = await verifyVerifier.ping();
-    console.log("Ping cycle used:", old_balance - (await getCanisterCycles("verity_verifier")));
+describe("Managed Verifier", () => {
+  test("ping", async () => {
+    const old_balance = await getCanisterCycles(CANISTER_NAME);
+    const result = await actor.ping();
+    console.log("ping cycle used:", old_balance - (await getCanisterCycles(CANISTER_NAME)));
     expect(result).toBe("Ping");
   });
 
-  describe("Process verify_proof_async", () => {
-    test("Expect verify_proof_async to return Proof Response", async () => {
+  test("public_key", async () => {
+    const old_balance = await getCanisterCycles(CANISTER_NAME);
+    const startTime = Date.now();
+
+    const result = await actor.public_key();
+
+    expect(typeof result).toBe("object");
+    expect(Object.keys(result).length).toBe(2);
+
+    expect(Object.keys(result).includes("sec1_pk")).toBeTruthy();
+    expect(typeof result["sec1_pk"]).toBe("string");
+    expect(result["sec1_pk"].length).toBe(66);
+
+    expect(Object.keys(result).includes("etherum_pk")).toBeTruthy();
+    expect(typeof result["etherum_pk"]).toBe("string");
+    expect(result["etherum_pk"].length).toBe(40);
+
+    console.log(`Execution time: ${Date.now() - startTime} ms`);
+    console.log("public_key cycle used:", old_balance - (await getCanisterCycles(CANISTER_NAME)));
+  });
+
+  describe("Process verify_async", () => {
+    test("Expect verify_async to return PayloadBatches", async () => {
       // Start timing execution
       const old_balance = await getCanisterCycles("verity_verifier");
       const startTime = Date.now();
-      console.log({ length: test_files.reduce((prev, curr) => prev + curr.length, 0) });
-      const result = (await verifyVerifier.verify_proof_async(test_files, public_key)) as ProofVerificationResponse;
-      expect(Array.isArray(result)).toBe(true);
-      expect(result.length).toBe(test_files.length);
+      const presentationBatches: PresentationBatch[] = [
+        {
+          notary_pub_key: fixtures.notary.PUB_KEY,
+          presentations: [fixtures.presentation.PRESENTATION_32B, fixtures.presentation.PRESENTATION_1KB],
+        },
+      ];
+      const result = await actor.verify_async(presentationBatches);
 
-      for (const item of result) {
-        expect(typeof item).toBe("object");
-        expect(Object.keys(item).length).toBe(1);
-        expect(Object.keys(item)[0]).toMatch(/^(FullProof|SessionProof)$/);
-        expect(typeof Object.values(item)[0]).toBe("string");
+      // Ensure that the canister returns an object of type Result<Vec<PayloadBatch>, String>
+      expect(typeof result).toBe("object");
+      expect(Object.keys(result).length).toBe(1);
+      expect(Object.keys(result)[0]).toMatch(/^(Ok|Err)$/);
+
+      // Fail the test if the canister returns an Error
+      if (Object.keys(result)[0] === "Err") {
+        fail(result["Err"]);
       }
+
+      const payloadBatches = result["Ok"] as PayloadBatch[];
+      expect(Array.isArray(payloadBatches)).toBe(true);
+      expect(payloadBatches.length).toBe(presentationBatches.length);
+
+      for (const payloadBatch of payloadBatches) {
+        expect(payloadBatch.payloads.length).toBe(2);
+        for (const payload of payloadBatch.payloads) {
+          expect(payload.sent.length).toBeGreaterThan(0);
+          expect(payload.received.length).toBeGreaterThan(0);
+        }
+      }
+
       console.log(`Execution time: ${Date.now() - startTime} ms`);
       console.log("verify_proof_async cycle used:", old_balance - (await getCanisterCycles("verity_verifier")));
     });
-
-    test("Expect verify_proof_async_batch to return Proof Response", async () => {
-      const old_balance = await getCanisterCycles("verity_verifier");
-      const startTime = Date.now();
-      const result = (await verifyVerifier.verify_proof_async_batch([
-        {
-          proof_requests: test_files.slice(0, test_files.length / 2),
-          notary_pub_key: public_key,
-        },
-        {
-          proof_requests: test_files.slice(test_files.length / 2),
-          notary_pub_key: public_key,
-        },
-      ])) as ProofVerificationResponse;
-      expect(Array.isArray(result)).toBe(true);
-      expect(result.length).toBe(test_files.length);
-      for (const item of result) {
-        expect(typeof item).toBe("object");
-        expect(Object.keys(item).length).toBe(1);
-        expect(Object.keys(item)[0]).toMatch(/^(FullProof|SessionProof)$/);
-        expect(typeof Object.values(item)[0]).toBe("string");
-      }
-      console.log(`Execution time: ${Date.now() - startTime} ms`);
-      console.log("verify_proof_async Batch cycle used:", old_balance - (await getCanisterCycles("verity_verifier")));
-    }, 1000000);
   });
 
-  describe("Process verify_proof_direct", () => {
-    test("Expect verify_proof_direct for a single notary to return Proof Response", async () => {
+  describe("Process verify_direct", () => {
+    test("Expect verify_direct to return PayloadBatches, Merkle root and Signature", async () => {
+      // Start timing execution
       const old_balance = await getCanisterCycles("verity_verifier");
       const startTime = Date.now();
-
-      const result = (await verifyVerifier.verify_proof_direct(test_files, public_key)) as ProofVerificationResponse;
-      expect(Array.isArray(result)).toBe(false);
-      expect(Object.keys(result)).toMatch(/^(Ok|Err)$/);
-
-      expect(result).toHaveProperty("Ok");
-      for (const item of result["Ok"].results) {
-        expect(typeof item).toBe("object");
-        expect(Object.keys(item).length).toBe(1);
-        expect(Object.keys(item)[0]).toMatch(/^(FullProof|SessionProof)$/);
-        expect(typeof Object.values(item)[0]).toBe("string");
-      }
-      expect(typeof result["Ok"]["signature"]).toBe("string");
-      expect(typeof result["Ok"]["root"]).toBe("string");
-      console.log(`Execution time: ${Date.now() - startTime} ms`);
-      console.log("verify_proof_direct cycle used:", old_balance - (await getCanisterCycles("verity_verifier")));
-    }, 1000000);
-
-    test("Expect verify_proof_direct for a batch to return Proof Response", async () => {
-      const old_balance = await getCanisterCycles("verity_verifier");
-      const startTime = Date.now();
-
-      const result = (await verifyVerifier.verify_proof_direct_batch([
+      const presentationBatches: PresentationBatch[] = [
         {
-          proof_requests: test_files.slice(0, test_files.length / 2),
-          notary_pub_key: public_key,
+          notary_pub_key: fixtures.notary.PUB_KEY,
+          presentations: [fixtures.presentation.PRESENTATION_32B, fixtures.presentation.PRESENTATION_1KB],
         },
-        {
-          proof_requests: test_files.slice(test_files.length / 2),
-          notary_pub_key: public_key,
-        },
-      ])) as ProofVerificationResponse;
-      expect(Array.isArray(result)).toBe(false);
-      expect(Object.keys(result)).toMatch(/^(Ok|Err)$/);
+      ];
+      const result = await actor.verify_direct(presentationBatches);
 
-      expect(result).toHaveProperty("Ok");
-      for (const item of result["Ok"].results) {
-        expect(typeof item).toBe("object");
-        expect(Object.keys(item).length).toBe(1);
-        expect(Object.keys(item)[0]).toMatch(/^(FullProof|SessionProof)$/);
-        expect(typeof Object.values(item)[0]).toBe("string");
+      // Ensure that the canister returns an object of type Result<Vec<PayloadBatch>, String>
+      expect(typeof result).toBe("object");
+      expect(Object.keys(result).length).toBe(1);
+      expect(Object.keys(result)[0]).toMatch(/^(Ok|Err)$/);
+
+      // Fail the test if the canister returns an Error
+      if (Object.keys(result)[0] === "Err") {
+        fail(result["Err"]);
       }
 
+      const response = result["Ok"] as VerificationResponse;
+      expect(response.payload_batches.length).toBe(presentationBatches.length);
+
+      const payloadBatch = response.payload_batches[0];
+      expect(payloadBatch.payloads.length).toBe(2);
+      for (const payload of payloadBatch.payloads) {
+        expect(payload.sent.length).toBeGreaterThan(0);
+        expect(payload.received.length).toBeGreaterThan(0);
+      }
+
+      expect(response.root.length).toBe(64);
+      expect(response.signature.length).toBe(130);
+
       console.log(`Execution time: ${Date.now() - startTime} ms`);
-      console.log("verify_proof_direct batch cycle used:", old_balance - (await getCanisterCycles("verity_verifier")));
-      expect(typeof result["Ok"]["signature"]).toBe("string");
-      expect(typeof result["Ok"]["root"]).toBe("string");
-    }, 1000000);
+      console.log("verify_proof_async cycle used:", old_balance - (await getCanisterCycles("verity_verifier")));
+    });
   });
 });
