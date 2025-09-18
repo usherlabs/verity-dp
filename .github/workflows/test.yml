@@ -93,8 +93,8 @@ jobs:
           pnpm install
           pnpm test
 
-      # - name: Test sample zkTLS Verifier canister on IC Local replica
-      #   run: |
-      #     cd ./examples/zktls/ic-verifier
-      #     pnpm install
-      #     pnpm test
+      - name: Test sample zkTLS Verifier canister on IC Local replica
+        run: |
+          cd ./examples/zktls/ic-verifier
+          pnpm install
+          pnpm test
