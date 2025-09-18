@@ -80,25 +80,6 @@ impl TranscriptProof {
         Ok(transcript)
     }
 
-    /// Precompute encodings of every Opening of the Transcript and store precomputed encoding into the Opening
-    pub fn precompute_encodings(
-        &mut self,
-        attestation_body: &Body,
-    ) -> Result<(), TranscriptProofError> {
-        if let Some(proof) = self.encoding_proof.as_mut() {
-            let commitment = attestation_body.encoding_commitment().ok_or_else(|| {
-                TranscriptProofError::new(
-                    ErrorKind::Encoding,
-                    "contains an encoding proof but attestation is missing encoding commitment",
-                )
-            })?;
-
-            proof.precompute_encodings(commitment)?;
-        }
-
-        Ok(())
-    }
-
     /// Create a public clone of the proof by wiping private data from all the Openings of the Transcript
     pub fn public_clone(&self) -> Result<Self, Box<dyn std::error::Error>> {
         let encoding_proof = self.encoding_proof.as_ref().ok_or_else(|| {
