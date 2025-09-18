@@ -19,6 +19,7 @@ bimap = { workspace = true, features = ["serde"] }
 bincode = { workspace = true }
 blake3 = { workspace = true, features = ["serde"] }
 hex = { workspace = true }
+itybity = { workspace = true }
 k256 = { workspace = true }
 mpz-circuits = { workspace = true }
 mpz-core = { workspace = true }
@@ -26,7 +27,8 @@ mpz-garble-core = { workspace = true }
 opaque-debug = { workspace = true }
 p256 = { workspace = true, features = ["serde"] }
 rand = { workspace = true }
-rand_core = { workspace = true }
+rand_chacha = { workspace = true }
+rangeset = { workspace = true, features = ["serde"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 sha2 = { workspace = true }

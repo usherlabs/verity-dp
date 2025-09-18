@@ -23,7 +23,7 @@ pub fn init_ic_rand() {
 /// Retrieves a random number for use in the canister.
 /// Assumes `init_ic_rand` has been called previously.
 pub fn get_random_number() -> u64 {
-    RNG.with(|rng| rng.borrow_mut().as_mut().unwrap().gen())
+    RNG.with(|rng| rng.borrow_mut().as_mut().unwrap().random())
 }
 
 // Asynchronously sets the random number generator with a seed obtained from the management canister.

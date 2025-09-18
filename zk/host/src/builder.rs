@@ -51,17 +51,18 @@ pub fn build_for_evm(package_name: &str, build_params: SolidityBuildParams) {
             .unwrap()
     });
 
-    let mut guest_options = GuestOptionsBuilder::default();
+    // let mut guest_options = GuestOptionsBuilder::default();
     let guest_options = match docker_options {
-        Some(docker_options) => guest_options.use_docker(docker_options),
-        None => &mut guest_options,
+        Some(docker_options) => GuestOptionsBuilder::default()
+            .use_docker(docker_options)
+            .build()
+            .unwrap(),
+        None => GuestOptionsBuilder::default().build().unwrap(),
     };
 
+    // let guest_options = GuestOptionsBuilder::default().build().unwrap();
     // Generate Rust source files for the methods crate.
-    let guests = embed_methods_with_options(HashMap::from([(
-        package_name,
-        guest_options.build().unwrap(),
-    )]));
+    let guests = embed_methods_with_options(HashMap::from([(package_name, guest_options)]));
 
     // Generate Solidity source files for use with Forge.
     let solidity_opts = risc0_build_ethereum::Options::default()

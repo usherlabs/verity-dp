@@ -58,11 +58,11 @@ describe("Managed Verifier", () => {
       expect(Object.keys(result)[0]).toMatch(/^(Ok|Err)$/);
 
       // Fail the test if the canister returns an Error
-      if (Object.keys(result)[0] === "Err") {
-        fail(result["Err"]);
+      if ("Err" in result) {
+        fail(result.Err);
       }
 
-      const payloadBatches = result["Ok"] as PayloadBatch[];
+      const payloadBatches = (result as { Ok: PayloadBatch[] }).Ok;
       expect(Array.isArray(payloadBatches)).toBe(true);
       expect(payloadBatches.length).toBe(presentationBatches.length);
 
@@ -98,11 +98,11 @@ describe("Managed Verifier", () => {
       expect(Object.keys(result)[0]).toMatch(/^(Ok|Err)$/);
 
       // Fail the test if the canister returns an Error
-      if (Object.keys(result)[0] === "Err") {
-        fail(result["Err"]);
+      if ("Err" in result) {
+        fail(result.Err);
       }
 
-      const response = result["Ok"] as VerificationResponse;
+      const response = (result as { Ok: VerificationResponse }).Ok;
       expect(response.payload_batches.length).toBe(presentationBatches.length);
 
       const payloadBatch = response.payload_batches[0];

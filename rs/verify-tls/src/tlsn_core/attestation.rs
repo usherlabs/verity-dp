@@ -13,30 +13,46 @@
 //! The body contains the fields of the attestation. These fields include data
 //! which can be used to verify aspects of a TLS connection, such as the
 //! server's identity, and facts about the transcript.
+//!
+//! # Extensions
+//!
+//! An attestation may be extended using [`Extension`] fields included in the
+//! body. Extensions (currently) have no canonical semantics, but may be used to
+//! implement application specific functionality.
+//!
+//! A Prover may [append
+//! extensions](crate::request::RequestConfigBuilder::extension)
+//! to their attestation request, provided that the Notary supports them
+//! (disallowed by default). A Notary may also be configured to
+//! [validate](crate::attestation::AttestationConfigBuilder::extension_validator)
+//! any extensions requested by a Prover using custom application logic.
+//! Additionally, a Notary may
+//! [include](crate::attestation::AttestationBuilder::extension)
+//! their own extensions.
 
 mod builder;
 mod config;
+mod extension;
 mod proof;
 
 use std::fmt;
 
-use rand::distributions::{Distribution, Standard};
+use rand::distr::{Distribution, StandardUniform};
 use serde::{Deserialize, Serialize};
-
-use crate::tlsn_core::presentation::PresentationBuilder;
 
 use crate::tlsn_core::{
     connection::{ConnectionInfo, ServerCertCommitment, ServerEphemKey},
     hash::{impl_domain_separator, Hash, HashAlgorithm, HashAlgorithmExt, TypedHash},
-    index::Index,
     merkle::MerkleTree,
+    presentation::PresentationBuilder,
     signing::{Signature, VerifyingKey},
-    transcript::{encoding::EncodingCommitment, hash::PlaintextHash},
+    transcript::TranscriptCommitment,
     CryptoProvider,
 };
 
 pub use builder::{AttestationBuilder, AttestationBuilderError};
 pub use config::{AttestationConfig, AttestationConfigBuilder, AttestationConfigError};
+pub use extension::{Extension, InvalidExtension};
 pub use proof::{AttestationError, AttestationProof};
 
 /// Current version of attestations.
@@ -52,7 +68,7 @@ impl From<[u8; 16]> for Uid {
     }
 }
 
-impl Distribution<Uid> for Standard {
+impl Distribution<Uid> for StandardUniform {
     fn sample<R: rand::Rng + ?Sized>(&self, rng: &mut R) -> Uid {
         Uid(self.sample(rng))
     }
@@ -134,11 +150,16 @@ pub struct Body {
     connection_info: Field<ConnectionInfo>,
     server_ephemeral_key: Field<ServerEphemKey>,
     cert_commitment: Field<ServerCertCommitment>,
-    encoding_commitment: Option<Field<EncodingCommitment>>,
-    plaintext_hashes: Index<Field<PlaintextHash>>,
+    extensions: Vec<Field<Extension>>,
+    transcript_commitments: Vec<Field<TranscriptCommitment>>,
 }
 
 impl Body {
+    /// Returns an iterator over the extensions.
+    pub fn extensions(&self) -> impl Iterator<Item = &Extension> {
+        self.extensions.iter().map(|field| &field.data)
+    }
+
     /// Returns the attestation verifying key.
     pub fn verifying_key(&self) -> &VerifyingKey {
         &self.verifying_key.data
@@ -168,15 +189,14 @@ impl Body {
     /// The order of fields is not stable across versions.
     pub(crate) fn hash_fields(&self, hasher: &dyn HashAlgorithm) -> Vec<(FieldId, Hash)> {
         // CRITICAL: ensure all fields are included! If a new field is added to the
-        // struct without including it here it will not be verified to be
-        // included in the attestation.
+        // struct without including it here, it will not be included in the attestation.
         let Self {
             verifying_key,
             connection_info: conn_info,
             server_ephemeral_key,
             cert_commitment,
-            encoding_commitment,
-            plaintext_hashes,
+            extensions,
+            transcript_commitments,
         } = self;
 
         let mut fields: Vec<(FieldId, Hash)> = vec![
@@ -192,14 +212,11 @@ impl Body {
             ),
         ];
 
-        if let Some(encoding_commitment) = encoding_commitment {
-            fields.push((
-                encoding_commitment.id,
-                hasher.hash_separated(&encoding_commitment.data),
-            ));
+        for field in extensions.iter() {
+            fields.push((field.id, hasher.hash_separated(&field.data)));
         }
 
-        for field in plaintext_hashes.iter() {
+        for field in transcript_commitments.iter() {
             fields.push((field.id, hasher.hash_separated(&field.data)));
         }
 
@@ -212,27 +229,24 @@ impl Body {
         &self.connection_info.data
     }
 
+    /// Returns the server's ephemeral public key.
     #[cfg(feature = "public-facets")]
     pub(crate) fn server_ephemeral_key(&self) -> &ServerEphemKey {
         &self.server_ephemeral_key.data
     }
 
+    /// Returns the commitment to a server certificate.
     pub(crate) fn cert_commitment(&self) -> &ServerCertCommitment {
         &self.cert_commitment.data
     }
 
-    /// Returns the encoding commitment.
-    pub(crate) fn encoding_commitment(&self) -> Option<&EncodingCommitment> {
-        self.encoding_commitment.as_ref().map(|field| &field.data)
-    }
-
-    /// Returns the plaintext hash commitments.
-    pub(crate) fn plaintext_hashes(&self) -> &Index<Field<PlaintextHash>> {
-        &self.plaintext_hashes
+    /// Returns the transcript commitments.
+    pub(crate) fn transcript_commitments(&self) -> impl Iterator<Item = &TranscriptCommitment> {
+        self.transcript_commitments.iter().map(|field| &field.data)
     }
 }
 
-/// An attestation.
+/// An attestation document.
 ///
 /// See [module level documentation](crate::attestation) for more information.
 #[derive(Debug, Clone, Serialize, Deserialize)]

@@ -5,7 +5,7 @@ use utils::iter::DuplicateCheck;
 
 use crate::tlsn_core::hash::{Hash, HashAlgId, HashAlgorithm, TypedHash};
 
-/// Errors that can occur during operations with Merkle tree and Merkle proof
+/// Errors that can occur during operations with Merkle tree and Merkle proof.
 #[derive(Debug, thiserror::Error)]
 #[error("merkle error: {0}")]
 pub(crate) struct MerkleError(String);
@@ -19,15 +19,15 @@ impl MerkleError {
 #[derive(Clone, Serialize, Deserialize)]
 pub(crate) struct MerkleProof {
     alg: HashAlgId,
-    tree_len: usize,
+    leaf_count: usize,
     proof: tlsn_rs_merkle::MerkleProof<Hash>,
 }
 
 opaque_debug::implement!(MerkleProof);
 
 impl MerkleProof {
-    /// Checks if indices, hashes and leaves count are valid for the provided
-    /// root
+    /// Checks if the counts of indices, hashes, and leaves are valid for the
+    /// provided root.
     ///
     /// # Panics
     ///
@@ -55,12 +55,17 @@ impl MerkleProof {
             root.value,
             &indices,
             &leaves,
-            self.tree_len,
+            self.leaf_count,
         ) {
             return Err(MerkleError::new("invalid merkle proof"));
         }
 
         Ok(())
+    }
+
+    /// Returns the leaf count of the Merkle tree associated with the proof.
+    pub(crate) fn leaf_count(&self) -> usize {
+        self.leaf_count
     }
 }
 
@@ -118,15 +123,21 @@ impl MerkleTree {
     /// # Panics
     ///
     /// - If the provided indices are not unique and sorted.
+    /// - If the provided indices are out of bounds.
     pub(crate) fn proof(&self, indices: &[usize]) -> MerkleProof {
         assert!(
             indices.windows(2).all(|w| w[0] < w[1]),
             "indices must be unique and sorted"
         );
 
+        assert!(
+            *indices.last().unwrap() < self.tree.leaves_len(),
+            "one or more provided indices are out of bounds"
+        );
+
         MerkleProof {
             alg: self.alg,
-            tree_len: self.tree.leaves_len(),
+            leaf_count: self.tree.leaves_len(),
             proof: self.tree.proof(indices),
         }
     }
@@ -160,7 +171,7 @@ mod test {
         indices.into_iter().map(|i| (i, leaves[i])).collect()
     }
 
-    // Expect Merkle proof verification to succeed
+    // Expect Merkle proof verification to succeed.
     #[rstest]
     #[case::sha2(Sha256::default())]
     #[case::blake3(Blake3::default())]
@@ -196,7 +207,7 @@ mod test {
 
         choices[1].1 = leaves[0];
 
-        // fail because the leaf is wrong
+        // Fail because the leaf is wrong.
         assert!(proof.verify(&hasher, &tree.root(), choices).is_err());
     }
 
@@ -213,6 +224,21 @@ mod test {
         tree.insert(&hasher, leaves.clone());
 
         _ = tree.proof(&[2, 4, 3]);
+    }
+
+    #[rstest]
+    #[case::sha2(Sha256::default())]
+    #[case::blake3(Blake3::default())]
+    #[case::keccak(Keccak256::default())]
+    #[should_panic]
+    fn test_proof_fail_index_out_of_bounds<H: HashAlgorithm>(#[case] hasher: H) {
+        let mut tree = MerkleTree::new(hasher.id());
+
+        let leaves = leaves(&hasher, [T(0), T(1), T(2), T(3), T(4)]);
+
+        tree.insert(&hasher, leaves.clone());
+
+        _ = tree.proof(&[2, 3, 4, 6]);
     }
 
     #[rstest]
@@ -259,12 +285,20 @@ mod test {
 
         tree.insert(&hasher, leaves.clone());
 
-        let mut proof = tree.proof(&[2, 3, 4]);
+        let mut proof1 = tree.proof(&[2, 3, 4]);
+        let mut proof2 = proof1.clone();
 
-        proof.tree_len += 1;
+        // Increment the `leaf_count` field.
+        proof1.leaf_count += 1;
+        // Decrement the `leaf_count` field.
+        proof2.leaf_count -= 1;
 
-        // fail because leaf count is wrong
-        assert!(proof
+        // Fail because leaf count is wrong.
+        assert!(proof1
+            .verify(&hasher, &tree.root(), choose_leaves([2, 3, 4], &leaves))
+            .is_err());
+
+        assert!(proof2
             .verify(&hasher, &tree.root(), choose_leaves([2, 3, 4], &leaves))
             .is_err());
     }
@@ -285,7 +319,7 @@ mod test {
         let mut choices = choose_leaves([2, 3, 4], &leaves);
         choices[1].0 = 1;
 
-        // fail because leaf index is wrong
+        // Fail because leaf index is wrong.
         assert!(proof.verify(&hasher, &tree.root(), choices).is_err());
     }
 
@@ -302,7 +336,7 @@ mod test {
 
         let proof = tree.proof(&[2, 3, 4]);
 
-        // trying to verify less leaves than what was included in the proof
+        // Trying to verify less leaves than what was included in the proof.
         assert!(proof
             .verify(&hasher, &tree.root(), choose_leaves([2, 3], &leaves))
             .is_err());

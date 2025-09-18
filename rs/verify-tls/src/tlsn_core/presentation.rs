@@ -27,7 +27,7 @@ use std::fmt;
 use serde::{Deserialize, Serialize};
 
 use crate::tlsn_core::{
-    attestation::{Attestation, AttestationError, AttestationProof},
+    attestation::{Attestation, AttestationError, AttestationProof, Extension},
     connection::{ConnectionInfo, ServerIdentityProof, ServerIdentityProofError, ServerName},
     signing::VerifyingKey,
     transcript::{PartialTranscript, TranscriptProof, TranscriptProofError},
@@ -88,17 +88,26 @@ impl Presentation {
             })
             .transpose()?;
 
+        let transcript = transcript
+            .map(|transcript| {
+                transcript.verify_with_provider(
+                    provider,
+                    &attestation.body.connection_info().transcript_length,
+                    attestation.body.transcript_commitments(),
+                )
+            })
+            .transpose()?;
+
         let connection_info = attestation.body.connection_info().clone();
 
-        let transcript = transcript
-            .map(|transcript| transcript.verify_with_provider(provider, &attestation.body))
-            .transpose()?;
+        let extensions = attestation.body.extensions().cloned().collect();
 
         Ok(PresentationOutput {
             attestation,
             server_name,
             connection_info,
             transcript,
+            extensions,
         })
     }
 
@@ -120,17 +129,26 @@ impl Presentation {
 
         let attestation = attestation.verify(provider)?;
 
+        let transcript = transcript
+            .map(|transcript| {
+                transcript.verify_with_provider(
+                    provider,
+                    &attestation.body.connection_info().transcript_length,
+                    attestation.body.transcript_commitments(),
+                )
+            })
+            .transpose()?;
+
         let connection_info = attestation.body.connection_info().clone();
 
-        let transcript = transcript
-            .map(|transcript| transcript.verify_with_provider(provider, &attestation.body))
-            .transpose()?;
+        let extensions = attestation.body.extensions().cloned().collect();
 
         Ok(PresentationOutput {
             attestation,
             server_name: None,
             connection_info,
             transcript,
+            extensions,
         })
     }
 
@@ -164,11 +182,14 @@ impl Presentation {
 
         let connection_info = attestation.body.connection_info().clone();
 
+        let extensions = attestation.body.extensions().cloned().collect();
+
         Ok(PresentationOutput {
             attestation,
             server_name,
             connection_info,
             transcript: None,
+            extensions,
         })
     }
 
@@ -199,6 +220,8 @@ pub struct PresentationOutput {
     pub connection_info: ConnectionInfo,
     /// Authenticated transcript data.
     pub transcript: Option<PartialTranscript>,
+    /// Extensions.
+    pub extensions: Vec<Extension>,
 }
 
 /// Builder for [`Presentation`].

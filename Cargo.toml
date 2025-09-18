@@ -45,6 +45,7 @@ ic-agent = { git = "https://github.com/dfinity/agent-rs.git", rev = "60a64dd2d53
 ic-cdk = "0.17.0"
 ic-cdk-timers = "0.11.0"
 ic-wasi-polyfill = { git = "https://github.com/wasm-forge/ic-wasi-polyfill", rev = "2476429bb1604d3ad5a28d458b8faa61bcbe4ada" }
+itybity = "0.2"
 k256 = { version = "0.13" }
 libsecp256k1 = { version = "0.7.1", default-features = false }
 mpz-circuits = { git = "https://github.com/privacy-scaling-explorations/mpz", rev = "b8ae7ac" }
@@ -52,8 +53,10 @@ mpz-core = { git = "https://github.com/privacy-scaling-explorations/mpz", rev = 
 mpz-garble-core = { git = "https://github.com/privacy-scaling-explorations/mpz", rev = "b8ae7ac" }
 opaque-debug = "0.3.1"
 p256 = "0.13.2"
-rand = "0.8.5"
-rand_core = { version = "0.6" }
+rand = "0.9"
+rand_chacha = "0.9"
+rand_core = "0.9"
+rangeset = "0.2"
 reqwest = "0.12.9"
 reqwest-eventsource = "0.6.0"
 risc0-build = "3.0.3"
@@ -78,8 +81,8 @@ webpki-roots = { version = "0.26" }
 
 # TLSNotary packages
 tlsn_rs_merkle = { package = "rs_merkle", git = "https://github.com/tlsnotary/rs-merkle.git", rev = "85f3e82" }
-tlsn-tls-core = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.7" }
-tlsn-utils = { git = "https://github.com/tlsnotary/tlsn-utils", rev = "e7b2db6" }
+tlsn-tls-core = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.12" }
+tlsn-utils = { git = "https://github.com/tlsnotary/tlsn-utils", rev = "6168663" }
 
 # Verity packages
 verity-client = { path = "./rs/verity-client" }

@@ -24,7 +24,7 @@ ic-cdk-timers = { workspace = true }
 libsecp256k1 = { workspace = true, default-features = false, features = [
   "lazy-static-context",
 ] }
-rand = { workspace = true, features = ["getrandom"] }
+rand = { workspace = true }
 risc0-zkp = { workspace = true }
 risc0-zkvm = { workspace = true, default-features = false }
 rs_merkle = { workspace = true }

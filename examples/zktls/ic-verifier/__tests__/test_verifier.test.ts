@@ -1,7 +1,7 @@
-import { describe, expect, test } from "vitest";
-import { getCanisterCycles, actor } from "./actor";
-import * as fixtures from "verity-fixtures";
 import { fail } from "node:assert";
+import * as fixtures from "verity-fixtures";
+import { describe, expect, test } from "vitest";
+import { actor, getCanisterCycles } from "./actor";
 
 const CANISTER_NAME = "ic-verifier";
 
@@ -54,8 +54,8 @@ describe("IC Verifier", () => {
 			expect(Object.keys(result)[0]).toMatch(/^(Ok|Err)$/);
 
 			// Fail the test if the canister returns an Error
-			if (Object.keys(result)[0] === "Err") {
-				fail(result["Err"]);
+			if ("Err" in result) {
+				fail(result.Err);
 			}
 
 			const reply = result["Ok"];
@@ -90,8 +90,8 @@ describe("IC Verifier", () => {
 			expect(Object.keys(result)[0]).toMatch(/^(Ok|Err)$/);
 
 			// Fail the test if the canister returns an Error
-			if (Object.keys(result)[0] === "Err") {
-				fail(result["Err"]);
+			if ("Err" in result) {
+				fail(result.Err);
 			}
 
 			const reply = result["Ok"];

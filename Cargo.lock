@@ -4754,6 +4754,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f60fcc7d6849342eff22c4350c8b9a989ee8ceabc4b481253e8946b9fe83d684"
 
 [[package]]
+name = "rangeset"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1fc7af00a06ad692080d87495a904677592c662610edb82b4fc8782f4ed2f01f"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "rayon"
 version = "1.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6273,12 +6282,12 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
 name = "tlsn-tls-core"
-version = "0.1.0-alpha.7"
-source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.7#4d5102b6e141ecb84b8a835604be1d285ae6eaa5"
+version = "0.1.0-alpha.12"
+source = "git+https://github.com/tlsnotary/tlsn?tag=v0.1.0-alpha.12#f2ff4ba79245ea641c485ce11efb2cb574292abb"
 dependencies = [
  "futures",
  "hmac",
- "rand 0.8.5",
+ "rand 0.9.1",
  "ring",
  "rustls-pemfile",
  "sct",
@@ -6292,10 +6301,7 @@ dependencies = [
 [[package]]
 name = "tlsn-utils"
 version = "0.1.0"
-source = "git+https://github.com/tlsnotary/tlsn-utils?rev=e7b2db6#e7b2db6a0c0d0202694754efb77625ee43a14f5a"
-dependencies = [
- "serde",
-]
+source = "git+https://github.com/tlsnotary/tlsn-utils?rev=6168663#6168663495281f2c1b2c1734dc276cecc4d36ef1"
 
 [[package]]
 name = "tokio"
@@ -6753,7 +6759,7 @@ dependencies = [
  "ic-cdk 0.17.2",
  "ic-cdk-timers",
  "libsecp256k1",
- "rand 0.8.5",
+ "rand 0.9.1",
  "risc0-zkp",
  "risc0-zkvm",
  "rs_merkle 1.5.0",
@@ -6811,14 +6817,16 @@ dependencies = [
  "bincode",
  "blake3",
  "hex",
+ "itybity",
  "k256",
  "mpz-circuits",
  "mpz-core",
  "mpz-garble-core",
  "opaque-debug 0.3.1",
  "p256",
- "rand 0.8.5",
- "rand_core 0.6.4",
+ "rand 0.9.1",
+ "rand_chacha 0.9.0",
+ "rangeset",
  "rs_merkle 1.4.2",
  "rstest",
  "serde",

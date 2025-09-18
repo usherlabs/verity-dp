@@ -1,7 +1,7 @@
 import { execSync } from "node:child_process";
-import { identity } from "./identity.ts";
-import { createActor } from "../src/declarations/ic-verifier/index.js";
 import canisterIds from "../.dfx/local/canister_ids.json";
+import { createActor } from "../src/declarations/ic-verifier/index.js";
+import { identity } from "./identity.ts";
 
 export function getCanisterCycles(canisterName: string): number {
 	try {

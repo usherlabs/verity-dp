@@ -40,7 +40,6 @@ pub struct NotaryInformation {
     pub version: String,
     pub public_key: String,
     pub git_commit_hash: String,
-    pub git_commit_timestamp: String,
 }
 
 impl VerityClient {
