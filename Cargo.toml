@@ -6,7 +6,6 @@ members = [
     "ic/libraries",
     "ic/managed/verifier",
     "rs/tests/load",
-    "rs/verify-local",
     "rs/verify-remote",
     "rs/verify-tls",
     "rs/verity-client",
@@ -91,6 +90,5 @@ verity-dp-zk-host = { path = "./zk/host" }
 verity-dp-zk-methods = { path = "./zk/methods" }
 verity-fixtures = { path = "./fixtures/rs" }
 verity-ic = { path = "./ic/libraries" }
-verity-verify-local = { path = "./rs/verify-local" }
 verity-verify-remote = { path = "./rs/verify-remote" }
 verity-verify-tls = { path = "./rs/verify-tls", default-features = false }

@@ -34,14 +34,7 @@ jobs:
           cd ic/libraries
           cargo publish --allow-dirty
 
-      # Step 4: Publish the rs libraries
-      - name: Publish `rs/verify-local::verity-verify-local` to crates.io
-        continue-on-error: true
-        run: |
-          cd rs/verify-local
-          cargo publish --allow-dirty
-      
-      # Step 4: Publish the verity client
+      # Step 5: Publish the verity client
       - name: Publish `rs/verity-client::verity-client` to crates.io
         continue-on-error: true
         run: |

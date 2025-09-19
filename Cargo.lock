@@ -6785,17 +6785,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "verity-verify-local"
-version = "0.2.4"
-dependencies = [
- "anyhow",
- "easy-hasher",
- "hex",
- "libsecp256k1",
- "rs_merkle 1.5.0",
-]
-
-[[package]]
 name = "verity-verify-remote"
 version = "0.2.4"
 dependencies = [
