@@ -15,7 +15,7 @@ set -ex
 
 # export RUSTFLAGS=$RUSTFLAGS' -C target-feature=+simd128'
 cargo build --target wasm32-wasip1 --release -p ic-verifier
-candid-extractor ../../../target/wasm32-wasip1/release/ic_verifier.wasm > ic-verifier.did
 wasi2ic ../../../target/wasm32-wasip1/release/ic_verifier.wasm ../../../target/wasm32-wasip1/release/ic_verifier_ic.wasm
+candid-extractor ../../../target/wasm32-wasip1/release/ic_verifier_ic.wasm > ic-verifier.did
 wasm-opt -Os -o ../../../target/wasm32-wasip1/release/ic_verifier_ic.wasm \
         ../../../target/wasm32-wasip1/release/ic_verifier_ic.wasm

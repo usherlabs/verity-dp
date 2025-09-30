@@ -44,9 +44,11 @@ jobs:
           rzup install cargo-risczero 3.0.3
           rzup show
 
-      - name: Install WASI Polyfill Tool
+      - name: Install build dependencies
         run: |
-          cargo install wasi2ic
+          sudo apt-get update
+          sudo apt-get install -y jq
+          cargo install --locked wasi2ic candid-extractor ic-wasm
 
       - name: Install IC
         run: |
@@ -54,10 +56,6 @@ jobs:
           export DFXVM_INIT_YES=1
           curl -fsSL https://sdk.dfinity.org/install.sh | sh -
           echo "$HOME/.local/share/dfx/bin" >> $GITHUB_PATH
-
-      - name: Install candid-extractor - a CLI tool to extract the Candid interface from a Canister WASM.
-        run: |
-          cargo install candid-extractor
 
       - name: Start IC local replica
         run: |
