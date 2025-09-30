@@ -38,11 +38,6 @@ impl AttestationProof {
         })
     }
 
-    /// Getter for the attestation body
-    pub(crate) fn get_attestation_bodyproof(&self) -> BodyProof {
-        return self.body.clone();
-    }
-
     /// Returns the verifying key.
     pub fn verifying_key(&self) -> &VerifyingKey {
         self.body.verifying_key()
@@ -60,7 +55,7 @@ impl AttestationProof {
             .get(&self.signature.alg)
             .map_err(|e| AttestationError::new(ErrorKind::Provider, e))?;
 
-        // Verify body corresponding to the header.
+        // Verify that the body is corresponding to the header.
         let body = self.body.verify_with_provider(provider, &self.header)?;
 
         // Verify signature of the header.
@@ -83,13 +78,16 @@ impl AttestationProof {
 /// Proof of an attestation body.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub(crate) struct BodyProof {
-    pub(crate) body: Body,
+    body: Body,
+    /// A proof of inclusion of a subset of fields in the `body`.
+    // Currently, proves the inclusion of all fields.
     proof: MerkleProof,
 }
 
 impl BodyProof {
     /// Returns a new body proof.
-    // TODO: Support including a subset of fields instead of the entire body.
+    // TODO: Support creating a proof for a subset of fields instead of the entire
+    // body.
     pub(crate) fn new(
         hasher: &dyn HashAlgorithm,
         body: Body,

@@ -24,12 +24,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .to_sec1_bytes()
             .into_vec();
 
-    let mut presentation: Presentation =
+    let presentation: Presentation =
         serde_json::from_str(verity_fixtures::presentation::PRESENTATION_32B).unwrap();
 
     if use_precompute {
         println!("use precompute");
-        presentation.precompute_encodings()?;
+        // This is actually abandoned
+        // presentation.precompute_encodings()?;
     } else {
         println!("no precompute");
     }

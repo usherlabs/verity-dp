@@ -1,21 +1,7 @@
 import { execSync } from "node:child_process";
-import fs from "node:fs";
-import path from "node:path";
-import fetch from "isomorphic-fetch";
+import canisterIds from "../.dfx/local/canister_ids.json";
 import { createActor } from "../src/declarations/verity_verifier/index.js";
 import { identity } from "./identity.ts";
-
-let canisterIds: Record<string, any> = {};
-const idsPath = path.resolve(__dirname, "../.dfx/local/canister_ids.json");
-if (fs.existsSync(idsPath)) {
-  try {
-    canisterIds = JSON.parse(fs.readFileSync(idsPath, "utf-8"));
-  } catch (e) {
-    console.warn("Failed to parse canister_ids.json:", e);
-  }
-} else {
-  console.info("No canister_ids.json found, proceeding without it.");
-}
 
 export function getCanisterCycles(canisterName: string): number {
   try {

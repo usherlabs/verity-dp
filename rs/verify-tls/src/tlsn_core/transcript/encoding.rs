@@ -8,23 +8,14 @@ mod proof;
 mod provider;
 mod tree;
 
-pub(crate) use encoder::{new_encoder, Encoder};
+pub use encoder::{new_encoder, Encoder, EncoderSecret};
 pub use proof::{EncodingProof, EncodingProofError};
-pub use provider::EncodingProvider;
-pub use tree::EncodingTree;
+pub use provider::{EncodingProvider, EncodingProviderError};
+pub use tree::{EncodingTree, EncodingTreeError};
 
 use serde::{Deserialize, Serialize};
 
 use crate::tlsn_core::hash::{impl_domain_separator, TypedHash};
-
-/// The maximum allowed total bytelength of all committed data. Used to prevent
-/// DoS during verification. (this will cause the verifier to hash up to a max
-/// of 1GB * 128 = 128GB of plaintext encodings if the commitment type is
-/// [crate::commitment::Blake3]).
-///
-/// This value must not exceed bcs's MAX_SEQUENCE_LENGTH limit (which is (1 <<
-/// 31) - 1 by default)
-const MAX_TOTAL_COMMITTED_DATA: usize = 1_000_000_000;
 
 /// Transcript encoding commitment.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -32,7 +23,7 @@ pub struct EncodingCommitment {
     /// Merkle root of the encoding commitments.
     pub root: TypedHash,
     /// Seed used to generate the encodings.
-    pub seed: Vec<u8>,
+    pub secret: EncoderSecret,
 }
 
 impl_domain_separator!(EncodingCommitment);

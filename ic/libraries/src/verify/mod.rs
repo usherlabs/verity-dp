@@ -16,16 +16,10 @@ pub fn verify_receipt(
 
     let zkvm_result_bytes: Vec<u8> = receipt.journal.decode()?;
 
-    let (data, mut proof): (Vec<u8>, ZkTlsProof) = bincode::deserialize(&zkvm_result_bytes)?;
+    let (data, proof): (Vec<u8>, ZkTlsProof) = bincode::deserialize(&zkvm_result_bytes)?;
 
     // save the original hash of the proof for further compare
     let original_hash = proof.hash.clone();
-
-    for batch in &mut proof.presentation_batches {
-        for presentation in &mut batch.presentations {
-            presentation.precompute_encodings()?;
-        }
-    }
 
     let proof = verify_public_facets(proof.presentation_batches)?;
 

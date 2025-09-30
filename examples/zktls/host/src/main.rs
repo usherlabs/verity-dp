@@ -126,8 +126,7 @@ fn verify_by_zkvm(
     notary_pub_key: &NotaryPubKey,
     presentation: &Presentation,
 ) -> Result<(Vec<u8>, ZkTlsProof, Receipt), Box<dyn std::error::Error>> {
-    let mut presentation = presentation.clone();
-    presentation.precompute_encodings()?;
+    let presentation = presentation.clone();
 
     let presentation_batch = PresentationBatch {
         notary_pub_key: notary_pub_key.clone(),
