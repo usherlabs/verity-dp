@@ -1,2 +1,8 @@
 import { Logger } from "tslog";
-export const log = new Logger({ name: "FietCexBroker" });
+
+const logLevel = Number.parseInt(process.env.LOG_LEVEL || "3") || 3;
+
+export const log = new Logger({
+	name: "VerityTsClient",
+	minLevel: logLevel,
+});
