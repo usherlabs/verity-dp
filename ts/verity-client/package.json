@@ -31,8 +31,9 @@
 	"dependencies": {
 		"@types/eventsource": "^1.1.15",
 		"axios": "^1.9.0",
-		"uuid": "^11.1.0",
-		"eventsource": "^2.0.2"
+		"eventsource": "^2.0.2",
+		"tslog": "^4.10.2",
+		"uuid": "^11.1.0"
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.23.2",
