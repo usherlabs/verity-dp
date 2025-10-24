@@ -7,6 +7,7 @@ import type {
 	AxiosResponseHeaders,
 	RawAxiosResponseHeaders,
 } from "axios";
+import { log } from "./logger";
 
 // Dynamic EventSource import for cross-platform compatibility
 let EventSource: any;
@@ -22,7 +23,7 @@ function initializeEventSource() {
 			// Use require for Node.js environments
 			EventSource = require("eventsource");
 		} catch (error) {
-			console.warn(
+			log.error(
 				"eventsource package not available, EventSource functionality may not work in Node.js environment",
 			);
 			EventSource = null;
@@ -51,6 +52,7 @@ class VerityRequest<T> {
 	private axiosInstance: AxiosInstance;
 	private redacted: string | null = null;
 	public requestId: string;
+	public strictProof = false;
 	private url: string;
 	private sse_is_ready = false;
 	private proof: Promise<string>;
@@ -60,18 +62,20 @@ class VerityRequest<T> {
 		method: string,
 		Url: string,
 		config?: AxiosRequestConfig,
+		strictProof?: boolean,
 		data?: any,
 	) {
 		const { url, ...rest } = config ?? {};
 		this.config = rest || {};
 		this.requestId = uuidv4().toString();
 		this.url = Url;
+		this.strictProof = strictProof || false;
 
 		this.axiosInstance = axiosInstance;
 		this.proof = this.subscribeToProof().catch((err) => {
-			console.error(`Proof SSE failed for ${this.requestId}:`, err);
+			log.error(`Proof SSE failed for ${this.requestId}:`, err);
 			// re-throw so downstream still sees the error
-			throw err;
+			return strictProof ? Promise.reject(err) : "";
 		});
 
 		const instance = axios.create();
@@ -90,7 +94,7 @@ class VerityRequest<T> {
 					response.proof = data.slice(index + 1);
 					return response;
 				} catch (error) {
-					console.log({ error });
+					log.error({ error });
 					return response;
 				}
 			},
@@ -183,9 +187,9 @@ class VerityRequest<T> {
 
 			es.onerror = (err: any) => {
 				clearTimeout(timeout);
-				console.error("SSE error:", err);
+				log.error("SSE error:", err);
 				es.close();
-				reject(err);
+				this.strictProof ? reject(err) : resolve("");
 			};
 		});
 	}
@@ -204,14 +208,25 @@ export class VerityClient {
 		});
 	}
 
-	get<T>(url: string, config?: AxiosRequestConfig) {
-		return new VerityRequest<T>(this.axios, "get", url, config);
+	get<T>(url: string, config?: AxiosRequestConfig, strictProof = false) {
+		return new VerityRequest<T>(this.axios, "get", url, config, strictProof);
 	}
 
-	post<T>(url: string, config?: AxiosRequestConfig, data?: any) {
-		return new VerityRequest<T>(this.axios, "post", url, config, data);
+	post<T>(
+		url: string,
+		config?: AxiosRequestConfig,
+		data?: any,
+		strictProof = false,
+	) {
+		return new VerityRequest<T>(
+			this.axios,
+			"post",
+			url,
+			config,
+			strictProof,
+			data,
+		);
 	}
-
 	/// Get the information of the connected notary
 	async get_notary_info() {
 		const response = await this.axios.get<INotaryInformation>("/notaryinfo");
