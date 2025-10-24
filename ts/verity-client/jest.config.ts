@@ -7,7 +7,6 @@ const coverageToNumber = 50; // [0..100]
 
 export default {
 	testTimeout: 600 * 1000,
-	setTimeout: 600 * 1000,
 	verbose: true,
 	rootDir: "./",
 	clearMocks: true, // clear mocks before every test
