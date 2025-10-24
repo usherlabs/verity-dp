@@ -67,6 +67,11 @@ export interface VerityRequestOptions {
   proofTimeout?: number; // ms, overrides default SSE timeout
 }
 
+export interface VerityClientConfig {
+  proverUrl: string;
+  requestOptions?: VerityRequestOptions;
+}
+
 class VerityRequest<T> {
   private config: AxiosRequestConfig;
   private promise: Promise<AxiosResponse<T>>;
@@ -216,15 +221,12 @@ export class VerityClient {
   protected axios: AxiosInstance;
   private requestOptions?: VerityRequestOptions;
 
-  constructor(
-    verify_config: { prover_url: string; requestOptions?: VerityRequestOptions },
-    config?: AxiosRequestConfig,
-  ) {
+  constructor(verifyConfig: VerityClientConfig, config?: AxiosRequestConfig) {
     this.axios = axios.create({
       ...config,
-      baseURL: verify_config.prover_url,
+      baseURL: verifyConfig.proverUrl,
     });
-    this.requestOptions = verify_config.requestOptions;
+    this.requestOptions = verifyConfig?.requestOptions ?? {};
   }
 
   get<T>(url: string, config?: AxiosRequestConfig, options?: VerityRequestOptions) {
@@ -242,3 +244,5 @@ export class VerityClient {
     return response.data;
   }
 }
+
+export default { VerityClient, AbortError };
