@@ -1,6 +1,6 @@
 {
 	"name": "@usherlabs/verity-client",
-	"version": "0.0.24",
+	"version": "0.1.0",
 	"description": "Verity zkTLS Stack - Typescript Client",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
