@@ -23,6 +23,22 @@ pub struct VerityClientConfig {
     pub proof_timeout: Option<Duration>,
 }
 
+impl VerityClientConfig {
+    /// Create a new config with `proof_timeout` defaulting to `None`.
+    pub fn new(prover_url: impl Into<String>) -> Self {
+        Self {
+            prover_url: prover_url.into(),
+            proof_timeout: None,
+        }
+    }
+
+    /// Set a custom proof timeout.
+    pub fn with_proof_timeout(mut self, timeout: Duration) -> Self {
+        self.proof_timeout = Some(timeout);
+        self
+    }
+}
+
 #[derive(Clone)]
 pub struct VerityClient {
     pub(crate) inner: reqwest::Client,

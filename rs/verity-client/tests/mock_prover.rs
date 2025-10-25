@@ -73,10 +73,9 @@ async fn proof_handler(Path(id): Path<String>) -> impl IntoResponse {
 #[tokio::test]
 async fn get_notary_info_works() {
     let (base, _server) = spawn_mock_server().await;
-    let client = VerityClient::new(VerityClientConfig {
-        prover_url: base,
-        proof_timeout: Some(Duration::from_millis(3000)),
-    });
+    let client = VerityClient::new(
+        VerityClientConfig::new(base.clone()).with_proof_timeout(Duration::from_millis(3000)),
+    );
 
     let info = client.get_notary_info().await.unwrap();
     assert_eq!(info.git_commit_hash.len(), 40);
@@ -86,10 +85,9 @@ async fn get_notary_info_works() {
 #[tokio::test]
 async fn get_and_post_request_with_proof() {
     let (base, _server) = spawn_mock_server().await;
-    let client = VerityClient::new(VerityClientConfig {
-        prover_url: base.clone(),
-        proof_timeout: Some(Duration::from_millis(3000)),
-    });
+    let client = VerityClient::new(
+        VerityClientConfig::new(base.clone()).with_proof_timeout(Duration::from_millis(3000)),
+    );
 
     // GET
     let res = client
@@ -154,10 +152,10 @@ async fn no_proof_header_returns_immediately() {
             .unwrap()
     });
 
-    let client = VerityClient::new(VerityClientConfig {
-        prover_url: format!("http://{}", addr),
-        proof_timeout: Some(Duration::from_millis(500)),
-    });
+    let client = VerityClient::new(
+        VerityClientConfig::new(format!("http://{}", addr))
+            .with_proof_timeout(Duration::from_millis(500)),
+    );
 
     let res = client.get("https://example.com/").send().await.unwrap();
 
@@ -207,10 +205,10 @@ async fn proof_timeout_errors() {
             .unwrap()
     });
 
-    let client = VerityClient::new(VerityClientConfig {
-        prover_url: format!("http://{}", addr),
-        proof_timeout: Some(Duration::from_millis(200)),
-    });
+    let client = VerityClient::new(
+        VerityClientConfig::new(format!("http://{}", addr))
+            .with_proof_timeout(Duration::from_millis(200)),
+    );
 
     let res = client.get("https://example.com/").send().await;
     assert!(res.is_err());

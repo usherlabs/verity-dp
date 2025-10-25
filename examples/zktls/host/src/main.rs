@@ -57,9 +57,7 @@ async fn main() -> anyhow::Result<()> {
 
     println!("Proving a GET request using VerityClient...");
 
-    let config = VerityClientConfig {
-        prover_url: String::from(DEFAULT_PROVER_URL),
-    };
+    let config = VerityClientConfig::new(DEFAULT_PROVER_URL);
 
     let client = VerityClient::new(config);
 
