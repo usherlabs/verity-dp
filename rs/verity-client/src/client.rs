@@ -15,7 +15,7 @@ use uuid::Uuid;
 use crate::request::RequestBuilder;
 
 /// Time to wait for a proof received over SSE connection since receiving HTTP response
-const PROOF_TIMEOUT: Duration = Duration::from_millis(1000);
+const PROOF_TIMEOUT: Duration = Duration::from_millis(30000); // default to 30 seconds.
 
 #[derive(Clone)]
 pub struct VerityClientConfig {

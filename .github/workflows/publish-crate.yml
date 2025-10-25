@@ -1,4 +1,10 @@
-name: Publish Rust Library to crates.io
+name: Publish Rust Libraries to crates.io
+
+env:
+  CRATES: |
+    verity-ic|ic/libraries
+    verity-verify-local|rs/verify-local
+    verity-client|rs/verity-client
 
 on:
   push:
@@ -8,42 +14,73 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish:
+  detect-changes:
+    name: Detect Rust crate changes since previous tag
     runs-on: ubuntu-latest
-
+    outputs:
+      matrix: ${{ steps.compute.outputs.matrix }}
+      any_changed: ${{ steps.compute.outputs.any_changed }}
     steps:
-      # Step 1: Checkout the repository
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # need tags/history for diff
 
-      # Step 2: Install Rust toolchain
+      - name: Compute changed crates matrix
+        id: compute
+        shell: bash
+        run: bash .github/scripts/detect_changed_crates.sh
+
+  publish:
+    name: Publish crates (changed only)
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: ${{ needs.detect-changes.outputs.any_changed == 'true' }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.detect-changes.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Install Rust
+        if: ${{ matrix.changed == true }}
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable # Use the stable Rust version
+          toolchain: stable
           override: true
 
-      # Step 3: Login into cargo rs
-      - name: cargo login
-        run: cargo login ${{ secrets.CARGO_TOKEN }}
+      - name: Cargo login
+        if: ${{ matrix.changed == true }}
+        env:
+          CARGO_TOKEN: ${{ secrets.CARGO_TOKEN }}
+        run: |
+          if [ -z "${CARGO_TOKEN:-}" ]; then
+            echo "CARGO_TOKEN is not set; failing early."
+            exit 1
+          fi
+          cargo login "$CARGO_TOKEN"
 
-      # Step 4: Publish the IC library
-      - name: Publish `ic/libraries::verity_ic` to crates.io
-        continue-on-error: true
+      - name: Skip unchanged crate
+        if: ${{ matrix.changed != true }}
         run: |
-          cd ic/libraries
-          cargo publish --allow-dirty
+          echo "No changes detected for ${matrix.name} at path ${matrix.path}; skipping publish."
 
-      # Step 4: Publish the rs libraries
-      - name: Publish `rs/verify-local::verity-verify-local` to crates.io
-        continue-on-error: true
+      - name: Check if version already published on crates.io
+        if: ${{ matrix.changed == true }}
+        id: check_published
+        working-directory: ${{ matrix.path }}
+        shell: bash
+        run: bash .github/scripts/check_published.sh "${{ matrix.name }}"
+
+      - name: Publish crate to crates.io
+        if: ${{ matrix.changed == true && steps.check_published.outputs.already != 'true' }}
+        working-directory: ${{ matrix.path }}
+        env:
+          CARGO_TERM_COLOR: always
+        run: bash .github/scripts/publish_crate.sh
+
+      - name: Skip because version already published
+        if: ${{ matrix.changed == true && steps.check_published.outputs.already == 'true' }}
         run: |
-          cd rs/verify-local
-          cargo publish --allow-dirty
-      
-      # Step 4: Publish the verity client
-      - name: Publish `rs/verity-client::verity-client` to crates.io
-        continue-on-error: true
-        run: |
-          cd rs/verity-client
-          cargo publish --allow-dirty
+          echo "Skipping publish for ${matrix.name} because target version already exists on crates.io."
