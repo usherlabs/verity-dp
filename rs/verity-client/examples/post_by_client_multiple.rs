@@ -8,6 +8,7 @@ async fn main() -> anyhow::Result<()> {
 
     let config = VerityClientConfig {
         prover_url: String::from("http://127.0.0.1:8080"),
+        proof_timeout: Some(std::time::Duration::from_millis(30000)),
     };
 
     let verity_client = VerityClient::new(config);
