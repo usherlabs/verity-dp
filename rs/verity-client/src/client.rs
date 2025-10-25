@@ -20,6 +20,7 @@ const PROOF_TIMEOUT: Duration = Duration::from_millis(30000); // default to 30 s
 #[derive(Clone)]
 pub struct VerityClientConfig {
     pub prover_url: String,
+    pub proof_timeout: Option<Duration>,
 }
 
 #[derive(Clone)]
@@ -160,6 +161,8 @@ impl VerityClient {
         request_cancellation_token: CancellationToken,
         timeout_cancellation_token: CancellationToken,
     ) -> JoinHandle<anyhow::Result<reqwest::Response>> {
+        let proof_timeout = self.config.proof_timeout.unwrap_or(PROOF_TIMEOUT);
+
         tokio::spawn(async move {
             let result = request.send().await;
             let response = result.map_err(|e| {
@@ -170,8 +173,9 @@ impl VerityClient {
             // If T-PROOF-ID header has value, wait for the proof with the timeout,
             // otherwise stop waiting
             if response.headers().get("T-PROOF-ID").is_some() {
+                let timeout = proof_timeout;
                 tokio::spawn(async move {
-                    tokio::time::sleep(PROOF_TIMEOUT).await;
+                    tokio::time::sleep(timeout).await;
                     timeout_cancellation_token.cancel();
                 });
             } else {
