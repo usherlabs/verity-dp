@@ -23,3 +23,6 @@ uuid = { workspace = true, features = ["v4"] }
 [dev-dependencies]
 serde_json = { workspace = true }
 tracing-subscriber = { workspace = true }
+axum = { version = "0.7" }
+tokio-stream = { version = "0.1" }
+futures-util = { version = "0.3" }

@@ -126,9 +126,7 @@ impl RequestBuilder {
     /// # async fn run() -> Result<(), Error> {
     ///
     ///
-    /// let config = VerityClientConfig {
-    ///     prover_url: String::from("http://127.0.0.1:8080"),
-    /// };
+    /// let config = VerityClientConfig::new("http://127.0.0.1:8080");
     ///
     /// let response = VerityClient::new(config)
     ///     .get("https://hyper.rs")

@@ -31,9 +31,7 @@ use verity_client::client::{VerityClient, VerityClientConfig};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let config = VerityClientConfig {
-        prover_url: "http://127.0.0.1:8080".to_string(),
-    };
+    let config = VerityClientConfig::new("http://127.0.0.1:8080");
 
     let response = VerityClient::new(config)
         .get("https://jsonplaceholder.typicode.com/posts/98")
@@ -57,9 +55,7 @@ use verity_client::client::{VerityClient, VerityClientConfig};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let config = VerityClientConfig {
-        prover_url: "http://127.0.0.1:8080".to_string(),
-    };
+    let config = VerityClientConfig::new("http://127.0.0.1:8080");
 
     let response = VerityClient::new(config)
         .post("https://jsonplaceholder.typicode.com/posts")
