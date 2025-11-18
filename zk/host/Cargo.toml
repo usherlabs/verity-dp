@@ -21,6 +21,7 @@ risc0-ethereum-contracts = { workspace = true }
 risc0-zkvm = { workspace = true, features = ["client"] }
 serde = { workspace = true }
 serde_json = { workspace = true }
+tlsn-attestation = { workspace = true, features = ["private-facets"] }
 tracing-subscriber = { workspace = true, features = ["env-filter"] }
 verity-dp-zk-methods = { workspace = true }
 verity-fixtures = { workspace = true }
