@@ -6597,7 +6597,7 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 [[package]]
 name = "tlsn-attestation"
 version = "0.1.0-alpha.13"
-source = "git+https://github.com/usherlabs/tlsn?rev=0361619d#0361619df04d8df08d3077ac0b37af96113c8b2a"
+source = "git+https://github.com/usherlabs/tlsn?rev=ff44657c#ff44657c4504bdf89d12c93c00b98799c37d1ebc"
 dependencies = [
  "bcs",
  "blake3",
@@ -6615,7 +6615,7 @@ dependencies = [
 [[package]]
 name = "tlsn-core"
 version = "0.1.0-alpha.13"
-source = "git+https://github.com/usherlabs/tlsn?rev=0361619d#0361619df04d8df08d3077ac0b37af96113c8b2a"
+source = "git+https://github.com/usherlabs/tlsn?rev=ff44657c#ff44657c4504bdf89d12c93c00b98799c37d1ebc"
 dependencies = [
  "bimap",
  "blake3",
@@ -6642,7 +6642,7 @@ dependencies = [
 [[package]]
 name = "tlsn-tls-core"
 version = "0.1.0-alpha.13"
-source = "git+https://github.com/usherlabs/tlsn?rev=0361619d#0361619df04d8df08d3077ac0b37af96113c8b2a"
+source = "git+https://github.com/usherlabs/tlsn?rev=ff44657c#ff44657c4504bdf89d12c93c00b98799c37d1ebc"
 dependencies = [
  "futures",
  "hmac",
@@ -6662,7 +6662,7 @@ dependencies = [
 [[package]]
 name = "tlsn-utils"
 version = "0.1.0"
-source = "git+https://github.com/tlsnotary/tlsn-utils?rev=6168663#6168663495281f2c1b2c1734dc276cecc4d36ef1"
+source = "git+https://github.com/usherlabs/tlsn-utils?rev=29dfd175#29dfd175a2c51cc6f23f94218965a0c977d2d7f5"
 
 [[package]]
 name = "tokio"
