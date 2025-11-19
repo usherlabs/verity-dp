@@ -24,7 +24,6 @@ The VDP Framework is divided into the following modules:
     - **Partial verification** is necessary when leveraging the zkVM, maintaining high performance by partially verifying proofs in a replicated compute platform to minimise ZK proving times.
     - **Full verification** is only necessary when the data processed is public, which is rare as the zkVM is designed to maintain data privacy and roll up various TLS attestations into a single succinct proof.
   - `verify-local`: Performs TLS proof verification by combining remote verification of public facets, with private facets of the TLS proof. Designs specifically for zkVM guest environment.
-- `evm`: Smart Contracts templates for integrating various chains in an app-specific multi-chain protocol powered by the IC and Verity.
 - `examples`: Examples of how to use the Verity Data Processor Framework to generate zkTLS proofs.
 - `zk`: Utilities and tests supporting zkVM usage.
 
