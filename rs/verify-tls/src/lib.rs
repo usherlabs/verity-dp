@@ -1,10 +1,7 @@
 use blake3::Hasher;
 use mpz_core::serialize::CanonicalSerialize;
 use serde::{Deserialize, Serialize};
-
-use crate::tlsn_core::{presentation::Presentation, CryptoProvider};
-
-pub mod tlsn_core;
+use tlsn_attestation::{presentation::Presentation, CryptoProvider};
 
 pub type NotaryPubKey = Vec<u8>;
 
