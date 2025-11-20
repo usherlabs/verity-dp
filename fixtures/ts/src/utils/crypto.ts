@@ -7,11 +7,11 @@ import { createPublicKey } from "crypto";
  * <http://www.secg.org/sec1-v2.pdf>
  */
 export function to_sec1_bytes(publicKey: string): number[] {
-  const spki_der = createPublicKey(publicKey).export({
-    format: 'der',
-    type: 'spki'
-  });
+	const spki_der = createPublicKey(publicKey).export({
+		format: "der",
+		type: "spki",
+	});
 
-  // For uncompressed P-256 (65 bytes)
-  return [0x02].concat(...spki_der.subarray(-64, -32));
+	// For uncompressed P-256 (65 bytes)
+	return [0x03].concat(...spki_der.subarray(-64, -32));
 }

@@ -79,9 +79,11 @@ web-time = { version = "0.2" }
 webpki-roots = { version = "0.26" }
 
 # TLSNotary packages
+tlsn-attestation = { git = "https://github.com/usherlabs/tlsn", rev = "ff44657c", default-features = false }
+tlsn-core = { git = "https://github.com/usherlabs/tlsn", rev = "ff44657c" }
 tlsn_rs_merkle = { package = "rs_merkle", git = "https://github.com/tlsnotary/rs-merkle.git", rev = "85f3e82" }
-tlsn-tls-core = { git = "https://github.com/tlsnotary/tlsn", tag = "v0.1.0-alpha.12" }
-tlsn-utils = { git = "https://github.com/tlsnotary/tlsn-utils", rev = "6168663" }
+tlsn-tls-core = { git = "https://github.com/usherlabs/tlsn", rev = "ff44657c" }
+tlsn-utils = { git = "https://github.com/usherlabs/tlsn-utils", rev = "29dfd175" }
 
 # Verity packages
 verity-client = { path = "./rs/verity-client" }

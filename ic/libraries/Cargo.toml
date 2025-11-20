@@ -31,6 +31,7 @@ rs_merkle = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 thiserror = { workspace = true }
+tlsn-attestation = { workspace = true }
 verity-verify-tls = { workspace = true, features = [
   "private-facets",
   "public-facets",

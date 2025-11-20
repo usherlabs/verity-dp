@@ -5,11 +5,9 @@ use std::env;
 
 use k256::pkcs8::DecodePublicKey;
 use risc0_zkvm::{default_prover, ExecutorEnv};
+use tlsn_attestation::presentation::Presentation;
 use verity_dp_zk_methods::{VERITY_DP_ZK_VERIFY_ELF, VERITY_DP_ZK_VERIFY_ID};
-use verity_verify_tls::{
-    tlsn_core::presentation::Presentation, verify_private_facets, NotaryPubKey, PresentationBatch,
-    ZkTlsProof,
-};
+use verity_verify_tls::{verify_private_facets, NotaryPubKey, PresentationBatch, ZkTlsProof};
 
 #[test]
 fn host_works() {

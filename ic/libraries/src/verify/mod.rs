@@ -1,9 +1,8 @@
 use std::fmt;
 
 use risc0_zkvm::Receipt;
-use verity_verify_tls::{
-    tlsn_core::presentation::PresentationError, verify_public_facets, ZkTlsProof,
-};
+use tlsn_attestation::presentation::PresentationError;
+use verity_verify_tls::{verify_public_facets, ZkTlsProof};
 
 pub mod types;
 
